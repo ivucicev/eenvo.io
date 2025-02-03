@@ -1,0 +1,63 @@
+// 
+// _progress.scss
+// 
+
+// custom-progress
+.custom-progress {
+
+    .progress-bar {
+        &::before {
+            left: 2px;
+            right: auto;
+            transform: translateY(50%);
+
+        }
+    }
+}
+
+// progress with label
+.progress-label {
+
+    .progress-bar {
+        .label {
+            right: auto;
+            left: -9px;
+
+            &:after {
+                left: auto;
+                right: 50%;
+                transform: translateX(50%);
+            }
+        }
+    }
+}
+
+.progress-step-arrow {
+    .progress-bar {
+        &::after {
+            right: auto;
+            left: -20px;
+        }
+    }
+}
+
+@each $state in map-keys($theme-colors) {
+    .progress-#{$state} {
+        .progress-bar {
+            &.active {
+                &::after {
+                    border-right-color: var(--#{$prefix}#{$state});
+                    border-left-color: transparent;
+                }
+            }
+
+
+            &.pending:not(:nth-child(1)) {
+                &::after {
+                    border-left-color: transparent;
+                    border-right-color: var(--#{$prefix}#{$state}-bg-subtle);
+                }
+            }
+        }
+    }
+}

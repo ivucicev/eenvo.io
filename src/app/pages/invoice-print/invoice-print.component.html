@@ -1,0 +1,117 @@
+<div data-size="A4">
+    <div class="row">
+        <div class="col-sm-7">
+            <div class="d-flex align-items-center mb-5">
+                <img src="http://127.0.0.1:8090/api/files/companies/wa80x55a697d820/logo_on_white_1_l3ern23yfb.png"
+                    width="300" alt="">
+            </div>
+        </div>
+        <div class="col-sm-5">
+            <h3>
+                {{invoice.number}}
+            </h3>
+            <strong>Issue Date:</strong> <span class="pull-right">{{invoice.date}}</span> <br>
+            <strong>Due Date:</strong> {{invoice.dueDate}} <br>
+            <strong>Delivery Date:</strong>{{invoice.deliveryDate}}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-5 ml-sm-auto">
+            <strong>Seller:</strong> <br>
+            <strong>{{invoice.companyData.name}}</strong> <br>
+            {{invoice.companyData.address}} <br>
+            VAT: {{invoice.companyData.vatID}}
+        </div>
+        <div class="col-sm-2"></div>
+        <div class="col-sm-5 ml-sm-auto">
+            <strong>Buyer:</strong> <br>
+            <strong>{{invoice.customerData.name}}</strong> <br>
+            {{invoice.customerData.address}} <br>
+            VAT: {{invoice.customerData.vatID}}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="table-responsive">
+                <table class="table mt-5">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="text-center border-top-0 table-scale-border-bottom"></th>
+                            <th class="border-top-0 table-scale-border-bottom">Product/Service</th>
+                            <th class="text-right border-top-0 table-scale-border-bottom">Price</th>
+                            <th class="text-center border-top-0 table-scale-border-bottom">Quantity</th>
+                            <th class="text-center border-top-0 table-scale-border-bottom">Discount</th>
+                            <th class="text-center border-top-0 table-scale-border-bottom">Tax</th>
+                            <th class="text-right border-top-0 table-scale-border-bottom">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for(item of items; track $index) {
+                        <tr>
+                            <td class="text-center fw-700">{{ $index + 1 }}</td>
+                            <td class="text-left strong">{{ item.title }}</td>
+                            <td class="text-right">{{ item.price.toFixed(2) }}</td>
+                            <td class="text-center">{{ item.quantity.toFixed(2) }}</td>
+                            <td class="text-center">{{ item.discount.toFixed(2) }}</td>
+                            <td class="text-center">{{ item.tax.toFixed(2) }}</td>
+                            <td class="text-right">{{ item.total.toFixed(2) }}</td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-7"></div>
+        <div class="col-sm-5 ml-sm-auto">
+            <table class="table table-clean">
+                <tbody>
+                    <tr>
+                        <td class="text-left">
+                            <strong>Subtotal</strong>
+                        </td>
+                        <td class="text-right">{{invoice.subTotal?.toFixed(2)}}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-left">
+                            <strong>Discount (20%)</strong>
+                        </td>
+                        <td class="text-right">{{invoice.discountValue?.toFixed(2)}}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-left">
+                            <strong>VAT (10%)</strong>
+                        </td>
+                        <td class="text-right">{{invoice.taxValue?.toFixed(2)}}</td>
+                    </tr>
+                    <tr class="table-scale-border-top border-left-0 border-right-0 border-bottom-0">
+                        <td class="text-left keep-print-font">
+                            <strong>Total</strong>
+                        </td>
+                        <td class="text-right keep-print-font">
+                            <strong>{{invoice.total.toFixed(2)}}</strong>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <h4 class="py-5 text-primary w-100">
+                {{invoice.note}}
+            </h4>
+            <p class="mt-2 text-muted mb-0 w-100"
+                style="position: fixed; bottom: 40px; max-width: 90%; overflow: hidden; text-align: center;">
+                Payment details: Reference:{{invoice.paymentData.reference}} IBAN:{{invoice.paymentData.iban}}
+                SWIFT:{{invoice.paymentData.swift}}
+                <br>
+                {{invoice.companyData.note}}
+                <br>
+                <br>
+                Racun izdan sa <br> <img src="http://localhost:4200/assets/images/logo-dark.png" width="75">
+            </p>
+        </div>
+    </div>
+</div>

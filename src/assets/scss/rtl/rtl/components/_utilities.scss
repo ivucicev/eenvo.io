@@ -1,0 +1,191 @@
+// Margin & Padding 
+@each $breakpoint in map-keys($grid-breakpoints) {
+    @include media-breakpoint-up($breakpoint) {
+        $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+
+        @each $prop,
+        $abbrev in (margin: m, padding: p) {
+
+            @each $size,
+            $length in $spacers {
+                .#{$abbrev}#{$infix}-#{$size} {
+                    #{$prop}: $length !important;
+                }
+
+                .#{$abbrev}e#{$infix}-#{$size} {
+                    #{$prop}-left: $length !important;
+                    #{$prop}-right: 0 !important;
+                }
+
+                .#{$abbrev}s#{$infix}-#{$size} {
+                    #{$prop}-right: $length !important;
+                    #{$prop}-left: 0 !important;
+                }
+            }
+        }
+
+        // Negative margins (e.g., where `.mb-n1` is negative version of `.mb-1`)
+        @each $size,
+        $length in $spacers {
+            @if $size !=0 {
+                .me#{$infix}-n#{$size} {
+                    margin-right: -$length !important;
+                }
+
+                .ms#{$infix}-n#{$size} {
+                    margin-left: -$length !important;
+                }
+            }
+        }
+
+        .me#{$infix}-auto {
+            margin-left: auto !important;
+            margin-right: inherit !important;
+        }
+
+        .ms#{$infix}-auto {
+            margin-right: auto !important;
+            margin-left: 0 !important;
+        }
+    }
+}
+
+// Responsive alignment
+@each $breakpoint in map-keys($grid-breakpoints) {
+    @include media-breakpoint-up($breakpoint) {
+        $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+
+        .text#{$infix}-start {
+            text-align: right !important;
+        }
+
+        .text#{$infix}-end {
+            text-align: left !important;
+        }
+
+        .text#{$infix}-center {
+            text-align: center !important;
+        }
+
+    }
+}
+
+// Float
+@each $breakpoint in map-keys($grid-breakpoints) {
+    @include media-breakpoint-up($breakpoint) {
+        $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+
+        .float#{$infix}-start {
+            float: right !important;
+        }
+
+        .float#{$infix}-end {
+            float: left !important;
+        }
+
+        .float#{$infix}-none {
+            float: none !important;
+        }
+    }
+}
+
+.end-0 {
+    left: 0 !important;
+    right: auto !important;
+}
+
+.start-0 {
+    right: 0 !important;
+    left: auto !important;
+}
+
+.end-100 {
+    left: 100 !important;
+    right: auto !important;
+}
+
+.start-100 {
+    right: 100% !important;
+    left: auto !important;
+}
+
+.translate-middle {
+    transform: translate(50%, -50%) !important;
+}
+
+.start-50.translate-middle {
+    transform: translate(-50%, -50%) !important;
+}
+
+ol,
+ul {
+    padding-right: 2rem;
+    padding-left: 0;
+}
+
+.rounded-end-0 {
+    border-top-right-radius: var(--#{$prefix}border-radius) !important;
+    border-bottom-right-radius: var(--#{$prefix}border-radius) !important;
+    border-top-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+}
+
+.toast-header .btn-close {
+    margin-left: calc(-.5 * var(--#{$prefix}toast-padding-x)); // stylelint-disable-line function-disallowed-list
+    margin-right: var(--#{$prefix}toast-padding-x);
+}
+
+// Blockquote
+.custom-blockquote {
+    &.blockquote {
+        border-right: 3px solid;
+        border-left: 0;
+
+        &.blockquote-outline {
+            border: 1px solid;
+            border-right: 3px solid;
+            border-left: 1px solid;
+        }
+    }
+}
+
+.blockquote {
+    border-right: 4px solid var(--#{$prefix}border-color-translucent);
+    border-left: 0;
+}
+
+.blockquote-reverse {
+    border-right: 0;
+    border-left: 4px solid var(--#{$prefix}border-color-translucent);
+    text-align: left;
+}
+
+
+
+// border
+@each $breakpoint in map-keys($grid-breakpoints) {
+    @include media-breakpoint-up($breakpoint) {
+        $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+
+        .border-end#{$infix} {
+            border-right: 0 !important;
+            border-left: 1px solid var(--#{$prefix}border-color);
+        }
+
+        .border-start#{$infix} {
+            border-left: 0 !important;
+            border-right: 1px solid var(--#{$prefix}border-color);
+        }
+    }
+}
+
+
+// list inline
+
+.list-inline-item {
+  
+    &:not(:last-child) {
+        margin-right: 0;
+        margin-left: $list-inline-padding;
+    }
+}

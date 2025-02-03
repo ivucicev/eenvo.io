@@ -1,0 +1,28 @@
+//navbar-menu 
+.navbar-menu {
+
+    .navbar-nav {
+        .nav-link {
+            &[data-bs-toggle=collapse] {
+                &:after {
+                    margin-left: 0;
+                    margin-right: auto;
+                    right: auto;
+                    left: .125rem;
+                }
+            }
+        }
+    }
+
+    .nav-sm {
+        .nav-link {
+            &[data-bs-toggle=collapse] {
+                &:after {
+                    left: .5rem;
+                    right: auto;
+                    transform: rotate(90deg);
+                }
+            }
+        }
+    }
+}

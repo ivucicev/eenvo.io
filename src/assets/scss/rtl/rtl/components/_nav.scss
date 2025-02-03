@@ -1,0 +1,77 @@
+.navbar-nav,
+.nav,
+.list-group,
+.list-inline,
+.list-unstyled, .pagination {
+    padding-right: 0;
+}
+
+// progress nav
+.progress-nav {
+    .progress {
+        right: 0;
+        left: auto;
+    }
+}
+
+
+.custom-verti-nav-pills{
+    .nav-link{
+        &:before{
+            right: auto;
+            left: -20px;
+        }
+        @media (min-width: 992px) {
+            &.active::before{
+                border-left-color: transparent;
+                border-right-color: $primary;
+            }
+        }
+    }
+}
+
+.custom-hover-nav-tabs {
+    .nav-item .nav-link {
+        .nav-tab-position{
+            right: -33px;
+            left: 0;
+        }
+    }
+}
+
+// Step arrow nav
+.step-arrow-nav {
+    .nav {
+        .nav-link {
+            &::before {
+                content: "";
+                left: -7px;
+                right: auto;
+            }
+
+            &.done {
+                &::before {
+                    border-right-color: transparent;
+                    border-left: none;
+                }
+            }
+
+            &.active {
+                &::before {
+                    border-right-color: rgba(var(--#{$prefix}primary-rgb), 0.1);
+                    border-left: none;
+                }
+            }
+        }
+
+        .nav-item {
+            &:last-child {
+                .nav-link {
+                    &:before {
+                        display: none;
+                    }
+                }
+            }
+        }
+    }
+}

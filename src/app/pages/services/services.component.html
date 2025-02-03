@@ -1,0 +1,37 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title mb-0 flex-grow-1">Services</h4>
+            </div><!-- end card header -->
+            <div class="card-body">
+                <dx-data-grid #grid [dataSource]="data" (onInitNewRow)="newRow($event)"
+                    (onEditorPreparing)="onEditorPreparing($event)" (onSaved)="saved($event)" (onRowUpdated)="reload()"
+                    (onRowInserted)="reload()" (onRowRemoved)="reload()" [allowColumnResizing]="true" [columnAutoWidth]="true" 
+                    [allowColumnReordering]="true">
+                    <dxo-editing mode="row" [allowUpdating]="true" [allowDeleting]="true" [allowAdding]="true" >
+                    </dxo-editing>
+                    <dxo-header-filter [visible]="true"></dxo-header-filter>
+                    <dxo-search-panel [visible]="true" [width]="240" placeholder="Search..."></dxo-search-panel>
+                    <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+                    <dxo-group-panel [visible]="true"></dxo-group-panel>
+                    <dxi-column dataField="code" caption="Code"></dxi-column>
+                    <dxi-column dataField="title" caption="Title"></dxi-column>
+                    <dxi-column dataField="unit" caption="Unit">
+                        <dxo-lookup [dataSource]="['-', 'Hour', 'Piece', 'Kg', 'Km', 'L', 'Year', 'Month']"></dxo-lookup>
+                    </dxi-column>
+                    <dxi-column dataField="quantity" caption="Quantity" dataType="number"></dxi-column>
+                    <dxi-column dataField="price" caption="Price" dataType="number"></dxi-column>
+                    <dxi-column dataField="discount" caption="Discount" dataType="number"></dxi-column>
+                    <dxi-column dataField="tax" caption="Tax" dataType="number"></dxi-column>
+                    <dxi-column dataField="created" caption="Created" dataType="date"
+                        format="dd.MM.yyyy, HH:mm"></dxi-column>
+                    <dxi-column dataField="updated" caption="Updated" dataType="date"
+                        format="dd.MM.yyyy, HH:mm"></dxi-column>
+                </dx-data-grid>
+            </div><!-- end card-body -->
+        </div><!-- end card -->
+    </div>
+    <!-- end col -->
+</div>
+<!-- end row -->

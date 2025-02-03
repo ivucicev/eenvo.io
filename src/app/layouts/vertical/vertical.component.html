@@ -1,0 +1,15 @@
+<!-- Begin page -->
+<div id="layout-wrapper">
+   <app-topbar (mobileMenuButtonClicked)="onToggleMobileMenu()"></app-topbar>
+    <!-- sidebar -->
+    <app-sidebar></app-sidebar>
+    <div class="main-content">
+
+        <div class="page-content">
+            <div class="container-fluid">
+                <!-- content -->
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+    </div>
+</div>

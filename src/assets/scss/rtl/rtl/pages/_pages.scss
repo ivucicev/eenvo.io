@@ -1,0 +1,35 @@
+//
+// _pages.scss
+//
+
+@import 'timeline';
+
+.auth-pass-inputgroup{
+    .form-control.pe-5 {
+        padding-right: $input-padding-x !important;
+    }
+}
+
+//passowrd validations 
+#password-contain {
+
+    p {
+        padding-right: 13px;
+        padding-left: 0;
+
+        &.valid {
+            &::before {
+                right: -8px;
+                left: auto;
+            }
+        }
+
+        &.invalid {
+
+            &::before {
+                right: -8px;
+                left: auto;
+            }
+        }
+    }
+}

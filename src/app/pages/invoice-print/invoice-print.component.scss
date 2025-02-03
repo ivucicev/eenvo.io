@@ -1,0 +1,132 @@
+@media print {
+
+    * {
+        -webkit-print-color-adjust: exact !important;   /* Chrome, Safari 6 – 15.3, Edge */
+        color-adjust: exact !important;                 /* Firefox 48 – 96 */
+        print-color-adjust: exact !important;           /* Firefox 97+, Safari 15.4+ */
+    }
+    
+    body,html {
+        width: 210mm;
+        height: 297mm
+    }
+
+    .invoice-page {
+        -webkit-print-color-adjust: exact
+    }
+
+    .col-sm-1,.col-sm-10,.col-sm-11,.col-sm-12,.col-sm-2,.col-sm-3,.col-sm-4,.col-sm-5,.col-sm-6,.col-sm-7,.col-sm-8,.col-sm-9 {
+        float: left;
+        padding: 0
+    }
+
+    .col-sm-12 {
+        width: 100%
+    }
+
+    .col-sm-11 {
+        width: 91.66666667%
+    }
+
+    .col-sm-10 {
+        width: 83.33333333%
+    }
+
+    .col-sm-9 {
+        width: 75%
+    }
+
+    .col-sm-8 {
+        width: 66.66666667%
+    }
+
+    .col-sm-7 {
+        width: 58.33333333%
+    }
+
+    .col-sm-6 {
+        width: 50%
+    }
+
+    .col-sm-5 {
+        width: 41.66666667%
+    }
+
+    .col-sm-4 {
+        width: 33.33333333%
+    }
+
+    .col-sm-3 {
+        width: 25%
+    }
+
+    .col-sm-2 {
+        width: 16.66666667%
+    }
+
+    .col-sm-1 {
+        width: 8.33333333%
+    }
+
+    div[data-size=A4] {
+        margin: 0;
+        -webkit-box-shadow: 0;
+        box-shadow: 0;
+        padding: 2em 3em!important
+    }
+
+    .breadcrumb,.subheader {
+        display: none
+    }
+
+    :not(.keep-print-font) {
+        font-family: Arial,Helvetica,sans-serif!important;
+        font-size: 8pt !important
+    }
+
+    table {
+        font-size: 100%!important
+    }
+}
+
+@page {
+    size: auto;
+    margin: 0
+}
+
+div[data-size=A4] {
+    width: 210mm;
+    height: 297mm;
+
+    background: #fff;
+    display: block;
+    margin: 0 auto;
+    font-size: 10pt !important;
+
+    margin-bottom: .5cm;
+    background: url(https://www.gotbootstrap.com/themes/smartadmin/4.6.0/img/svg/pattern-1.svg) no-repeat center bottom;
+    background-size: cover;
+    background-color: white;
+    padding: 2.5rem;
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
+    position: relative
+    
+}
+
+div[data-size=A4] .table th {
+    font-weight: 600;
+    font-size: 10pt;
+}
+
+div[data-size=A4] .table > :not(caption) > * > * {
+    padding: 0.3rem 0.3rem;
+}
+
+@media only screen and (max-width: 992px) {
+    .container,div[data-size=A4] {
+        padding:0;
+        -webkit-box-shadow: none;
+        box-shadow: none
+    }
+}

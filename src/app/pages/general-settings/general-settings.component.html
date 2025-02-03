@@ -1,0 +1,73 @@
+<div class="row">
+    <div class="col-lg-6 offset-lg-3">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title mb-0 flex-grow-1">Company Settings</h4>
+            </div>
+
+            <div class="card-body">
+                <form [formGroup]="settingsForm" (ngSubmit)="submit()" class="container mt-4">
+                    
+                    <!-- Currency Settings -->
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label for="currency" class="form-label">Default Currency</label>
+                            <input list="currencies" id="currency" formControlName="currency" 
+                                   class="form-control" placeholder="Select currency">
+                            <datalist id="currencies">
+                                @for(currency of currencies; track currency.code) {
+                                    <option value="{{currency.code}}">{{currency.name}} ({{currency.symbol}})</option>
+                                }
+                            </datalist>
+                        </div>
+                    </div>
+
+                    <!-- Number Format -->
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label for="numberFormat" class="form-label">Number Format</label>
+                            <select class="form-select" id="numberFormat" formControlName="numberFormat">
+                                @for(format of numberFormats; track format.id) {
+                                    <option [value]="format.id">{{format.format}}</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Timezone -->
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label for="timeZone" class="form-label">Time Zone</label>
+                            <input list="timezones" id="timeZone" formControlName="timeZone" 
+                                   class="form-control" placeholder="Select timezone">
+                            <datalist id="timezones">
+                                @for(zone of timeZones; track zone.id) {
+                                    <option value="{{zone.id}}">{{zone.name}}</option>
+                                }
+                            </datalist>
+                        </div>
+                    </div>
+
+                    <!-- Date Format -->
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label for="dateFormat" class="form-label">Date Format</label>
+                            <select class="form-select" id="dateFormat" formControlName="dateFormat">
+                                @for(format of dateFormats; track format.id) {
+                                    <option [value]="format.id">{{format.display}}</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="text-center mt-4">
+                        <button type="submit" class="btn btn-primary" [disabled]="!settingsForm.valid">
+                            Save
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

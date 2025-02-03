@@ -1,0 +1,64 @@
+<div class="card my-auto overflow-hidden">
+    <div class="row g-0">
+        <div class="col-lg-6">
+            <div class="p-lg-5 p-4">
+                <div class="text-center">
+                    <h5 class="mb-0">Forgot Password?</h5>
+                    <p class="text-muted mt-2">Reset password with <span class="text-primary">eenvo</span></p>
+                </div>
+
+                <div class="text-center my-5">
+                    <div class="alert alert-borderless alert-warning text-center mb-2 mx-2" role="alert">
+                        Enter your email and instructions will be sent to you!
+                    </div>
+                </div>
+
+
+
+                <div class="mt-4">
+                    <form [formGroup]="resetForm" (ngSubmit)="onSubmit()" class="auth-input">
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input formControlName="email" type="text" class="form-control" id="email" placeholder="Enter email">
+                        </div>
+
+                        <div class="mt-2">
+                            <button class="btn btn-primary w-100" type="submit">Send Reset Link</button>
+                        </div>
+
+                        <div class="mt-4 text-center">
+                            <p class="mb-0">Wait, I remembered my password... <a [routerLink]="['/auth/auth-signin']"
+                                    class="fw-medium text-primary text-decoration-underline"> Click here </a> </p>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="d-flex h-100 bg-auth align-items-end">
+                <div class="p-lg-5 p-4">
+                    <div class="bg-overlay bg-primary"></div>
+                    <div class="p-0 p-sm-4 px-xl-0 py-5">
+                        <div id="reviewcarouselIndicators" class="carousel slide auth-carousel">
+
+                            <ngb-carousel class="carousel-inner mx-auto" [interval]="3000"
+                                [showNavigationIndicators]="false" [showNavigationArrows]="false">
+                                <ng-template ngbSlide *ngFor="let testimonial of testimonials">
+                                    <div class="testi-contain text-center">
+                                        <h5 class="fs-20 text-white mb-0">{{ testimonial.title }}</h5>
+                                        <p class="fs-15 text-white-50 mt-2 mb-0">
+                                            {{ testimonial.content }}
+                                        </p>
+                                    </div>
+                                </ng-template>
+                            </ngb-carousel>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,42 @@
+//
+// _custom-scrollbar.scss
+//
+
+.simplebar-height-auto-observer-wrapper {
+    float: right;
+}
+
+.simplebar-height-auto-observer {
+    left: auto;
+    right: 0;
+}
+
+.simplebar-track {
+    right: auto;
+    left: 0;
+}
+
+.simplebar-scrollbar {
+    left: 2px;
+    right: auto;
+}
+
+.simplebar-track.simplebar-horizontal {
+    right: 0;
+    left: auto;
+}
+
+.simplebar-track.simplebar-horizontal .simplebar-scrollbar {
+    left: auto;
+    right: 0;
+}
+
+.simplebar-track.simplebar-vertical {
+    right: auto;
+    left: 0;
+}
+
+.simplebar-hide-scrollbar {
+    right: 0;
+    left: auto;
+}

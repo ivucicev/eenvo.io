@@ -1,0 +1,115 @@
+// 
+// ribbons.scss
+//
+
+
+
+
+// ribbons
+.ribbon-box{
+    .ribbon{
+        left: auto;
+        right: -1px;
+        &.round-shape{
+            border-radius: 30px 0 0 30px;
+        }
+    }
+
+    &.right {
+        .ribbon{
+            right: auto;
+            left: -1px;
+            &.round-shape{
+                border-radius: 0 30px 30px 0;
+            }
+        }
+    }
+}
+
+.ribbon-box{
+    .ribbon{
+        &.ribbon-shape{
+            &:before{
+                left: auto;
+                right: -6.5px;
+            }
+
+            &:after{
+                left: auto;
+                right: -4.5px;
+            }
+
+            &:before, &:after{
+                border-radius: 0 5px 5px 0;
+            }
+        }
+    }
+
+    
+
+    &.ribbon-fill {
+        .ribbon{
+            transform: rotate(45deg);
+            left: auto;
+            right: -36px;
+        }
+
+        
+    }
+
+    .trending-ribbon{
+        transform: translateX(50px);
+    }
+
+    &.right {
+        .ribbon{
+            &.ribbon-shape{
+                &:before{
+                    left: -6.5px;
+                    right: auto;
+                    border-radius: 5px 0 0 5px;
+                }
+
+                &:after{
+                    left: -4.5px;
+                    right: auto;
+                    border-radius: 0 5px 5px 0;
+                }
+            }
+        }
+
+       &.ribbon-fill .ribbon{
+            transform: rotate(-45deg);
+            left: -38px;
+            right: auto;
+        }
+
+        .trending-ribbon{
+            transform: translateX(-50px);
+        }
+    }
+}
+
+
+//Ribbon Hover
+.ribbon-box {
+    .trending-ribbon {
+        transform: translateX(50px);
+    }
+
+    &.right {
+        .trending-ribbon {
+            transform: translateX(-50px);
+        }
+    }
+
+    &.page-agency-overview {
+        .trending-ribbon {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            border-top-left-radius: 4px;
+            border-bottom-left-radius: 4px;
+            transform: translateX(100px);
+        }
+    }
+}

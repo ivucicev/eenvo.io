@@ -1,0 +1,152 @@
+<div class="app-menu navbar-menu">
+    <!-- LOGO -->
+    <div class="navbar-brand-box">
+        <!-- Dark Logo-->
+        <a href="index.html" class="logo logo-dark">
+            <span class="logo-sm">
+                <img src="assets/images/logo-sm.png" alt="" height="50">
+            </span>
+            <span class="logo-lg">
+                <img src="assets/images/logo-dark.png" alt="" height="50">
+            </span>
+        </a>
+        <!-- Light Logo-->
+        <a href="index.html" class="logo logo-light">
+            <span class="logo-sm">
+                <img src="assets/images/logo-sm.png" alt="" height="50">
+            </span>
+            <span class="logo-lg">
+                <img src="assets/images/logo-light.png" alt="" height="50">
+            </span>
+        </a>
+        <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover"
+            id="vertical-hover">
+            <i class="ri-record-circle-line"></i>
+        </button>
+    </div>
+
+    <ngx-simplebar style="height: 100%;">
+        <div class="container-fluid">
+
+            <div id="two-column-menu">
+            </div>
+            <ul class="navbar-nav" id="navbar-nav">
+                @for (item of menuItems; track $index) {
+                <ng-container>
+                    @if(item.isTitle){
+                    <li class="menu-title"><span>{{ item.label | translate }}</span></li>
+                    }
+                    @else if(!item.isTitle && !item.isLayout){
+                    <li class="nav-item">
+                        @if(hasItems(item)){
+                        <a href="javascript:void(0);" class="nav-link menu-link"
+                            [ngClass]="{'has-arrow': !item.badge, 'has-dropdown': item.badge}" data-bs-toggle="collapse"
+                            aria-expanded="false" (click)="toggleItem($event)">
+                            <i class="{{ item.icon }}"></i>
+                            <span> {{ item.label | translate }}</span>
+                            @if(item.badge){
+                            <span class="badge badge-pill bg-danger">{{item.badge
+                                | translate}}</span>}
+                        </a>
+
+                        <div class="collapse menu-dropdown mega-dropdown-menu">
+                            <ul class="nav nav-sm flex-column" aria-expanded="false">
+                                @for (subitem of item.subItems; track $index) {
+                                <li class="nav-item">
+
+                                    @if(hasItems(subitem)){
+                                    <a class="nav-link" href="javascript:void(0);" [attr.data-parent]="subitem.parentId"
+                                        data-bs-toggle="collapse" aria-expanded="false" (click)="toggleSubItem($event)">
+                                        {{ subitem.label | translate}}
+                                        @if(subitem.badge){
+                                        <span class="badge badge-pill {{subitem.badge.variant}}">{{subitem.badge.text
+                                            | translate}}</span>}
+                                    </a>
+
+                                    <div class="collapse menu-dropdown sub-menu">
+                                        <ul class="nav nav-sm flex-column" aria-expanded="false">
+                                            @for (subSubitem of subitem.subItems; track $index) {
+                                            <li class="nav-item">
+
+
+                                                @if(hasItems(subSubitem)){
+                                                <a class="nav-link" href="javascript:void(0);"
+                                                    [attr.data-parent]="subSubitem.parentId" data-bs-toggle="collapse"
+                                                    aria-expanded="false" (click)="toggleExtraSubItem($event)">
+                                                    {{ subSubitem.label | translate}}
+                                                    @if(subSubitem.badge){
+                                                    <span
+                                                        class="badge badge-pill {{subSubitem.badge.variant}}">{{subSubitem.badge.text
+                                                        | translate}}</span>
+                                                    }
+                                                </a>
+
+                                                <div class="collapse menu-dropdown extra-sub-menu">
+                                                    @if(hasItems(subSubitem)){
+                                                    <ul class="nav nav-sm flex-column" aria-expanded="false">
+                                                        @for (subSubitem1 of subSubitem.subItems; track $index) {
+                                                        <li class="nav-item">
+
+                                                            <a [attr.data-parent]="subSubitem1.parentId"
+                                                                [routerLink]="subSubitem1.link" class="nav-link"
+                                                                routerLinkActive="active"
+                                                                [routerLinkActiveOptions]="{ exact: true }"
+                                                                (click)="updateActive($event)">
+                                                                {{ subSubitem1.label | translate }}
+                                                            </a>
+
+                                                        </li>}
+                                                    </ul>}
+                                                </div>
+                                                }@else {
+                                                <a [routerLink]="subSubitem.link" class="nav-link"
+                                                    routerLinkActive="active"
+                                                    [routerLinkActiveOptions]="{ exact: true }"
+                                                    [attr.data-parent]="subSubitem.parentId"
+                                                    (click)="updateActive($event)">
+                                                    {{ subSubitem.label | translate}}
+                                                </a>}
+
+                                            </li>
+                                            }
+                                        </ul>
+                                    </div>
+                                    }@else {
+                                    <a [routerLink]="subitem.link" class="nav-link" routerLinkActive="active"
+                                        [routerLinkActiveOptions]="{ exact: true }"
+                                        [attr.data-parent]="subitem.parentId" (click)="updateActive($event)">
+                                        {{ subitem.label | translate}}
+                                    </a>
+                                    }
+                                </li>
+                                }
+                            </ul>
+                        </div>} @else{
+                        <a [routerLink]="item.link" routerLinkActive="active"
+                            [routerLinkActiveOptions]="{ exact: true }" class="side-nav-link-ref nav-link menu-link"
+                            (click)="toggleParentItem($event)">
+                            @if(item.icon){
+                            <i class="{{ item.icon }}" class=""></i>
+                            }
+                            <span class=""> {{ item.label | translate }}</span>
+                            @if(item.badge){
+                            <span class="badge badge-pill {{item.badge.variant}}">{{item.badge.text
+                                | translate}}</span>}
+                        </a>}
+
+                    </li>}
+                </ng-container>
+                }
+                <div class="help-box text-center abs-bottom">
+                    <img src="assets/images/create-invoice.png" class="img-fluid" alt="">
+                    <p class="mb-3 mt-2 text-muted">Upgrade To Pro For More Features</p>
+                    <div class="mt-3">
+                        <a href="invoice-add.html" class="btn btn-primary"> Create Invoice</a>
+                    </div>
+                </div>
+            </ul>
+        </div>
+    </ngx-simplebar>
+
+</div>
+<div class="vertical-overlay" (click)="sidebarHide()"></div>

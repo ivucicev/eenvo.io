@@ -1,0 +1,284 @@
+.app-content {
+    margin-right: $vertical-menu-width;
+    margin-left: 0;
+}
+
+.main-content {
+    @media (min-width: 768px) {
+        margin-left: 0;
+        margin-right: $vertical-menu-width;
+    }
+}
+
+.navbar-menu {
+    border-right: 1px solid $vertical-menu-border;
+    border-right: none;
+
+    .navbar-nav {
+        .nav-link {
+            .badge {
+                margin-left: -2px;
+                margin-right: auto;
+            }
+
+            &[data-bs-toggle="collapse"] {
+                &:after {
+                    right: auto;
+                    left: 20px;
+                    margin-right: auto;
+                    margin-left: 0;
+                }
+            }
+        }
+
+        .nav-sm {
+            padding-left: 0;
+            padding-right: $vertical-menu-item-icon-width;
+
+            .nav-link {
+                &:before {
+                    right: 5px;
+                    left: auto;
+                }
+            }
+
+            .nav-sm {
+                padding-right: 15px;
+                padding-left: 0;
+
+                .nav-link {
+                    &:before {
+                        left: auto;
+                        right: 12px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.hamburger-icon {
+    span {
+        left: auto;
+        right: 0px;
+    }
+
+    &.open {
+        transform: rotate(90deg);
+        span {
+            &:nth-child(1) {
+                right: 1px;
+                left: auto;
+            }
+
+            &:nth-child(2) {
+                right: 3px;
+                left: auto;
+                transform: rotate(-45deg);
+            }
+
+            &:nth-child(3) {
+                right: 9px;
+                left: auto;
+                transform: rotate(45deg);
+            }
+        }
+    }
+}
+
+[data-layout="vertical"] {
+    .app-menu {
+        @media (max-width: 767.98px) {
+            margin-right: -100%;
+            margin-left: auto;
+        }
+    }
+
+    /********** sm-hover **********/
+    &[data-sidebar-size="sm-hover"] {
+        .main-content {
+            margin-right: $vertical-menu-width-sm;
+            margin-left: 0;
+
+            @media (max-width: 767.98px) {
+                margin-right: 0;
+            }
+        }
+
+        // Side menu
+        .navbar-menu {
+            &:hover {
+                border-left: 1px solid $border-color;
+                border-right: none;
+
+                @media (min-width: 1024.99px) {
+                    .navbar-brand-box {
+                        text-align: right;
+                    }
+                }
+
+                .menu-title {
+                    text-align: right;
+                }
+            }
+        }
+    }
+
+    /********** sm-hover-active **********/
+    &[data-sidebar-size="sm-hover-active"] {
+        .navbar-brand-box {
+            text-align: right;
+        }
+    }
+
+    &:is([data-sidebar-size="sm-hover"], [data-sidebar-size="sm-hover-active"]) {
+        .navbar-header {
+            @media (min-width: 1025px) {
+                padding-right: $grid-gutter-width;
+                padding-left: 0;
+            }
+        }
+    }
+
+    /********** sidebar sm **********/
+    &[data-sidebar-size="sm"] {
+        @media (min-width: 768px) {
+            .main-content {
+                margin-right: $vertical-menu-width-sm;
+                margin-left: 0;
+            }
+        }
+
+        // Side menu
+        .navbar-menu {
+            // Sidebar Menu
+            .navbar-nav {
+                .nav-item {
+                    &:hover {
+                        > a.menu-link span {
+                            padding-left: 0;
+                            padding-right: 25px;
+                        }
+
+                        > .menu-dropdown {
+                            left: 0;
+                            right: $vertical-menu-width-sm;
+                        }
+                    }
+                }
+
+                .nav-sm {
+                    .menu-dropdown {
+                        right: 100% !important;
+                        left: auto !important;
+                    }
+                }
+            }
+        }
+    }
+
+    /********** sidebar md **********/
+    &[data-sidebar-size="md"] {
+        @media (min-width: 768px) {
+            .main-content {
+                margin-right: $vertical-menu-width-md;
+                margin-left: 0;
+            }
+        }
+
+        // Side menu
+        .navbar-menu {
+            .navbar-nav {
+                .nav-link {
+                    &[data-bs-toggle="collapse"]:after {
+                        left: 0;
+                        right: auto;
+                    }
+                }
+
+                .nav-sm {
+                    padding-right: 0;
+                }
+            }
+        }
+    }
+
+    /********** dark **********/
+    &[data-sidebar="dark"] {
+        &[data-sidebar-size="sm"] {
+            // Side menu
+            .navbar-menu {
+                .navbar-nav {
+                    .nav-sm {
+                        .menu-dropdown {
+                            right: 100% !important;
+                            left: auto !important;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /********** detached **********/
+    &[data-layout-style="detached"] {
+        @media (min-width: 1024.1px) {
+            #layout-wrapper {
+                padding-right: $grid-gutter-width;
+                padding-left: 0;
+            }
+
+            .navbar-header {
+                padding-right: $grid-gutter-width;
+                padding-left: 0;
+            }
+
+            .navbar-menu {
+                border-left: $vertical-menu-bg;
+                border-right: none;
+            }
+        }
+    }
+}
+
+.vertical-overlay {
+    left: auto;
+    right: 0;
+}
+
+// Mobile Menu
+.vertical-sidebar-enable {
+    .app-menu {
+        margin-right: 0 !important;
+    }
+}
+
+//sidebar-images
+.sidebar-background {
+    right: 0;
+    left: 0;
+}
+
+.back-btn {
+    right: 12px;
+    left: 0;
+}
+
+.navbar-menu {
+    .navbar-nav {
+        .nav-link {
+            &.active {
+                &::before {
+                    right: 0;
+                    left: auto;
+                }
+            }
+        }
+    }
+}
+
+
+.customizer-setting{
+    left: 20px;
+    right: auto;
+}

@@ -1,0 +1,66 @@
+//
+// _table.scss
+//
+
+// card table
+
+.table-card {
+    th,
+    td {
+        &:first-child {
+            padding-right: var(--#{$prefix}card-spacer-x);
+            padding-left: $table-cell-padding-x;
+        }
+
+        &:last-child {
+            padding-left: var(--#{$prefix}card-spacer-x);
+            padding-right: $table-cell-padding-x;
+        }
+    }
+}
+
+.table {
+    .form-check {
+        padding-right: 0px;
+
+        .form-check-input {
+            margin-right: 0px;
+            margin-left: auto;
+        }
+    }
+
+    .sort {
+        &::before {
+            left: 0.5rem;
+            right: auto;
+        }
+
+        &::after {
+            right: auto;
+            left: 0.5rem;
+        }
+    }
+}
+
+.table-custom-effect {
+    tr {
+        border-left: 0;
+        border-right: 2px solid transparent;
+
+        &.table-active {
+            border-right-color: $primary;
+        }
+    }
+}
+
+.table-borderless {
+    > :not(:first-child) {
+        border-top-width: 0;
+    }
+}
+
+.table-sm {
+    > :not(caption) > * > * {
+        padding: $table-cell-padding-y-sm $table-cell-padding-x-sm;
+    }
+}

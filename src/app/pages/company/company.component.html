@@ -1,0 +1,137 @@
+<div class="row">
+    <div class="col-lg-6 offset-lg-3">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title mb-0 flex-grow-1">Company</h4>
+            </div><!-- end card header -->
+<!-- 
+            <img id="dropzone-external" class="card-img-top img-fluid" src="assets/images/small/img-3.jpg"
+                alt="Card image cap"> -->
+
+            <dx-file-uploader #uploader dialogTrigger="#dropzone-external" dropZone="#dropzone-external"
+                [multiple]="false" selectButtonText="+" accept="image/*" [visible]="false"
+                (onValueChanged)="fileAdded($event)" uploadMode="instantly">
+            </dx-file-uploader>
+
+            <div class="card-body">
+
+                <form [formGroup]="companyForm" (ngSubmit)="submit()" class="container mt-4">
+
+                    <!-- Logo Upload -->
+                    <div class="mb-3 text-center">
+                        <img id="dropzone-external" [src]="this.logo" onerror="this.src='assets/images/addphoto.png'" alt="Company Logo" height="350"
+                            class="rounded img-fluid" />
+                    </div>
+
+                    <!-- Company Info -->
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label for="name" class="form-label">Company Name</label>
+                            <input type="text" class="form-control" id="name" formControlName="name">
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+
+                        <div class="col-md-6">
+                            <label for="vatID" class="form-label">VAT ID</label>
+                            <input type="text" class="form-control" id="vatID" formControlName="vatID">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" formControlName="email">
+                        </div>
+                    </div>
+
+                    <!-- Address Details -->
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label for="address" class="form-label">Address</label>
+                            <input type="text" class="form-control" id="address" formControlName="address">
+                        </div>
+
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="postal" class="form-label">Postal Code</label>
+                            <input type="text" class="form-control" id="postal" formControlName="postal">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="city" class="form-label">City</label>
+                            <input type="text" class="form-control" id="city" formControlName="city">
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label for="country">Country</label>
+                            <input list="countries" id="country" formControlName="country" name="country"
+                                class="form-control">
+                            <datalist id="countries">
+                                @for(c of countries; track c.id) {
+                                <option value="{{c.countryName}}">
+                                    }
+                            </datalist>
+                        </div>
+                    </div>
+
+                    <!-- Contact Info -->
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="phone" class="form-label">Phone</label>
+                            <input type="text" class="form-control" id="phone" formControlName="phone">
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="web" class="form-label">Website</label>
+                            <input type="text" class="form-control" id="web" formControlName="web">
+                        </div>
+                    </div>
+
+                    <!-- Banking Details -->
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="iban" class="form-label">IBAN</label>
+                            <input type="text" class="form-control" id="iban" formControlName="iban">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="swift" class="form-label">SWIFT</label>
+                            <input type="text" class="form-control" id="swift" formControlName="swift">
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label for="nkd" class="form-label">NKD</label>
+                            <input type="text" class="form-control" id="nkd" formControlName="nkd">
+                        </div>
+                    </div>
+
+                    <!-- Responsible & Additional Info -->
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label for="responsible" class="form-label">Responsible Person</label>
+                            <input type="text" class="form-control" id="responsible" formControlName="responsible">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label for="additional" class="form-label">Additional Info</label>
+                            <textarea class="form-control" id="additional" rows="3"
+                                formControlName="additional"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="text-center mt-4">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+
+                </form>
+            </div><!-- end card-body -->
+        </div><!-- end card -->
+    </div>
+    <!-- end col -->
+</div>
+<!-- end row -->

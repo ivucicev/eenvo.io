@@ -1,0 +1,98 @@
+// 
+// _table.scss
+// 
+
+.table {
+    th {
+        font-weight: $font-weight-semibold;
+        font-size: 14px;
+    }
+
+    >thead {
+        border-color: $table-border-color;
+    }
+    >:not(:first-child) {
+        border-top-width: $table-border-width;
+    }
+}
+
+
+.table-nowrap {
+
+    th,
+    td {
+        white-space: nowrap;
+    }
+}
+
+// card table
+
+.table-card{
+    margin: (-$card-spacer-y) (-$card-spacer-x);
+
+    th,
+    td {
+
+        &:first-child{
+            padding-left: 16px;
+        }
+
+        &:last-child{
+            padding-right: 16px;
+        }
+    }
+
+    .table > :not(:first-child) {
+        border-top-width: $table-border-width;
+    }
+}
+
+@each $color,
+$value in $theme-colors {
+    .border-#{$color} {
+        &.table {
+            > thead {
+                border-color: $value !important;
+            }
+        }
+    }
+    .table-#{$color} {
+        &.table {
+            > thead {
+                border-bottom-color:lighten($value, 10%) !important;
+            }
+        }
+    }
+}
+
+.table {
+    .form-check {
+        padding-left: 0px;
+        margin-bottom: 0px;
+        .form-check-input {
+            margin-left: 0px;
+            margin-top: 0px;
+            float: none;
+            vertical-align: middle;
+        }
+    }
+    .sort {
+        position: relative;
+        &::before {
+            content: "\f035d";
+            position: absolute;
+            right: 0.5rem;
+            top: 18px;
+            font-size: 0.8rem;
+            font-family: "Material Design Icons";
+        }
+        &::after {
+            position:absolute;
+            right: 0.5rem;
+            content: "\f0360";
+            font-family: "Material Design Icons";
+            font-size: 0.8rem;
+            top: 12px;
+        }
+    }
+}

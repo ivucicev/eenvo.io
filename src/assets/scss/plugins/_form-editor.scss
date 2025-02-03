@@ -1,0 +1,65 @@
+
+// ng editer scss
+
+.NgxEditor__MenuBar {
+    background-color: var(--#{$prefix}secondary-bg) !important;
+    border: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color);
+    .NgxEditor__MenuItem--Icon {
+        &:hover {
+            background-color: rgba(var(--#{$prefix}light-rgb), 0.75) !important;
+        }
+    }
+    .NgxEditor__MenuItem--Active {
+        background-color: rgba(var(--#{$prefix}light-rgb), 0.75) !important;
+    }
+    .NgxEditor__Dropdown--Text {
+        background-color: rgba(var(--#{$prefix}light-rgb), 0.75) !important;
+    }
+    .NgxEditor__Dropdown--DropdownMenu {
+        background-color: var(--#{$prefix}secondary-bg) !important;
+        .NgxEditor__Dropdown--Item {
+            background-color: rgba(var(--#{$prefix}light-rgb), 0.75) !important;
+            &:hover {
+                background-color: rgba(var(--#{$prefix}light-rgb), 0.99) !important;
+            }
+        }
+    }
+    .NgxEditor__Popup {
+        background-color: var(--#{$prefix}secondary-bg);
+        input {
+            border: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color) !important;
+        }
+        button {
+            // background-color: var(--#{$prefix}secondary-bg) !important;
+            height: 30px;
+            width: auto;
+            cursor: pointer;
+            border: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color);
+            color: var(--#{$prefix}card-title-color);
+        }
+    }
+}
+
+
+.NgxEditor {
+    overflow: auto;
+    background-color: var(--#{$prefix}secondary-bg) !important;
+    border: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color) !important;
+    height: 245px;
+    .NgxEditor__Content {
+        p {
+            color: var(--#{$prefix}heading-color);
+        }
+        hr {
+            border: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color);
+        }
+        ol,
+        ul {
+            li {
+                &::marker {
+                    color: var(--#{$prefix}heading-color);
+                }
+            }
+        }
+    }
+}
