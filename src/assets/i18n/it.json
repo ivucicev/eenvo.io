@@ -1,0 +1,176 @@
+{
+  "MENUITEMS": {
+    "MENU": {
+      "TEXT": "Menù"
+    },
+    "DASHBOARD": {
+      "LIST": {
+        "DASHBOARD": "Cruscotto"
+      }
+    },
+    "PAGES": {
+      "TEXT": "Pagine"
+    },
+    "INVOICEMANAGEMENT": {
+      "TEXT": "Gestione delle fatture",
+      "LIST": {
+        "INVOICE": "Fattura",
+        "ADDINVOICE": "Aggiungi fattura",
+        "INVOICEDETAILS": "Dettagli della fattura",
+        "PAYMENTS": "Pagamenti",
+        "TAXES": "Tasse",
+        "PRODUCTS": "Prodotti",
+        "PRODUCTLIST": "Elenco dei prodotti",
+        "ADDPRODUCT": "Aggiungi prodotti",
+        "REPORT": "Rapporto",
+        "PAYMENTSUMMARY": "Riepilogo dei pagamenti",
+        "SALEREPORT": "Rapporto di vendita",
+        "EXPENCESREPORT": "Rapporto delle spese",
+        "USERS": "Utenti",
+        "TRANSACTION": "Transazione",
+        "TRANSACTIONLIST": "Elenco delle transazioni",
+        "NEWTRANSACTION": "Nuova transazione"
+      }
+    },
+    "AUTH": {
+      "TEXT": "Autenticazione",
+      "LIST": {
+        "SIGNIN": "Accedi",
+        "SIGNUP": "Registrati",
+        "PASSWORDRESET": "Reimposta password",
+        "LOCKSCREEN": "Blocca schermo"
+      }
+    },
+    "COMPONENTS": {
+      "TEXT": "COMPONENTI"
+    },
+    "OVERVIEW": {
+      "TEXT": "Panoramica"
+    },
+    "BOOTSTRAPUI": {
+      "TEXT": "Interfaccia utente Bootstrap",
+      "LIST": {
+        "ALERTS": "Avvisi",
+        "BADGES": "Distintivi",
+        "BUTTONS": "Bottoni",
+        "COLORS": "Colori",
+        "CARDS": "Carte",
+        "CAROUSEL": "Giostra",
+        "DROPDOWNS": "menu a discesa",
+        "GRID": "Griglia",
+        "IMAGES": "immagini",
+        "TABS": "Schede",
+        "ACCORDION&COLLAPSE": "Fisarmonica e collasso",
+        "MODALS": "Modali",
+        "OFFCANVAS": "Fuori tela",
+        "PLACEHOLDERS": "Segnaposto",
+        "PROGRESS": "Progresso",
+        "NOTIFICATIONS": "Notifiche",
+        "MEDIAOBJECT": "Oggetto multimediale",
+        "EMBEDVIDEO": "Incorpora video",
+        "TYPOGRAPHY": "Tipografia",
+        "LISTS": "Liste",
+        "GENERAL": "Generale",
+        "UTILITIES": "Utilità"
+      }
+    },
+    "ADVANCEUI": {
+      "TEXT": "Interfaccia utente avanzata",
+      "LIST": {
+        "SWEETALERT": "Dolci avvisi",
+        "NESTABLELIST": "Elenco annidabile",
+        "SCROLLBAR": "Barra di scorrimento",
+        "SWIPERSLIDER": "Cursore a scorrimento",
+        "RATTINGS": "Giudizi",
+        "HIGHLIGHT": "Evidenziare",
+        "SCROLLSPY": "ScrollSpy"
+      }
+    },
+    "FORMS": {
+      "TEXT": "Forme",
+      "LIST": {
+        "BASICELEMENTS": "Elementi basici",
+        "FORMSELECT": "Seleziona modulo",
+        "CHECKBOXS&RADIOS": "Caselle di controllo e radio",
+        "PICKERS": "Raccoglitrici",
+        "INPUTMASKS": "Maschera di forma",
+        "ADVANCED": "Modulo Avanzato",
+        "RANGESLIDER": "Dispositivo di scorrimento dell'intervallo",
+        "VALIDATION": "Convalida del modulo",
+        "WIZARD": "Creazione guidata modulo",
+        "EDITORS": "Editor di moduli",
+        "FILEUPLOADS": "Caricamento file modulo",
+        "FORMLAYOUTS": "Layout del modulo",
+        "FORMWIZARD": "Assistente modulo",
+        "TOMSELECT": "Tom Seleziona"
+      }
+    },
+    "MORE": {
+      "TEXT": "Di più"
+    },
+    "TABLES": {
+      "TEXT": "Tabelle",
+      "LIST": {
+        "BASICTABLES": "Tabelle di base",
+        "GRIDJS": "Griglia J",
+        "LISTJS": "Elenco J"
+      }
+    },
+    "CHARTS": {
+      "TEXT": "Apexcharts",
+      "LIST": {
+        "LINE": "linea",
+        "AREA": "La zona",
+        "COLUMN": "Colonna",
+        "BAR": "Sbarra",
+        "MIXED": "Mista",
+        "TIMELINE": "Sequenza temporale",
+        "CANDLESTICK": "Candeliere",
+        "BOXPLOT": "Grafico a scatola",
+        "BUBBLE": "Bolla",
+        "SCATTER": "Disperdere",
+        "HEATMAP": "Mappa di calore",
+        "TREEMAP": "Mappa ad albero",
+        "PIE": "Torta",
+        "RADIALBAR": "Barra radiale",
+        "RADAR": "Radar",
+        "POLARAREA": "Area polare"
+      }
+    },
+    "ICONS": {
+      "TEXT": "Icone",
+      "LIST": {
+        "REMIX": "Remixa",
+        "BOXICONS": "Icone della scatola",
+        "MATERIALDESIGN": "Progettazione materiale",
+        "BOOTSTRAP": "Bootstrap",
+        "LINEAWESOME": "Linea Fantastica"
+      }
+    },
+    "MAPS": {
+      "TEXT": "Mappe",
+      "LIST": {
+        "GOOGLE": "Google",
+        "VECTOR": "Vettore",
+        "LEAFLET": "Volantino"
+      }
+    },
+    "MULTILEVEL": {
+      "TEXT": "Multilivello",
+      "LIST": {
+        "LEVEL1": {
+          "1": "Livello 1.1",
+          "2": "Livello 1.2",
+          "LEVEL2": {
+            "1": "Livello 2.1",
+            "2": "Livello 2.2",
+            "LEVEL3": {
+              "1": "Livello 3.1",
+              "2": "Livello 3.2"
+            }
+          }
+        }
+      }
+    }
+  }
+}

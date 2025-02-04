@@ -1,0 +1,54 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title mb-0 flex-grow-1">Customers</h4>
+            </div>
+            <div class="card-body">
+                <dx-data-grid #grid [dataSource]="data" (onInitNewRow)="newRow($event)"
+                    (onEditorPreparing)="onEditorPreparing($event)" (onSaved)="saved($event)" (onRowUpdated)="reload()"
+                    (onRowInserted)="reload()" (onRowRemoved)="reload()" [allowColumnResizing]="true"
+                    [columnAutoWidth]="true" [allowColumnReordering]="true">
+                    <dxo-editing mode="row" [allowUpdating]="true" [allowDeleting]="true" [allowAdding]="true">
+                    </dxo-editing>
+
+                    <dxo-header-filter [visible]="true"></dxo-header-filter>
+                    <dxo-search-panel [visible]="true" [width]="240" placeholder="Search..."></dxo-search-panel>
+                    <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+                    <dxo-group-panel [visible]="true"></dxo-group-panel>
+
+                    <dxi-column type="buttons" [fixed]="true" fixedPosition="right" alignment="left">
+                        <dxi-button name="edit"></dxi-button>
+                        <dxi-button name="delete"></dxi-button>
+                    </dxi-column>
+
+                    <dxi-column dataField="code" caption="Code"></dxi-column>
+                    <dxi-column dataField="name" caption="Name"></dxi-column>
+                    <dxi-column dataField="vatID" caption="VAT ID"></dxi-column>
+                    <dxi-column dataField="address" caption="Address"></dxi-column>
+                    <dxi-column dataField="city" caption="City"></dxi-column>
+                    <dxi-column dataField="postal" caption="Postal Code"></dxi-column>
+                    <dxi-column dataField="country" caption="Country">
+                        <dxo-lookup [dataSource]="countries" displayExpr="countryName"
+                            valueExpr="countryName"></dxo-lookup>
+                    </dxi-column>
+                    <dxi-column dataField="phone" caption="Phone"></dxi-column>
+                    <dxi-column dataField="fax" caption="Fax"></dxi-column>
+                    <dxi-column dataField="mobile" caption="Mobile"></dxi-column>
+                    <dxi-column dataField="email" caption="Email"></dxi-column>
+                    <dxi-column dataField="web" caption="Website"></dxi-column>
+                    <dxi-column dataField="iban" caption="IBAN"></dxi-column>
+                    <dxi-column dataField="note" caption="Note"></dxi-column>
+                    <dxi-column dataField="due" caption="Due Amount" dataType="number"></dxi-column>
+
+                    <dxi-column dataField="created" caption="Created" dataType="date"
+                        format="dd.MM.yyyy, HH:mm"></dxi-column>
+
+                    <dxi-column [visible]="false" dataField="updated" caption="Updated" dataType="date"
+                        format="dd.MM.yyyy, HH:mm"></dxi-column>
+
+                </dx-data-grid>
+            </div>
+        </div>
+    </div>
+</div>

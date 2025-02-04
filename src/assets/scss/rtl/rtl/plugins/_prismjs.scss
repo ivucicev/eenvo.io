@@ -1,0 +1,24 @@
+/**
+ * prism.js default theme for JavaScript, CSS and HTML
+ * Based on dabblet (http://dabblet.com)
+ * @author Lea Verou
+ */
+
+:is(code, pre) {
+    &:is([class*="language-"]) {
+        text-align: right;
+    }
+}
+
+// Scroll-top
+
+#scroll-top { 
+    left: 30px;
+    right: auto;
+}
+
+// Toolbar (Copy button)
+.btn-clipboard {
+    left: 15px !important;
+    right: auto !important;
+} 

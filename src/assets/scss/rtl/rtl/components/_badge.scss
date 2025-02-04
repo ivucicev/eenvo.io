@@ -1,0 +1,36 @@
+// 
+// badge.scss
+//
+
+// badge-border
+.badge-border {
+    border-right: 2px solid;
+    border-left: 0;
+}
+
+// badge-label
+.badge-label {
+    margin-left: auto;
+    margin-right: 8px;
+
+    &:before {
+        content: "";
+        position: absolute;
+        border: 10px solid transparent;
+        border-right-color: transparent;
+        border-left-color: var(--#{$prefix}primary);
+        left: auto;
+        right: -18px;
+    }
+}
+
+@each $state in map-keys($theme-colors) {
+    .badge-label {
+        &.bg-#{$state} {
+            &:before {
+                border-right-color: transparent;
+                border-left-color: var(--#{$prefix}#{$state});
+            }
+        }
+    }
+}

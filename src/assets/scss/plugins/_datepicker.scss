@@ -1,0 +1,29 @@
+//
+// _datepicker.scss
+//
+
+.bs-datepicker-container{
+    padding: 0;
+}
+
+.bs-datepicker{
+    background: var(--#{$prefix}secondary-bg);
+    box-shadow: 1px 0 0 var(--#{$prefix}border-color), -1px 0 0 var(--#{$prefix}border-color), 0 1px 0 var(--#{$prefix}border-color), 0 -1px 0 var(--#{$prefix}border-color), 0 3px 13px rgba(0, 0, 0, 0.08);
+}
+
+.bs-datepicker-body{
+    border-color: var(--#{$prefix}border-color);
+    table{
+        td{
+            color: var(--#{$prefix}body-color);
+            span.is-other-month, &.is-other-month span{
+                color: rgba(var(--#{$prefix}body-color-rgb), 0.25);
+            }
+
+            &.is-highlighted:not(.disabled):not(.selected) span,  span.is-highlighted:not(.disabled):not(.selected){
+                background-color: var(--#{$prefix}light) !important;
+            }
+        }
+    }
+}
+

@@ -1,0 +1,176 @@
+{
+  "MENUITEMS": {
+    "MENU": {
+      "TEXT": "Menu"
+    },
+    "DASHBOARD": {
+      "LIST": {
+        "DASHBOARD": "Tableau de bord"
+      }
+    },
+    "PAGES": {
+      "TEXT": "Pages"
+    },
+    "INVOICEMANAGEMENT": {
+      "TEXT": "Gestion des factures",
+      "LIST": {
+        "INVOICE": "Facture",
+        "ADDINVOICE": "Ajouter une facture",
+        "INVOICEDETAILS": "Détails de la facture",
+        "PAYMENTS": "Paiements",
+        "TAXES": "Taxes",
+        "PRODUCTS": "Produits",
+        "PRODUCTLIST": "Liste des produits",
+        "ADDPRODUCT": "Ajouter des produits",
+        "REPORT": "Rapport",
+        "PAYMENTSUMMARY": "Résumé des paiements",
+        "SALEREPORT": "Rapport de vente",
+        "EXPENCESREPORT": "Rapport des dépenses",
+        "USERS": "Utilisateurs",
+        "TRANSACTION": "Transaction",
+        "TRANSACTIONLIST": "Liste des transactions",
+        "NEWTRANSACTION": "Nouvelle transaction"
+      }
+    },
+    "AUTH": {
+      "TEXT": "Authentification",
+      "LIST": {
+        "SIGNIN": "Se connecter",
+        "SIGNUP": "S'inscrire",
+        "PASSWORDRESET": "Réinitialisation du mot de passe",
+        "LOCKSCREEN": "Écran verrouillé"
+      }
+    },
+    "COMPONENTS": {
+      "TEXT": "COMPOSANTES"
+    },
+    "OVERVIEW": {
+      "TEXT": "Aperçu"
+    },
+    "BOOTSTRAPUI": {
+      "TEXT": "Interface utilisateur d'amorçage",
+      "LIST": {
+        "ALERTS": "Alertes",
+        "BADGES": "Insignes",
+        "BUTTONS": "Boutons",
+        "COLORS": "Couleurs",
+        "CARDS": "Cartes",
+        "CAROUSEL": "Carrousel",
+        "DROPDOWNS": "Listes déroulantes",
+        "GRID": "Grille",
+        "IMAGES": "Images",
+        "TABS": "Onglets",
+        "ACCORDION&COLLAPSE": "Accordéon et effondrement",
+        "MODALS": "Modaux",
+        "OFFCANVAS": "Hors toile",
+        "PLACEHOLDERS": "Espaces réservés",
+        "PROGRESS": "Progrès",
+        "NOTIFICATIONS": "Avis",
+        "MEDIAOBJECT": "Objet multimédia",
+        "EMBEDVIDEO": "Intégrer la vidéo",
+        "TYPOGRAPHY": "Typographie",
+        "LISTS": "Listes",
+        "GENERAL": "Générale",
+        "UTILITIES": "Utilitaires"
+      }
+    },
+    "ADVANCEUI": {
+      "TEXT": "Interface utilisateur avancée",
+      "LIST": {
+        "SWEETALERT": "Alertes sucrées",
+        "NESTABLELIST": "Liste imbriquée",
+        "SCROLLBAR": "Barre de défilement",
+        "SWIPERSLIDER": "Glissière Curseur",
+        "RATTINGS": "Notes",
+        "HIGHLIGHT": "Souligner",
+        "SCROLLSPY": "DéfilementEspion"
+      }
+    },
+    "FORMS": {
+      "TEXT": "Formes",
+      "LIST": {
+        "BASICELEMENTS": "Éléments basiques",
+        "FORMSELECT": "Sélection de formulaire",
+        "CHECKBOXS&RADIOS": "Cases à cocher et radios",
+        "PICKERS": "Cueilleurs",
+        "INPUTMASKS": "Masque de forme",
+        "ADVANCED": "Formulaire avancé",
+        "RANGESLIDER": "Curseur de plage",
+        "VALIDATION": "Validation du formulaire",
+        "WIZARD": "Assistant Formulaire",
+        "EDITORS": "Éditeurs de formulaires",
+        "FILEUPLOADS": "Téléchargement de fichier de formulaire",
+        "FORMLAYOUTS": "Dispositions de formulaire",
+         "FORMWIZARD": "Assistant de formulaire",
+        "TOMSELECT": "Sélectionnez Tom"
+      }
+    },
+    "TABLES": {
+      "TEXT": "les tables",
+      "LIST": {
+        "BASICTABLES": "Tableaux de base",
+        "GRIDJS": "Grille Js",
+        "LISTJS": "Liste J"
+      }
+    },
+    "CHARTS": {
+      "TEXT": "Apexchart",
+      "LIST": {
+        "LINE": "doubler",
+        "AREA": "Zone",
+        "COLUMN": "Colonne",
+        "BAR": "Bar",
+        "MIXED": "Mixte",
+        "TIMELINE": "Calendrier",
+        "CANDLESTICK": "Chandelier",
+        "BOXPLOT": "Boîte à moustaches",
+        "BUBBLE": "Bulle",
+        "SCATTER": "Dispersion",
+        "HEATMAP": "Carte de chaleur",
+        "TREEMAP": "Treemap",
+        "PIE": "Tarte",
+        "RADIALBAR": "Barre radiale",
+        "RADAR": "Radar",
+        "POLARAREA": "Zone polaire"
+      }
+    },
+    "ICONS": {
+      "TEXT": "Icônes",
+      "LIST": {
+        "REMIX": "Remixer",
+        "BOXICONS": "Boxicons",
+        "MATERIALDESIGN": "Conception matérielle",
+        "BOOTSTRAP": "Amorcer",
+        "LINEAWESOME": "Ligne Impressionnante"
+      }
+    },
+    "MAPS": {
+      "TEXT": "Plans",
+      "LIST": {
+        "GOOGLE": "Google",
+        "VECTOR": "Vecteur",
+        "LEAFLET": "Brochure"
+      }
+    },
+    "MULTILEVEL": {
+      "TEXT": "Multi-niveaux",
+      "LIST": {
+        "LEVEL1": {
+          "1": "Niveau 1.1",
+          "2": "Niveau 1.2",
+          "LEVEL2": {
+            "1": "Niveau 2.1",
+            "2": "Niveau 2.2",
+            "LEVEL3": {
+              "1": "Niveau 3.1",
+              "2": "Niveau 3.2"
+            }
+          }
+        }
+      }
+    },
+    "MORE":{
+      "TEXT": "Plus"
+    }
+  }
+}

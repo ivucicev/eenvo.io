@@ -1,0 +1,114 @@
+<div class="card my-auto overflow-hidden">
+    <div class="row g-0">
+        <div class="col-lg-6">
+            <div class="p-lg-5 p-4">
+                <div class="text-center">
+                    <h5 class="mb-0">Welcome Back!</h5>
+                    <p class="text-muted mt-2">Sign in to continue to <span class="text-primary">eenvo</span>.</p>
+                </div>
+
+                <div class="mt-4">
+                    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                        <div class="auth-input">
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input formControlName="email" type="text" class="form-control" id="email"
+                                    placeholder="Enter email">
+                            </div>
+
+                            <div class="mb-2">
+                                <label for="userpassword" class="form-label">Password</label>
+                                <div class="position-relative auth-pass-inputgroup mb-3">
+                                    <input formControlName="password" type="password"
+                                        class="form-control pe-5 password-input" placeholder="Enter password"
+                                        id="password-input">
+                                    <button
+                                        class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon"
+                                        type="button" id="password-addon"><i
+                                            class="las la-eye align-middle fs-18"></i></button>
+                                </div>
+                            </div>
+
+                            <div class="form-check form-check-primary fs-16 py-2 mb-3">
+                                <div class="float-end">
+                                    <a [routerLink]="['/auth/auth-pass-reset']"
+                                        class="text-muted text-decoration-underline fs-14">Forgot your password?</a>
+                                </div>
+                            </div>
+
+                            <div class="mt-2">
+                                <button class="btn btn-primary w-100" type="submit">Log In</button>
+                            </div>
+
+
+                            <div class="mt-4 text-center">
+                                <div class="signin-other-title">
+                                    <h5 class="fs-15 mb-3 title">Sign in with</h5>
+                                </div>
+
+                                <ul class="list-inline">
+                                    <li class="list-inline-item">
+                                        <a href="javascript:void()"
+                                            class="social-list-item bg-dark text-white border-dark">
+                                            <i class="mdi mdi-apple"></i>
+                                        </a>
+                                    </li>
+                                    <li class="list-inline-item">
+                                        <a href="javascript:void()"
+                                            class="social-list-item bg-danger text-white border-danger">
+                                            <i class="mdi mdi-google"></i>
+                                        </a>
+                                    </li>
+                                    <li class="list-inline-item">
+                                        <a href="javascript:void()"
+                                            class="social-list-item bg-secondary text-white border-secondary">
+                                            <i class="mdi mdi-microsoft"></i>
+                                        </a>
+                                    </li>
+                                    <li class="list-inline-item">
+                                        <a href="javascript:void()"
+                                            class="social-list-item bg-dark text-white border-dark">
+                                            <i class="mdi mdi-github"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+
+                            </div>
+
+                            <div class="mt-4 text-center">
+                                <p class="mb-0">Don't have an account ? <a [routerLink]="['/auth/auth-signup']"
+                                        class="fw-medium text-primary text-decoration-underline"> Signup now </a> </p>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="d-flex h-100 bg-auth align-items-end">
+                <div class="p-lg-5 p-4">
+                    <div class="bg-overlay bg-primary"></div>
+                    <div class="p-0 p-sm-4 px-xl-0 py-5">
+                        <div id="reviewcarouselIndicators" class="carousel slide auth-carousel">
+
+                            <ngb-carousel class="carousel-inner mx-auto" [interval]="3000"
+                                [showNavigationIndicators]="false" [showNavigationArrows]="false">
+                                <ng-template ngbSlide *ngFor="let testimonial of testimonials">
+                                    <div class="testi-contain text-center">
+                                        <h5 class="fs-20 text-white mb-0">{{ testimonial.title }}</h5>
+                                        <p class="fs-15 text-white-50 mt-2 mb-0">
+                                            {{ testimonial.content }}
+                                        </p>
+                                    </div>
+                                </ng-template>
+                            </ngb-carousel>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

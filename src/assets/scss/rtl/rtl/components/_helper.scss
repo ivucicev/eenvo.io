@@ -1,0 +1,24 @@
+//
+// _helper.scss
+//
+
+// Search 
+.search-box {
+    position: relative;
+
+    .form-control {
+        padding-left: $input-btn-padding-x;
+        padding-right: 40px;
+
+    }
+
+    .search-icon {
+        right: 13px;
+        left: auto;
+    }
+}
+
+#back-to-top {
+    left: 28px;
+    right: auto;
+}

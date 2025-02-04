@@ -1,0 +1,14 @@
+// 
+// Widgets.scss
+// 
+
+.main-chart {
+    .chart-border-left {
+        border-left: 1.4px solid var(--#{$prefix}border-color);
+        padding: 2px 20px;
+
+        &:last-child {
+            margin-right: 0px;
+        }
+    }
+}

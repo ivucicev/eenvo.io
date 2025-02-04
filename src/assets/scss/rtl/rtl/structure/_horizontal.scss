@@ -1,0 +1,107 @@
+//
+// _horizontal.scss
+// 
+
+[data-layout="horizontal"] {
+
+    .main-content {
+        margin-right: 0;
+    }
+
+    .horizontal-logo {
+        padding-left: 0;
+        padding-right: calc(#{$grid-gutter-width} * 0.5);
+
+        @media (max-width: 1024.98px) {
+            padding-right: $grid-gutter-width;
+            padding-left: 0;
+        }
+    }
+
+    .navbar-menu {
+        .navbar-nav {
+            .nav-sm {
+                padding-right: 0;
+            }
+
+            >.nav-item {
+                >.nav-link[data-bs-toggle=collapse]:after {
+                    left: 0px;
+                    right: auto;
+                }
+            }
+
+            >li:nth-of-type(2) {
+                >.nav-link.menu-link {
+                    padding-right: 0;
+                }
+            }
+        }
+    }
+
+    .navbar-nav {
+        .nav-item {
+            .nav-link[data-bs-toggle=collapse]:after {
+                right: auto;
+                left: 10px;
+            }
+        }
+    }
+
+    .menu-dropdown {
+        .menu-dropdown {
+            right: 100%;
+            left: auto;
+        }
+    }
+
+    .dropdown-custom-right {
+        right: -100% !important;
+        left: 100% !important;
+    }
+
+    .mega-dropdown-menu {
+        &.dropdown-custom-right {
+            @media (min-width: 992px) {
+                left: auto !important;
+                right: calc(-100% - 28rem) !important;
+            }
+        }
+    }
+}
+
+[data-layout="horizontal"] {
+    .menu {
+        @media (max-width: 1024px) {
+            .navbar-menu {
+                padding-right: 0;
+
+                .navbar-nav {
+                    flex-direction: column;
+
+                    >li:nth-of-type(2)>.nav-link.menu-link {
+                        padding-right: $vertical-menu-item-padding-x;
+                        padding-left: 0;
+                    }
+                }
+            }
+
+            .menu-dropdown {
+                padding-right: 28px;
+                padding-left: 0;
+                right: 0;
+                left: auto;
+            }
+
+            .dropdown-custom-right {
+                right: 0 !important;
+                left: auto !important;
+            }
+
+            .nav-item .nav-link[data-bs-toggle=collapse]:after {
+                right: auto;
+                left: 0px;
+            }
+        }
+    }
+}

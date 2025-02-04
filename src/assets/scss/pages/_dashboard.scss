@@ -1,0 +1,33 @@
+// 
+// _dashboard.scss
+// 
+
+.sales-history{
+    padding: 10px 0;
+}
+
+.structure-list {
+    padding: 10px 0;
+}
+
+.dash-widget{
+    width: 85px;
+}
+
+.dash-filter-picker {
+    min-width: 210px !important;
+}
+
+.dash-mini {
+    .mini-widget {
+        border-right: 1px solid var(--#{$prefix}border-color);
+        &:last-child {
+            border: 0px;
+        }
+        @media (max-width: 768px) {
+            border-right: 0px;
+            border-bottom: 1px solid var(--#{$prefix}border-color);
+        }
+    }
+}   
+

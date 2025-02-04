@@ -1,0 +1,70 @@
+//
+// alerts.scss
+//
+
+.alert-dismissible {
+    padding-left: $alert-dismissible-padding-r;
+    padding-right: var(--#{$prefix}alert-padding-x);
+
+    .btn-close {
+        left: 0;
+        right: auto;
+    }
+
+    &.alert-additional {
+        padding: 0;
+    }
+}
+
+// alert-label-icon
+.alert-label-icon {
+    padding-left: var(--#{$prefix}alert-padding-x);
+    padding-right: 60px;
+
+    .label-icon {
+        right: 0;
+        left: auto;
+    }
+
+    // label arrow
+    &.label-arrow {
+        .label-icon {
+            &:after {
+                border-right-color: $primary;
+                border-left-color: transparent;
+                left: -12px;
+                right: auto;
+            }
+        }
+    }
+}
+
+// Alert border left example
+.alert-border-left {
+    border-right: 3px solid;
+    border-left: 0;
+}
+
+// rounded label example
+.rounded-label {
+    .label-icon {
+        left: auto;
+        right: 0px;
+        border-radius: 30px 0 0 30px;
+    }
+}
+
+// Alert example SASS loop
+@each $state in map-keys($theme-colors) {
+    .alert-#{$state} {
+
+        &:is(.rounded-label, .label-arrow) {
+            .label-icon {
+                &:after {
+                    border-left-color: transparent;
+                    border-right-color: var(--#{$prefix}#{$state});
+                }
+            }
+        }
+    }
+}

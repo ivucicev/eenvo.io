@@ -1,0 +1,56 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title mb-0 flex-grow-1">Users</h4>
+            </div><!-- end card header -->
+            <div class="card-body">
+                <dx-data-grid #grid [dataSource]="data" (onInitNewRow)="newRow($event)"
+                    (onEditorPreparing)="onEditorPreparing($event)" (onSaved)="saved($event)" (onRowUpdated)="reload()"
+                    (onRowInserted)="reload()" (onRowRemoved)="reload()" [allowColumnResizing]="true" [columnAutoWidth]="true" 
+                    [allowColumnReordering]="true">
+                    <dxo-editing mode="row" [allowUpdating]="true" [allowDeleting]="true" [allowAdding]="true" >
+                    </dxo-editing>
+                    <dxo-header-filter [visible]="true"></dxo-header-filter>
+                    <dxo-search-panel [visible]="true" [width]="240" placeholder="Search..."></dxo-search-panel>
+                    <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+                    <dxo-group-panel [visible]="true"></dxo-group-panel>
+
+                    <dxi-column dataField="avatar" caption="Avatar" cellTemplate="avatarCell" editCellTemplate="avatarEdit">
+                        <div *dxTemplate="let d of 'avatarCell'">
+                            <img [src]="d.data.avatar ? apiURL + d.data.id + '/' + d.data.avatar : 'assets/images/users/user-dummy-img.jpg'" alt="Avatar" width="40" height="40" style="border-radius: 50%;">
+                        </div>
+                        <div *dxTemplate="let d of 'avatarEdit'">
+                            <img id="dropzone-external" [src]="d.data.avatar ? apiURL + d.data.id + '/' + d.data.avatar : 'assets/images/users/user-dummy-img.jpg'" alt="Avatar" width="40" height="40" style="border-radius: 50%;">
+                            <dx-file-uploader #uploader
+                                dialogTrigger="#dropzone-external"
+                                dropZone="#dropzone-external"
+                                [multiple]="false"
+                                selectButtonText="+"
+                                accept="image/*"
+                                [visible]="false"
+                                (onValueChanged)="fileAdded($event)"
+                                uploadMode="instantly">
+                          </dx-file-uploader>
+                        </div>
+                    </dxi-column>
+
+                    <dxi-column dataField="name" caption="Name"></dxi-column>
+                    <dxi-column dataField="email" caption="Email"></dxi-column>
+                    <dxi-column dataField="password" caption="Password"></dxi-column>
+                    <dxi-column dataField="verified" caption="Verified" dataType="boolean"></dxi-column>
+                    
+                    <!-- Date Fields -->
+                    <dxi-column dataField="created" caption="Created" dataType="date"
+                                format="dd.MM.yyyy, HH:mm"></dxi-column>
+                    <dxi-column dataField="updated" caption="Updated" dataType="date"
+                                format="dd.MM.yyyy, HH:mm"></dxi-column>
+
+                </dx-data-grid>
+                
+            </div><!-- end card-body -->
+        </div><!-- end card -->
+    </div>
+    <!-- end col -->
+</div>
+<!-- end row -->

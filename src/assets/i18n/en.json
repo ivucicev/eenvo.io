@@ -1,0 +1,177 @@
+{
+  "MENUITEMS": {
+    "MENU": {
+      "TEXT": "Menu"
+    },
+    "DASHBOARD":{
+      "LIST":{
+        "DASHBOARD":"Dashboard"
+      }
+    },
+    "PAGES": {
+      "TEXT": "Pages"
+    },
+    "INVOICEMANAGEMENT": {
+      "TEXT": "Invoices Management",
+      "LIST": {
+        "INVOICE": "Invoice",
+        "ADDINVOICE": "Add invoice",
+        "INVOICEDETAILS": "Invoice Details",
+        "PAYMENTS": "Payments",
+        "TAXES": "Taxes",
+        "PRODUCTS": "Products",
+        "PRODUCTLIST": "Products List",
+        "ADDPRODUCT": "Add Products",
+        "REPORT": "Report",
+        "PAYMENTSUMMARY": "Payment Summary",
+        "SALEREPORT": "Sale Report",
+        "EXPENCESREPORT": "Expences Report",
+        "USERS": "Users",
+        "TRANSACTION": "Transaction",
+        "TRANSACTIONLIST": "Transaction List",
+        "NEWTRANSACTION": "New Transaction"
+      }
+    },
+    "AUTH": {
+      "TEXT": "Authentication",
+      "LIST": {
+        "SIGNIN": "SIgn In",
+        "SIGNUP": "SIgn Up",
+        "PASSWORDRESET": "Password Reset",
+        "LOCKSCREEN": "Look Screen"
+      }
+    },
+    "COMPONENTS": {
+      "TEXT": "Components"
+    },
+    "OVERVIEW": {
+      "TEXT": "Overview"
+    },
+    "BOOTSTRAPUI": {
+      "TEXT": "Bootstrap UI",
+      "LIST": {
+        "ALERTS": "Alerts",
+        "BADGES": "Badges",
+        "BUTTONS": "Buttons",
+        "COLORS": "Colors",
+        "CARDS": "Cards",
+        "CAROUSEL": "Carousel",
+        "DROPDOWNS": "Dropdowns",
+        "GRID": "Grid",
+        "IMAGES": "Images",
+        "TABS": "Tabs",
+        "ACCORDION&COLLAPSE": "Accordian & Collapse",
+        "MODALS": "Modals",
+        "OFFCANVAS": "Offcanvas",
+        "PLACEHOLDERS": "Placeholders",
+        "PROGRESS": "Progress",
+        "NOTIFICATIONS": "Notifications",
+        "MEDIAOBJECT": "Media Object",
+        "EMBEDVIDEO": "Embed Video",
+        "TYPOGRAPHY": "Typography",
+        "LISTS": "Lists",
+        "GENERAL": "General",
+        "UTILITIES": "Utilities"
+      }
+    },
+    "ADVANCEUI": {
+      "TEXT": "Advance UI",
+      "LIST": {
+        "SWEETALERT": "Sweet Alerts",
+        "NESTABLELIST": "Nestable List",
+        "SCROLLBAR": "Scrollbar",
+        "SWIPERSLIDER": "Swiper Slider",
+        "RATTINGS": "Rattings",
+        "HIGHLIGHT": "Highlight",
+        "SCROLLSPY": "ScrollSpy"
+      }
+    },
+    "FORMS": {
+      "TEXT": "Forms",
+      "LIST": {
+        "BASICELEMENTS": "Basic Elements",
+        "FORMSELECT": "Form Select",
+        "CHECKBOXS&RADIOS": "Checkboxs & Radios",
+        "PICKERS": "Pickers",
+        "INPUTMASKS": "Input Masks",
+        "ADVANCED": "Advanced",
+        "RANGESLIDER": "Range Slider",
+        "VALIDATION": "Validation",
+        "WIZARD": "Wizard",
+        "EDITORS": "Editors",
+        "FILEUPLOADS": "File Uploads",
+        "FORMLAYOUTS": "Form Layouts",
+        "FORMWIZARD": "Form Wizard",
+        "TOMSELECT": "Tom Select"
+      }
+    },
+    "TABLES": {
+      "TEXT": "Tables",
+      "LIST": {
+        "BASICTABLES": "Basic Tables",
+        "GRIDJS": "Grid Js",
+        "LISTJS": "List Js",
+        "DATATABLES": "Datatables"
+      }
+    },
+    "CHARTS": {
+      "TEXT": "Apexcharts",
+      "LIST": {
+        "LINE": "Line",
+        "AREA": "Area",
+        "COLUMN": "Column",
+        "BAR": "Bar",
+        "MIXED": "Mixed",
+        "TIMELINE": "Timeline",
+        "CANDLESTICK": "Candlstick",
+        "BOXPLOT": "Boxplot",
+        "BUBBLE": "Bubble",
+        "SCATTER": "Scatter",
+        "HEATMAP": "Heatmap",
+        "TREEMAP": "Treemap",
+        "PIE": "Pie",
+        "RADIALBAR": "Radialbar",
+        "RADAR": "Radar",
+        "POLARAREA": "Polar Area"
+      }
+    },
+    "ICONS": {
+      "TEXT": "Icons",
+      "LIST": {
+        "REMIX": "Remix",
+        "BOXICONS": "Boxicons",
+        "MATERIALDESIGN": "Material Design",
+        "BOOTSTRAP": "Bootstrap",
+        "LINEAWESOME": "Line Awesome"
+      }
+    },
+    "MAPS": {
+      "TEXT": "Maps",
+      "LIST": {
+        "GOOGLE": "Google",
+        "VECTOR": "Vector",
+        "LEAFLET": "Leaflet"
+      }
+    },
+    "MULTILEVEL": {
+      "TEXT": "Multi Level",
+      "LIST": {
+        "LEVEL1": {
+          "1": "Level 1.1",
+          "2": "Level 1.2",
+          "LEVEL2": {
+            "1": "Level 2.1",
+            "2": "Level 2.2",
+            "LEVEL3": {
+              "1": "Level 3.1",
+              "2": "Level 3.2"
+            }
+          }
+        }
+      }
+    },
+    "MORE":{
+      "TEXT": "More"
+    }
+  }
+}

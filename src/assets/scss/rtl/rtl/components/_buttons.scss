@@ -1,0 +1,24 @@
+// 
+// _buttons.scss
+// 
+
+//button with icon
+.btn-label {
+    padding-left: $btn-padding-x;
+    padding-right: calc(#{$btn-padding-x} * 3.7);
+
+    .label-icon {
+        right: -$border-width;
+        left: auto;
+    }
+
+    &.right {
+        padding-right: $btn-padding-x;
+        padding-left: calc(#{$btn-padding-x} * 3.7);
+
+        .label-icon {
+            left: -$border-width;
+            right: auto;
+        }
+    }
+} 

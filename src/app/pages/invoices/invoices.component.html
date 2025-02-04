@@ -1,0 +1,292 @@
+<div class="row">
+    <div class="col-4">
+        <!-- card -->
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="flex-grow-1">
+                        <h4 class="fs-22 fw-semibold ff-secondary mb-2">{{this.defaultCurrency}}<span
+                                class="counter-value" [countUp]="stats.totalLast31">0</span></h4>
+                        <p class="text-uppercase fw-medium fs-14 text-muted mb-0">{{ 'Invoices Sent' | translate }}
+                            <span class="text-success fs-14 mb-0 ms-1">
+                                <i class="ri-arrow-right-up-line fs-13 align-middle"></i> {{ stats.totalChangePrefix
+                                }}<span class="counter-value" [countUp]="stats.totalChange">0</span>%
+                            </span>
+                        </p>
+                    </div>
+                    <div class="avatar-sm flex-shrink-0">
+                        <span class="avatar-title bg-light rounded-circle fs-3">
+                            <i class="las la-file-alt fs-24 text-primary"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="d-flex align-items-end justify-content-between mt-4">
+                    <div>
+                        <span class="badge bg-primary me-1">{{stats.totalLast31Count}}</span> <span
+                            class="text-muted">{{ 'Invoices sent last 31 days' | translate }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="flex-grow-1">
+                        <h4 class="fs-22 fw-semibold ff-secondary mb-2">{{this.defaultCurrency}}<span
+                                class="counter-value" [countUp]="stats.totalPaidLast31">0</span></h4>
+                        <p class="text-uppercase fw-medium fs-14 text-muted mb-0">{{ 'Paid Invoices' | translate }}
+                            <span [class.text-danger]="stats.paidChangePrefix == '-'"
+                                [class.text-success]="stats.paidChangePrefix == '+'" class="fs-14 mb-0 ms-1">
+                                <i [class.ri-arrow-right-up-line]="stats.paidChangePrefix == '+'"
+                                    [class.ri-arrow-right-down-line]="stats.paidChangePrefix == '-'"
+                                    class="fs-13 align-middle"></i>
+                                {{ stats.paidChangePrefix }}<span class="counter-value"
+                                    [countUp]="stats.percentageChange">0</span>%
+                            </span>
+                        </p>
+                    </div>
+                    <div class="avatar-sm flex-shrink-0">
+                        <span class="avatar-title bg-light rounded-circle fs-3">
+                            <i class="las la-check-square fs-24 text-primary"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="d-flex align-items-end justify-content-between mt-4">
+                    <div>
+                        <span class="badge bg-success me-1">{{ stats.paidCount }}</span> <span class="text-muted">{{
+                            'Paid last 31 days' | translate }}</span>
+                    </div>
+                </div>
+            </div><!-- end card body -->
+        </div><!-- end card -->
+    </div><!-- end col -->
+
+    <div class="col-4">
+        <div class="card bg-primary bg-opacity-75">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="flex-grow-1">
+                        <h4 class="fs-22 fw-semibold ff-secondary mb-2 text-white">{{this.defaultCurrency}}<span
+                                class="counter-value" [countUp]="stats.totalUnpaidLast31">0</span></h4>
+                        <p class="text-uppercase fw-medium fs-14 text-white-50 mb-0">{{ 'Unpaid Invoices' | translate }}
+                            <span [class.text-danger]="stats.unpaidChangePrefix == '-'"
+                                [class.text-success]="stats.unpaidChangePrefix == '+'" class="fs-14 mb-0 ms-1">
+                                <i [class.ri-arrow-right-up-line]="stats.unpaidChangePrefix == '+'"
+                                    [class.ri-arrow-right-down-line]="stats.unpaidChangePrefix == '-'"
+                                    class="fs-13 align-middle"></i> {{stats.unpaidChangePrefix}}<span
+                                    class="counter-value" [countUp]="stats.percentageUnpaidChange">0</span>%
+                            </span>
+                        </p>
+                    </div>
+                    <div class="avatar-sm flex-shrink-0">
+                        <span class="avatar-title bg-light-subtle text-light  rounded-circle fs-3">
+                            <i class="las la-clock fs-24 text-white"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="d-flex align-items-end justify-content-between mt-4">
+                    <div>
+                        <span class="badge bg-danger me-1">{{ stats.unpaidCount }}</span> <span class="text-white">{{
+                            'Unpaid last 31 days' | translate }}</span>
+                    </div>
+                </div>
+            </div><!-- end card body -->
+        </div><!-- end card -->
+    </div><!-- end col -->
+
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <ul class="nav nav-tabs nav-tabs-custom nav-success mb-3" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link" [class.active]="filter.all" (click)="setFilter(true)">
+                                    {{ 'All' | translate }}
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" [class.active]="filter.paid" (click)="setFilter(false, true)">
+                                    {{ 'Paid' | translate }}
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" [class.active]="filter.pending"
+                                    (click)="setFilter(false,false,true)">
+                                    {{ 'Pending' | translate }}
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" [class.active]="filter.overdue"
+                                    (click)="setFilter(false,false,false, true)">
+                                    {{ 'Overdue' | translate }}
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <dx-data-grid #grid [dataSource]="data" (onInitNewRow)="newRow($event)"
+                    (onEditorPreparing)="onEditorPreparing($event)" (onSaved)="saved($event)"
+                    (onEditingStart)="editInvoice($event)" (onRowUpdated)="reload()" (onRowInserted)="reload()"
+                    (onRowRemoved)="reload()" [allowColumnResizing]="true" [columnAutoWidth]="true"
+                    [allowColumnReordering]="true" [hoverStateEnabled]="true">
+
+                    <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+                    <dxo-paging [pageSize]="20"> </dxo-paging>
+                    <dxo-pager [visible]="true" [allowedPageSizes]="[10,20,50]" [displayMode]="'full'"
+                        [showPageSizeSelector]="true" [showInfo]="true" [showNavigationButtons]="true">
+                    </dxo-pager>
+
+                    <dxo-editing [allowUpdating]="true" [allowDeleting]="true" [allowAdding]="false"></dxo-editing>
+
+                    <dxo-header-filter [visible]="true"></dxo-header-filter>
+                    <dxo-search-panel [visible]="true" [width]="240" placeholder="Search..."></dxo-search-panel>
+                    <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+                    <dxo-group-panel [visible]="true"></dxo-group-panel>
+                    <dxo-load-panel [enabled]="true"></dxo-load-panel>
+
+                    <dxo-toolbar>
+                        <dxi-item>
+                            <div *dxTemplate>
+                                <select class="form-select form-select-sm" [(ngModel)]="selectedYear"
+                                    (change)="reload()">
+                                    <option [value]="currentYear" selected>{{currentYear}}</option>
+                                    <option [value]="currentYear - 1">{{currentYear - 1}}</option>
+                                    <option [value]="currentYear - 2">{{currentYear - 2}}</option>
+                                    <option [value]="currentYear - 3">{{currentYear - 3}}</option>
+                                    <option [value]="currentYear - 4">{{currentYear - 4}}</option>
+                                </select>
+                            </div>
+                        </dxi-item>
+                        <dxi-item name="groupPanel"></dxi-item>
+                        <dxi-item location="after">
+                            <div *dxTemplate>
+                                <dx-button (click)="newInvoice()" icon="add" [text]="'New' | translate"> </dx-button>
+                            </div>
+                        </dxi-item>
+                        <dxi-item location="after">
+                            <div *dxTemplate>
+                                <dx-button icon="refresh" (onClick)="reload()"> </dx-button>
+                            </div>
+                        </dxi-item>
+                        <dxi-item name="columnChooserButton"></dxi-item>
+                        <dxi-item name="searchPanel"></dxi-item>
+                    </dxo-toolbar>
+
+                    <dxi-column caption="" cellTemplate="notesTemplate" [showInColumnChooser]="false">
+                        <div *dxTemplate="let d of 'notesTemplate'">
+                            @if (d.data.internalNote) {
+                            <i class="text-warning cursor-pointer ri-sticky-note-fill"
+                                [title]="d.data.internalNote"></i>
+                            }
+                        </div>
+                    </dxi-column>
+
+                    <dxi-column type="buttons" [fixed]="true" fixedPosition="right" alignment="right" [showInColumnChooser]="false">
+                        <dxi-button [visible]="isMarkAsPayedVisible" [onClick]="markAsPayed" hint="Mark as payed"
+                            icon="check"></dxi-button>
+                        <dxi-button name="edit"></dxi-button>
+                        <dxi-button icon="download" [onClick]="downloadPDF"></dxi-button>
+                        <dxi-button icon="eyeopen" [onClick]="previewPDF"></dxi-button>
+                        <dxi-button icon="copy" [visible]="true" [onClick]="duplicateInvoice"></dxi-button>
+                        <dxi-button name="delete"></dxi-button>
+                    </dxi-column>
+
+                    <dxi-column dataField="number" [caption]="'Number' | translate" cellTemplate="numberTemplate">
+                        <div *dxTemplate="let d of 'numberTemplate'">
+                            <strong>{{ d.data.number }}</strong>
+                        </div>
+                    </dxi-column>
+                    <dxi-column dataField="expand.customer.name" [caption]="'Customer' | translate"></dxi-column>
+                    <dxi-column [visible]="false" dataField="paymentDate" [caption]="'Payment Date' | translate"
+                        dataType="date"></dxi-column>
+
+                    <dxi-column [visible]="false" dataField="type" [caption]="'Type' | translate"></dxi-column>
+                    <dxi-column [visible]="false" dataField="tax" [caption]="'Tax' | translate"></dxi-column>
+
+                    <dxi-column dataField="paymentType" [visible]="false"
+                        [caption]="'Payment Type' | translate"></dxi-column>
+
+                    <dxi-column [visible]="false" dataField="date" [caption]="'Invoice Date' | translate"></dxi-column>
+                    <dxi-column [visible]="false" dataField="deliveryDate" [caption]="'Delivery Date' | translate"
+                        dataType="date"></dxi-column>
+
+
+                    <dxi-column dataField="expand.user.name" [caption]="'User' | translate"></dxi-column>
+                    <dxi-column dataField="total" [caption]="'Total' | translate" dataType="number" format="#,##0.00"
+                        cellTemplate="totalTemplate">
+                        <div *dxTemplate="let d of 'totalTemplate'">
+                            {{ d.data.total | currencyFormat }}
+                        </div>
+                    </dxi-column>
+                    <dxi-column dataField="isPayed" [caption]="'Is Paid' | translate" dataType="boolean"
+                        cellTemplate="isPayedTemplate">
+                        <div *dxTemplate="let d of 'isPayedTemplate'">
+                            @if (d.data.isPayed) {
+                            <span class="badge rounded-pill text-primary bg-primary-subtle">{{ 'Payed' | translate }} <i
+                                    class="label-icon las la-check-double"></i> </span>
+                            }
+                            @else {
+                            @if (d.data.dueDate && d.data.dueDate > currentDate) {
+                            <span class="badge rounded-pill text-info bg-primary-subtle">{{ 'Pending' | translate }} <i
+                                    class="label-icon las la-hourglass-half"></i> </span>
+                            }
+                            @else {
+                            <span class="badge rounded-pill text-danger bg-danger-subtle">{{ 'Overdue' | translate }} <i
+                                    class="label-icon las la-clock rounded-pill"></i> </span>
+                            }
+                            }
+                        </div>
+                    </dxi-column>
+
+                    <dxi-column dataField="dueDate" [caption]="'Due Date' | translate" dataType="date"></dxi-column>
+                    <dxi-column sortOrder="desc" [visible]="false" dataField="created"
+                        [caption]="'Created' | translate"></dxi-column>
+                    <dxi-column [visible]="false" dataField="updated" [caption]="'Updated' | translate"
+                        dataType="date"></dxi-column>
+
+                </dx-data-grid>
+
+            </div>
+        </div>
+    </div>
+
+    <dx-popup [width]="'70%'" [height]="'90%'" [showTitle]="true" [title]="'Information' | translate"
+        [dragEnabled]="false" [hideOnOutsideClick]="true" [showCloseButton]="true" [(visible)]="invoicePopupVisible"
+        (onHiding)="reload()">
+
+        <div *dxTemplate="let data of 'content'">
+            <eenvo-invoice-detail #invoiceDetail [invoice]="currentInvoice"></eenvo-invoice-detail>
+        </div>
+
+        <dxi-popup-toolbar-item toolbar="bottom" location="after">
+            <button (click)="close()" class="btn btn-light ms-1"><i class="ri-close-line align-bottom mx-1"></i> {{
+                'Close' | translate }}</button>
+            <button (click)="delete()" class="btn btn-danger ms-1"><i
+                    class="ri-delete-bin-line align-bottom mx-1"></i>{{ 'Delete' | translate }}</button>
+            <button (click)="download()" class="btn btn-success ms-1"><i
+                    class="ri-download-2-line align-bottom mx-1"></i>{{ 'Download' | translate }}</button>
+            <button (click)="detail?.print()" class="btn btn-info ms-1"><i
+                    class="ri-printer-line align-bottom mx-1"></i> {{ 'Print' | translate }}</button>
+            <button (click)="send()" class="btn btn-secondary ms-1"><i
+                    class="ri-send-plane-fill align-bottom mx-1"></i>{{ 'Send' | translate }}</button>
+            <button type="submit" (click)="detail?.saveInvoice()" class="btn btn-primary ms-1"><i
+                    class="ri-check-double-line align-bottom mx-1"></i>{{ 'Save' | translate }}</button>
+        </dxi-popup-toolbar-item>
+
+    </dx-popup>
+
+
+    <dx-popup [showTitle]="true" [dragEnabled]="false" [hideOnOutsideClick]="true" [showCloseButton]="true"
+        [(visible)]="this.pdf" class="preview-modal">
+        <div *dxTemplate="let data of 'content'" class="padding-0">
+            <iframe controls [src]="this.pdf" type="application/pdf" width="100%" height="100%"></iframe>
+        </div>
+    </dx-popup>

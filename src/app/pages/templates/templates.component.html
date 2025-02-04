@@ -1,0 +1,30 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title mb-0 flex-grow-1">Templates</h4>
+            </div>
+            <div class="card-body">
+                <dx-data-grid #grid [dataSource]="data" (onInitNewRow)="newRow($event)"
+                    (onEditorPreparing)="onEditorPreparing($event)" (onSaved)="saved($event)" (onRowUpdated)="reload()"
+                    (onRowInserted)="reload()" (onRowRemoved)="reload()" [allowColumnResizing]="true" [columnAutoWidth]="true" 
+                    [allowColumnReordering]="true">
+                    <dxo-editing mode="row" [allowUpdating]="true" [allowDeleting]="true" [allowAdding]="true" >
+                    </dxo-editing>
+                    <dxo-header-filter [visible]="true"></dxo-header-filter>
+                    <dxo-search-panel [visible]="true" [width]="240" placeholder="Search..."></dxo-search-panel>
+                    <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+                    <dxo-group-panel [visible]="true"></dxo-group-panel>
+
+                    <dxi-column dataField="name" caption="Name"></dxi-column>
+                    <dxi-column dataField="template" caption="Template"></dxi-column>
+                    
+                    <dxi-column dataField="created" caption="Created" dataType="date"
+                                format="dd.MM.yyyy, HH:mm"></dxi-column>
+                    <dxi-column dataField="updated" caption="Updated" dataType="date"
+                                format="dd.MM.yyyy, HH:mm"></dxi-column>
+                </dx-data-grid>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,396 @@
+// 
+// form wizard
+// 
+
+.form-wizard-wrapper {
+    label {
+        font-size: 14px;
+        text-align: right;
+    }
+}
+[data-bs-theme="dark"]{
+    .wizard .stepper-header > ol > li {
+        color: $white !important;
+    }
+}
+
+.wizard {
+
+    // step
+    .stepper-header {
+        >ol {
+            display: flex;
+            flex-wrap: wrap;
+            padding-left: 0;
+            margin-bottom: 0;
+            list-style: none;
+
+            @media (max-width: 1199.98px) {
+                flex-direction: column;
+            }
+
+            >a,
+            >li {
+                flex-basis: 0;
+                flex-grow: 1;
+                color: #000 !important;
+            }
+
+            >li {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                gap: 5px;
+                padding: .5rem 1rem;
+                color: var(--#{$prefix}gray-600);
+                font-weight: $font-weight-semibold;
+                background-color: rgba($primary, 0.1);
+            }
+
+
+            li {
+                &.active {
+                    background-color: rgba($primary, 0.2);
+                    color: var(--#{$prefix}gray-600);
+
+                    .number {
+                        background-color: $primary;
+                        color: $white;
+                    }
+                }
+            }
+        }
+
+    }
+
+    // content
+    >.content {
+        background-color: transparent;
+        padding: 14px;
+        margin-top: 0;
+        border-radius: 0;
+        min-height: 150px;
+
+        >.title {
+            position: absolute;
+            left: -999em;
+        }
+
+        >.body {
+            width: 100%;
+            height: 100%;
+            padding: 14px 0 0;
+            position: static
+        }
+    }
+
+    // actions
+    >.actions {
+        position: relative;
+        display: block;
+        text-align: right;
+        width: 100%;
+
+        >ul {
+            display: block;
+            text-align: right;
+            padding-left: 0;
+
+            >li {
+                display: inline-block;
+                margin: 0 0.5em;
+            }
+        }
+
+        a,
+        a:active,
+        a:hover {
+            background-color: $primary;
+            border-radius: 4px;
+            padding: 8px 15px;
+            color: #3762ea !important;
+        }
+
+        .disabled {
+
+            a,
+            a:active,
+            a:hover {
+                opacity: .65;
+                background-color: $primary;
+                color: #3762ea !important;
+                cursor: not-allowed;
+            }
+        }
+    }
+
+    .content {
+        margin-top: 0;
+        padding: 0;
+    }
+
+    .stepper-body {
+        margin-bottom: 0 !important;
+    }
+}
+
+// verticl wizard
+.vertical-wizard {
+    .stepper {
+        display: flex;
+
+        .stepper-header {
+            flex-shrink: 0;
+
+            .steps {
+                flex-direction: column;
+                padding: 0;
+
+                .step {
+                    min-width: 390px;
+                    display: block;
+                    padding: 0.5rem 1rem;
+                    color: var(--#{$prefix}gray-600);
+                    font-weight: $font-weight-semibold;
+                    background-color: rgba($primary, .1);
+                    text-align: start !important;
+
+                    .number {
+                        display: inline-block;
+                        width: 38px;
+                        height: 38px;
+                        line-height: 34px;
+                        border: 2px solid $primary;
+                        color: $primary;
+                        text-align: center;
+                        border-radius: 50%;
+                        margin-right: 0.5rem;
+                    }
+
+                    &.active {
+                        background-color: rgba($primary, .2);
+                        color: var(--#{$prefix}gray-600);
+
+                        .number {
+                            background-color: $primary;
+                            color: #fff;
+                        }
+                    }
+                }
+            }
+        }
+
+        .stepper-body {
+            width: 100%;
+            flex-grow: 1;
+            margin: 0;
+        }
+    }
+
+    // step
+    .steps {
+        >ul {
+            flex-direction: column;
+
+            >li {
+                width: 100% !important;
+            }
+        }
+    }
+
+    .steps,
+    .content,
+    .actions {
+        width: 100%;
+        margin-top: 0;
+        padding: 0;
+    }
+
+    .steps {
+        @media (min-width: 1200px) {
+            width: 25%;
+        }
+    }
+}
+
+.v-wizard {
+    .stepper {
+        display: flex;
+
+        .stepper-header {
+            flex-shrink: 0;
+
+            .steps {
+                flex-direction: column;
+                padding: 0;
+                min-width: 300px;
+                .step {
+                    &.active {
+                        background-color: rgba($primary, .2);
+                        color: var(--#{$prefix}gray-600);
+
+                        .number {
+                            background-color: $primary;
+                            color: #fff;
+                        }
+                    }
+                }
+            }
+        }
+
+        .stepper-body {
+            width: 100%;
+            flex-grow: 1;
+            margin: 0;
+        }
+    }
+
+    // step
+    .steps {
+        >ul {
+            flex-direction: column;
+
+            >li {
+                width: 100% !important;
+            }
+        }
+    }
+
+    .steps,
+    .content,
+    .actions {
+        width: 100%;
+        margin-top: 0;
+        padding: 0;
+    }
+
+    .steps {
+        @media (min-width: 1200px) {
+            width: 25%;
+        }
+    }
+}
+
+
+
+.progress-nav {
+    .stepper {
+        .stepper-body[_ngcontent-ng-c625643793] {
+            margin: 0;
+        }
+
+        .completed {
+            .nav-link {
+                color: #000;
+                background-color: var(--#{$prefix}border-color) !important;
+            }
+        }
+
+        .step[_ngcontent-ng-c625643793] {
+            .nav-link {
+                z-index: 1;
+                position: relative;
+            }
+
+            &:after {
+                z-index: 0;
+                height: 1px;
+                background-color: var(--tb-border-color);
+                left: -100%;
+            }
+        }
+
+        .step.completed[_ngcontent-ng-c625643793]+.step[_ngcontent-ng-c625643793]:after {
+            background-color: var(--tb-primary) !important;
+        }
+    }
+}
+
+
+.step-arrow-nav {
+    .stepper {
+        .stepper-body[_ngcontent-ng-c625643793] {
+            margin: 0;
+        }
+
+        .completed {
+            .nav-link {
+                color: var(--tb-primary) !important;
+            }
+
+            background-color: rgba(var(--tb-primary-rgb), .15) !important;
+        }
+
+        .active {
+            .nav-link {
+                color: var(--tb-primary) !important;
+            }
+        }
+
+        .step[_ngcontent-ng-c625643793] {
+            .nav-link {
+                z-index: 1;
+                position: relative;
+            }
+        }
+    }
+}
+
+.vertical-wizard {
+    .stepper {
+        .stepper-body[_ngcontent-ng-c625643793] {
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .step-title {
+            // display: none;
+            position: relative !important;
+            bottom: 0 !important;
+
+            i {
+                color: var(--tb-danger);
+            }
+        }
+
+        .steps {
+            gap: 8px;
+
+            .step {
+                background-color: rgba(var(--tb-light-rgb), .4) !important;
+                border: 1px solid var(--tb-border-color);
+                border-radius: 0.25rem;
+
+                &.active {
+                    .nav-link {
+                        .step-title {
+                            i {
+                                color: var(--tb-primary);
+                            }
+                        }
+
+                        color: var(--tb-primary);
+                    }
+
+                    border-color: rgba(var(--tb-primary-rgb), 1);
+                }
+
+                &.completed {
+                    .nav-link {
+                        .step-title {
+                            i {
+                                color: var(--tb-success);
+                            }
+                        }
+
+                        color: var(--tb-success);
+                        background-color: rgba(var(--tb-light-rgb), .4) !important;
+                    }
+
+                    border-color: rgba(var(--tb-success-rgb), 1);
+                }
+            }
+        }
+
+    }
+}

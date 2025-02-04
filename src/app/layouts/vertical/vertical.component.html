@@ -1,0 +1,15 @@
+<!-- Begin page -->
+<div id="layout-wrapper">
+   <eenvo-topbar (mobileMenuButtonClicked)="onToggleMobileMenu()"></eenvo-topbar>
+    <!-- sidebar -->
+    <eenvo-sidebar></eenvo-sidebar>
+    <div class="main-content">
+
+        <div class="page-content">
+            <div class="container-fluid">
+                <!-- content -->
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+    </div>
+</div>

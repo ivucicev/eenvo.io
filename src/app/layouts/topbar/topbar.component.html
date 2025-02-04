@@ -1,0 +1,123 @@
+<header id="page-topbar" (window:scroll)="windowScroll()">
+    <div class="layout-width">
+        <div class="navbar-header">
+            <div class="d-flex">
+                <!-- LOGO -->
+                <div class="navbar-brand-box horizontal-logo">
+                    <a href="index.html" class="logo logo-dark">
+                        <span class="logo-sm">
+                            <img src="assets/images/logo-sm.png" alt="" height="22">
+                        </span>
+                        <span class="logo-lg">
+                            <img src="assets/images/logo-dark.png" alt="" height="30">
+                        </span>
+                    </a>
+
+                    <a href="index.html" class="logo logo-light">
+                        <span class="logo-sm">
+                            <img src="assets/images/logo-sm.png" alt="" height="22">
+                        </span>
+                        <span class="logo-lg">
+                            <img src="assets/images/logo-light.png" alt="" height="30">
+                        </span>
+                    </a>
+                </div>
+
+                <button type="button" class="btn btn-sm px-3 fs-16 header-item vertical-menu-btn topnav-hamburger "
+                    id="topnav-hamburger-icon" (click)="toggleMobileMenu($event)">
+                    <span class="hamburger-icon">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </span>
+                </button>
+
+               <!-- <div class="header-item fs-16 px-3 fs-16 header-item vertical-menu-btn topnav-hamburger ">
+                        <button style="height: 40px !important;" type="button" class="ms-2 pe-5 btn btn-soft-primary btn-label right rounded-pill btn-sm"><i class="ri-add-fill label-icon align-middle rounded-pill fs-16 ms-2"></i> Invoice </button>
+                        <button style="height: 40px !important;" type="button" class="ms-2 pe-5 btn btn-soft-primary btn-label right rounded-pill btn-sm"><i class="ri-add-fill label-icon align-middle rounded-pill fs-16 ms-2"></i> Expense </button>
+                        <button style="height: 40px !important;" type="button" class="ms-2 pe-5 btn btn-soft-primary btn-label right rounded-pill btn-sm"><i class="ri-add-fill label-icon align-middle rounded-pill fs-16 ms-2"></i> Customer </button>
+                </div> -->
+                
+            </div>
+            
+            <div class="d-flex align-items-center">
+                
+
+                <div class="dropdown d-md-none topbar-head-dropdown header-item" ngbDropdown>
+                    <button type="button" class="btn btn-icon btn-topbar btn-ghost-primary rounded-circle"
+                        ngbDropdownToggle>
+                        <i class="bx bx-search fs-22"></i>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0" ngbDropdownMenu>
+                        <form class="p-3">
+                            <div class="form-group m-0">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Search ..."
+                                        aria-label="Recipient's username">
+                                    <button class="btn btn-primary" type="submit"><i
+                                            class="mdi mdi-magnify"></i></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="dropdown ms-1 topbar-head-dropdown header-item" ngbDropdown>
+                    <button type="button" class="btn btn-icon btn-topbar btn-ghost-primary rounded-circle"
+                    ngbDropdownToggle>
+                        @if(flagvalue == undefined){
+                        <img id="header-lang-img" src="{{valueset}}" alt="Header Language" height="20"
+                            class="rounded" />
+                        }@else{
+                        <img id="header-lang-img" src="{{flagvalue}}" alt="Header Language" height="20"
+                            class="rounded" />
+                        }
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
+                        @for (item of listLang; track $index) {
+                        <a href="javascript:void(0);" class="dropdown-item notify-item language py-2"
+                            (click)="setLanguage(item.text, item.lang, item.flag)" title="English">
+                            <img src="{{item.flag}}" alt="user-image" class="me-2 rounded-circle" height="18" />
+                            <span class="align-middle">{{item.text}}</span>
+                        </a>
+                        }
+                    </div>
+                </div>
+
+                <div class="ms-1 header-item d-none d-sm-flex">
+                    <button type="button" class="btn btn-icon btn-topbar btn-ghost-primary rounded-circle"
+                        (click)="fullscreen()">
+                        <i class='las la-expand fs-24'></i>
+                    </button>
+                </div>
+
+                <div class="ms-1 header-item d-none d-sm-flex">
+                    <button type="button"
+                        class="btn btn-icon btn-topbar btn-ghost-primary rounded-circle light-dark-mode"
+                        (click)="modeChange()">
+                        <i class='las la-moon fs-24'></i>
+                    </button>
+                </div>
+
+                <div class="dropdown header-item" ngbDropdown>
+                    <button type="button" class="btn d-flex align-items-center" id="page-header-user-dropdown" ngbDropdownToggle>
+                        <span class="d-flex align-items-center">
+                            <img class="rounded-circle header-profile-user" [src]="currentUser.avatar"
+                            alt="Header Avatar">
+                        </span>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
+                        <h6 class="dropdown-item">
+                            {{ currentUser.company }}
+                        </h6>
+                        <a class="dropdown-item" href="#"><i class="bx bx-user fs-15 align-middle me-1"></i> <span
+                                key="t-profile">{{currentUser.email}}</span></a>
+                        <a class="dropdown-item text-danger" (click)="logout()"><i
+                                class="bx bx-power-off fs-15 align-middle me-1 text-danger"></i> <span
+                                key="t-logout">Logout</span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

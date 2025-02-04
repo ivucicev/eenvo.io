@@ -1,0 +1,183 @@
+@import "utilities";
+@import "helper";
+@import "alerts";
+@import "nav";
+@import "badge";
+@import "buttons";
+@import "form-check";
+@import "ribbons";
+@import "table";
+@import "progress";
+
+.accordion-button {
+    &::after {
+        margin-right: auto !important;
+        margin-left: 0;
+    }
+
+    &:not(.collapsed) {
+        &::after {
+            margin-right: auto !important;
+            margin-left: -3px;
+        }
+    }
+}
+
+.custom-accordion-border {
+    .accordion-item {
+        border-left: 1px solid $accordion-border-color;
+        border-right: 3px solid $accordion-border-color;
+    }
+}
+
+//accordion Color 
+@each $color,
+$value in $theme-colors {
+    .accordion-#{$color} {
+        .accordion-item {
+            border-color: rgba($value, 0.6);
+        }
+    }
+}
+
+
+.offcanvas.offcanvas-start {
+    right: 0;
+    left: auto;
+    border-right: 0;
+    border-left: var(--tb-offcanvas-border-width) solid var(--tb-offcanvas-border-color);
+}
+
+.offcanvas.offcanvas-end {
+    left: 0;
+    right: auto;
+    transform:translateX(-100%);
+    border-left: 0;
+    border-right: var(--tb-offcanvas-border-width) solid var(--tb-offcanvas-border-color);
+}
+
+.offcanvas.showing, .offcanvas.show:not(.hiding) {
+    transform: none;
+}
+
+.dropdown-menu {
+    text-align: right;
+    left: 0 !important;
+    right: auto !important;
+}
+
+.dropdown-menu-end {
+    left: 0 !important;
+    right: auto !important;
+}
+
+
+.modal-header {
+    .btn-close {
+        margin: calc(-.5 * var(--#{$prefix}modal-header-padding-y)) auto calc(-.5 * var(--#{$prefix}modal-header-padding-y)) calc(-.5 * var(--#{$prefix}modal-header-padding-x));
+    }
+}
+
+
+.breadcrumb-item {
+    +.breadcrumb-item {
+        padding-left: 0;
+        padding-right: var(--#{$prefix}breadcrumb-item-padding-x);
+
+        &::before {
+            float: right; // Suppress inline spacings and underlining of the separator
+            padding-left: var(--#{$prefix}breadcrumb-item-padding-x);
+            padding-right: 0;
+        }
+    }
+}
+
+/// pagination
+.page-item {
+    margin-right: 0;
+    margin-left: 6px;
+
+    &:first-child {
+        .page-link {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+            border-top-right-radius: var(--#{$prefix}pagination-border-radius);
+            border-bottom-right-radius: var(--#{$prefix}pagination-border-radius);
+        }
+    }
+
+    &:last-child {
+        .page-link {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            border-top-left-radius: var(--#{$prefix}pagination-border-radius);
+            border-bottom-left-radius: var(--#{$prefix}pagination-border-radius);
+        }
+    }
+
+    &.pagination-next {
+        margin: 0;
+    }
+}
+
+.pagination-separated {
+    .page-item {
+        .page-link {
+            margin-left: 0;
+            margin-right: 0.35rem;
+        }
+    }
+}
+
+
+.btn-group {
+
+    > :not(.btn-check:first-child)+.btn,
+    >.btn-group:not(:first-child) {
+        margin-left: 0;
+        margin-right: calc(#{$btn-border-width} * -1);
+    }
+
+    // Reset rounded corners
+    >.btn:not(:last-child):not(.dropdown-toggle),
+    >.btn.dropdown-toggle-split:first-child,
+    >.btn-group:not(:last-child)>.btn {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        border-top-right-radius: var(--#{$prefix}btn-border-radius);
+        border-bottom-right-radius: var(--#{$prefix}btn-border-radius);
+    }
+
+    >.btn:nth-child(n + 3),
+    > :not(.btn-check)+.btn,
+    >.btn-group:not(:first-child)>.btn {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        border-top-left-radius: var(--#{$prefix}btn-border-radius);
+        border-bottom-left-radius: var(--#{$prefix}btn-border-radius);
+    }
+}
+
+.input-group:not(.has-validation)> :not(:last-child):not(.dropdown-toggle):not(.dropdown-menu):not(.form-floating),
+.input-group:not(.has-validation)>.dropdown-toggle:nth-last-child(n + 3),
+.input-group:not(.has-validation)>.form-floating:not(:last-child)>.form-control,
+.input-group:not(.has-validation)>.form-floating:not(:last-child)>.form-select {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-right-radius: $border-radius;
+    border-bottom-right-radius: $border-radius;
+}
+
+.input-group> :not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback) {
+    margin-right: calc(var(--tb-border-width) * -1);
+    margin-left: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-top-left-radius: $border-radius;
+    border-bottom-left-radius: $border-radius;
+}
+
+.dropdown-responsive{
+    right: 0 !important;
+    left: auto !important;
+}

@@ -1,0 +1,157 @@
+//
+//_form-check.scss
+//
+
+.form-check {
+    padding-right: $form-check-padding-start;
+    padding-left: 0;
+    text-align: right;
+
+    .form-check-input {
+        float: right;
+        margin-right: $form-check-padding-start * -1;
+        margin-left: auto;
+    }
+}
+
+// checkbox input right
+.form-check-right {
+    padding-right: 0;
+    display: inline-block;
+
+    .form-check-input {
+        float: left;
+        margin-right: 0;
+        margin-left: $form-check-padding-start * -1;
+    }
+
+    &.form-switch {
+        .form-check-input {
+            margin-left: $form-check-padding-start * -1.6;
+            margin-right: auto;
+        }
+    }
+}
+
+
+.form-switch {
+    padding-right: $form-switch-padding-start;
+    padding-left: 0;
+
+    .form-check-input {
+        margin-right: $form-switch-padding-start * -1;
+        margin-left: 0;
+    }
+
+    &.form-check-reverse {
+        padding-left: $form-switch-padding-start;
+        padding-right: 0;
+
+        .form-check-input {
+            margin-left: $form-switch-padding-start * -1;
+            margin-right: 0;
+        }
+    }
+}
+
+// Switch - Right
+
+.form-switch-right {
+    padding-left: $form-check-padding-start * .5 !important;
+    padding-right: 0 !important;
+
+    .form-check-input {
+        float: left;
+        margin-right: 0;
+        margin-left: $form-check-padding-start * -1;
+    }
+
+    label {
+        margin-left: 1rem;
+        margin-right: 0;
+    }
+}
+
+// Switch sizes
+.form-switch-md {
+    padding-right: 2.5rem;
+    padding-left: 0;
+}
+
+.form-switch-lg {
+    padding-right: 2.75rem;
+    padding-left: 0;
+
+    .form-check-input {
+        right: -0.75rem;
+        left: 0;
+    }
+}
+
+.card-radio{
+    padding: 0;
+    .form-check-label {
+        padding: 1rem;
+        padding-left: 32px;
+    }
+
+    .form-check-input {
+        display: none;
+
+        &:checked+.form-check-label {
+            border-color: $primary !important;
+
+            &:before {
+                right: auto;
+                left: 6px;
+            }
+        }
+    }
+}
+
+input{
+    &::placeholder{
+        text-align: right !important;
+    }
+}
+
+.flatpickr-calendar {
+    right: 40px;
+    left: auto;
+}
+
+input[type="text"]{
+    text-align: right;
+}
+
+input[type="email"]{
+    text-align: right !important;
+}
+
+.vertical-navs-step{
+    .nav{
+        .nav-link{
+            text-align:right;
+
+            .step-icon{
+                float: right;
+            }
+        }
+
+    } 
+
+}
+
+.form-floating > label{
+    right: 0;
+}
+
+
+#basic-rater,
+#rater-step,
+#rater-message,
+#rater-unlimitedstar,
+#rater-onhover,
+#raterreset{
+    float: right !important;
+}
