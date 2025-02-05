@@ -20,12 +20,15 @@
                         </div>
                         <div class="col-lg-6">
                             @if (isPayed) {
-                                <div role="alert" class="alert alert-primary alert-outline ng-star-inserted">
-                                    <i class="ri-check-double-line"></i>     <strong>{{ 'Invoice has been paid.' | translate }}</strong> {{ 'Editing is disabled.' | translate }}</div>
-                                <div class="mb-2">
-                                    <label for="date-field">{{ 'Payment date' | translate }}</label>
-                                    <input type="date" class="form-control bg-light border-0" id="paymentDate" formControlName="paymentDate" />
-                                </div>
+                            <div role="alert" class="alert alert-primary alert-outline ng-star-inserted">
+                                <i class="ri-check-double-line"></i> <strong>{{ 'Invoice has been paid.' | translate
+                                    }}</strong> {{ 'Editing is disabled.' | translate }}
+                            </div>
+                            <div class="mb-2">
+                                <label for="date-field">{{ 'Payment date' | translate }}</label>
+                                <input type="date" class="form-control bg-light border-0" id="paymentDate"
+                                    formControlName="paymentDate" />
+                            </div>
                             }
                         </div>
                     </div>
@@ -71,11 +74,13 @@
                         </div>-->
                         <div class="col-lg-4" formGroupName="customerData">
                             <div>
-                                <label for="customer" class="text-muted text-uppercase fw-semibold">{{ 'BUYER' | translate }}</label>
+                                <label for="customer" class="text-muted text-uppercase fw-semibold">{{ 'BUYER' |
+                                    translate }}</label>
                             </div>
                             <div class="mb-2">
-                                <input placeholder="{{ 'Name' | translate }}" (input)="customerSelected($event)" list="customers"
-                                    id="customer" formControlName="name" class="form-control bg-light border-0">
+                                <input placeholder="{{ 'Name' | translate }}" (input)="customerSelected($event)"
+                                    list="customers" id="customer" formControlName="name"
+                                    class="form-control bg-light border-0">
                                 <datalist id="customers">
                                     @for(c of customers; track c.id) {
                                     <option [value]="c.name" [attr.data-id]="c.id">{{ c.name }}</option>
@@ -95,24 +100,27 @@
                             </div>-->
 
                             <div class="mb-2">
-                                    <input type="text" placeholder="{{ 'Address' | translate }}" class="form-control bg-light border-0" id="address" formControlName="address">
+                                <input type="text" placeholder="{{ 'Address' | translate }}"
+                                    class="form-control bg-light border-0" id="address" formControlName="address">
                             </div>
-        
+
                             <div class="row mb-2">
                                 <div class="col-md-6">
-                                    <input type="text" placeholder="{{ 'Postal Code' | translate }}" class="form-control bg-light border-0" id="postal" formControlName="postal">
+                                    <input type="text" placeholder="{{ 'Postal Code' | translate }}"
+                                        class="form-control bg-light border-0" id="postal" formControlName="postal">
                                 </div>
                                 <div class="col-md-6">
-                                    <input type="text" placeholder="{{ 'City' | translate }}" class="form-control bg-light border-0" id="city" formControlName="city">
+                                    <input type="text" placeholder="{{ 'City' | translate }}"
+                                        class="form-control bg-light border-0" id="city" formControlName="city">
                                 </div>
                             </div>
-        
+
                             <div class="mb-2">
-                                    <input list="countries" placeholder="{{ 'Country' | translate }}" id="country" formControlName="country" name="country"
-                                        class="form-control bg-light border-0">
-                                    <datalist id="countries">
-                                        
-                                    </datalist>
+                                <input list="countries" placeholder="{{ 'Country' | translate }}" id="country"
+                                    formControlName="country" name="country" class="form-control bg-light border-0">
+                                <datalist id="countries">
+
+                                </datalist>
                             </div>
                             <div class="mb-2">
                                 <input type="text" class="form-control bg-light border-0" id="vatID"
@@ -123,7 +131,8 @@
                             </div>
                             <div class="mb-2">
                                 <input type="text" class="form-control bg-light border-0" data-plugin="cleave-phone"
-                                    id="contact" placeholder="{{ 'Contact' | translate }}" required formControlName="contact" />
+                                    id="contact" placeholder="{{ 'Contact' | translate }}" required
+                                    formControlName="contact" />
                                 <div class="invalid-feedback">
                                     {{ 'Please enter a phone number' | translate }}
                                 </div>
@@ -140,7 +149,8 @@
                         <div class="col-lg-4">
                             <div class="mb-2">
                                 <label for="choices-payment-type"
-                                    class="form-label text-muted text-uppercase fw-semibold">{{ 'Payment Details' | translate }}</label>
+                                    class="form-label text-muted text-uppercase fw-semibold">{{ 'Payment Details' |
+                                    translate }}</label>
                                 <select formControlName="paymentType" class="form-control input-light bg-light border-0"
                                     id="choices-payment-type">
                                     <option value="" disabled>{{ 'Payment Method' | translate }}</option>
@@ -273,22 +283,15 @@
                                     <th scope="col" style="width: 120px;">
                                         <div class="d-flex currency-select input-light align-items-center">
                                             {{ 'Rate' | translate }}
-                                            <select class="form-select border-0 bg-light" data-choices
-                                                data-choices-search-false id="choices-payment-currency"
-                                                onchange="otherPayment()">
-                                                <option value="$">($)</option>
-                                                <option value="£">(£)</option>
-                                                <option value="₹">(₹)</option>
-                                                <option value="€">(€)</option>
-                                            </select>
                                         </div>
                                     </th>
                                     <th scope="col" style="width: 120px;">{{ 'Quantity' | translate }}</th>
                                     <th scope="col" style="width: 120px;">{{ 'Discount' | translate }}</th>
                                     <th scope="col" style="width: 120px;">{{ 'Tax' | translate }}</th>
-                                    <th scope="col" class="text-end" style="width: 120px;">{{ 'Amount' | translate }}</th>
+                                    <th scope="col" class="text-end" style="width: 120px;">{{ 'Amount' | translate }}
+                                    </th>
                                     @if (!isPayed) {
-                                    <th scope="col" class="text-end" style="width: 30px;"></th>
+                                    <th scope="col" class="text-end" style="width: 15px;"></th>
                                     }
                                 </tr>
                             </thead>
@@ -298,11 +301,11 @@
                                     <th scope="row" class="product-id d-flex justify-content-center">{{ $index + 1 }}.
                                     </th>
                                     <td class="text-start">
-                                        <div class="mb-2">
+                                        <div>
                                             <input [ngModelOptions]="{standalone: true}"
                                                 (input)="serviceSelected($event, $index)" [(ngModel)]="item.title"
                                                 list="services" id="name" type="text"
-                                                class="form-control bg-light border-0" id="name"
+                                                class="form-control bg-light border-0 form-control-sm" id="name"
                                                 placeholder="Product/Service" required>
                                             <datalist id="services">
                                                 @for(s of services; track s.id) {
@@ -313,42 +316,62 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <input (input)="recalculate()" [ngModelOptions]="{standalone: true}"
+                                        <dx-number-box format="#,##0.## $" (input)="recalculate()"
+                                            [ngModelOptions]="{standalone: true}" [(ngModel)]="item.price" type="number"
+                                            class="form-control product-price bg-light border-0"
+                                            [inputAttr]="{ 'aria-label': 'Currency Format' }"></dx-number-box>
+                                        <!--<input (input)="recalculate()" [ngModelOptions]="{standalone: true}"
                                             type="number" [(ngModel)]="item.price"
                                             class="form-control product-price bg-light border-0" placeholder="0.00"
-                                            required />
+                                            required />-->
                                     </td>
                                     <td>
-                                        <div class="input-step">
-                                            <button type="button" class='minus' (click)="decrement()">–</button>
-                                            <input (input)="recalculate()" [ngModelOptions]="{standalone: true}"
+                                        <!-- <div class="input-step">
+                                            <button type="button" class='minus' (click)="decrement()">–</button> -->
+                                        <!--<input (input)="recalculate()" [ngModelOptions]="{standalone: true}"
                                                 step="0.01" [(ngModel)]="item.quantity" type="number"
-                                                class="product-quantity">
-                                            <button type="button" class='plus' (click)="increment()">+</button>
-                                        </div>
+                                                class="product-quantity">-->
+                                        <dx-number-box class="form-control bg-light border-0" (input)="recalculate()"
+                                            format="#0%" [value]="0.15" [step]="0.01" [(ngModel)]="item.quantity"
+                                            [ngModelOptions]="{standalone: true}"
+                                            [inputAttr]="{ 'aria-label': 'Percent Format' }"></dx-number-box>
+                                        <!-- <button type="button" class='plus' (click)="increment()">+</button> 
+                                        </div>-->
                                     </td>
                                     <td class="text-end">
                                         <div>
-                                            <input (input)="recalculate()" [ngModelOptions]="{standalone: true}"
+                                            <dx-number-box class="form-control bg-light border-0"
+                                                (input)="recalculate()" format="#0%" [value]="0.15" [step]="0.01"
+                                                [(ngModel)]="item.discount" [ngModelOptions]="{standalone: true}"
+                                                [inputAttr]="{ 'aria-label': 'Percent Format' }"></dx-number-box>
+                                            <!--<input (input)="recalculate()" [ngModelOptions]="{standalone: true}"
                                                 step="0.01" [(ngModel)]="item.discount" type="number"
                                                 class="form-control bg-light border-0 product-line-price"
-                                                placeholder="%0.00" />
+                                                placeholder="%0.00" />-->
                                         </div>
                                     </td>
                                     <td class="text-end">
                                         <div>
-                                            <input (input)="recalculate()" [ngModelOptions]="{standalone: true}"
+                                            <dx-number-box class="form-control bg-light border-0"
+                                                (input)="recalculate()" format="#0%" [value]="0.15" [step]="0.01"
+                                                [(ngModel)]="item.tax" [ngModelOptions]="{standalone: true}"
+                                                [inputAttr]="{ 'aria-label': 'Percent Format' }"></dx-number-box>
+                                            <!--<input (input)="recalculate()" [ngModelOptions]="{standalone: true}"
                                                 step="0.01" [(ngModel)]="item.tax" type="number"
                                                 class="form-control bg-light border-0 product-line-price"
-                                                placeholder="%0.00" />
+                                                placeholder="%0.00" />-->
                                         </div>
                                     </td>
                                     <td class="text-end">
                                         <div>
-                                            <input [ngModelOptions]="{standalone: true}" step="0.01"
+                                            <!--<input [ngModelOptions]="{standalone: true}" step="0.01"
                                                 [(ngModel)]="item.total" type="number"
                                                 class="form-control bg-light border-0 product-line-price"
-                                                placeholder="$0.00" readonly />
+                                                placeholder="$0.00" readonly /> -->
+                                            <dx-number-box format="#,##0.## $" (input)="recalculate()"
+                                                [ngModelOptions]="{standalone: true}" [(ngModel)]="item.total"
+                                                type="number" class="form-control product-price bg-light border-0"
+                                                [inputAttr]="{ 'aria-label': 'Currency Format' }"></dx-number-box>
                                         </div>
                                     </td>
                                     @if (!isPayed) {
@@ -361,16 +384,16 @@
                                 }
                             </tbody>
                             <tbody>
+                                @if (!isPayed) {
                                 <tr>
-                                    <td colspan="7"></td>
-                                    @if (!isPayed) {
-                                    <td colspan="1">
-                                        <button type="button" class="btn btn-soft-secondary fw-medium" id="add-item"
-                                            (click)="addItem()"> {{ 'Add Item' | translate }} <i class="ri-add-fill me-1 align-bottom"></i>
+                                    <td colspan="8" class="text-center">
+                                        <button type="button" class="btn btn-sm btn-soft-secondary fw-medium"
+                                            id="add-item" (click)="addItem()"> {{ 'Add Item' | translate }} <i
+                                                class="ri-add-fill me-1 align-bottom"></i>
                                         </button>
                                     </td>
-                                    }
                                 </tr>
+                                }
                                 <tr class="border-top border-top-dashed mt-2">
                                     <td colspan="5"></td>
                                     <td colspan="2" class="p-0">
@@ -378,36 +401,53 @@
                                             <tbody>
                                                 <tr>
                                                     <th scope="row">{{ 'Sub Total' | translate }}</th>
-                                                    <td style="width:150px;">
-                                                        <input formControlName="subTotal" step="0.01" type="number"
+                                                    <td style="width: 120px;">
+                                                        <dx-number-box format="#,##0.## $" formControlName="subTotal"
+                                                            type="number"
+                                                            class="form-control product-price bg-light border-0"
+                                                            [inputAttr]="{ 'aria-label': 'Currency Format' }"></dx-number-box>
+                                                        <!--<input formControlName="subTotal" step="0.01" type="number"
                                                             class="form-control bg-light border-0" id="cart-subtotal"
-                                                            placeholder="$0.00" readonly />
+                                                            placeholder="$0.00" readonly /> -->
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <th scope="row">{{ 'Tax' | translate }}</th>
                                                     <td>
-                                                        <input formControlName="taxValue" step="0.01" type="number"
+                                                        <dx-number-box format="#,##0.## $" formControlName="taxValue"
+                                                            type="number"
+                                                            class="form-control product-price bg-light border-0"
+                                                            [inputAttr]="{ 'aria-label': 'Currency Format' }"></dx-number-box>
+                                                        <!--  <input formControlName="taxValue" step="0.01" type="number"
                                                             class="form-control bg-light border-0" id="cart-tax"
-                                                            placeholder="$0.00" readonly />
+                                                            placeholder="$0.00" readonly /> -->
                                                     </td>
                                                 </tr>
 
                                                 <tr>
                                                     <th scope="row">{{ 'Discount' | translate }}</th>
                                                     <td>
-                                                        <input formControlName="discountValue" step="0.01" type="number"
+                                                        <dx-number-box format="#,##0.## $"
+                                                            formControlName="discountValue" type="number"
+                                                            class="form-control product-price bg-light border-0"
+                                                            [inputAttr]="{ 'aria-label': 'Currency Format' }"></dx-number-box>
+                                                        <!--  <input formControlName="discountValue" step="0.01" type="number"
                                                             class="form-control bg-light border-0" id="cart-discount"
-                                                            placeholder="$0.00" readonly />
+                                                            placeholder="$0.00" readonly /> -->
                                                     </td>
                                                 </tr>
 
                                                 <tr class="border-top border-top-dashed">
-                                                    <th scope="row">{{ 'Total Amount' | translate }}</th>
+                                                    <th scope="row">{{ 'Total' | translate }}</th>
                                                     <td>
-                                                        <input formControlName="total" step="0.01" type="number"
+                                                        <dx-number-box format="#,##0.## $" formControlName="total"
+                                                            type="number"
+                                                            class="form-control product-price bg-light border-0"
+                                                            [inputAttr]="{ 'aria-label': 'Currency Format' }"></dx-number-box>
+
+                                                        <!--  <input formControlName="total" step="0.01" type="number"
                                                             class="form-control bg-light border-0" id="cart-total"
-                                                            placeholder="$0.00" readonly />
+                                                            placeholder="$0.00" readonly />-->
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -421,12 +461,12 @@
                         <label for="exampleFormControlTextarea1"
                             class="form-label text-muted text-uppercase fw-semibold">{{ 'NOTES' | translate }}</label>
                         <textarea class="form-control" formControlName="note" id="note"
-                            placeholder="{{ 'Notes - visible on invoice.' | translate }}" rows="4"
-                            required></textarea>
+                            placeholder="{{ 'Notes - visible on invoice.' | translate }}" rows="4" required></textarea>
                     </div>
                     <div class="mt-2">
                         <label for="exampleFormControlTextarea1"
-                            class="form-label text-muted text-uppercase fw-semibold">{{ 'INTERNAL NOTES' | translate }}</label>
+                            class="form-label text-muted text-uppercase fw-semibold">{{ 'INTERNAL NOTES' | translate
+                            }}</label>
                         <textarea class="form-control" formControlName="internalNote" id="internalNote"
                             placeholder="{{ 'Internal notes - not visible on invoice.' | translate }}" rows="4"
                             required></textarea>

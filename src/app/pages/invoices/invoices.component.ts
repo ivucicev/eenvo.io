@@ -341,6 +341,10 @@ export class InvoicesComponent {
 
     }
 
+    rowDoubleClicked(e: any) {
+        this.grid?.instance.editRow(e.rowIndex)
+    }
+
     downloadPDF = (e: any) => {
         e?.event?.preventDefault();
         this.generate(e.row?.data?.id)

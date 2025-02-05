@@ -136,7 +136,7 @@
                     (onEditorPreparing)="onEditorPreparing($event)" (onSaved)="saved($event)"
                     (onEditingStart)="editInvoice($event)" (onRowUpdated)="reload()" (onRowInserted)="reload()"
                     (onRowRemoved)="reload()" [allowColumnResizing]="true" [columnAutoWidth]="true"
-                    [allowColumnReordering]="true" [hoverStateEnabled]="true">
+                    [allowColumnReordering]="true" [hoverStateEnabled]="true" (onRowDblClick)="rowDoubleClicked($event)">
 
                     <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
                     <dxo-paging [pageSize]="20"> </dxo-paging>
@@ -214,7 +214,8 @@
                     <dxi-column dataField="paymentType" [visible]="false"
                         [caption]="'Payment Type' | translate"></dxi-column>
 
-                    <dxi-column [visible]="false" dataField="date" [caption]="'Invoice Date' | translate"></dxi-column>
+                    <dxi-column [visible]="false" dataField="date" [caption]="'Invoice Date' | translate" 
+                        dataType="datetime"></dxi-column>
                     <dxi-column [visible]="false" dataField="deliveryDate" [caption]="'Delivery Date' | translate"
                         dataType="date"></dxi-column>
 

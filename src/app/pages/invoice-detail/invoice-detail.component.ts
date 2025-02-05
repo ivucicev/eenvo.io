@@ -5,11 +5,12 @@ import { PocketBaseService } from '../../core/services/pocket-base.service';
 import { environment } from '../../../environments/environment';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastService } from '../../core/services/toast.service';
+import { DxNumberBoxComponent, DxNumberBoxModule } from 'devextreme-angular';
 
 @Component({
 	selector: 'eenvo-invoice-detail',
 	standalone: true,
-	imports: [ReactiveFormsModule, CommonModule, FormsModule, TranslateModule],
+	imports: [ReactiveFormsModule, DxNumberBoxModule, CommonModule, FormsModule, TranslateModule],
 	templateUrl: './invoice-detail.component.html',
 	styleUrl: './invoice-detail.component.scss'
 })
