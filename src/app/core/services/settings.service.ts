@@ -5,6 +5,9 @@ import { PocketBaseService } from './pocket-base.service';
 import DataGrid, { DataGridPredefinedToolbarItem, Properties } from "devextreme/ui/data_grid";
 import { DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
 import { DateFormats } from '../models/date-formats';
+import dxNumberBox from 'devextreme/ui/number_box';
+import { DxNumberBoxTypes } from 'devextreme-angular/ui/number-box';
+import { locale } from 'devextreme/localization';
 
 @Injectable({
     providedIn: 'root'
@@ -76,6 +79,7 @@ export class SettingsService {
                 toolbar: {
                     visible: true,
                     items: [
+                        "addRowButton",
                         "columnChooserButton",
                         "searchPanel"
                     ] as DataGridPredefinedToolbarItem[]
@@ -99,6 +103,19 @@ export class SettingsService {
                 }
             }
         });
+        if (this.settings?.numberFormat != 'comma') {
+            locale("us");
+        } else {
+            locale("de");
+        }
+        dxNumberBox.defaultOptions<DxNumberBoxTypes.Properties>({
+            options: {
+                useLargeSpinButtons: false,
+                showSpinButtons: true,
+                step: 1,
+                format: `#,##0.00`
+            } 
+        })
     }
 
 }

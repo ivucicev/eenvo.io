@@ -93,9 +93,9 @@
                             'Unpaid last 31 days' | translate }}</span>
                     </div>
                 </div>
-            </div><!-- end card body -->
-        </div><!-- end card -->
-    </div><!-- end col -->
+            </div>
+        </div>
+    </div>
 
 </div>
 
@@ -136,7 +136,8 @@
                     (onEditorPreparing)="onEditorPreparing($event)" (onSaved)="saved($event)"
                     (onEditingStart)="editInvoice($event)" (onRowUpdated)="reload()" (onRowInserted)="reload()"
                     (onRowRemoved)="reload()" [allowColumnResizing]="true" [columnAutoWidth]="true"
-                    [allowColumnReordering]="true" [hoverStateEnabled]="true" (onRowDblClick)="rowDoubleClicked($event)">
+                    [allowColumnReordering]="true" [hoverStateEnabled]="true"
+                    (onRowDblClick)="rowDoubleClicked($event)">
 
                     <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
                     <dxo-paging [pageSize]="20"> </dxo-paging>
@@ -189,7 +190,8 @@
                         </div>
                     </dxi-column>
 
-                    <dxi-column type="buttons" [fixed]="true" fixedPosition="right" alignment="right" [showInColumnChooser]="false">
+                    <dxi-column type="buttons" [fixed]="true" fixedPosition="right" alignment="right"
+                        [showInColumnChooser]="false">
                         <dxi-button [visible]="isMarkAsPayedVisible" [onClick]="markAsPayed" hint="Mark as payed"
                             icon="check"></dxi-button>
                         <dxi-button name="edit"></dxi-button>
@@ -214,7 +216,7 @@
                     <dxi-column dataField="paymentType" [visible]="false"
                         [caption]="'Payment Type' | translate"></dxi-column>
 
-                    <dxi-column [visible]="false" dataField="date" [caption]="'Invoice Date' | translate" 
+                    <dxi-column [visible]="false" dataField="date" [caption]="'Invoice Date' | translate"
                         dataType="datetime"></dxi-column>
                     <dxi-column [visible]="false" dataField="deliveryDate" [caption]="'Delivery Date' | translate"
                         dataType="date"></dxi-column>
@@ -231,7 +233,7 @@
                         cellTemplate="isPayedTemplate">
                         <div *dxTemplate="let d of 'isPayedTemplate'">
                             @if (d.data.isPayed) {
-                            <span class="badge rounded-pill text-primary bg-primary-subtle">{{ 'Payed' | translate }} <i
+                            <span class="badge rounded-pill text-primary bg-primary-subtle">{{ 'Paid' | translate }} <i
                                     class="label-icon las la-check-double"></i> </span>
                             }
                             @else {
@@ -270,6 +272,7 @@
         <dxi-popup-toolbar-item toolbar="bottom" location="after">
             <button (click)="close()" class="btn btn-light ms-1"><i class="ri-close-line align-bottom mx-1"></i> {{
                 'Close' | translate }}</button>
+            @if (currentInvoice) {
             <button (click)="delete()" class="btn btn-danger ms-1"><i
                     class="ri-delete-bin-line align-bottom mx-1"></i>{{ 'Delete' | translate }}</button>
             <button (click)="download()" class="btn btn-success ms-1"><i
@@ -278,12 +281,12 @@
                     class="ri-printer-line align-bottom mx-1"></i> {{ 'Print' | translate }}</button>
             <button (click)="send()" class="btn btn-secondary ms-1"><i
                     class="ri-send-plane-fill align-bottom mx-1"></i>{{ 'Send' | translate }}</button>
+            }
             <button type="submit" (click)="detail?.saveInvoice()" class="btn btn-primary ms-1"><i
                     class="ri-check-double-line align-bottom mx-1"></i>{{ 'Save' | translate }}</button>
         </dxi-popup-toolbar-item>
 
     </dx-popup>
-
 
     <dx-popup [showTitle]="true" [dragEnabled]="false" [hideOnOutsideClick]="true" [showCloseButton]="true"
         [(visible)]="this.pdf" class="preview-modal">

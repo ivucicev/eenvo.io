@@ -1,12 +1,12 @@
 import { Component, ViewChild } from '@angular/core';
-import { DxDataGridComponent, DxDataGridModule } from 'devextreme-angular';
+import { DxDataGridComponent, DxDataGridModule, DxNumberBoxModule } from 'devextreme-angular';
 import { PocketBaseService } from '../../core/services/pocket-base.service';
 
 
 @Component({
     selector: 'eenvo-services',
     standalone: true,
-    imports: [DxDataGridModule],
+    imports: [DxDataGridModule, DxNumberBoxModule],
     templateUrl: './services.component.html',
     styleUrl: './services.component.scss'
 })

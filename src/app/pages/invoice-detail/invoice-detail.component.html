@@ -280,16 +280,15 @@
                                 <tr class="table-active">
                                     <th scope="col" style="width: 50px;">#</th>
                                     <th scope="col">{{ 'Product/Service' | translate }}</th>
-                                    <th scope="col" style="width: 120px;">
+                                    <th scope="col" style="width: 150px;">
                                         <div class="d-flex currency-select input-light align-items-center">
-                                            {{ 'Rate' | translate }}
+                                            {{ 'Price' | translate }}
                                         </div>
                                     </th>
-                                    <th scope="col" style="width: 120px;">{{ 'Quantity' | translate }}</th>
+                                    <th scope="col" style="width: 150px;">{{ 'Quantity' | translate }}</th>
                                     <th scope="col" style="width: 120px;">{{ 'Discount' | translate }}</th>
                                     <th scope="col" style="width: 120px;">{{ 'Tax' | translate }}</th>
-                                    <th scope="col" class="text-end" style="width: 120px;">{{ 'Amount' | translate }}
-                                    </th>
+                                    <th scope="col" class="text-end" style="width: 150px;">{{ 'Total' | translate }}</th>
                                     @if (!isPayed) {
                                     <th scope="col" class="text-end" style="width: 15px;"></th>
                                     }
@@ -316,63 +315,33 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <dx-number-box format="#,##0.## $" (input)="recalculate()"
-                                            [ngModelOptions]="{standalone: true}" [(ngModel)]="item.price" type="number"
+                                        <dx-number-box (onValueChanged)="recalculate()" [ngModelOptions]="{standalone: true}"
+                                            [(ngModel)]="item.price" type="number"
                                             class="form-control product-price bg-light border-0"
                                             [inputAttr]="{ 'aria-label': 'Currency Format' }"></dx-number-box>
-                                        <!--<input (input)="recalculate()" [ngModelOptions]="{standalone: true}"
-                                            type="number" [(ngModel)]="item.price"
-                                            class="form-control product-price bg-light border-0" placeholder="0.00"
-                                            required />-->
                                     </td>
                                     <td>
-                                        <!-- <div class="input-step">
-                                            <button type="button" class='minus' (click)="decrement()">–</button> -->
-                                        <!--<input (input)="recalculate()" [ngModelOptions]="{standalone: true}"
-                                                step="0.01" [(ngModel)]="item.quantity" type="number"
-                                                class="product-quantity">-->
-                                        <dx-number-box class="form-control bg-light border-0" (input)="recalculate()"
-                                            format="#0%" [value]="0.15" [step]="0.01" [(ngModel)]="item.quantity"
+                                        <dx-number-box class="form-control bg-light border-0" (onValueChanged)="recalculate()"
+                                            [step]="1" [(ngModel)]="item.quantity" [ngModelOptions]="{standalone: true}"
+                                            [inputAttr]="{ 'aria-label': 'Percent Format' }"></dx-number-box>
+                                    </td>
+                                    <td class="text-end">
+                                        <dx-number-box class="form-control bg-light border-0" (onValueChanged)="recalculate()"
+                                            format="#0%" [step]="0.05" [(ngModel)]="item.discount"
                                             [ngModelOptions]="{standalone: true}"
                                             [inputAttr]="{ 'aria-label': 'Percent Format' }"></dx-number-box>
-                                        <!-- <button type="button" class='plus' (click)="increment()">+</button> 
-                                        </div>-->
                                     </td>
                                     <td class="text-end">
-                                        <div>
-                                            <dx-number-box class="form-control bg-light border-0"
-                                                (input)="recalculate()" format="#0%" [value]="0.15" [step]="0.01"
-                                                [(ngModel)]="item.discount" [ngModelOptions]="{standalone: true}"
-                                                [inputAttr]="{ 'aria-label': 'Percent Format' }"></dx-number-box>
-                                            <!--<input (input)="recalculate()" [ngModelOptions]="{standalone: true}"
-                                                step="0.01" [(ngModel)]="item.discount" type="number"
-                                                class="form-control bg-light border-0 product-line-price"
-                                                placeholder="%0.00" />-->
-                                        </div>
+                                        <dx-number-box class="form-control bg-light border-0" (onValueChanged)="recalculate()"
+                                            format="#0%" [step]="0.05" [(ngModel)]="item.tax"
+                                            [ngModelOptions]="{standalone: true}"
+                                            [inputAttr]="{ 'aria-label': 'Percent Format' }"></dx-number-box>
                                     </td>
                                     <td class="text-end">
-                                        <div>
-                                            <dx-number-box class="form-control bg-light border-0"
-                                                (input)="recalculate()" format="#0%" [value]="0.15" [step]="0.01"
-                                                [(ngModel)]="item.tax" [ngModelOptions]="{standalone: true}"
-                                                [inputAttr]="{ 'aria-label': 'Percent Format' }"></dx-number-box>
-                                            <!--<input (input)="recalculate()" [ngModelOptions]="{standalone: true}"
-                                                step="0.01" [(ngModel)]="item.tax" type="number"
-                                                class="form-control bg-light border-0 product-line-price"
-                                                placeholder="%0.00" />-->
-                                        </div>
-                                    </td>
-                                    <td class="text-end">
-                                        <div>
-                                            <!--<input [ngModelOptions]="{standalone: true}" step="0.01"
-                                                [(ngModel)]="item.total" type="number"
-                                                class="form-control bg-light border-0 product-line-price"
-                                                placeholder="$0.00" readonly /> -->
-                                            <dx-number-box format="#,##0.## $" (input)="recalculate()"
-                                                [ngModelOptions]="{standalone: true}" [(ngModel)]="item.total"
-                                                type="number" class="form-control product-price bg-light border-0"
-                                                [inputAttr]="{ 'aria-label': 'Currency Format' }"></dx-number-box>
-                                        </div>
+                                        <dx-number-box (onValueChanged)="recalculate()" [ngModelOptions]="{standalone: true}"
+                                            [(ngModel)]="item.total" [readOnly]="true"
+                                            class="form-control product-price bg-light border-0"
+                                            [inputAttr]="{ 'aria-label': 'Currency Format' }"></dx-number-box>
                                     </td>
                                     @if (!isPayed) {
                                     <td class="product-removal d-flex justify-content-end">
@@ -401,53 +370,36 @@
                                             <tbody>
                                                 <tr>
                                                     <th scope="row">{{ 'Sub Total' | translate }}</th>
-                                                    <td style="width: 120px;">
-                                                        <dx-number-box format="#,##0.## $" formControlName="subTotal"
-                                                            type="number"
+                                                    <td style="width: 150px;">
+                                                        <dx-number-box formControlName="subTotal" type="number"
                                                             class="form-control product-price bg-light border-0"
                                                             [inputAttr]="{ 'aria-label': 'Currency Format' }"></dx-number-box>
-                                                        <!--<input formControlName="subTotal" step="0.01" type="number"
-                                                            class="form-control bg-light border-0" id="cart-subtotal"
-                                                            placeholder="$0.00" readonly /> -->
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <th scope="row">{{ 'Tax' | translate }}</th>
                                                     <td>
-                                                        <dx-number-box format="#,##0.## $" formControlName="taxValue"
-                                                            type="number"
+                                                        <dx-number-box formControlName="taxValue" type="number"
                                                             class="form-control product-price bg-light border-0"
                                                             [inputAttr]="{ 'aria-label': 'Currency Format' }"></dx-number-box>
-                                                        <!--  <input formControlName="taxValue" step="0.01" type="number"
-                                                            class="form-control bg-light border-0" id="cart-tax"
-                                                            placeholder="$0.00" readonly /> -->
                                                     </td>
                                                 </tr>
 
                                                 <tr>
                                                     <th scope="row">{{ 'Discount' | translate }}</th>
                                                     <td>
-                                                        <dx-number-box format="#,##0.## $"
-                                                            formControlName="discountValue" type="number"
+                                                        <dx-number-box formControlName="discountValue" type="number"
                                                             class="form-control product-price bg-light border-0"
                                                             [inputAttr]="{ 'aria-label': 'Currency Format' }"></dx-number-box>
-                                                        <!--  <input formControlName="discountValue" step="0.01" type="number"
-                                                            class="form-control bg-light border-0" id="cart-discount"
-                                                            placeholder="$0.00" readonly /> -->
                                                     </td>
                                                 </tr>
 
                                                 <tr class="border-top border-top-dashed">
                                                     <th scope="row">{{ 'Total' | translate }}</th>
                                                     <td>
-                                                        <dx-number-box format="#,##0.## $" formControlName="total"
-                                                            type="number"
+                                                        <dx-number-box formControlName="total" type="number"
                                                             class="form-control product-price bg-light border-0"
                                                             [inputAttr]="{ 'aria-label': 'Currency Format' }"></dx-number-box>
-
-                                                        <!--  <input formControlName="total" step="0.01" type="number"
-                                                            class="form-control bg-light border-0" id="cart-total"
-                                                            placeholder="$0.00" readonly />-->
                                                     </td>
                                                 </tr>
                                             </tbody>

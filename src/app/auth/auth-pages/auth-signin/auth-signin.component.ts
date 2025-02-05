@@ -46,7 +46,7 @@ export class AuthSigninComponent {
                     this.loginForm.get('email')?.value,
                     this.loginForm.get('password')?.value
                 );
-                this.router.navigate(['/']);
+                this.router.navigate(['/invoices']);
             } catch (error: any) {
             } finally {
                 this.isLoading = false;

@@ -8,6 +8,6 @@ export const settingsResolver: ResolveFn<any> = async (route, state) => {
     const pb = inject(PocketBaseService);
     const settings = inject(SettingsService);
     settings.settings = await pb.pb.collection('settings').getFirstListItem(`company="${pb.auth.company}"`);
-
+    settings.reinit();
     return settings.settings;
 };
