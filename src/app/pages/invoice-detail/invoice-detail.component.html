@@ -278,7 +278,7 @@
                         <table class="invoice-table table table-borderless table-nowrap mb-0">
                             <thead class="align-middle">
                                 <tr class="table-active">
-                                    <th scope="col" style="width: 50px;">#</th>
+                                    <th scope="col" class="text-center" style="width: 50px;">#</th>
                                     <th scope="col">{{ 'Product/Service' | translate }}</th>
                                     <th scope="col" style="width: 150px;">
                                         <div class="d-flex currency-select input-light align-items-center">
@@ -288,7 +288,7 @@
                                     <th scope="col" style="width: 150px;">{{ 'Quantity' | translate }}</th>
                                     <th scope="col" style="width: 120px;">{{ 'Discount' | translate }}</th>
                                     <th scope="col" style="width: 120px;">{{ 'Tax' | translate }}</th>
-                                    <th scope="col" class="text-end" style="width: 150px;">{{ 'Total' | translate }}</th>
+                                    <th scope="col" style="width: 150px;">{{ 'Total' | translate }}</th>
                                     @if (!isPayed) {
                                     <th scope="col" class="text-end" style="width: 15px;"></th>
                                     }
@@ -315,13 +315,13 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <dx-number-box (onValueChanged)="recalculate()" [ngModelOptions]="{standalone: true}"
+                                        <dx-number-box data-currency="true" (onValueChanged)="recalculate()" [ngModelOptions]="{standalone: true}"
                                             [(ngModel)]="item.price" type="number"
-                                            class="form-control product-price bg-light border-0"
-                                            [inputAttr]="{ 'aria-label': 'Currency Format' }"></dx-number-box>
+                                            class="form-control product-price bg-light border-0">
+                                        </dx-number-box>
                                     </td>
                                     <td>
-                                        <dx-number-box class="form-control bg-light border-0" (onValueChanged)="recalculate()"
+                                        <dx-number-box [attr.data-unit]="item.unit" class="form-control bg-light border-0" (onValueChanged)="recalculate()"
                                             [step]="1" [(ngModel)]="item.quantity" [ngModelOptions]="{standalone: true}"
                                             [inputAttr]="{ 'aria-label': 'Percent Format' }"></dx-number-box>
                                     </td>
@@ -339,7 +339,7 @@
                                     </td>
                                     <td class="text-end">
                                         <dx-number-box (onValueChanged)="recalculate()" [ngModelOptions]="{standalone: true}"
-                                            [(ngModel)]="item.total" [readOnly]="true"
+                                            [(ngModel)]="item.total" data-currency="true" [readOnly]="true"
                                             class="form-control product-price bg-light border-0"
                                             [inputAttr]="{ 'aria-label': 'Currency Format' }"></dx-number-box>
                                     </td>
@@ -371,7 +371,7 @@
                                                 <tr>
                                                     <th scope="row">{{ 'Sub Total' | translate }}</th>
                                                     <td style="width: 150px;">
-                                                        <dx-number-box formControlName="subTotal" type="number"
+                                                        <dx-number-box formControlName="subTotal"  [readOnly]="true" data-currency="true" type="number"
                                                             class="form-control product-price bg-light border-0"
                                                             [inputAttr]="{ 'aria-label': 'Currency Format' }"></dx-number-box>
                                                     </td>
@@ -379,16 +379,15 @@
                                                 <tr>
                                                     <th scope="row">{{ 'Tax' | translate }}</th>
                                                     <td>
-                                                        <dx-number-box formControlName="taxValue" type="number"
+                                                        <dx-number-box formControlName="taxValue" [readOnly]="true"  data-currency="true" type="number"
                                                             class="form-control product-price bg-light border-0"
                                                             [inputAttr]="{ 'aria-label': 'Currency Format' }"></dx-number-box>
                                                     </td>
                                                 </tr>
-
                                                 <tr>
                                                     <th scope="row">{{ 'Discount' | translate }}</th>
                                                     <td>
-                                                        <dx-number-box formControlName="discountValue" type="number"
+                                                        <dx-number-box formControlName="discountValue" [readOnly]="true"  data-currency="true" type="number"
                                                             class="form-control product-price bg-light border-0"
                                                             [inputAttr]="{ 'aria-label': 'Currency Format' }"></dx-number-box>
                                                     </td>
@@ -397,7 +396,7 @@
                                                 <tr class="border-top border-top-dashed">
                                                     <th scope="row">{{ 'Total' | translate }}</th>
                                                     <td>
-                                                        <dx-number-box formControlName="total" type="number"
+                                                        <dx-number-box formControlName="total"  [readOnly]="true" data-currency="true" type="number"
                                                             class="form-control product-price bg-light border-0"
                                                             [inputAttr]="{ 'aria-label': 'Currency Format' }"></dx-number-box>
                                                     </td>

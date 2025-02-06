@@ -294,13 +294,13 @@ export class InvoiceDetailComponent {
         let taxValue = 0;
         let discountValue = 0;
         this.items.forEach((item: any) => {
-            const ttotal = (item.price * item.quantity) * (item.tax / 100 + 1);
-            item.total = ttotal - ((item.price * item.quantity) * (item.discount / 100));
+            const ttotal = (item.price * item.quantity) * (item.tax + 1);
+            item.total = ttotal - ((item.price * item.quantity) * (item.discount));
             item.total = item.total;
             total += +ttotal;
             grandTotal += +item.total;
-            taxValue += +(item.price * item.quantity) * (item.tax / 100)
-            discountValue += +(item.price * item.quantity) * (item.discount / 100)
+            taxValue += +(item.price * item.quantity) * (item.tax)
+            discountValue += +(item.price * item.quantity) * (item.discount)
         })
         this.invoicesForm.patchValue({ total: grandTotal });
         this.invoicesForm.patchValue({ subTotal: total });

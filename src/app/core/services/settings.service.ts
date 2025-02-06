@@ -17,7 +17,7 @@ export class SettingsService {
     public settings: any = null;
 
     constructor(private pb: PocketBaseService, private activatedRoute: ActivatedRoute) {
-       this.setDxOptions()
+        this.setDxOptions()
     }
 
     public reinit() {
@@ -112,9 +112,41 @@ export class SettingsService {
             options: {
                 useLargeSpinButtons: false,
                 showSpinButtons: true,
+                rtlEnabled: true,
                 step: 1,
-                format: `#,##0.00`
-            } 
+                format: `#,##0.00`,
+                min: 0,
+                onInitialized: (e) => {
+                    const element = e.element;
+                    const isCurrency = !!(element?.dataset['currency']);
+                    const isUnit = !!(element?.dataset['unit']);
+                    if (e.component?.option('format')?.toString()?.includes('%')) {
+                        e.component.resetOption('max');
+                        e.component.option('max', 1);
+                    }
+                    if (!e.component?.instance()) return
+                    if (isCurrency && e.component?.instance()) {
+                        e.component.resetOption('format');
+                        e.component.option('format', ` ${this.settings.currency} #,##0.00`);
+                    }
+                    if (isUnit && e.component?.instance()) {
+                        let unit = element?.dataset['unit'];
+                        unit = unit?.padEnd(3, ' ');
+                        unit = unit?.slice(0, 3);
+                        e.component.resetOption('format');
+                        e.component.option('format', ` ${unit} #,##0.00`);
+                    }
+                },
+                onValueChanged: (e) => {
+                    if (e && e.value) {
+                        if (e.component.option('format')?.toString()?.includes('%')) return;
+                        const magnitude = Math.pow(10, Math.floor(Math.log10(e.value)) - 1);
+                        const step = Math.max(magnitude, 1);
+                        e.component.resetOption('step');
+                        e.component.option('step', step);
+                    }
+                }
+            }
         })
     }
 
