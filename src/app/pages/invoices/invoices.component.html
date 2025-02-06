@@ -2,16 +2,13 @@
     <div class="col-4">
        <eenvo-stats-widget [title]="'Invoices sent last 31 days' | translate" [data]="this.allData" [secondaryColor]="'bg-primary'"></eenvo-stats-widget>
     </div>
-
     <div class="col-4">
         <eenvo-stats-widget [title]="'Paid last 31 days' | translate" [data]="this.paidInvoices" [secondaryColor]="'bg-success'"></eenvo-stats-widget>
 
     </div>
-
     <div class="col-4">
         <eenvo-stats-widget [title]="'Unpaid last 31 days' | translate" [data]="this.unpaidInvoices" [secondaryColor]="'bg-danger'" [color]="'primary'"></eenvo-stats-widget>
     </div>
-
 </div>
 
 <div class="row">
@@ -191,10 +188,10 @@
             @if (currentInvoice) {
             <button (click)="delete()" class="btn btn-danger ms-1"><i
                     class="ri-delete-bin-line align-bottom mx-1"></i>{{ 'Delete' | translate }}</button>
-            <button (click)="download()" class="btn btn-success ms-1"><i
+            <button (click)="download(currentInvoice.id)" class="btn btn-success ms-1"><i
                     class="ri-download-2-line align-bottom mx-1"></i>{{ 'Download' | translate }}</button>
-            <button (click)="detail?.print()" class="btn btn-info ms-1"><i
-                    class="ri-printer-line align-bottom mx-1"></i> {{ 'Print' | translate }}</button>
+            <button (click)="preview(currentInvoice.id)" class="btn btn-info ms-1"><i
+                    class="ri-eye-fill align-bottom mx-1"></i> {{ 'Preview' | translate }}</button>
             <button (click)="send()" class="btn btn-secondary ms-1"><i
                     class="ri-send-plane-fill align-bottom mx-1"></i>{{ 'Send' | translate }}</button>
             }

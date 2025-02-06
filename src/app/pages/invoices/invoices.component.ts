@@ -197,18 +197,20 @@ export class InvoicesComponent {
     }
 
     async delete() {
-        if (this.currentInvoice?.id)
-            await this.pocketbase.pb.collection('invoices').delete(this.currentInvoice?.id);
         this.close();
-        this.reload();
+        this.grid?.instance.deleteRow(this.grid?.instance.getRowIndexByKey(this.grid?.instance.getSelectedRowKeys()[0]));
     }
 
-    async download() {
-        this.close();
+    async download(id: any) {
+        this.generate(id);
+    }
+
+    async preview(id: any) {
+        this.generate(id, true);
     }
 
     async send() {
-        this.close();
+        alert("Not yet implemented.");
     }
 
     async close() {
