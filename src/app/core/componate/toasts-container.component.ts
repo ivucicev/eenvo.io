@@ -37,7 +37,7 @@ import { ToastService } from '../services/toast.service';
 			</ngb-toast>
 		}
 	`,
-	host: { class: 'toast-container position-fixed top-0 p-3', style: 'z-index: 1200; left: calc(50% - 190px);' },
+	host: { class: 'toast-container position-fixed top-0 p-3', style: 'z-index: 10000; left: calc(50% - 190px);' },
 })
 export class ToastsContainer {
 	toastService = inject(ToastService);

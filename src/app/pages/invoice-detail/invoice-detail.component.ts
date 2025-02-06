@@ -134,8 +134,6 @@ export class InvoiceDetailComponent {
         if (i.isPayed) this.invoicesForm.disable();
         this.isPayed = i.isPayed;
 
-
-
     }
 
     async print() {
@@ -215,17 +213,11 @@ export class InvoiceDetailComponent {
     ngOnInit(): void {
     }
 
-    /**
-     * Form data get
-     */
     get form() {
         return this.invoicesForm.controls;
     }
 
 
-    /**
-   * Save user
-   */
     async saveInvoice() {
         this.submitted = true
 
@@ -250,8 +242,6 @@ export class InvoiceDetailComponent {
         const itemsCreate = await Promise.all(allItems);
 
         invoice.items = itemsCreate.map(i => i.id);
-
-        console.log(invoice)
 
         if (invoice.id) {
 
