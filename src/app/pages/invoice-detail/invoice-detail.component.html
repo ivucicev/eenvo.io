@@ -137,14 +137,6 @@
                                     {{ 'Please enter a phone number' | translate }}
                                 </div>
                             </div>
-                            <!--end  <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="same" name="same"
-                                    onchange="billingFunction()" formControlName="same"
-                                    [ngClass]="{ 'is-invalid': submitted && form['same'].errors }" />
-                                <label class="form-check-label" for="same">
-                                    Will your Billing and Shipping address same?
-                                </label>
-                            </div>col-->
                         </div>
                         <div class="col-lg-4">
                             <div class="mb-2">
@@ -221,10 +213,22 @@
                                     {{ 'Please enter a valid date' | translate }}
                                 </div>
                             </div>
-                            <div class="form-check mb-2">
+                            <div class="form-check">
                                 <input class="form-check-input" type="checkbox" id="tax" formControlName="tax" checked>
                                 <label class="form-check-label" for="tax">
                                     {{ 'Show Tax' | translate }}
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="shipping" formControlName="tax" checked>
+                                <label class="form-check-label" for="shipping">
+                                    {{ 'Show Shipping/Handling fees' | translate }}
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="tax" formControlName="tax" checked>
+                                <label class="form-check-label" for="tax">
+                                    {{ 'Use billing and shipping address' | translate }}
                                 </label>
                             </div>
                         </div>

@@ -43,7 +43,7 @@ export class StatsWidgetComponent {
         let totalLast31Count = 0;
         let totalPrevPeriod = 0;
 
-        data.forEach((invoice: any) => {
+        data?.forEach((invoice: any) => {
             const date = new Date(invoice.date);
             const isPaid = invoice.isPayed;
             const total = invoice.total;
