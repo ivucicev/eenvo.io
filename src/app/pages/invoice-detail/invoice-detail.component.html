@@ -5,7 +5,7 @@
                 <div class="card-body border-bottom border-bottom-dashed p-4">
                     <div class="row">
                         <div class="col-lg-6">
-                            <div class="profile-user mx-auto  mb-3">
+                            <div class="profile-user mx-auto mb-3">
                                 <input id="profile-img-file-input" type="file" class="profile-img-file-input" />
                                 <label for="profile-img-file-input" class="d-block" tabindex="0">
                                     <span
@@ -280,7 +280,7 @@
                                 <tr class="table-active">
                                     <th scope="col" class="text-center" style="width: 50px;">#</th>
                                     <th scope="col">{{ 'Product/Service' | translate }}</th>
-                                    <th scope="col" style="width: 150px;">
+                                    <th scope="col" style="width: 180px;">
                                         <div class="d-flex currency-select input-light align-items-center">
                                             {{ 'Price' | translate }}
                                         </div>
@@ -288,7 +288,7 @@
                                     <th scope="col" style="width: 150px;">{{ 'Quantity' | translate }}</th>
                                     <th scope="col" style="width: 105px;">{{ 'Discount' | translate }}</th>
                                     <th scope="col" style="width: 105px;">{{ 'Tax' | translate }}</th>
-                                    <th scope="col" style="width: 150px;">{{ 'Total' | translate }}</th>
+                                    <th scope="col" style="width: 180px;">{{ 'Total' | translate }}</th>
                                     @if (!isPayed) {
                                     <th scope="col" class="text-end" style="width: 15px;"></th>
                                     }
@@ -370,7 +370,7 @@
                                             <tbody>
                                                 <tr>
                                                     <th scope="row">{{ 'Sub Total' | translate }}</th>
-                                                    <td style="width: 150px;">
+                                                    <td style="width: 180px;">
                                                         <dx-number-box formControlName="subTotal"  [readOnly]="true" data-currency="true" type="number"
                                                             class="form-control product-price bg-light border-0"
                                                             [inputAttr]="{ 'aria-label': 'Currency Format' }"></dx-number-box>

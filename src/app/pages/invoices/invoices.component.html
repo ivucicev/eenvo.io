@@ -1,100 +1,15 @@
 <div class="row">
     <div class="col-4">
-        <!-- card -->
-        <div class="card">
-            <div class="card-body">
-                <div class="d-flex align-items-center">
-                    <div class="flex-grow-1">
-                        <h4 class="fs-22 fw-semibold ff-secondary mb-2">{{this.defaultCurrency}}<span
-                                class="counter-value" [countUp]="stats.totalLast31">0</span></h4>
-                        <p class="text-uppercase fw-medium fs-14 text-muted mb-0">{{ 'Invoices Sent' | translate }}
-                            <span class="text-success fs-14 mb-0 ms-1">
-                                <i class="ri-arrow-right-up-line fs-13 align-middle"></i> {{ stats.totalChangePrefix
-                                }}<span class="counter-value" [countUp]="stats.totalChange">0</span>%
-                            </span>
-                        </p>
-                    </div>
-                    <div class="avatar-sm flex-shrink-0">
-                        <span class="avatar-title bg-light rounded-circle fs-3">
-                            <i class="las la-file-alt fs-24 text-primary"></i>
-                        </span>
-                    </div>
-                </div>
-                <div class="d-flex align-items-end justify-content-between mt-4">
-                    <div>
-                        <span class="badge bg-primary me-1">{{stats.totalLast31Count}}</span> <span
-                            class="text-muted">{{ 'Invoices sent last 31 days' | translate }}</span>
-                    </div>
-                </div>
-            </div>
-        </div>
+       <eenvo-stats-widget [title]="'Invoices sent last 31 days' | translate" [data]="this.allData" [secondaryColor]="'bg-primary'"></eenvo-stats-widget>
     </div>
 
     <div class="col-4">
-        <div class="card">
-            <div class="card-body">
-                <div class="d-flex align-items-center">
-                    <div class="flex-grow-1">
-                        <h4 class="fs-22 fw-semibold ff-secondary mb-2">{{this.defaultCurrency}}<span
-                                class="counter-value" [countUp]="stats.totalPaidLast31">0</span></h4>
-                        <p class="text-uppercase fw-medium fs-14 text-muted mb-0">{{ 'Paid Invoices' | translate }}
-                            <span [class.text-danger]="stats.paidChangePrefix == '-'"
-                                [class.text-success]="stats.paidChangePrefix == '+'" class="fs-14 mb-0 ms-1">
-                                <i [class.ri-arrow-right-up-line]="stats.paidChangePrefix == '+'"
-                                    [class.ri-arrow-right-down-line]="stats.paidChangePrefix == '-'"
-                                    class="fs-13 align-middle"></i>
-                                {{ stats.paidChangePrefix }}<span class="counter-value"
-                                    [countUp]="stats.percentageChange">0</span>%
-                            </span>
-                        </p>
-                    </div>
-                    <div class="avatar-sm flex-shrink-0">
-                        <span class="avatar-title bg-light rounded-circle fs-3">
-                            <i class="las la-check-square fs-24 text-primary"></i>
-                        </span>
-                    </div>
-                </div>
-                <div class="d-flex align-items-end justify-content-between mt-4">
-                    <div>
-                        <span class="badge bg-success me-1">{{ stats.paidCount }}</span> <span class="text-muted">{{
-                            'Paid last 31 days' | translate }}</span>
-                    </div>
-                </div>
-            </div><!-- end card body -->
-        </div><!-- end card -->
-    </div><!-- end col -->
+        <eenvo-stats-widget [title]="'Paid last 31 days' | translate" [data]="this.paidInvoices" [secondaryColor]="'bg-success'"></eenvo-stats-widget>
+
+    </div>
 
     <div class="col-4">
-        <div class="card bg-primary bg-opacity-75">
-            <div class="card-body">
-                <div class="d-flex align-items-center">
-                    <div class="flex-grow-1">
-                        <h4 class="fs-22 fw-semibold ff-secondary mb-2 text-white">{{this.defaultCurrency}}<span
-                                class="counter-value" [countUp]="stats.totalUnpaidLast31">0</span></h4>
-                        <p class="text-uppercase fw-medium fs-14 text-white-50 mb-0">{{ 'Unpaid Invoices' | translate }}
-                            <span [class.text-danger]="stats.unpaidChangePrefix == '-'"
-                                [class.text-success]="stats.unpaidChangePrefix == '+'" class="fs-14 mb-0 ms-1">
-                                <i [class.ri-arrow-right-up-line]="stats.unpaidChangePrefix == '+'"
-                                    [class.ri-arrow-right-down-line]="stats.unpaidChangePrefix == '-'"
-                                    class="fs-13 align-middle"></i> {{stats.unpaidChangePrefix}}<span
-                                    class="counter-value" [countUp]="stats.percentageUnpaidChange">0</span>%
-                            </span>
-                        </p>
-                    </div>
-                    <div class="avatar-sm flex-shrink-0">
-                        <span class="avatar-title bg-light-subtle text-light  rounded-circle fs-3">
-                            <i class="las la-clock fs-24 text-white"></i>
-                        </span>
-                    </div>
-                </div>
-                <div class="d-flex align-items-end justify-content-between mt-4">
-                    <div>
-                        <span class="badge bg-danger me-1">{{ stats.unpaidCount }}</span> <span class="text-white">{{
-                            'Unpaid last 31 days' | translate }}</span>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <eenvo-stats-widget [title]="'Unpaid last 31 days' | translate" [data]="this.unpaidInvoices" [secondaryColor]="'bg-danger'" [color]="'primary'"></eenvo-stats-widget>
     </div>
 
 </div>
@@ -156,7 +71,7 @@
                     <dxo-toolbar>
                         <dxi-item>
                             <div *dxTemplate>
-                                <select class="form-select form-select-sm" [(ngModel)]="selectedYear"
+                                <select class="form-select form-select-sm border-0" [(ngModel)]="selectedYear"
                                     (change)="reload()">
                                     <option [value]="currentYear" selected>{{currentYear}}</option>
                                     <option [value]="currentYear - 1">{{currentYear - 1}}</option>
@@ -169,12 +84,12 @@
                         <dxi-item name="groupPanel"></dxi-item>
                         <dxi-item location="after">
                             <div *dxTemplate>
-                                <dx-button (click)="newInvoice()" icon="add" [text]="'New' | translate"> </dx-button>
+                                <dx-button stylingMode="text" (click)="newInvoice()" icon="add" [text]="'New' | translate"> </dx-button>
                             </div>
                         </dxi-item>
                         <dxi-item location="after">
                             <div *dxTemplate>
-                                <dx-button icon="refresh" (onClick)="reload()"> </dx-button>
+                                <dx-button stylingMode="text" icon="refresh" (onClick)="reload()"> </dx-button>
                             </div>
                         </dxi-item>
                         <dxi-item name="exportButton"></dxi-item>

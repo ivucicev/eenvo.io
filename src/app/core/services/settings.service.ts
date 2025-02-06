@@ -86,6 +86,7 @@ export class SettingsService {
                     visible: true,
                     items: [
                         "addRowButton",
+                        "refresh",
                         "exportButton",
                         "columnChooserButton",
                         "searchPanel",

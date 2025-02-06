@@ -4,10 +4,9 @@ import { PocketBaseService } from '../../core/services/pocket-base.service';
 import { InvoiceDetailComponent } from '../invoice-detail/invoice-detail.component';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
-import { FormsModule, NgModel } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
 import { ToastService } from '../../core/services/toast.service';
-import { CountUpModule } from 'ngx-countup';
 import { TranslateModule } from '@ngx-translate/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { environment } from '../../../environments/environment';
@@ -17,12 +16,13 @@ import * as font from "../../../assets/js/jspdffont.js"
 import { ActivatedRoute } from '@angular/router';
 import { CurrencyFormatPipe } from '../../core/pipes/number-format.pipe';
 import { SettingsService } from '../../core/services/settings.service';
+import { StatsWidgetComponent } from '../../core/componate/stats-widget/stats-widget.component';
 
 
 @Component({
     selector: 'eenvo-invoices',
     standalone: true,
-    imports: [DxDataGridModule, CurrencyFormatPipe, TranslateModule, DxButtonModule, DxPopupModule, InvoiceDetailComponent, DxSelectBoxModule, FormsModule, CountUpModule],
+    imports: [DxDataGridModule, CurrencyFormatPipe, TranslateModule, DxButtonModule, DxPopupModule, InvoiceDetailComponent, DxSelectBoxModule, FormsModule, StatsWidgetComponent],
     templateUrl: './invoices.component.html',
     styleUrl: './invoices.component.scss'
 })
@@ -31,15 +31,14 @@ export class InvoicesComponent {
     public data: any;
     public allData: any;
     public countries: any = []
-    public emailButtonOptions;
-    public closeButtonOptions;
     public invoicePopupVisible = false;
     public currentInvoice: any = null;
-    public stats: any = {};
     public currentDate = new Date().toISOString();
     public selectedYear = new Date().getFullYear();
     public currentYear = new Date().getFullYear();
-    public defaultCurrency = '€';
+    public pdf: any;
+    public paidInvoices: any = []
+    public unpaidInvoices: any = []
 
     public filter = {
         all: true,
@@ -55,27 +54,6 @@ export class InvoicesComponent {
     public detail?: InvoiceDetailComponent;
 
     constructor(private pocketbase: PocketBaseService, private settingsService: SettingsService, private activatedRoute: ActivatedRoute, private sanitizer: DomSanitizer, private toast: ToastService) {
-
-        this.defaultCurrency = settingsService.settings.currency;
-
-        this.emailButtonOptions = {
-            icon: 'email',
-            stylingMode: 'contained',
-            text: 'Send',
-            onClick: () => {
-
-            },
-        };
-
-        this.closeButtonOptions = {
-            text: 'Close',
-            stylingMode: 'outlined',
-            type: 'normal',
-            onClick: () => {
-                this.invoicePopupVisible = false;
-            },
-        };
-
         this.getData();
     }
 
@@ -203,8 +181,8 @@ export class InvoicesComponent {
         });
 
         this.data = [...this.allData];
-        if (this.selectedYear == this.currentYear)
-            this.calculateInvoiceStats();
+        this.paidInvoices = [...this.allData.filter((d: any) => d.isPayed)];
+        this.unpaidInvoices = [...this.allData.filter((d: any) => !d.isPayed)];
     }
 
     async newRow(e: any) {
@@ -250,97 +228,6 @@ export class InvoicesComponent {
         }
     }
 
-    calculateInvoiceStats() {
-
-        const now = new Date();
-        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()); // Normalize to start of day
-
-        const last31DaysStart = new Date(today);
-        last31DaysStart.setDate(today.getDate() - 31);
-
-        const prev32To63DaysStart = new Date(today);
-        prev32To63DaysStart.setDate(today.getDate() - 63);
-
-        const prev32To63DaysEnd = new Date(today);
-        prev32To63DaysEnd.setDate(today.getDate() - 32);
-
-        const currentYearStart = new Date(today.getFullYear(), 0, 1); // Start of current year
-
-        let totalPaidLast31 = 0;
-        let totalUnpaidLast31 = 0;
-        let totalPaidPrevPeriod = 0;
-        let totalUnpaidPrevPeriod = 0;
-        let totalLast31 = 0;
-        let unpaidCount = 0;
-        let paidCount = 0;
-        let totalLast31Count = 0;
-        let totalPrevPeriod = 0;
-
-        this.data.forEach((invoice: any) => {
-            const date = new Date(invoice.date);
-            const isPaid = invoice.isPayed;
-            const total = invoice.total;
-
-            // Last 31 days
-            if (isPaid && date >= last31DaysStart) {
-                totalPaidLast31 += total;
-                totalLast31 += total;
-                totalLast31Count++;
-                paidCount++;
-            }
-
-            if (!isPaid && date >= last31DaysStart) {
-                totalUnpaidLast31 += total;
-                totalLast31 += total;
-                totalLast31Count++;
-                unpaidCount++;
-            }
-
-            // Previous 32-63 days period
-            if (date >= prev32To63DaysStart && date <= prev32To63DaysEnd && isPaid) {
-                totalPaidPrevPeriod += total;
-                totalPrevPeriod += total;
-            }
-
-            if (date >= prev32To63DaysStart && date <= prev32To63DaysEnd && isPaid) {
-                totalUnpaidPrevPeriod += total;
-                totalPrevPeriod += total;
-            }
-        });
-
-        // Calculate percentage change
-        let percentageChange = 0;
-        if (totalPaidPrevPeriod !== 0) {
-            percentageChange = ((totalPaidLast31 - totalPaidPrevPeriod) / totalPaidPrevPeriod) * 100;
-        }
-
-        let percentageUnpaidChange = 0;
-        if (totalUnpaidPrevPeriod !== 0) {
-            percentageUnpaidChange = ((totalUnpaidLast31 - totalUnpaidPrevPeriod) / totalUnpaidPrevPeriod) * 100;
-        }
-
-        let totalChange = 0;
-        if (totalPrevPeriod !== 0) {
-            totalChange = ((totalLast31 - totalPrevPeriod) / totalPrevPeriod) * 100;
-        }
-
-        this.stats = {
-            totalPaidLast31: totalPaidLast31.toFixed(2),
-            totalUnpaidLast31: totalUnpaidLast31.toFixed(2),
-            percentageUnpaidChange: percentageUnpaidChange.toFixed(2),
-            percentageChange: percentageChange.toFixed(2),
-            totalLast31: totalLast31.toFixed(2),
-            totalChange: totalChange.toFixed(2),
-            totalChangePrefix: totalPrevPeriod > totalLast31 ? '-' : '+',
-            unpaidChangePrefix: totalUnpaidPrevPeriod > totalUnpaidLast31 ? '-' : '+',
-            paidChangePrefix: totalPaidPrevPeriod > totalPaidLast31 ? '-' : '+',
-            unpaidCount,
-            paidCount,
-            totalLast31Count
-        };
-
-    }
-
     rowDoubleClicked(e: any) {
         this.grid?.instance.editRow(e.rowIndex)
     }
@@ -355,20 +242,17 @@ export class InvoicesComponent {
         this.generate(e.row?.data?.id, true)
     }
 
-    public pdf: any;
-
     async generate(id: any, preview = false) {
 
         const invoice: any = await this.pocketbase.pb.collection('invoices').getOne(id, { expand: 'customer,company,items' })
 
-        console.log(invoice)
         const doc: any = new jsPDF();
 
         // Set document properties
         doc.setProperties({
             title: `Invoice ${invoice.number}`,
-            subject: 'Invoice Document',
-            author: 'Bytewise'
+            subject: 'invoice for' + invoice.companyData.name,
+            author: 'eenvo.io'
         });
 
         const img = new Image();
@@ -515,7 +399,6 @@ export class InvoicesComponent {
 
             const splitNote = doc.splitTextToSize(invoice.note.replace('\n', '').replace('\n', '').replace('\n', '').replace('\n', ''), doc.internal.pageSize.getWidth() - 40)
             //const splitNote = this.splitTextIntoChunks(invoice.note);
-            console.log(splitNote)
 
             doc.text(splitNote, (doc.internal.pageSize.getWidth()) / 2, doc.internal.pageSize.height - 40, 'center');
 
