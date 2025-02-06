@@ -86,9 +86,9 @@ export class SettingsService {
                     visible: true,
                     items: [
                         "addRowButton",
+                        "exportButton",
                         "columnChooserButton",
                         "searchPanel",
-                        "exportButton"
                     ] as DataGridPredefinedToolbarItem[]
                 },
                 customizeColumns: (columns) => {
