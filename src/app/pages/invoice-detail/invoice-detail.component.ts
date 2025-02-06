@@ -93,6 +93,8 @@ export class InvoiceDetailComponent {
         this.getServices();
         
         this.logo += this.pocketbase.auth.company + '/' + this.pocketbase.auth.expand.company.logo;
+
+        this.invoicesForm.get('tax')?.valueChanges.subscribe(this.recalculate.bind(this))
         
         effect(() => {
             this.setCurrentInvoice(this.invoice());
@@ -283,15 +285,27 @@ export class InvoiceDetailComponent {
         let grandTotal = 0;
         let taxValue = 0;
         let discountValue = 0;
-        this.items.forEach((item: any) => {
-            const ttotal = (item.price * item.quantity) * (item.tax + 1);
-            item.total = ttotal - ((item.price * item.quantity) * (item.discount));
-            item.total = item.total;
-            total += +ttotal;
-            grandTotal += +item.total;
-            taxValue += +(item.price * item.quantity) * (item.tax)
-            discountValue += +(item.price * item.quantity) * (item.discount)
-        })
+        if (this.invoicesForm.get('tax')?.value) {
+            this.items.forEach((item: any) => {
+                const ttotal = (item.price * item.quantity) * (item.tax + 1);
+                item.total = ttotal - ((item.price * item.quantity) * (item.discount));
+                item.total = item.total;
+                total += +ttotal;
+                grandTotal += +item.total;
+                taxValue += +(item.price * item.quantity) * (item.tax)
+                discountValue += +(item.price * item.quantity) * (item.discount)
+            })
+        } else {
+            this.items.forEach((item: any) => {
+                const ttotal = (item.price * item.quantity);
+                item.total = ttotal - ((item.price * item.quantity) * (item.discount));
+                item.total = item.total;
+                total += +ttotal;
+                grandTotal += +item.total;
+                taxValue += +0;
+                discountValue += +(item.price * item.quantity) * (item.discount)
+            }) 
+        }
         this.invoicesForm.patchValue({ total: grandTotal });
         this.invoicesForm.patchValue({ subTotal: total });
         this.invoicesForm.patchValue({ discountValue: discountValue });
