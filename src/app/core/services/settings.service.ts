@@ -8,6 +8,12 @@ import { DateFormats } from '../models/date-formats';
 import dxNumberBox from 'devextreme/ui/number_box';
 import { DxNumberBoxTypes } from 'devextreme-angular/ui/number-box';
 import { locale } from 'devextreme/localization';
+import jsPDF from 'jspdf';
+import * as excel from 'devextreme-angular/common/export/excel';
+import * as pdf from 'devextreme-angular/common/export/pdf';
+import { Workbook } from 'exceljs';
+import saveAs from 'file-saver';
+
 
 @Injectable({
     providedIn: 'root'
@@ -81,7 +87,8 @@ export class SettingsService {
                     items: [
                         "addRowButton",
                         "columnChooserButton",
-                        "searchPanel"
+                        "searchPanel",
+                        "exportButton"
                     ] as DataGridPredefinedToolbarItem[]
                 },
                 customizeColumns: (columns) => {
@@ -95,6 +102,31 @@ export class SettingsService {
                                 break;
                         }
                     })
+                },
+                onExporting: (e) => {
+                    console.log(e)
+                    if (e.format == "pdf") {
+                        const doc = new jsPDF();
+                        pdf.exportDataGrid({
+                            jsPDFDocument: doc,
+                            component: e.component,
+                            indent: 5,
+                        }).then(() => {
+                            doc.save(`export_${new Date().toISOString().split('T')[0]}.pdf`);
+                        });
+                        return;
+                    }
+                    const workbook = new Workbook();
+                    const worksheet = workbook.addWorksheet('Employees');
+                    excel.exportDataGrid({
+                        component: e.component,
+                        worksheet,
+                        autoFilterEnabled: true,
+                    }).then(() => {
+                        workbook.xlsx.writeBuffer().then((buffer) => {
+                            saveAs(new Blob([buffer], { type: 'application/octet-stream' }), `export_${new Date().toISOString().split('T')[0]}.xlsx`);
+                        });
+                    });
                 },
                 export: {
                     enabled: true,
