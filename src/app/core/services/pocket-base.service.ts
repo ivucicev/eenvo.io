@@ -24,6 +24,25 @@ export class PocketBaseService {
 
         }
 
+        this.pb.afterSend = (response, data) => {
+            if (response.status != 200) {
+                switch (response.status) {
+                    case 400:
+                        let messages = '';
+                        if (data.data)
+                            Object.keys(data.data).forEach(key => {
+                                messages += (key.charAt(0).toUpperCase() + key.slice(1)) + " - " + data.data[key].message + ' ';
+                            })
+                        this.toast.error(data?.message + ' ' + messages);
+                        break;
+                
+                    case 500:
+                    default:
+                        break;
+                }
+            }
+            return data;
+        };
         this.pb.beforeSend = (url, options) => {
             if (this.auth && options.body)
                 options.body.company = this.auth.company;
@@ -31,6 +50,9 @@ export class PocketBaseService {
         };
 
     }
+
+    public invoices = () => this.pb.collection('invoices');
+    public customers = () => this.pb.collection('customers');
 
     async login(email: string, password: string) {
         try {

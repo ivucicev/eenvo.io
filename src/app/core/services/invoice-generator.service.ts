@@ -115,8 +115,15 @@ export class InvoiceGeneratorService {
                 Y = 100;
                 // Items table with reduced padding and soft borders
                 doc.autoTable({
-                    startY: 100,
-                    head: [['#', this.translate.instant('Product/Service'), this.translate.instant('Price'), this.translate.instant('Quantity'), this.translate.instant('Discount'), this.translate.instant('Tax'), this.translate.instant('Total')]],
+                    startY: Y,
+                    head: [[
+                        '#', 
+                        this.translate.instant('Product/Service'), 
+                        this.translate.instant('Price'), 
+                        this.translate.instant('Quantity'), 
+                        this.translate.instant('Discount'), 
+                        this.translate.instant('Tax'), 
+                        this.translate.instant('Total')]],
                     body: invoice.expand.items.map((item: any, i: number) => [
                         i + 1 + '.',
                         item.title,
@@ -127,19 +134,22 @@ export class InvoiceGeneratorService {
                         this.currency.transform(item.total)
                     ]),
                     headStyles: {
+                        1: { cellWidth: 50 },
                         fillColor: [255, 255, 255],
                         textColor: [0, 0, 0],
                         halign: 'center',
                         fontStyle: 'bold',
                         cellPadding: 3,
+                        fontSize: 9,
                         font: 'dejavu-sans.book',
                     },
                     bodyStyles: {
                         font: 'dejavu-sans.book',
+                        fontSize: 9
                     },
                     columnStyles: {
                         0: { halign: 'center' },
-                        1: { halign: 'left' },
+                        1: { halign: 'left', cellWidth: 50 },
                         2: { halign: 'right' },
                         3: { halign: 'right' },
                         4: { halign: 'right' },

@@ -91,24 +91,24 @@ export class InvoiceDetailComponent {
             shippingTaxno: ['', [Validators.required]],
             productName: ['', [Validators.required]],
         });
-        
+
         this.addItem();
         this.getCustomers();
         this.getServices();
-        
+
         this.logo += this.pocketbase.auth.company + '/' + this.pocketbase.auth.expand.company.logo;
 
         this.invoicesForm.get('tax')?.valueChanges.subscribe(this.recalculate.bind(this))
-        
+
         effect(() => {
             this.setCurrentInvoice(this.invoice());
         })
     }
-    
+
     addItem() {
         this.items.push({
             title: '',
-            quantity: 0,
+            quantity: 1.0,
             total: 0,
             discount: 0,
             tax: 0,
@@ -180,7 +180,7 @@ export class InvoiceDetailComponent {
         this.items[index].code = s.code;
 
         this.recalculate();
-    
+
     }
 
     ngOnInit(): void {
@@ -191,6 +191,7 @@ export class InvoiceDetailComponent {
     }
 
     async saveInvoice() {
+
         this.submitted = true
 
         const invoice = this.invoicesForm.getRawValue();
@@ -226,27 +227,6 @@ export class InvoiceDetailComponent {
 
     }
 
-    // Default
-    counter = 0;
-    increment() {
-        this.counter++;
-        var itemAmount = document.querySelector('.product-price') as HTMLInputElement;
-        var priceselection = document.querySelector(".product-line-price") as HTMLInputElement;
-        this.updateQuantity(itemAmount?.value, this.counter, priceselection);
-    }
-
-    decrement() {
-        this.counter--;
-        var itemAmount = document.querySelector('.product-price') as HTMLInputElement;
-        var priceselection = document.querySelector(".product-line-price") as HTMLInputElement;
-        this.updateQuantity(itemAmount?.value, this.counter, priceselection);
-    }
-
-    updateQuantity(amount: any, itemQuntity: any, priceselection: any) {
-        var linePrice = amount * itemQuntity;
-        priceselection.value = linePrice;
-    }
-
     recalculate() {
         let total = 0;
         let grandTotal = 0;
@@ -271,7 +251,7 @@ export class InvoiceDetailComponent {
                 grandTotal += +item.total;
                 taxValue += +0;
                 discountValue += +(item.price * item.quantity) * (item.discount)
-            }) 
+            })
         }
         this.invoicesForm.patchValue({ total: grandTotal });
         this.invoicesForm.patchValue({ subTotal: total });
@@ -282,5 +262,6 @@ export class InvoiceDetailComponent {
     // Remove Item
     removeItem(index: any) {
         this.items.splice(index, 1);
+        this.recalculate();
     }
 }
