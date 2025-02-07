@@ -142,10 +142,10 @@
                             {{ d.data.total | currencyFormat }}
                         </div>
                     </dxi-column>
-                    <dxi-column dataField="isPayed" [caption]="'Is Paid' | translate" dataType="boolean"
-                        cellTemplate="isPayedTemplate">
-                        <div *dxTemplate="let d of 'isPayedTemplate'">
-                            @if (d.data.isPayed) {
+                    <dxi-column dataField="isPaid" [caption]="'Is Paid' | translate" dataType="boolean"
+                        cellTemplate="isPaidTemplate">
+                        <div *dxTemplate="let d of 'isPaidTemplate'">
+                            @if (d.data.isPaid) {
                             <span class="badge rounded-pill text-primary bg-primary-subtle">{{ 'Paid' | translate }} <i
                                     class="label-icon las la-check-double"></i> </span>
                             }

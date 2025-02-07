@@ -19,7 +19,7 @@
                             </div>
                         </div>
                         <div class="col-lg-6">
-                            @if (isPayed) {
+                            @if (isPaid) {
                             <div role="alert" class="alert alert-primary alert-outline ng-star-inserted">
                                 <i class="ri-check-double-line"></i> <strong>{{ 'Invoice has been paid.' | translate
                                     }}</strong> {{ 'Editing is disabled.' | translate }}
@@ -295,7 +295,7 @@
                                     <th scope="col" style="width: 105px;">{{ 'Tax' | translate }}</th>
                                     }
                                     <th scope="col" style="width: 180px;">{{ 'Total' | translate }}</th>
-                                    @if (!isPayed) {
+                                    @if (!isPaid) {
                                     <th scope="col" class="text-end" style="width: 15px;"></th>
                                     }
                                 </tr>
@@ -351,7 +351,7 @@
                                             class="form-control product-price bg-light border-0"
                                             [inputAttr]="{ 'aria-label': 'Currency Format' }"></dx-number-box>
                                     </td>
-                                    @if (!isPayed) {
+                                    @if (!isPaid) {
                                     <td class="product-removal d-flex justify-content-end">
                                         <button type="button" class="btn btn-icon btn-soft-danger btn-sm"
                                             (click)="removeItem($index)"> <i class="las la-times"></i> </button>
@@ -361,7 +361,7 @@
                                 }
                             </tbody>
                             <tbody>
-                                @if (!isPayed) {
+                                @if (!isPaid) {
                                 <tr>
                                     <td colspan="8" class="text-center">
                                         <button type="button" class="btn btn-sm btn-soft-secondary fw-medium"

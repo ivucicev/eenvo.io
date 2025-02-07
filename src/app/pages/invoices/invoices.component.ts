@@ -11,7 +11,7 @@ import { ActivatedRoute } from '@angular/router';
 import { CurrencyFormatPipe } from '../../core/pipes/number-format.pipe';
 import { SettingsService } from '../../core/services/settings.service';
 import { StatsWidgetComponent } from '../../core/componate/stats-widget/stats-widget.component';
-import { InvoiceGeneratorService } from '../services/invoice-generator.service';
+import { InvoiceGeneratorService } from '../../core/services/invoice-generator.service';
 
 
 @Component({
@@ -63,17 +63,17 @@ export class InvoicesComponent {
     }
 
     isMarkAsPayedVisible({ row }: any) {
-        return !row.data.isPayed;
+        return !row.data.isPaid;
     }
 
     markAsPayed = async (e: DxDataGridTypes.ColumnButtonClickEvent) => {
 
         await this.pocketbase.pb.collection('invoices').update(e.row?.data.id, {
-            'isPayed': true,
+            'isPaid': true,
             'paymentDate': new Date()
         })
         if (e.row?.data) {
-            e.row.data.isPayed = true;
+            e.row.data.isPaid = true;
             e.row.data.paymentDate = new Date()
         }
         this.toast.success();
@@ -98,7 +98,7 @@ export class InvoicesComponent {
             dueDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(), // 30 days from now
             deliveryDate: new Date().toISOString(),
             total: fullInvoice.total,
-            isPayed: false,
+            isPaid: false,
             paymentDate: null,
             note: fullInvoice.note,
             customer: fullInvoice.customer,
@@ -157,11 +157,11 @@ export class InvoicesComponent {
         if (all)
             this.data = [...this.allData]
         if (pending)
-            this.data = [...this.allData.filter((f: any) => !f.isPayed && (!f.dueDate || new Date(f.dueDate) >= new Date()))]
+            this.data = [...this.allData.filter((f: any) => !f.isPaid && (!f.dueDate || new Date(f.dueDate) >= new Date()))]
         if (paid)
-            this.data = [...this.allData.filter((f: any) => f.isPayed)]
+            this.data = [...this.allData.filter((f: any) => f.isPaid)]
         if (overdue)
-            this.data = [...this.allData.filter((f: any) => !f.isPayed && f.dueDate && new Date(f.dueDate) <= new Date())]
+            this.data = [...this.allData.filter((f: any) => !f.isPaid && f.dueDate && new Date(f.dueDate) <= new Date())]
     }
 
     async getData() {
@@ -176,8 +176,8 @@ export class InvoicesComponent {
         });
 
         this.data = [...this.allData];
-        this.paidInvoices = [...this.allData.filter((d: any) => d.isPayed)];
-        this.unpaidInvoices = [...this.allData.filter((d: any) => !d.isPayed)];
+        this.paidInvoices = [...this.allData.filter((d: any) => d.isPaid)];
+        this.unpaidInvoices = [...this.allData.filter((d: any) => !d.isPaid)];
     }
 
     async newRow(e: any) {
@@ -202,13 +202,8 @@ export class InvoicesComponent {
 
     async preview(id: any) {
         try {
-            console.log(1)
             this.pdf = await this.invoiceService.generate(id, true);
-            console.log(2, this.pdf)
-
         } catch (e) {
-
-            console.log(e)
         }
     }
 

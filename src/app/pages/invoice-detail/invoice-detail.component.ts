@@ -22,7 +22,7 @@ export class InvoiceDetailComponent {
     services: any = [];
     items: any = [];
     logo = environment.pocketbase + '/api/files/companies/';
-    isPayed = false;
+    isPaid = false;
 
     public readonly invoice = input<any>();
 
@@ -33,7 +33,7 @@ export class InvoiceDetailComponent {
             customer: ['', [Validators.required]],
             number: ['', [Validators.required]],
             tax: [true, [Validators.required]],
-            isPayed: [false, [Validators.required]],
+            isPaid: [false, [Validators.required]],
             type: ['-', [Validators.required]],
             paymentType: ['Transaction', [Validators.required]],
             date: [new Date().toISOString().split('T')[0], [Validators.required]],
@@ -66,8 +66,12 @@ export class InvoiceDetailComponent {
                 country: new FormControl(`${this.pocketbase.auth.expand.company.country}`, [Validators.required]),
                 vatID: new FormControl(this.pocketbase.auth.expand.company.vatID, [Validators.required]),
                 note: new FormControl(this.pocketbase.auth.expand.company.additional, [Validators.required]),
+                phone: new FormControl(this.pocketbase.auth.expand.company.phone, [Validators.required]),
+                swift: new FormControl(this.pocketbase.auth.expand.company.swift, [Validators.required]),
+                web: new FormControl(this.pocketbase.auth.expand.company.web, [Validators.required]),
+                iban: new FormControl(this.pocketbase.auth.expand.company.iban, [Validators.required]),
+                email: new FormControl(this.pocketbase.auth.expand.company.email, [Validators.required]),
             }),
-
             paymentData: new FormGroup({
                 iban: new FormControl('', [Validators.required]),
                 reference: new FormControl('', [Validators.required]),
@@ -87,7 +91,7 @@ export class InvoiceDetailComponent {
             shippingTaxno: ['', [Validators.required]],
             productName: ['', [Validators.required]],
         });
-
+        
         this.addItem();
         this.getCustomers();
         this.getServices();
@@ -133,41 +137,8 @@ export class InvoiceDetailComponent {
 
         this.items = i.expand?.items || [];
 
-        if (i.isPayed) this.invoicesForm.disable();
-        this.isPayed = i.isPayed;
-
-    }
-
-    async print() {
-
-        const src = "http://localhost:4200/invoice-print?print=1&data=" + encodeURIComponent(JSON.stringify(this.invoicesForm.getRawValue())) + "&items=" + JSON.stringify(this.items);
-
-        //let newWindow: any = window.open(src, "_blank");
-
-        /*newWindow.onload = function () {
-            setTimeout(() => {
-                newWindow.print();
-            }, 1000)
-            newWindow.onafterprint = function () {
-                newWindow.close(); // Close the tab after printing
-            };
-        };*/
-
-        let iframe = document.createElement("iframe");
-        iframe.style.position = "absolute";
-        iframe.style.width = "0px";
-        iframe.style.height = "0px";
-        iframe.style.border = "none";
-        iframe.src = src;
-
-        iframe.onload = function () {
-            setTimeout(() => {
-                iframe?.contentWindow?.print();
-            }, 500);
-            setTimeout(() => document.body.removeChild(iframe), 1000); // Clean up
-        };
-
-        document.body.appendChild(iframe);
+        if (i.isPaid) this.invoicesForm.disable();
+        this.isPaid = i.isPaid;
 
     }
 
@@ -219,7 +190,6 @@ export class InvoiceDetailComponent {
         return this.invoicesForm.controls;
     }
 
-
     async saveInvoice() {
         this.submitted = true
 
@@ -246,12 +216,9 @@ export class InvoiceDetailComponent {
         invoice.items = itemsCreate.map(i => i.id);
 
         if (invoice.id) {
-
             const updated = await this.pocketbase.pb.collection('invoices').update(invoice.id, invoice);
             this.toast.success();
-
         } else {
-
             const created = await this.pocketbase.pb.collection('invoices').create(invoice);
             this.invoicesForm.patchValue({ id: created.id });
             this.toast.success();

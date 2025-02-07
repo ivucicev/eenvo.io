@@ -45,7 +45,7 @@ export class StatsWidgetComponent {
 
         data?.forEach((invoice: any) => {
             const date = new Date(invoice.date);
-            const isPaid = invoice.isPayed;
+            const isPaid = invoice.isPaid;
             const total = invoice.total;
 
             // Last 31 days

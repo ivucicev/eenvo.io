@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import jsPDF from 'jspdf';
 
 @Component({
     selector: 'eenvo-invoice-print',
@@ -15,6 +16,9 @@ export class InvoicePrintComponent {
         this.route.queryParams.subscribe((q: any) => {
             this.invoice = JSON.parse(q?.data);
             this.items = JSON.parse(q?.items);
+
+            
+
         })
     }
 }

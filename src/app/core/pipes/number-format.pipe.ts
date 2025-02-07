@@ -1,4 +1,4 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { Injectable, Pipe, PipeTransform } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SettingsService } from '../services/settings.service';
 import { DateFormatKey, DateFormats } from '../models/date-formats';
@@ -12,6 +12,9 @@ const formatter = (format: any, value: any) => new Intl.NumberFormat(format === 
     name: 'numberFormat',
     standalone: true
 })
+@Injectable({
+    providedIn: 'root'
+  })
 export class NumberFormatPipe implements PipeTransform {
     
     private format = '';
@@ -33,6 +36,9 @@ export class NumberFormatPipe implements PipeTransform {
     name: 'fractionFormat',
     standalone: true
 })
+@Injectable({
+    providedIn: 'root'
+  })
 export class FractionFormatPipe implements PipeTransform {
     
     private format = '';
@@ -54,6 +60,9 @@ export class FractionFormatPipe implements PipeTransform {
     name: 'currencyFormat',
     standalone: true
 })
+@Injectable({
+    providedIn: 'root'
+  })
 export class CurrencyFormatPipe implements PipeTransform {
 
     private format = '';
@@ -74,9 +83,12 @@ export class CurrencyFormatPipe implements PipeTransform {
 }
 
 @Pipe({
-    name: 'currencyFormat',
+    name: 'dateFormat',
     standalone: true
 })
+@Injectable({
+    providedIn: 'root'
+  })
 export class DateFormatPipe implements PipeTransform {
 
     private dateFormat: DateFormatKey;
@@ -85,9 +97,8 @@ export class DateFormatPipe implements PipeTransform {
     constructor(private settingsService: SettingsService) {
         this.dateFormat = settingsService?.settings?.dateFormat || 'numeric-eu';
         const format = DateFormats[this.dateFormat];
-        
         this.formatter = new Intl.DateTimeFormat(
-            this.settingsService?.settings?.locale || 'en',
+            format.locale || 'de',
             {
                 ...format.options,
                 calendar: 'gregory'
