@@ -7,15 +7,19 @@ import { UsersComponent } from '../pages/users/users.component';
 import { InvoicesComponent } from '../pages/invoices/invoices.component';
 import { CompanyComponent } from '../pages/company/company.component';
 import { GeneralSettingsComponent } from '../pages/general-settings/general-settings.component';
+import { ExpensesComponent } from '../pages/expenses/expenses.component';
+import { TransactionsComponent } from '../pages/transactions/transactions.component';
 
 export const PAGE_ROUTES: Routes = [
 	{ path: '', component: DashboardComponent },
 	{ path: 'services', component: ServicesComponent },
-	{ path: 'customers', component: CustomersComponent },
+	{ path: 'customers', component: CustomersComponent, title: 'Customers' },
+	{ path: 'vendors', component: CustomersComponent, title: 'Vendors' },
 	{ path: 'templates', component: TemplatesComponent },
 	{ path: 'users', component: UsersComponent },
 	{ path: 'invoices', component: InvoicesComponent },
-	{ path: 'expenses', component: InvoicesComponent },
+	{ path: 'expenses', component: ExpensesComponent },
+	{ path: 'transactions', component: TransactionsComponent },
 	{ path: 'company', component: CompanyComponent },
 	{ path: 'settings', component: GeneralSettingsComponent },
 ]

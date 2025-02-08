@@ -1,0 +1,83 @@
+<div class="row">
+    <div class="col-4">
+       <eenvo-stats-widget [title]="'Expenses last 31 days' | translate" [data]="data" [secondaryColor]="'bg-primary'"></eenvo-stats-widget>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <dx-data-grid #grid [dataSource]="data" 
+                    (onEditorPreparing)="onEditorPreparing($event)" (onInitNewRow)="initNewRow($event)" (onSaved)="saved($event)"
+                    (onEditingStart)="editExpense($event)" (onRowUpdated)="reload()" (onRowInserted)="reload()"
+                    (onRowRemoved)="reload()" [allowColumnResizing]="true" [columnAutoWidth]="true"
+                    [allowColumnReordering]="true" [hoverStateEnabled]="true"
+                    (onRowDblClick)="rowDoubleClicked($event)">
+
+                    <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+                    <dxo-paging [pageSize]="20"> </dxo-paging>
+                    <dxo-pager [visible]="true" [allowedPageSizes]="[10,20,50]" [displayMode]="'full'"
+                        [showPageSizeSelector]="true" [showInfo]="true" [showNavigationButtons]="true">
+                    </dxo-pager>
+
+                    <dxo-editing mode="row" [allowUpdating]="true" [allowDeleting]="true" [allowAdding]="true"></dxo-editing>
+
+                    <dxo-header-filter [visible]="true"></dxo-header-filter>
+                    <dxo-search-panel [visible]="true" [width]="240" placeholder="Search..."></dxo-search-panel>
+                    <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+                    <dxo-group-panel [visible]="true"></dxo-group-panel>
+                    <dxo-load-panel [enabled]="true"></dxo-load-panel>
+
+                    <dxo-toolbar>
+                        <dxi-item>
+                            <div *dxTemplate>
+                                <select class="form-select form-select-sm border-0" [(ngModel)]="selectedYear"
+                                    (change)="reload()">
+                                    <option [value]="currentYear" selected>{{currentYear}}</option>
+                                    <option [value]="currentYear - 1">{{currentYear - 1}}</option>
+                                    <option [value]="currentYear - 2">{{currentYear - 2}}</option>
+                                    <option [value]="currentYear - 3">{{currentYear - 3}}</option>
+                                    <option [value]="currentYear - 4">{{currentYear - 4}}</option>
+                                </select>
+                            </div>
+                        </dxi-item>
+                        <dxi-item name="groupPanel"></dxi-item>
+                        <dxi-item location="after">
+                            <div *dxTemplate>
+                                <dx-button stylingMode="text" (click)="newExpense()" icon="add"
+                                    [text]="'New' | translate"> </dx-button>
+                            </div>
+                        </dxi-item>
+                        <dxi-item location="after">
+                            <div *dxTemplate>
+                                <dx-button stylingMode="text" icon="refresh" (onClick)="reload()"> </dx-button>
+                            </div>
+                        </dxi-item>
+                        <dxi-item name="exportButton"></dxi-item>
+                        <dxi-item name="columnChooserButton"></dxi-item>
+                        <dxi-item name="searchPanel"></dxi-item>
+                    </dxo-toolbar>
+
+                    <dxi-column dataField="customer" [caption]="'Customer' | translate">
+                        <dxo-lookup [dataSource]="customers" displayExpr="name" valueExpr="id">
+                        </dxo-lookup>
+                    </dxi-column>
+                    <dxi-column dataField="title" [caption]="'Title' | translate"></dxi-column>
+                    <dxi-column dataField="description" [caption]="'Description' | translate"></dxi-column>
+                    <dxi-column dataField="date" [caption]="'Date' | translate" dataType="date"></dxi-column>
+                    <dxi-column dataField="total" [caption]="'Total' | translate" dataType="number" format="#,##0.00" cellTemplate="totalTemplate">
+                        <div *dxTemplate="let d of 'totalTemplate'">
+                            {{ d.data.total | currencyFormat }}
+                        </div>
+                    </dxi-column>
+
+                    <dxi-column [visible]="false" dataField="created" [caption]="'Created' | translate" dataType="date"></dxi-column>
+                    <dxi-column [visible]="false" dataField="updated" [caption]="'Updated' | translate" dataType="date"></dxi-column>
+
+                </dx-data-grid>
+            </div>
+        </div>
+    </div>
+
+</div>

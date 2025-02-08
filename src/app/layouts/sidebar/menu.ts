@@ -40,7 +40,7 @@ export const MENU: MenuItem[] = [
         id: 2,
         label: 'Transactions',
         icon: 'las la-exchange-alt',
-        link: '/expenses',
+        link: '/transactions',
     },
     {
         id: 2,
@@ -52,7 +52,7 @@ export const MENU: MenuItem[] = [
         id: 2,
         label: 'Vendors',
         icon: ' las la-truck',
-        link: '/customers',
+        link: '/vendors',
     },
     {
         id: 52,

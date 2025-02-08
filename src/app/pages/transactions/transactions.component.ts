@@ -1,0 +1,125 @@
+import { Component, ViewChild } from '@angular/core';
+import { DxButtonModule, DxDataGridComponent, DxDataGridModule, DxLookupComponent, DxLookupModule, DxPopupModule, DxSelectBoxModule } from 'devextreme-angular';
+import { PocketBaseService } from '../../core/services/pocket-base.service';
+import { ToastService } from '../../core/services/toast.service';
+import { FormsModule } from '@angular/forms';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { CurrencyFormatPipe } from '../../core/pipes/number-format.pipe';
+import { StatsWidgetComponent } from '../../core/componate/stats-widget/stats-widget.component';
+import { CountUpModule } from 'ngx-countup';
+import { SettingsService } from '../../core/services/settings.service';
+
+@Component({
+    selector: 'app-transactions',
+    standalone: true,
+    imports: [DxDataGridModule, StatsWidgetComponent, CountUpModule, TranslateModule, DxButtonModule, CurrencyFormatPipe, DxLookupModule, DxPopupModule, DxSelectBoxModule, FormsModule],
+    templateUrl: './transactions.component.html',
+    styleUrl: './transactions.component.scss'
+})
+export class TransactionsComponent {
+
+    public data: any;
+    public allData: any;
+    public currentTransaction: any = null;
+    public currentDate = new Date().toISOString();
+    public currentYear = new Date().getFullYear();
+    public selectedYear = this.currentYear;
+    public customers: any = [];
+    public vendors: any = [];
+    public types: any = [];
+    public expenses: any = [];
+    public inflow: any = [];
+    public dataNetIncome: any = [];
+    public defaultCurrency ='€'
+
+    @ViewChild('grid')
+    public grid?: DxDataGridComponent;
+
+    constructor(private pocketbase: PocketBaseService, private settings: SettingsService, private translation: TranslateService, private toast: ToastService) {
+        this.getData();
+        this.setTypes();
+        this.defaultCurrency = settings.settings.defaultCurrency;
+    }
+    
+    public async setTypes() {
+        this.types = [ 
+            {  
+                name: await this.translation.get('out').toPromise(),
+                value: 'out'
+            },
+            {
+                name: await this.translation.get('in').toPromise(),
+                value: 'in'
+            }
+        ]
+    }
+
+    public initNewRow(e: any) {
+        console.log(e);
+    }
+
+    async editTransaction(e: any) {
+        this.currentTransaction = e.data;
+    }
+
+    async newTransaction() {
+        this.grid?.instance.addRow();
+        this.currentTransaction = null;
+    }
+
+    async getData() {
+        this.allData = await this.pocketbase.pb.collection('transactions').getFullList({
+            expand: 'customer',
+            sort: '-date'
+        });
+
+        this.data = [...this.allData];
+        this.expenses = [...this.allData.filter((s: any) => s.type == 'out')];
+        this.inflow = [...this.allData.filter((s: any) => s.type == 'in')];
+        this.dataNetIncome = [...this.allData.map((s: any) => { 
+            return {
+                ...s,
+                total: s.type == 'in' ? s.total : -1 * s.total
+            }
+         } )];        
+    }
+
+    async saved(e: any) {
+        if (e.changes[0].type == 'remove') {
+            await this.pocketbase.pb.collection('transactions').delete(e.changes[0].key.id);
+        } else {
+            const data = e.changes[0].data;
+            if (data.id) {
+                await this.pocketbase.pb.collection('transactions').update(data.id, data);
+            } else {
+                await this.pocketbase.pb.collection('transactions').create(data);
+            }
+        }
+        this.reload();
+    }
+
+    async reload() {
+        this.grid?.instance.cancelEditData();
+        this.getData();
+    }
+
+    onEditorPreparing(e: any) {
+        console.log(e)
+        if (e.dataField === "created" || e.dataField === "updated" || e.dataField == "expense" || e.dataField == "invoice") {
+            e.editorOptions.disabled = true;  
+        }
+        if (e.dataField === "date") {
+            e.editorOptions.value = new Date();
+        }
+        if (e.dataField === "type") {
+            e.editorOptions.value = 'in';
+        }
+        if (e.dataField === "total") {
+            e.editorOptions.value = 0.0;
+        }
+    }
+
+    rowDoubleClicked(e: any) {
+        this.grid?.instance.editRow(e.rowIndex);
+    }
+}
