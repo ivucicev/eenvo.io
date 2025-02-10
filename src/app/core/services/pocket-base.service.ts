@@ -11,7 +11,7 @@ import { COLLECTIONS } from '../models/collections';
 export class PocketBaseService {
 
     private authStore = new BehaviorSubject<any>(null);
-    private  pb: PocketBase;
+    private pb: PocketBase;
     
     public authStore$ = this.authStore.asObservable();
     public auth: any = null;

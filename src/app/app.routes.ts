@@ -10,22 +10,18 @@ import { settingsResolver } from './core/resolver/settings.resolver';
 export const authGuard: CanActivateFn = async (route, state) => {
     const router = inject(Router);
     const pb = inject(PocketBaseService);
-
     if (pb.userAuth.isValid) {
         return true;
     }
-
     return router.createUrlTree(['/auth']);
 };
 
 export const publicGuard: CanActivateFn = async (route, state) => {
     const router = inject(Router);
     const pb = inject(PocketBaseService);
-
     if (pb.userAuth.isValid) {
         return router.createUrlTree(['/']);
     }
-
     return true;
 };
 

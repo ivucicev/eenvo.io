@@ -70,7 +70,6 @@ export class InvoiceGeneratorService {
                 doc.text(this.translate.instant("Due Date"), SECOND_COLUMN_MARGIN, Y);
                 doc.text(this.date.transform(invoice.dueDate), RIGHT_END, Y, { align: 'right' });
 
-                console.log(invoice.dueDate, this.date.transform(invoice.dueDate))
                 Y += 5;
                 if (invoice.deliveryDate) {
                     doc.text(this.translate.instant("Delivery Date"), SECOND_COLUMN_MARGIN, Y);

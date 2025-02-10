@@ -102,7 +102,7 @@
                 <div class="dropdown header-item" ngbDropdown>
                     <button type="button" class="btn d-flex align-items-center" id="page-header-user-dropdown" ngbDropdownToggle>
                         <span class="d-flex align-items-center">
-                            <img class="rounded-circle header-profile-user" [src]="currentUser.avatar"
+                            <img class="rounded-circle header-profile-user" [src]="currentUser.avatar" onerror="this.src='assets/images/users/user-dummy-img.jpg'"
                             alt="Header Avatar">
                         </span>
                     </button>

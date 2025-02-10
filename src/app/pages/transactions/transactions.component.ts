@@ -30,7 +30,7 @@ export class TransactionsComponent {
     public expenses: any = [];
     public inflow: any = [];
     public dataNetIncome: any = [];
-    public defaultCurrency ='€'
+    public defaultCurrency;
 
     @ViewChild('grid')
     public grid?: DxDataGridComponent;
@@ -38,7 +38,7 @@ export class TransactionsComponent {
     constructor(private pocketbase: PocketBaseService, private settings: SettingsService, private translation: TranslateService, private toast: ToastService) {
         this.getData();
         this.setTypes();
-        this.defaultCurrency = settings.settings.defaultCurrency;
+        this.defaultCurrency = settings.settings?.defaultCurrency || '€';
     }
     
     public async setTypes() {

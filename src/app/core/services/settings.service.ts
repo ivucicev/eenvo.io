@@ -96,16 +96,15 @@ export class SettingsService {
                     columns.forEach(c => {
                         switch (c.dataType) {
                             case "date":
-                                c.format = DateFormats[this.settings.dateFormat].format;
+                                c.format = DateFormats[this.settings?.dateFormat]?.format || 'dd.MM.yyyy';
                                 break;
                             case "datetime":
-                                c.format = DateFormats[this.settings.dateFormat].format;
+                                c.format = DateFormats[this.settings?.dateFormat]?.format || 'dd.MM.yyyy';
                                 break;
                         }
                     })
                 },
                 onExporting: (e) => {
-                    console.log(e)
                     if (e.format == "pdf") {
                         const doc = new jsPDF();
                         pdf.exportDataGrid({
@@ -160,7 +159,7 @@ export class SettingsService {
                     if (!e.component?.instance()) return
                     if (isCurrency && e.component?.instance()) {
                         e.component.resetOption('format');
-                        e.component.option('format', ` ${this.settings.currency} #,##0.00`);
+                        e.component.option('format', ` ${this.settings?.currency || '€'} #,##0.00`);
                     }
                     if (isUnit && e.component?.instance()) {
                         let unit = element?.dataset['unit'];

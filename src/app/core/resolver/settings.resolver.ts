@@ -7,7 +7,9 @@ export const settingsResolver: ResolveFn<any> = async (route, state) => {
     
     const pb = inject(PocketBaseService);
     const settings = inject(SettingsService);
-    settings.settings = await pb.settings.getFirstListItem(`company="${pb.auth.company}"`);
+    try {
+        settings.settings = await pb.settings.getFirstListItem(`company="${pb.auth.company}"`);
+    } catch(e) {}
     settings.reinit();
     return settings.settings;
 };

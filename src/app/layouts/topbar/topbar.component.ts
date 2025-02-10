@@ -3,7 +3,7 @@ import { SimplebarAngularModule } from 'simplebar-angular';
 import { Store } from '@ngrx/store';
 import { getLayoutMode, getSidebarSize } from '../../store/layouts/layout-selector';
 import { LAYOUT_MODE, SIDEBAR_SIZE } from '../../store/layouts/layout';
-import { changeMode, changeSidebarSize } from '../../store/layouts/layout-action';
+import { changeMode } from '../../store/layouts/layout-action';
 import { CommonModule, DOCUMENT } from '@angular/common';
 import { CookieService } from 'ngx-cookie-service';
 import { LanguageService } from '../../core/services/language.service';
@@ -71,7 +71,7 @@ export class TopbarComponent {
     }
 
     private loadUserDetails() {
-        const user = this.pocketbase.userAuth.record;
+        const user = this.pocketbase.auth;
         if (user) {
             this.currentUser = {
                 company: (user as any)['expand']['company']['name'],
@@ -84,7 +84,7 @@ export class TopbarComponent {
 
     async logout() {
         try {
-            this.pocketbase.userAuth.clear();
+            this.pocketbase.logout();
             await this.router.navigate(['/auth']);
         } catch (error) {
             console.error('Logout error:', error);
