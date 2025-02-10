@@ -37,7 +37,7 @@ export class CustomersComponent {
 	}
 
 	async getData() {
-		this.data = await this.pocketbase.pb.collection('customers').getFullList({
+		this.data = await this.pocketbase.customers.getFullList({
 			filter: `isVendor = ${this.isVendor}`
 		});
 	}
@@ -52,15 +52,15 @@ export class CustomersComponent {
 
 	async saved(e: any) {
 		if (e.changes[0].type == 'remove') {
-			await this.pocketbase.pb.collection('customers').delete(e.changes[0].key.id);
+			await this.pocketbase.customers.delete(e.changes[0].key.id);
 		} else {
 			const data = e.changes[0].data;
 			data.company = this.pocketbase.auth.company;
             data.isVendor = this.isVendor;
 			if (data.id) {
-				await this.pocketbase.pb.collection('customers').update(data.id, data);
+				await this.pocketbase.customers.update(data.id, data);
 			} else {
-				await this.pocketbase.pb.collection('customers').create(data);
+				await this.pocketbase.customers.create(data);
 			}
 		}
 	}

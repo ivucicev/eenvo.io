@@ -96,10 +96,10 @@ export class SettingsService {
                     columns.forEach(c => {
                         switch (c.dataType) {
                             case "date":
-                                c.format = DateFormats[this.settings.dateFormat].display;
+                                c.format = DateFormats[this.settings.dateFormat].format;
                                 break;
                             case "datetime":
-                                c.format = DateFormats[this.settings.dateFormat].display;
+                                c.format = DateFormats[this.settings.dateFormat].format;
                                 break;
                         }
                     })

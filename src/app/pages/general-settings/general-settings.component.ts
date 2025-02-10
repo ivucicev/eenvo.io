@@ -65,8 +65,7 @@ export class GeneralSettingsComponent {
 
     async getData() {
         try {
-            this.data = await this.pocketbase.pb
-                .collection('settings')
+            this.data = await this.pocketbase.settings
                 .getFirstListItem(`company="${this.pocketbase.auth.company}"`);
 
             this.settingsForm.patchValue(this.data);
@@ -78,8 +77,7 @@ export class GeneralSettingsComponent {
 
     private async createDefaultSettings() {
         try {
-            this.data = await this.pocketbase.pb
-                .collection('settings')
+            this.data = await this.pocketbase.settings
                 .create(this.settingsForm.getRawValue());
 
             this.settingsForm.patchValue(this.data);
@@ -96,8 +94,7 @@ export class GeneralSettingsComponent {
             formData.updated = new Date();
 
             try {
-                this.data = await this.pocketbase.pb
-                    .collection('settings')
+                this.data = await this.pocketbase.settings
                     .update(this.data.id, formData);
                 this.settingsService.settings = { ...this.data };
                 this.settingsService.reinit();

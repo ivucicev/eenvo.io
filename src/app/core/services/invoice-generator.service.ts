@@ -18,7 +18,7 @@ export class InvoiceGeneratorService {
 
     generate = async (id: any, preview = false) => {
 
-        const invoice: any = await this.pocketbase.pb.collection('invoices').getOne(id, { expand: 'customer,user,company,items' });
+        const invoice: any = await this.pocketbase.invoices.getOne(id, { expand: 'customer,user,company,items' });
 
         const doc: jsPDF | any = new jsPDF('p', 'mm', 'a4');
 

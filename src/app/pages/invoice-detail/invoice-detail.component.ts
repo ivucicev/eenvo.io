@@ -120,7 +120,7 @@ export class InvoiceDetailComponent {
 
         if (!invoice?.id) return;
 
-        const i: any = await this.pocketbase.pb.collection('invoices').getOne(invoice.id, { expand: 'items' });
+        const i: any = await this.pocketbase.invoices.getOne(invoice.id, { expand: 'items' });
 
         this.invoicesForm.patchValue(i);
 
@@ -143,11 +143,11 @@ export class InvoiceDetailComponent {
     }
 
     async getCustomers() {
-        this.customers = await this.pocketbase.pb.collection('customers').getFullList();
+        this.customers = await this.pocketbase.customers.getFullList();
     }
 
     async getServices() {
-        this.services = await this.pocketbase.pb.collection('services').getFullList();
+        this.services = await this.pocketbase.services.getFullList();
     }
 
     async customerSelected(e: any) {
@@ -203,11 +203,11 @@ export class InvoiceDetailComponent {
         const allItems: any = [];
         this.items.forEach((item: any) => {
             if (item.id)
-                allItems.push(this.pocketbase.pb.collection('items').update(item.id, item, {
+                allItems.push(this.pocketbase.items.update(item.id, item, {
                     '$autoCancel': false,
                 }));
             else
-                allItems.push(this.pocketbase.pb.collection('items').create(item, {
+                allItems.push(this.pocketbase.items.create(item, {
                     '$autoCancel': false,
                 }));
         })
@@ -217,10 +217,10 @@ export class InvoiceDetailComponent {
         invoice.items = itemsCreate.map(i => i.id);
 
         if (invoice.id) {
-            const updated = await this.pocketbase.pb.collection('invoices').update(invoice.id, invoice);
+            const updated = await this.pocketbase.invoices.update(invoice.id, invoice);
             this.toast.success();
         } else {
-            const created = await this.pocketbase.pb.collection('invoices').create(invoice);
+            const created = await this.pocketbase.invoices.create(invoice);
             this.invoicesForm.patchValue({ id: created.id });
             this.toast.success();
         }

@@ -11,7 +11,7 @@ export const authGuard: CanActivateFn = async (route, state) => {
     const router = inject(Router);
     const pb = inject(PocketBaseService);
 
-    if (pb.pb.authStore.isValid) {
+    if (pb.userAuth.isValid) {
         return true;
     }
 
@@ -22,7 +22,7 @@ export const publicGuard: CanActivateFn = async (route, state) => {
     const router = inject(Router);
     const pb = inject(PocketBaseService);
 
-    if (pb.pb.authStore.isValid) {
+    if (pb.userAuth.isValid) {
         return router.createUrlTree(['/']);
     }
 

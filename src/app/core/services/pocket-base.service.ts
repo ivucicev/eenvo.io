@@ -3,25 +3,26 @@ import PocketBase from 'pocketbase/cjs';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { ToastService } from './toast.service';
+import { COLLECTIONS } from '../models/collections';
 
 @Injectable({
     providedIn: 'root'
 })
 export class PocketBaseService {
 
-    public pb: PocketBase;
     private authStore = new BehaviorSubject<any>(null);
+    private  pb: PocketBase;
+    
     public authStore$ = this.authStore.asObservable();
     public auth: any = null;
 
     constructor(private toast: ToastService) {
-        this.pb = new PocketBase(environment.pocketbase);
+        this.pb = new PocketBase((window as any)['env'].pocketbase || environment.pocketbase);
 
         // Load any existing auth data
         if (this.pb.authStore.isValid) {
             this.authStore.next(this.pb.authStore.record);
             this.auth = this.pb.authStore.record;
-
         }
 
         this.pb.afterSend = (response, data) => {
@@ -51,12 +52,46 @@ export class PocketBaseService {
 
     }
 
-    public invoices = () => this.pb.collection('invoices');
-    public customers = () => this.pb.collection('customers');
+    public get userAuth() {
+        return this.pb.authStore;
+    }
+    public get files() {
+        return this.pb.files;
+    }
+    public get invoices() {
+        return this.pb.collection(COLLECTIONS.INVOICES);
+    }
+    public get customers() {
+        return this.pb.collection(COLLECTIONS.CUSTOMERS);
+    }
+    public get companies() {
+        return this.pb.collection(COLLECTIONS.COMPANIES);
+    }
+    public get users() {
+        return this.pb.collection(COLLECTIONS.USERS);
+    }
+    public get expenses() {
+        return this.pb.collection(COLLECTIONS.EXPENSES);
+    }
+    public get items() {
+        return this.pb.collection(COLLECTIONS.ITEMS);
+    }
+    public get services() {
+        return this.pb.collection(COLLECTIONS.SERVICES);
+    }
+    public get settings() {
+        return this.pb.collection(COLLECTIONS.SETTINGS);
+    }
+    public get templates() {
+        return this.pb.collection(COLLECTIONS.TEMPLATES);
+    }
+    public get transactions() {
+        return this.pb.collection(COLLECTIONS.TRANSACTIONS);
+    }
 
     async login(email: string, password: string) {
         try {
-            const authData: any = await this.pb.collection('users').authWithPassword(email, password, { expand: 'company' });
+            const authData: any = await this.users.authWithPassword(email, password, { expand: 'company' });
             if (!authData.record.verified) {
                 this.toast.warning('Account not verified. Please confirm your account.');
 
@@ -78,14 +113,14 @@ export class PocketBaseService {
 
         try {
 
-            company = await this.pb.collection('companies').create({
+            company = await this.companies.create({
                 name: companyName,
                 vatID: 'HRXXXXXXXXXXX',
                 email: email,
                 iban: 'HRXXXXXXXXXXXXX'
             });
 
-            user = await this.pb.collection('users').create({
+            user = await this.users.create({
                 email,
                 password,
                 passwordConfirm: password,
@@ -93,7 +128,7 @@ export class PocketBaseService {
                 company: company.id
             });
 
-            await this.pb.collection('users').requestVerification(email);
+            await this.users.requestVerification(email);
 
             this.toast.success("Registration was successful.");
             this.toast.warning("Please check your email, and confirm your account.");
@@ -102,7 +137,7 @@ export class PocketBaseService {
 
         } catch (error: any) {
             if (company?.id)
-                await this.pb.collection('companies').delete(company?.id);
+                await this.companies.delete(company?.id);
             let messages = '';
             if (error.data?.data)
                 Object.keys(error.data.data).forEach(key => {

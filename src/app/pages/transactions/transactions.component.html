@@ -68,16 +68,23 @@
                         <dxi-item name="searchPanel"></dxi-item>
                     </dxo-toolbar>
 
-                    <dxi-column dataField="type" dataType="string" [caption]="'Type' | translate">
+                    <dxi-column dataField="type" dataType="string" [caption]="'Type' | translate" cellTemplate="typeTemplate">
                         <dxo-lookup [dataSource]="types" valueExpr="value" displayExpr="name"></dxo-lookup>
                         <dxi-validation-rule type="required"></dxi-validation-rule>
+                        <div *dxTemplate="let d of 'typeTemplate'" [class.text-danger]="d.data?.type == 'out'" [class.text-primary]="d.data?.type == 'in'">
+                            @if (d.data?.type == 'in') {
+                                <i class="ri-arrow-right-down-fill"></i>
+                            } @else {
+                                <i class="ri-arrow-right-up-fill"></i>
+                            }
+                        </div>
                     </dxi-column>
 
                     <dxi-column dataField="title" [caption]="'Title' | translate">
                         <dxi-validation-rule type="required"></dxi-validation-rule>
                     </dxi-column>
-                    <dxi-column dataField="invoice" [caption]="'Invoice' | translate"></dxi-column>
-                    <dxi-column dataField="expense" [caption]="'Expense' | translate"></dxi-column>
+                    <dxi-column dataField="expand.invoice.number" [caption]="'Invoice' | translate"></dxi-column>
+                    <dxi-column dataField="expand.expense.title" [caption]="'Expense' | translate"></dxi-column>
                     <dxi-column dataField="date" [caption]="'Date' | translate" dataType="date">
                         <dxi-validation-rule type="required"></dxi-validation-rule>
                     </dxi-column>

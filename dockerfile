@@ -1,0 +1,53 @@
+# ====== Build Angular App ======
+FROM node:22.13 as angular-builder
+
+WORKDIR /app
+COPY . .
+
+RUN npm install --silent
+RUN npm install -g @angular/cli
+RUN chmod +x ./replace-env.sh
+RUN ./replace-env.sh
+RUN ng build --configuration production
+
+# ====== Download & Setup PocketBase ======
+FROM alpine:latest as pocketbase-builder
+
+ARG PB_VERSION=0.25.1
+
+RUN apk add --no-cache \
+    unzip \
+    ca-certificates \
+    curl
+
+# Download and extract PocketBase
+ADD https://github.com/pocketbase/pocketbase/releases/download/v${PB_VERSION}/pocketbase_${PB_VERSION}_linux_amd64.zip /tmp/pb.zip
+RUN unzip /tmp/pb.zip -d /pb/
+
+# Copy migrations and hooks if available
+COPY ./pb_migrations /pb/pb_migrations
+COPY ./pb_hooks /pb/pb_hooks
+
+# ====== Final Image with Nginx & PocketBase ======
+FROM nginx:alpine
+
+# Install required packages for process management
+RUN apk add --no-cache supervisor
+
+# Copy Angular build
+COPY --from=angular-builder /app/dist/eenvo/browser /usr/share/nginx/html
+
+# Copy PocketBase binary
+COPY --from=pocketbase-builder /pb /pb
+
+# Copy Nginx configuration
+COPY ./nginx.conf /etc/nginx/conf.d/default.conf
+
+# Copy Supervisor configuration
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+# Expose ports (HTTP for Angular and PocketBase)
+EXPOSE 80 8080
+
+# Start both Nginx and PocketBase using Supervisor
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]

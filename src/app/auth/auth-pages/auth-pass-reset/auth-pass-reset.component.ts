@@ -35,7 +35,7 @@ export class AuthPassResetComponent {
             this.errorMessage = '';
 
             try {
-                await this.pocketbase.pb.collection('users').requestPasswordReset(
+                await this.pocketbase.users.requestPasswordReset(
                     this.resetForm.value.email
                 );
                 this.resetSuccess = true;

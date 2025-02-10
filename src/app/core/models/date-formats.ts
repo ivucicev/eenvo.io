@@ -2,6 +2,7 @@ export const DateFormats: any = {
     'numeric': {
         id: 'numeric',
         display: '12/31/2024',
+        format: 'MM/dd/yyyy',
         locale: 'en',
         options: {
             month: '2-digit',
@@ -11,6 +12,7 @@ export const DateFormats: any = {
     },
     'numeric-eu': {
         id: 'numeric-eu',
+        format: 'dd/MM/yyyy',
         display: '31/12/2024',
         locale: 'de',
         options: {
@@ -21,6 +23,7 @@ export const DateFormats: any = {
     },
     'numeric-dots': {
         id: 'numeric-dots',
+        format: 'dd.MM.yyyy',
         display: '31.12.2024',
         locale: 'de',
         options: {
@@ -33,6 +36,7 @@ export const DateFormats: any = {
         id: 'numeric-dashes',
         locale: 'de',
         display: '31-12-2024',
+        format: 'dd-MM-yyyy',
         options: {
             day: '2-digit',
             month: '2-digit',
@@ -42,6 +46,7 @@ export const DateFormats: any = {
     'iso': {
         id: 'iso',
         locale: 'en',
+        format: 'yyyy-MM-dd',
         display: '2024-12-31',
         options: {
             year: 'numeric',

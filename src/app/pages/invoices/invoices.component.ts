@@ -68,7 +68,7 @@ export class InvoicesComponent {
 
     markAsPayed = async (e: DxDataGridTypes.ColumnButtonClickEvent) => {
 
-        await this.pocketbase.pb.collection('invoices').update(e.row?.data.id, {
+        await this.pocketbase.invoices.update(e.row?.data.id, {
             'isPaid': true,
             'paymentDate': new Date()
         })
@@ -77,17 +77,32 @@ export class InvoicesComponent {
             e.row.data.paymentDate = new Date()
         }
         this.toast.success();
+
+        await this.createTransaction(e.row?.data);
+
         this.reload()
 
         e?.event?.preventDefault();
     };
+
+    async createTransaction(invoice: any) {
+        const transaction = {
+            date: invoice.paymentDate,
+            title: invoice.number,
+            total: invoice.total,
+            user: this.pocketbase.auth.id,
+            invoice: invoice.id,
+            type: 'in'
+        };
+        await this.pocketbase.transactions.create(transaction);
+    }
 
     duplicateInvoice = async (e: DxDataGridTypes.ColumnButtonClickEvent) => {
         const originalInvoice = e.row?.data;
         if (!originalInvoice) return;
 
         // Get the full invoice data with expanded relations
-        const fullInvoice: any = await this.pocketbase.pb.collection('invoices').getOne(originalInvoice.id, {
+        const fullInvoice: any = await this.pocketbase.invoices.getOne(originalInvoice.id, {
             expand: 'items'
         });
 
@@ -112,6 +127,7 @@ export class InvoicesComponent {
             discountValue: fullInvoice.discountValue,
             taxValue: fullInvoice.taxValue,
             currency: fullInvoice.currency,
+            user: fullInvoice.user,
             items: []
         };
 
@@ -127,7 +143,7 @@ export class InvoicesComponent {
                     tax: item.tax,
                     total: item.total
                 };
-                allItems.push(this.pocketbase.pb.collection('items').create(newItem, {
+                allItems.push(this.pocketbase.items.create(newItem, {
                     '$autoCancel': false,
                 }));
             }
@@ -138,7 +154,7 @@ export class InvoicesComponent {
         newInvoice.items = itemsCreate.map(i => i.id);
 
         // Create the new invoice
-        const createdInvoice = await this.pocketbase.pb.collection('invoices').create(newInvoice);
+        const createdInvoice = await this.pocketbase.invoices.create(newInvoice);
 
         this.toast.success();
         this.reload();
@@ -169,7 +185,7 @@ export class InvoicesComponent {
         const thisYear = new Date(this.selectedYear, 0, 1).toISOString();//.slice(0, 10);
         const currentYearEnd = new Date(+this.selectedYear + 1, 0, 1).toISOString();//.slice(0, 10);
 
-        this.allData = await this.pocketbase.pb.collection('invoices').getFullList({
+        this.allData = await this.pocketbase.invoices.getFullList({
             expand: 'customer,user',
             filter: `date > "${thisYear}" && date <= "${currentYearEnd}"`,
             sort: '-date'
@@ -186,15 +202,14 @@ export class InvoicesComponent {
 
     async saved(e: any) {
         if (e.changes[0].type == 'remove') {
-            console.log(e.changes[0].key.items)
             const toDelete: any = [];
             e.changes[0].key.items?.forEach((item: any) => {
-                toDelete.push(this.pocketbase.pb.collection('items').delete(item, {
+                toDelete.push(this.pocketbase.items.delete(item, {
                     '$autoCancel': false,
                 }));
             })
             const deleted = await Promise.all(toDelete);
-            await this.pocketbase.pb.collection('invoices').delete(e.changes[0].key.id);
+            await this.pocketbase.invoices.delete(e.changes[0].key.id);
         }
         this.reload();
     }

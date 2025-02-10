@@ -7,7 +7,6 @@ import { rootReducer } from './store';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { HttpClient, provideHttpClient } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 import { LayoutEffects } from './store/layouts/layout-effect';
 import { provideEffects } from '@ngrx/effects';
 
@@ -49,7 +48,6 @@ export const appConfig: ApplicationConfig = {
         provideAnimations(),
         provideStore(rootReducer),
         provideEffects(LayoutEffects), // Register effects
-        provideNgxMask(),
         importProvidersFrom(
             TranslateModule.forRoot({
                 missingTranslationHandler: {

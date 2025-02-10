@@ -55,10 +55,18 @@ export class TransactionsComponent {
     }
 
     public initNewRow(e: any) {
-        console.log(e);
+        e.data['type'] = 'out';
+        e.data['date'] = new Date();
+        e.data['total']= 0.0;
+        e.data['user'] = this.pocketbase.auth.id;
     }
 
     async editTransaction(e: any) {
+        if (e.data.invoice || e.data.expense) {
+            this.toast.warning('Cannot edit transaction that came from invoice or expense.');
+            e.cancel = true;
+            return;
+        }
         this.currentTransaction = e.data;
     }
 
@@ -68,8 +76,8 @@ export class TransactionsComponent {
     }
 
     async getData() {
-        this.allData = await this.pocketbase.pb.collection('transactions').getFullList({
-            expand: 'customer',
+        this.allData = await this.pocketbase.transactions.getFullList({
+            expand: 'customer,invoice,expense',
             sort: '-date'
         });
 
@@ -86,13 +94,13 @@ export class TransactionsComponent {
 
     async saved(e: any) {
         if (e.changes[0].type == 'remove') {
-            await this.pocketbase.pb.collection('transactions').delete(e.changes[0].key.id);
+            await this.pocketbase.transactions.delete(e.changes[0].key.id);
         } else {
             const data = e.changes[0].data;
             if (data.id) {
-                await this.pocketbase.pb.collection('transactions').update(data.id, data);
+                await this.pocketbase.transactions.update(data.id, data);
             } else {
-                await this.pocketbase.pb.collection('transactions').create(data);
+                await this.pocketbase.transactions.create(data);
             }
         }
         this.reload();
@@ -104,18 +112,8 @@ export class TransactionsComponent {
     }
 
     onEditorPreparing(e: any) {
-        console.log(e)
-        if (e.dataField === "created" || e.dataField === "updated" || e.dataField == "expense" || e.dataField == "invoice") {
+        if (e.dataField === "created" || e.dataField === "updated" || e.dataField == "expand.expense.title" || e.dataField == "expand.invoice.number") {
             e.editorOptions.disabled = true;  
-        }
-        if (e.dataField === "date") {
-            e.editorOptions.value = new Date();
-        }
-        if (e.dataField === "type") {
-            e.editorOptions.value = 'in';
-        }
-        if (e.dataField === "total") {
-            e.editorOptions.value = 0.0;
         }
     }
 

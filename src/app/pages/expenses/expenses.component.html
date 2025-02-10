@@ -1,6 +1,23 @@
 <div class="row">
     <div class="col-4">
-       <eenvo-stats-widget [title]="'Expenses last 31 days' | translate" [data]="data" [secondaryColor]="'bg-primary'"></eenvo-stats-widget>
+        <eenvo-stats-widget [title]="'Expenses last 31 days' | translate" [data]="data"
+            [secondaryColor]="'bg-primary'"></eenvo-stats-widget>
+    </div>
+    <div class="col-8">
+        <!-- <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center">                    
+                    <dx-pie-chart width="100%" id="pie" type="doughnut" palette="Soft Pastel"
+                        [dataSource]="chartDS">
+                        <dxi-series argumentField="region">
+                        </dxi-series>
+                        <dxo-export [enabled]="true"></dxo-export>
+                        <dxo-legend [margin]="0" horizontalAlignment="right" verticalAlignment="top"></dxo-legend>
+                    </dx-pie-chart>
+                </div>
+            </div>
+        </div> -->
+        ​
     </div>
 </div>
 
@@ -8,12 +25,11 @@
     <div class="col-lg-12">
         <div class="card">
             <div class="card-body">
-                <dx-data-grid #grid [dataSource]="data" 
-                    (onEditorPreparing)="onEditorPreparing($event)" (onInitNewRow)="initNewRow($event)" (onSaved)="saved($event)"
-                    (onEditingStart)="editExpense($event)" (onRowUpdated)="reload()" (onRowInserted)="reload()"
-                    (onRowRemoved)="reload()" [allowColumnResizing]="true" [columnAutoWidth]="true"
-                    [allowColumnReordering]="true" [hoverStateEnabled]="true"
-                    (onRowDblClick)="rowDoubleClicked($event)">
+                <dx-data-grid #grid [dataSource]="data" (onEditorPreparing)="onEditorPreparing($event)"
+                    (onInitNewRow)="initNewRow($event)" (onSaved)="saved($event)" (onEditingStart)="editExpense($event)"
+                    (onRowUpdated)="reload()" (onRowInserted)="reload()" (onRowRemoved)="reload()"
+                    [allowColumnResizing]="true" [columnAutoWidth]="true" [allowColumnReordering]="true"
+                    [hoverStateEnabled]="true" (onRowDblClick)="rowDoubleClicked($event)">
 
                     <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
                     <dxo-paging [pageSize]="20"> </dxo-paging>
@@ -21,7 +37,8 @@
                         [showPageSizeSelector]="true" [showInfo]="true" [showNavigationButtons]="true">
                     </dxo-pager>
 
-                    <dxo-editing mode="row" [allowUpdating]="true" [allowDeleting]="true" [allowAdding]="true"></dxo-editing>
+                    <dxo-editing mode="row" [allowUpdating]="true" [allowDeleting]="true"
+                        [allowAdding]="true"></dxo-editing>
 
                     <dxo-header-filter [visible]="true"></dxo-header-filter>
                     <dxo-search-panel [visible]="true" [width]="240" placeholder="Search..."></dxo-search-panel>
@@ -59,21 +76,26 @@
                         <dxi-item name="searchPanel"></dxi-item>
                     </dxo-toolbar>
 
-                    <dxi-column dataField="customer" [caption]="'Customer' | translate">
+                    <dxi-column dataField="customer" [caption]="'Customer/Vendor' | translate">
                         <dxo-lookup [dataSource]="customers" displayExpr="name" valueExpr="id">
                         </dxo-lookup>
                     </dxi-column>
                     <dxi-column dataField="title" [caption]="'Title' | translate"></dxi-column>
                     <dxi-column dataField="description" [caption]="'Description' | translate"></dxi-column>
-                    <dxi-column dataField="date" [caption]="'Date' | translate" dataType="date"></dxi-column>
-                    <dxi-column dataField="total" [caption]="'Total' | translate" dataType="number" format="#,##0.00" cellTemplate="totalTemplate">
+                    <dxi-column dataField="date" [caption]="'Date' | translate" dataType="date">
+                        <dxi-validation-rule type="required"></dxi-validation-rule>
+                    </dxi-column>
+                    <dxi-column dataField="total" [caption]="'Total' | translate" dataType="number" format="#,##0.00"
+                        cellTemplate="totalTemplate">
                         <div *dxTemplate="let d of 'totalTemplate'">
                             {{ d.data.total | currencyFormat }}
                         </div>
                     </dxi-column>
 
-                    <dxi-column [visible]="false" dataField="created" [caption]="'Created' | translate" dataType="date"></dxi-column>
-                    <dxi-column [visible]="false" dataField="updated" [caption]="'Updated' | translate" dataType="date"></dxi-column>
+                    <dxi-column [visible]="false" dataField="created" [caption]="'Created' | translate"
+                        dataType="date"></dxi-column>
+                    <dxi-column [visible]="false" dataField="updated" [caption]="'Updated' | translate"
+                        dataType="date"></dxi-column>
 
                 </dx-data-grid>
             </div>

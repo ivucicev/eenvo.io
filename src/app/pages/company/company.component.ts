@@ -59,7 +59,7 @@ export class CompanyComponent {
 	}
 
 	async getData() {
-		this.data = await this.pocketbase.pb.collection('companies').getOne(this.pocketbase.auth.company);
+		this.data = await this.pocketbase.companies.getOne(this.pocketbase.auth.company);
 		this.companyForm.patchValue(this.data);
 
 		this.logo += this.data.id + '/' + this.data.logo;
@@ -72,13 +72,13 @@ export class CompanyComponent {
 		const formData = new FormData();
 		formData.append('logo', file);
 
-		this.data = await this.pocketbase.pb.collection('companies').update(this.data.id, formData);
+		this.data = await this.pocketbase.companies.update(this.data.id, formData);
 
 	}
 
 	async submit() {
 		const data = this.companyForm.getRawValue();
-		this.data = await this.pocketbase.pb.collection('companies').update(data.id, data);
+		this.data = await this.pocketbase.companies.update(data.id, data);
 		this.toast.success()
 	}
 

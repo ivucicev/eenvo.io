@@ -3,11 +3,12 @@ import { Component, inject } from '@angular/core';
 import { NgClass, NgTemplateOutlet } from '@angular/common';
 import { NgbToastModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToastService } from '../services/toast.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
 	selector: 'eenvo-toasts',
 	standalone: true,
-	imports: [NgbToastModule],
+	imports: [NgbToastModule, TranslateModule],
 	template: `
 		@for (toast of toastService.toasts; track toast) {
 			<ngb-toast
@@ -21,17 +22,17 @@ import { ToastService } from '../services/toast.service';
 			>
 			@if (toast.type == "error") {
 				<h6 class="mb-0"> <i class="ri-close-circle-fill align-middle"></i> 
-					{{ toast.template || 'Something is very wrong!' }} 
+					{{ (toast.template || 'Something is very wrong!') | translate }} 
 				</h6>
 			}
 			@if (toast.type == "success") {
 				<h6 class="mb-0"> <i class="ri-checkbox-circle-fill align-middle"></i> 
-					{{ toast.template || 'Action completed sucessfully.' }} 
+					{{ (toast.template || 'Action completed sucessfully.') | translate }} 
 				</h6>
 			}
 			@if (toast.type == "warning") {
 				<h6 class="mb-0"> <i class="ri-error-warning-line align-middle"></i> 
-					{{ toast.template || 'Warning.' }} 
+					{{ (toast.template || 'Warning.') | translate }} 
 				</h6>
 			}
 			</ngb-toast>

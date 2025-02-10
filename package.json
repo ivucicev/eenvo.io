@@ -41,7 +41,6 @@
 		"ngx-cookie-service": "^18.0.0",
 		"ngx-countup": "^13.2.0",
 		"ngx-editor": "^18.0.0",
-		"ngx-mask": "^18.0.4",
 		"ngx-pipes": "^3.2.2",
 		"pocketbase": "^0.25.1",
 		"rxjs": "~7.8.0",

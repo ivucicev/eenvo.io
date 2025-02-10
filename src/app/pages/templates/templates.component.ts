@@ -22,7 +22,7 @@ export class TemplatesComponent {
 	}
 
 	async getData() {
-		this.data = await this.pocketbase.pb.collection('templates').getFullList();
+		this.data = await this.pocketbase.templates.getFullList();
 	}
 
 	async newRow(e: any) {
@@ -31,14 +31,14 @@ export class TemplatesComponent {
 
 	async saved(e: any) {
 		if (e.changes[0].type == 'remove') {
-			await this.pocketbase.pb.collection('templates').delete(e.changes[0].key.id);
+			await this.pocketbase.templates.delete(e.changes[0].key.id);
 		} else {
 			const data = e.changes[0].data;
 			data.company = this.pocketbase.auth.company;
 			if (data.id) {
-				await this.pocketbase.pb.collection('templates').update(data.id, data);
+				await this.pocketbase.templates.update(data.id, data);
 			} else {
-				await this.pocketbase.pb.collection('templates').create(data);
+				await this.pocketbase.templates.create(data);
 			}
 		}
 	}
