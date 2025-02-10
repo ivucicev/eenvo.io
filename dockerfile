@@ -1,17 +1,15 @@
 # ====== Build Angular App ======
-FROM node:22.13 as angular-builder
+FROM node:22.13 AS angular-builder
 
 WORKDIR /app
 COPY . .
 
 RUN npm install --silent
 RUN npm install -g @angular/cli
-RUN chmod +x ./replace-env.sh
-RUN ./replace-env.sh
 RUN ng build --configuration production
 
 # ====== Download & Setup PocketBase ======
-FROM alpine:latest as pocketbase-builder
+FROM alpine:latest AS pocketbase-builder
 
 ARG PB_VERSION=0.25.1
 
@@ -31,7 +29,7 @@ COPY ./pb_hooks /pb/pb_hooks
 # ====== Final Image with Nginx & PocketBase ======
 FROM nginx:alpine
 
-# Install required packages for process management
+# Install Supervisor for process management
 RUN apk add --no-cache supervisor
 
 # Copy Angular build
@@ -46,8 +44,16 @@ COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 # Copy Supervisor configuration
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-# Expose ports (HTTP for Angular and PocketBase)
+# Copy the replace-env script and ensure it's executable
+COPY replace-env.sh /replace-env.sh
+RUN chmod +x /replace-env.sh
+
+# Expose necessary ports
 EXPOSE 80 8080
 
 # Start both Nginx and PocketBase using Supervisor
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+CMD ["/bin/sh", "-c", "/replace-env.sh && exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf"]
+
+
+# docker build . -t ivucicev/eenvo.io:latest
+# docker run -e API_URL=http://0.0.0.0:8080/api/ -p 8080:8080 -p 80:80 ivucicev/eenvo.io:latest

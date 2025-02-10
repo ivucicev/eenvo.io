@@ -94,6 +94,11 @@ export class TransactionsComponent {
 
     async saved(e: any) {
         if (e.changes[0].type == 'remove') {
+            if (e.changes[0].key.invoice || e.changes[0].key.expense) {
+                this.toast.warning('Cannot delete transaction that came from invoice or expense.');
+                e.cancel = true;
+                return;
+            }
             await this.pocketbase.transactions.delete(e.changes[0].key.id);
         } else {
             const data = e.changes[0].data;

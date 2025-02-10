@@ -71,7 +71,7 @@
                     <dxi-column dataField="type" dataType="string" [caption]="'Type' | translate" cellTemplate="typeTemplate">
                         <dxo-lookup [dataSource]="types" valueExpr="value" displayExpr="name"></dxo-lookup>
                         <dxi-validation-rule type="required"></dxi-validation-rule>
-                        <div *dxTemplate="let d of 'typeTemplate'" [class.text-danger]="d.data?.type == 'out'" [class.text-primary]="d.data?.type == 'in'">
+                        <div *dxTemplate="let d of 'typeTemplate'" class="text-center" [class.text-danger]="d.data?.type == 'out'" [class.text-primary]="d.data?.type == 'in'">
                             @if (d.data?.type == 'in') {
                                 <i class="ri-arrow-right-down-fill"></i>
                             } @else {
