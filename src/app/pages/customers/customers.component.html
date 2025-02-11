@@ -7,21 +7,7 @@
             <div class="card-body">
                 <dx-data-grid #grid [dataSource]="data" (onInitNewRow)="newRow($event)"
                     (onEditorPreparing)="onEditorPreparing($event)" (onSaved)="saved($event)" (onRowUpdated)="reload()"
-                    (onRowInserted)="reload()" (onRowRemoved)="reload()" [allowColumnResizing]="true"
-                    [columnAutoWidth]="true" [allowColumnReordering]="true">
-                    
-                    <dxo-editing mode="row" [allowUpdating]="true" [allowDeleting]="true" [allowAdding]="true">
-                    </dxo-editing>
-
-                    <dxo-header-filter [visible]="true"></dxo-header-filter>
-                    <dxo-search-panel [visible]="true" [width]="240" placeholder="Search..."></dxo-search-panel>
-                    <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
-                    <dxo-group-panel [visible]="true"></dxo-group-panel>
-
-                    <dxi-column type="buttons" [fixed]="true" fixedPosition="right" alignment="left">
-                        <dxi-button name="edit"></dxi-button>
-                        <dxi-button name="delete"></dxi-button>
-                    </dxi-column>
+                    (onRowInserted)="reload()" (onRowRemoved)="reload()">
 
                     <dxo-toolbar>
                         <dxi-item name="groupPanel"></dxi-item>

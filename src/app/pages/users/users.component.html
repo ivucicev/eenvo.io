@@ -7,15 +7,8 @@
             <div class="card-body">
                 <dx-data-grid #grid [dataSource]="data" (onInitNewRow)="newRow($event)"
                     (onEditorPreparing)="onEditorPreparing($event)" (onSaved)="saved($event)" (onRowUpdated)="reload()"
-                    (onRowInserted)="reload()" (onRowRemoved)="reload()" [allowColumnResizing]="true" [columnAutoWidth]="true" 
-                    [allowColumnReordering]="true">
-                    <dxo-editing mode="row" [allowUpdating]="true" [allowDeleting]="true" [allowAdding]="true" >
-                    </dxo-editing>
-                    <dxo-header-filter [visible]="true"></dxo-header-filter>
-                    <dxo-search-panel [visible]="true" [width]="240" placeholder="Search..."></dxo-search-panel>
-                    <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
-                    <dxo-group-panel [visible]="true"></dxo-group-panel>
-
+                    (onRowInserted)="reload()" (onRowRemoved)="reload()">
+                    
                     <dxi-column [allowFiltering]="false" [allowResizing]="false" [allowSorting]="false" [allowSearch]="false" [width]="80" dataField="avatar" caption="" cellTemplate="avatarCell" editCellTemplate="avatarEdit">
                         <div *dxTemplate="let d of 'avatarCell'">
                             <img [src]="d.data.avatar ? apiURL + d.data.id + '/' + d.data.avatar : 'assets/images/users/user-dummy-img.jpg'" alt="Avatar" width="40" height="40" style="border-radius: 50%;">

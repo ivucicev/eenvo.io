@@ -7,17 +7,8 @@
             <div class="card-body">
                 <dx-data-grid #grid [dataSource]="data" (onInitNewRow)="newRow($event)"
                     (onEditorPreparing)="onEditorPreparing($event)" (onSaved)="saved($event)" (onRowUpdated)="reload()"
-                    (onRowInserted)="reload()" (onRowRemoved)="reload()" [allowColumnResizing]="true"
-                    [columnAutoWidth]="true" [allowColumnReordering]="true">
-
-                    <dxo-editing mode="row" [allowUpdating]="true" [allowDeleting]="true" [allowAdding]="true">
-                    </dxo-editing>
-
-                    <dxo-header-filter [visible]="true"></dxo-header-filter>
-                    <dxo-search-panel [visible]="true" [width]="240" placeholder="Search..."></dxo-search-panel>
-                    <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
-                    <dxo-group-panel [visible]="true"></dxo-group-panel>
-
+                    (onRowInserted)="reload()" (onRowRemoved)="reload()">
+                    
                     <dxi-column dataField="code" caption="Code">
                         <dxi-validation-rule type="required"></dxi-validation-rule>
                     </dxi-column>

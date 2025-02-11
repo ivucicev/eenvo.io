@@ -33,18 +33,87 @@ export class SettingsService {
     setDxOptions() {
         DataGrid.defaultOptions<DxDataGridTypes.Properties>({
             options: {
+                columns: [
+                    {
+                        type: 'buttons',
+                        fixed: true,
+                        fixedPosition: 'right',
+                        alignment: 'left',
+                        buttons: [
+                            {
+                                name: 'edit'
+                            }, {
+                                name: 'delete'
+                            }
+                        ]
+                    }
+                ],
                 showColumnLines: false,
                 showRowLines: true,
                 showBorders: false,
                 hoverStateEnabled: true,
                 rowAlternationEnabled: false,
-                columnResizingMode: 'widget',
+                columnResizingMode: 'nextColumn',
                 columnAutoWidth: true,
                 allowColumnReordering: true,
                 allowColumnResizing: true,
                 wordWrapEnabled: true,
+                scrolling: {
+                    mode: 'virtual'
+                },
                 stateStoring: {
                     savingTimeout: 200
+                },
+                editing: {
+                    allowAdding: true,
+                    allowDeleting: true,
+                    allowUpdating: true,
+                    mode: 'popup',
+                    form: {
+                        labelLocation: 'top',
+                        colCount: 1,
+                        showColonAfterLabel: false,
+                    },
+                    popup: {
+                        width: '400px',
+                        height: 'auto',
+                        maxHeight: '80vh',
+                        enableBodyScroll: true,
+                        showTitle: true,
+                        onShowing: function (e) {
+                            const popup = e.component;
+                            const items: any = e.component.option('toolbarItems');
+                            const instance = items[0].editorPopupGridInstance.instance();
+                            if (!instance) return;
+                            if (items && items.length) {
+                                items.forEach((i: any) => {
+                                    if (i.options.name == 'save') {
+                                        i.options.onClick = instance.saveEditData;
+                                    } else if (i.options.name == 'cancel') {
+                                        i.options.onClick = instance.cancelEditData;
+                                    }
+                                })
+                                popup.option('toolbarItems', items);
+                            }
+                        },
+                        toolbarItems: [
+                            {
+                                widget: 'dxButton',
+                                location: 'after',
+                                toolbar: 'bottom',
+
+                                options: {
+                                    text: 'Cancel', ariaLabel: 'Cancel', name: 'cancel', onClick: () => { }
+                                }
+                            },
+                            {
+                                widget: 'dxButton',
+                                location: 'after',
+                                toolbar: 'bottom',
+                                options: { text: 'Save', name: 'save', onClick: () => { } }
+                            }
+                        ]
+                    }
                 },
                 headerFilter: {
                     visible: true,
@@ -59,6 +128,9 @@ export class SettingsService {
                 },
                 sorting: {
                     mode: 'multiple'
+                },
+                groupPanel: {
+                    visible: true
                 },
                 remoteOperations: {
                     filtering: false,
@@ -91,6 +163,12 @@ export class SettingsService {
                         "columnChooserButton",
                         "searchPanel",
                     ] as DataGridPredefinedToolbarItem[]
+                },
+                onInitNewRow: (e: any) => {
+                    e.component.option('editing.popup.toolbarItems')[0].editorPopupGridInstance = e.component;
+                },
+                onEditingStart: (e: any) => {
+                    e.component.option('editing.popup.toolbarItems')[0].editorPopupGridInstance = e.component;
                 },
                 customizeColumns: (columns) => {
                     columns.forEach(c => {

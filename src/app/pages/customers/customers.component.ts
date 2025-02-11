@@ -32,7 +32,7 @@ export class CustomersComponent {
 		this.getData();
 
 		this.http.get<any[]>('assets/json/country-list.json').subscribe(data => {
-			this.countries = data; // Output JSON as an array
+			this.countries = data;
 		  });
 	}
 

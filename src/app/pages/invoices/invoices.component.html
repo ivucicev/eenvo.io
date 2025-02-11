@@ -47,23 +47,7 @@
                 <dx-data-grid #grid [dataSource]="data" (onInitNewRow)="newRow($event)"
                     (onEditorPreparing)="onEditorPreparing($event)" (onSaved)="saved($event)"
                     (onEditingStart)="editInvoice($event)" (onRowUpdated)="reload()" (onRowInserted)="reload()"
-                    (onRowRemoved)="reload()" [allowColumnResizing]="true" [columnAutoWidth]="true"
-                    [allowColumnReordering]="true" [hoverStateEnabled]="true"
-                    (onRowDblClick)="rowDoubleClicked($event)">
-
-                    <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
-                    <dxo-paging [pageSize]="20"> </dxo-paging>
-                    <dxo-pager [visible]="true" [allowedPageSizes]="[10,20,50]" [displayMode]="'full'"
-                        [showPageSizeSelector]="true" [showInfo]="true" [showNavigationButtons]="true">
-                    </dxo-pager>
-
-                    <dxo-editing [allowUpdating]="true" [allowDeleting]="true" [allowAdding]="false"></dxo-editing>
-
-                    <dxo-header-filter [visible]="true"></dxo-header-filter>
-                    <dxo-search-panel [visible]="true" [width]="240" placeholder="Search..."></dxo-search-panel>
-                    <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
-                    <dxo-group-panel [visible]="true"></dxo-group-panel>
-                    <dxo-load-panel [enabled]="true"></dxo-load-panel>
+                    (onRowRemoved)="reload()" (onRowDblClick)="rowDoubleClicked($event)">
 
                     <dxo-toolbar>
                         <dxi-item>
