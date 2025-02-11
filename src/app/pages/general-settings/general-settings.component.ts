@@ -50,7 +50,7 @@ export class GeneralSettingsComponent {
             currency: new FormControl('€', [Validators.required]),
             numberFormat: new FormControl('decimal', [Validators.required]),
             timeZone: new FormControl(Intl.DateTimeFormat().resolvedOptions().timeZone, [Validators.required]),
-            dateFormat: new FormControl('YYYY-MM-DD', [Validators.required])
+            dateFormat: new FormControl('numeric-dots', [Validators.required])
         });
 
         this.getData();

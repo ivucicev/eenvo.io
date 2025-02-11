@@ -27,7 +27,7 @@
             <div class="card-body">
                 <dx-data-grid #grid [dataSource]="data" (onEditorPreparing)="onEditorPreparing($event)"
                     (onInitNewRow)="initNewRow($event)" (onSaved)="saved($event)" (onEditingStart)="editExpense($event)"
-                    (onRowUpdated)="reload()" (onRowInserted)="reload()" (onRowRemoved)="reload()" (onRowDblClick)="rowDoubleClicked($event)">
+                    (onRowUpdated)="reload()" (onRowInserted)="reload()" (onRowRemoved)="reload()">
    
                     <dxo-toolbar>
                         <dxi-item>

@@ -79,6 +79,7 @@ export class SettingsService {
                         height: 'auto',
                         maxHeight: '80vh',
                         enableBodyScroll: true,
+                        hideOnOutsideClick: true,
                         showTitle: true,
                         onShowing: function (e) {
                             const popup = e.component;
@@ -110,7 +111,7 @@ export class SettingsService {
                                 widget: 'dxButton',
                                 location: 'after',
                                 toolbar: 'bottom',
-                                options: { text: 'Save', name: 'save', onClick: () => { } }
+                                options: { text: 'Save', name: 'save', type: 'success', onClick: () => { } }
                             }
                         ]
                     }
@@ -163,6 +164,9 @@ export class SettingsService {
                         "columnChooserButton",
                         "searchPanel",
                     ] as DataGridPredefinedToolbarItem[]
+                },
+                onRowDblClick: (e) => {
+                    e.component.instance().editRow(e.rowIndex)
                 },
                 onInitNewRow: (e: any) => {
                     e.component.option('editing.popup.toolbarItems')[0].editorPopupGridInstance = e.component;

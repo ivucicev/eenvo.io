@@ -20,7 +20,7 @@
                 <dx-data-grid #grid [dataSource]="data" 
                     (onEditorPreparing)="onEditorPreparing($event)" (onInitNewRow)="initNewRow($event)" (onSaved)="saved($event)"
                     (onEditingStart)="editTransaction($event)" (onRowUpdated)="reload()" (onRowInserted)="reload()"
-                    (onRowRemoved)="reload()" (onRowDblClick)="rowDoubleClicked($event)">
+                    (onRowRemoved)="reload()">
                     
                     <dxo-toolbar>
                         <dxi-item>

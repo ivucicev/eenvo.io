@@ -47,7 +47,7 @@
                 <dx-data-grid #grid [dataSource]="data" (onInitNewRow)="newRow($event)"
                     (onEditorPreparing)="onEditorPreparing($event)" (onSaved)="saved($event)"
                     (onEditingStart)="editInvoice($event)" (onRowUpdated)="reload()" (onRowInserted)="reload()"
-                    (onRowRemoved)="reload()" (onRowDblClick)="rowDoubleClicked($event)">
+                    (onRowRemoved)="reload()">
 
                     <dxo-toolbar>
                         <dxi-item>
