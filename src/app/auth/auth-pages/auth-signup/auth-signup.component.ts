@@ -4,6 +4,7 @@ import { RouterModule, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { PocketBaseService } from '../../../core/services/pocket-base.service';
 import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
 	selector: 'eenvo-auth-signup',
@@ -11,6 +12,7 @@ import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 	imports: [
 		CommonModule,
 		RouterModule,
+        TranslatePipe,
 		NgbCarouselModule,
 		ReactiveFormsModule
 	],

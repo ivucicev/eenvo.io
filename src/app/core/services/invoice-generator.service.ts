@@ -14,6 +14,8 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class InvoiceGeneratorService {
 
+    private readonly FONT_NAME = 'dejavu-sans.book';
+
     constructor(private pocketbase: PocketBaseService, private date: DateFormatPipe, private currency: CurrencyFormatPipe, private fraction: FractionFormatPipe, private number: NumberFormatPipe, private sanitizer: DomSanitizer, private translate: TranslateService) { }
 
     generate = async (id: any, preview = false) => {
@@ -79,11 +81,11 @@ export class InvoiceGeneratorService {
                 // Seller/Buyer section
                 Y = 65;
                 doc.setFontSize(12);
-                doc.setFont("dejavu-sans.book", "bold")
+                doc.setFont(this.FONT_NAME, "bold")
                 doc.text(this.translate.instant("Seller:"), LEFT_MARGIN, Y);
                 doc.text(this.translate.instant("Buyer:"), SECOND_COLUMN_MARGIN, Y);
 
-                doc.setFont("dejavu-sans.book", "normal")
+                doc.setFont(this.FONT_NAME, "normal")
                 doc.setFontSize(10);
 
                 // company data
@@ -140,10 +142,10 @@ export class InvoiceGeneratorService {
                         fontStyle: 'bold',
                         cellPadding: 3,
                         fontSize: 9,
-                        font: 'dejavu-sans.book',
+                        font: this.FONT_NAME,
                     },
                     bodyStyles: {
-                        font: 'dejavu-sans.book',
+                        font: this.FONT_NAME,
                         fontSize: 9
                     },
                     columnStyles: {
@@ -184,30 +186,30 @@ export class InvoiceGeneratorService {
                 doc.setLineWidth(0.1);
                 doc.line(RIGHT_END - 55, Y += 2, RIGHT_END, Y);
 
-                doc.setFont("dejavu-sans.book", "bold")
+                doc.setFont(this.FONT_NAME, "bold")
                 doc.text(this.translate.instant("Total:"), RIGHT_END - 55, Y += 4);
                 doc.text(this.currency.transform(invoice.total), RIGHT_END, Y, { align: 'right' });
 
                 Y = this.pageBreak(Y, 30, doc, PAGE_BREAK, TOP_MARGIN)
 
                 // payment data
-                doc.setFont("dejavu-sans.book", "normal")
+                doc.setFont(this.FONT_NAME, "normal")
                 doc.setFontSize(10);
 
-                doc.setFont("dejavu-sans.book", "bold")
+                doc.setFont(this.FONT_NAME, "bold")
                 doc.text(this.translate.instant("Payment"), LEFT_MARGIN, Y += 25);
 
-                doc.setFont("dejavu-sans.book", "normal")
+                doc.setFont(this.FONT_NAME, "normal")
                 doc.text(this.translate.instant("IBAN ") + invoice.paymentData.iban + "" + (invoice.paymentData.reference ? (this.translate.instant(" Reference ") + invoice.paymentData.reference) : ''), LEFT_MARGIN, Y += 5);
 
 
                 Y = this.pageBreak(Y, 30, doc, PAGE_BREAK, TOP_MARGIN)
 
                 if (invoice.note) {
-                    doc.setFont("dejavu-sans.book", "bold")
+                    doc.setFont(this.FONT_NAME, "bold")
                     doc.text(this.translate.instant("Note"), LEFT_MARGIN, Y += 15);
 
-                    doc.setFont("dejavu-sans.book", "normal")
+                    doc.setFont(this.FONT_NAME, "normal")
                     const splitNote = doc.splitTextToSize(invoice.note, doc.internal.pageSize.width - RIGHT_MARGIN - LEFT_MARGIN)
                     doc.text(splitNote, LEFT_MARGIN, Y += 5);
                 }
@@ -215,11 +217,11 @@ export class InvoiceGeneratorService {
                 //page break check
                 Y = this.pageBreak(Y, 30, doc, PAGE_BREAK, TOP_MARGIN)
 
-                doc.setFont("dejavu-sans.book", "bold")
+                doc.setFont(this.FONT_NAME, "bold")
                 doc.text(this.translate.instant("Issued by"), LEFT_MARGIN, Y += 25);
 
 
-                doc.setFont("dejavu-sans.book", "normal")
+                doc.setFont(this.FONT_NAME, "normal")
                 doc.text(invoice.expand.user.name, LEFT_MARGIN, Y += 5);
 
                 // add footer
@@ -314,9 +316,9 @@ export class InvoiceGeneratorService {
         doc.addFileToVFS('dejavu-sans.book-normal.ttf', font.default.fontNormal);
         doc.addFileToVFS('dejavu-sans.book-bold.ttf', font.default.fontBold);
 
-        doc.addFont('dejavu-sans.book-normal.ttf', 'dejavu-sans.book', 'normal');
-        doc.addFont('dejavu-sans.book-bold.ttf', 'dejavu-sans.book', 'bold');
+        doc.addFont('dejavu-sans.book-normal.ttf', this.FONT_NAME, 'normal');
+        doc.addFont('dejavu-sans.book-bold.ttf', this.FONT_NAME, 'bold');
 
-        doc.setFont("dejavu-sans.book")
+        doc.setFont(this.FONT_NAME)
     }
 }

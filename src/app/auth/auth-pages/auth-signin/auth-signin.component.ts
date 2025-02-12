@@ -5,6 +5,7 @@ import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PocketBaseService } from '../../../core/services/pocket-base.service';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'eenvo-auth-signin',
@@ -12,7 +13,7 @@ import { PocketBaseService } from '../../../core/services/pocket-base.service';
     imports: [
         NgbCarouselModule,
         CommonModule,
-		
+		TranslatePipe,
         RouterModule,
         ReactiveFormsModule
     ],

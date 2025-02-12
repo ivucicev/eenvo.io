@@ -4,11 +4,12 @@ import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angula
 import { Router, RouterModule } from '@angular/router';
 import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 import { PocketBaseService } from '../../../core/services/pocket-base.service';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'eenvo-auth-pass-reset',
     standalone: true,
-    imports: [CommonModule, NgbCarouselModule, RouterModule, ReactiveFormsModule],
+    imports: [CommonModule, NgbCarouselModule, RouterModule, ReactiveFormsModule, TranslatePipe],
     templateUrl: './auth-pass-reset.component.html',
     styleUrl: './auth-pass-reset.component.scss'
 })

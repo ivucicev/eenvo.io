@@ -3,32 +3,30 @@
         <div class="col-lg-6">
             <div class="p-lg-5 p-4">
                 <div class="text-center">
-                    <h5 class="mb-0">Forgot Password?</h5>
-                    <p class="text-muted mt-2">Reset password with <span class="text-primary">eenvo</span></p>
+                    <h5 class="mb-0">{{ 'Forgot Password?' | translate }}</h5>
+                    <p class="text-muted mt-2">{{ 'Reset password with' | translate }} <span class="text-primary">eenvo</span></p>
                 </div>
 
                 <div class="text-center my-5">
                     <div class="alert alert-borderless alert-warning text-center mb-2 mx-2" role="alert">
-                        Enter your email and instructions will be sent to you!
+                        {{ 'Enter your email and instructions will be sent to you!' | translate }}
                     </div>
                 </div>
-
-
 
                 <div class="mt-4">
                     <form [formGroup]="resetForm" (ngSubmit)="onSubmit()" class="auth-input">
                         <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input formControlName="email" type="text" class="form-control" id="email" placeholder="Enter email">
+                            <label for="email" class="form-label">{{ 'Email' | translate }}</label>
+                            <input formControlName="email" type="text" class="form-control" id="email" placeholder="{{ 'Enter email' | translate }}">
                         </div>
 
                         <div class="mt-2">
-                            <button class="btn btn-primary w-100" type="submit">Send Reset Link</button>
+                            <button class="btn btn-primary w-100" type="submit">{{ 'Send Reset Link' | translate }}</button>
                         </div>
 
                         <div class="mt-4 text-center">
-                            <p class="mb-0">Wait, I remembered my password... <a [routerLink]="['/auth/auth-signin']"
-                                    class="fw-medium text-primary text-decoration-underline"> Click here </a> </p>
+                            <p class="mb-0">{{ 'Wait, I remembered my password...' | translate }} <a [routerLink]="['/auth/auth-signin']"
+                                    class="fw-medium text-primary text-decoration-underline"> {{ 'Click here' | translate }} </a> </p>
                         </div>
                     </form>
                 </div>
