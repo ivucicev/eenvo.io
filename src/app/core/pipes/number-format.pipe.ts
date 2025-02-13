@@ -96,7 +96,6 @@ export class DateFormatPipe implements PipeTransform {
 
     constructor(private settingsService: SettingsService) {
         this.dateFormat = settingsService?.settings?.dateFormat || 'numeric-eu';
-        console.log(this.dateFormat)
         const format = DateFormats[this.dateFormat];
         this.formatter = new Intl.DateTimeFormat(
             format.locale || 'de',

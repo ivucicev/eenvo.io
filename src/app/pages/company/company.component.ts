@@ -63,6 +63,7 @@ export class CompanyComponent {
 		this.companyForm.patchValue(this.data);
 
 		this.logo += this.data.id + '/' + this.data.logo;
+
 	}
 
 	async fileAdded(e: any) {

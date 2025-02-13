@@ -48,12 +48,15 @@ COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY replace-env.sh /replace-env.sh
 RUN chmod +x /replace-env.sh
 
+# Set entrypoint to run the script
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
 # Expose necessary ports
 EXPOSE 80 8080
 
 # Start both Nginx and PocketBase using Supervisor
-CMD ["/bin/sh", "-c", "/replace-env.sh && exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf"]
-
+CMD ["/bin/sh", "-c", "/entrypoint.sh"]
 
 # docker build . -t ivucicev/eenvo.io:latest
-# docker run -e API_URL=http://0.0.0.0:8080/api/ -p 8080:8080 -p 80:80 ivucicev/eenvo.io:latest
+# docker run --env-file .env -p 80:80 ivucicev/eenvo.io:latest
