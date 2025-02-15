@@ -1,13 +1,16 @@
 <div class="row">
     <div class="col-4">
-       <eenvo-stats-widget [title]="'Invoices sent last 31 days' | translate" [data]="allData" [secondaryColor]="'bg-primary'"></eenvo-stats-widget>
+        <eenvo-stats-widget [title]="'Invoices sent last 31 days' | translate" [data]="allData"
+            [secondaryColor]="'bg-primary'"></eenvo-stats-widget>
     </div>
     <div class="col-4">
-        <eenvo-stats-widget [title]="'Paid last 31 days' | translate" [data]="paidInvoices" [secondaryColor]="'bg-success'"></eenvo-stats-widget>
+        <eenvo-stats-widget [title]="'Paid last 31 days' | translate" [data]="paidInvoices"
+            [secondaryColor]="'bg-success'"></eenvo-stats-widget>
 
     </div>
     <div class="col-4">
-        <eenvo-stats-widget [title]="'Unpaid last 31 days' | translate" [data]="unpaidInvoices" [secondaryColor]="'bg-danger'" [color]="'primary'"></eenvo-stats-widget>
+        <eenvo-stats-widget [title]="'Unpaid last 31 days' | translate" [data]="unpaidInvoices"
+            [secondaryColor]="'bg-danger'" [color]="'primary'"></eenvo-stats-widget>
     </div>
 </div>
 
@@ -49,6 +52,8 @@
                     (onEditingStart)="editInvoice($event)" (onRowUpdated)="reload()" (onRowInserted)="reload()"
                     (onRowRemoved)="reload()">
 
+                    <dxo-editing [allowAdding]="false" [allowUpdating]="false"></dxo-editing>
+
                     <dxo-toolbar>
                         <dxi-item>
                             <div *dxTemplate>
@@ -65,7 +70,8 @@
                         <dxi-item name="groupPanel"></dxi-item>
                         <dxi-item location="after">
                             <div *dxTemplate>
-                                <dx-button stylingMode="text" (click)="newInvoice()" icon="add" [text]="'New' | translate"> </dx-button>
+                                <dx-button stylingMode="text" (click)="newInvoice()" icon="add"
+                                    [text]="'New' | translate"> </dx-button>
                             </div>
                         </dxi-item>
                         <dxi-item location="after">
@@ -91,7 +97,7 @@
                         [showInColumnChooser]="false">
                         <dxi-button [visible]="isMarkAsPayedVisible" [onClick]="markAsPayed" hint="Mark as payed"
                             icon="check"></dxi-button>
-                        <dxi-button name="edit"></dxi-button>
+                        <dxi-button [onClick]="editInvoice" hint="Edit" icon="edit"></dxi-button>
                         <dxi-button icon="download" [onClick]="downloadPDF"></dxi-button>
                         <dxi-button icon="eyeopen" [onClick]="previewPDF"></dxi-button>
                         <dxi-button icon="copy" [visible]="true" [onClick]="duplicateInvoice"></dxi-button>
@@ -158,7 +164,15 @@
         </div>
     </div>
 
-    <dx-popup [width]="'70%'" [height]="'90%'" [showTitle]="true" [title]="'Information' | translate"
+
+    <dx-popup [showTitle]="true" [dragEnabled]="false" [hideOnOutsideClick]="true" [showCloseButton]="true"
+        [(visible)]="this.pdf" class="preview-modal">
+        <div *dxTemplate="let data of 'content'" class="padding-0">
+            <iframe controls [src]="this.pdf" type="application/pdf" width="100%" height="100%"></iframe>
+        </div>
+    </dx-popup>
+
+    <dx-popup [width]="'70%'" [height]="'auto'" [maxHeight]="'90%'" [showTitle]="true" [title]="'Information' | translate"
         [dragEnabled]="false" [hideOnOutsideClick]="true" [showCloseButton]="true" [(visible)]="invoicePopupVisible"
         (onHiding)="reload()">
 
@@ -171,23 +185,26 @@
                 'Close' | translate }}</button>
             @if (currentInvoice) {
             <button (click)="delete()" class="btn btn-danger ms-1"><i
-                    class="ri-delete-bin-line align-bottom mx-1"></i>{{ 'Delete' | translate }}</button>
+                    class="ri-delete-bin-line align-bottom mx-1"></i>{{ 'Delete' | translate
+                }}</button>
+            <button (click)="send()" class="btn btn-warning ms-1"><i class="ri-alarm-fill align-bottom mx-1"></i>{{
+                'Schedule' | translate
+                }}</button>
+            <button (click)="send()" class="btn btn-dark ms-1"><i class="ri-repeat-fill align-bottom mx-1"></i>{{
+                'Recurr' | translate
+                }}</button>
+            <button (click)="send()" class="btn btn-secondary ms-1"><i
+                    class="ri-send-plane-fill align-bottom mx-1"></i>{{ 'Send' | translate
+                }}</button>
             <button (click)="download(currentInvoice.id)" class="btn btn-success ms-1"><i
-                    class="ri-download-2-line align-bottom mx-1"></i>{{ 'Download' | translate }}</button>
+                    class="ri-download-2-line align-bottom mx-1"></i>{{ 'Download' | translate
+                }}</button>
             <button (click)="preview(currentInvoice.id)" class="btn btn-info ms-1"><i
                     class="ri-eye-fill align-bottom mx-1"></i> {{ 'Preview' | translate }}</button>
-            <button (click)="send()" class="btn btn-secondary ms-1"><i
-                    class="ri-send-plane-fill align-bottom mx-1"></i>{{ 'Send' | translate }}</button>
             }
             <button type="submit" (click)="detail?.saveInvoice()" class="btn btn-primary ms-1"><i
-                    class="ri-check-double-line align-bottom mx-1"></i>{{ 'Save' | translate }}</button>
+                    class="ri-check-double-line align-bottom mx-1"></i>{{ 'Save' | translate
+                }}</button>
         </dxi-popup-toolbar-item>
 
-    </dx-popup>
-
-    <dx-popup [showTitle]="true" [dragEnabled]="false" [hideOnOutsideClick]="true" [showCloseButton]="true"
-        [(visible)]="this.pdf" class="preview-modal">
-        <div *dxTemplate="let data of 'content'" class="padding-0">
-            <iframe controls [src]="this.pdf" type="application/pdf" width="100%" height="100%"></iframe>
-        </div>
     </dx-popup>

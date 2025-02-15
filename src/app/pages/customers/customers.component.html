@@ -8,7 +8,6 @@
                 <dx-data-grid #grid [dataSource]="data" (onInitNewRow)="newRow($event)"
                     (onEditorPreparing)="onEditorPreparing($event)" (onSaved)="saved($event)" (onRowUpdated)="reload()"
                     (onRowInserted)="reload()" (onRowRemoved)="reload()">
-
                     <dxo-toolbar>
                         <dxi-item name="groupPanel"></dxi-item>
                         <dxi-item location="after">
@@ -26,7 +25,6 @@
                         <dxi-item name="columnChooserButton"></dxi-item>
                         <dxi-item name="searchPanel"></dxi-item>
                     </dxo-toolbar>
-
                     <dxi-column dataField="code" caption="Code"></dxi-column>
                     <dxi-column dataField="name" caption="Name">
                         <dxi-validation-rule type="required"></dxi-validation-rule>
@@ -49,13 +47,10 @@
                     <dxi-column dataField="iban" caption="IBAN"></dxi-column>
                     <dxi-column dataField="note" caption="Note"></dxi-column>
                     <dxi-column dataField="due" caption="Due Amount" dataType="number"></dxi-column>
-
                     <dxi-column [visible]="false" dataField="created" caption="Created" dataType="date"
                         format="dd.MM.yyyy, HH:mm"></dxi-column>
-
                     <dxi-column [visible]="false" dataField="updated" caption="Updated" dataType="date"
                         format="dd.MM.yyyy, HH:mm"></dxi-column>
-
                 </dx-data-grid>
             </div>
         </div>

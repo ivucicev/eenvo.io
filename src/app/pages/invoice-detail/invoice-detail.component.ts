@@ -47,6 +47,10 @@ export class InvoiceDetailComponent {
             subTotal: [0, [Validators.required]],
             taxValue: [0, [Validators.required]],
             discountValue: [0, [Validators.required]],
+            showShippingHandlingFees: [false],
+            shippingHandlingFee: [0],
+            useBillingAndShippingAddress: [false],
+            billingAddressSameAsShippingAddress: [true],
 
             customerData: new FormGroup({
                 name: new FormControl('', [Validators.required]),
@@ -55,6 +59,15 @@ export class InvoiceDetailComponent {
                 postal: new FormControl('', [Validators.required]),
                 country: new FormControl('', [Validators.required]),
                 vatID: new FormControl('', [Validators.required]),
+                contact: new FormControl('', [Validators.required]),
+            }),
+
+            shippingData: new FormGroup({
+                name: new FormControl('', [Validators.required]),
+                address: new FormControl('', [Validators.required]),
+                city: new FormControl('', [Validators.required]),
+                postal: new FormControl('', [Validators.required]),
+                country: new FormControl('', [Validators.required]),
                 contact: new FormControl('', [Validators.required]),
             }),
 
@@ -72,24 +85,13 @@ export class InvoiceDetailComponent {
                 iban: new FormControl(this.pocketbase.auth.expand.company.iban, [Validators.required]),
                 email: new FormControl(this.pocketbase.auth.expand.company.email, [Validators.required]),
             }),
+
             paymentData: new FormGroup({
-                iban: new FormControl('', [Validators.required]),
+                iban: new FormControl(this.pocketbase.auth.expand.company.iban, [Validators.required]),
                 reference: new FormControl('', [Validators.required]),
-                name: new FormControl('', [Validators.required]),
-            }),
-            companyEmail: ['', [Validators.required]],
-            companyWebsite: ['', [Validators.required]],
-            companyContactno: ['', [Validators.required]],
-            billingName: ['', [Validators.required]],
-            billingAddress: ['', [Validators.required]],
-            billingPhoneno: ['', [Validators.required]],
-            billingTaxno: ['', [Validators.required]],
-            same: ['', [Validators.required]],
-            shippingName: ['', [Validators.required]],
-            shippingAddress: ['', [Validators.required]],
-            shippingPhoneno: ['', [Validators.required]],
-            shippingTaxno: ['', [Validators.required]],
-            productName: ['', [Validators.required]],
+                name: new FormControl(this.pocketbase.auth.expand.company.name, [Validators.required]),
+            })
+
         });
 
         this.addItem();
@@ -99,6 +101,8 @@ export class InvoiceDetailComponent {
         this.logo += this.pocketbase.auth.company + '/' + this.pocketbase.auth.expand.company.logo;
 
         this.invoicesForm.get('tax')?.valueChanges.subscribe(this.recalculate.bind(this))
+        this.invoicesForm.get('type')?.valueChanges.subscribe(this.recalculate.bind(this))
+        this.invoicesForm.get('number')?.valueChanges.subscribe(this.setReference.bind(this))
 
         effect(() => {
             this.setCurrentInvoice(this.invoice());
@@ -124,10 +128,6 @@ export class InvoiceDetailComponent {
 
         this.invoicesForm.patchValue(i);
 
-        this.invoicesForm.patchValue({
-            note: this.pocketbase.auth.expand.company.additional
-        })
-
         if (i.date)
             this.invoicesForm.patchValue({ date: new Date(i.date).toISOString().split('T')[0] });
         if (i.deliveryDate)
@@ -140,6 +140,12 @@ export class InvoiceDetailComponent {
         if (i.isPaid) this.invoicesForm.disable();
         this.isPaid = i.isPaid;
 
+    }
+
+    async setReference(number: any) {
+        this.invoicesForm.get('paymentData')?.patchValue({
+            reference: `HR00 ${number}-${new Date().getFullYear()}`
+        })
     }
 
     async getCustomers() {
@@ -155,6 +161,16 @@ export class InvoiceDetailComponent {
         const c = this.customers.find((customer: any) => customer.name == e.target.value);
         this.invoicesForm.patchValue({ customer: c.id });
         this.invoicesForm.get('customerData')?.patchValue({
+            name: c.name,
+            address: `${c.address}`,
+            postal: `${c.postal}`,
+            city: `${c.city}`,
+            country: `${c.country}`,
+            vatID: c.vatID,
+            contact: c.email
+        });
+
+        this.invoicesForm.get('shippingData')?.patchValue({
             name: c.name,
             address: `${c.address}`,
             postal: `${c.postal}`,
@@ -228,35 +244,37 @@ export class InvoiceDetailComponent {
     }
 
     recalculate() {
-        let total = 0;
+        let subTotal = 0;
         let grandTotal = 0;
-        let taxValue = 0;
-        let discountValue = 0;
-        if (this.invoicesForm.get('tax')?.value) {
-            this.items.forEach((item: any) => {
-                const ttotal = (item.price * item.quantity) * (item.tax + 1);
-                item.total = ttotal - ((item.price * item.quantity) * (item.discount));
-                item.total = item.total;
-                total += +ttotal;
-                grandTotal += +item.total;
-                taxValue += +(item.price * item.quantity) * (item.tax)
-                discountValue += +(item.price * item.quantity) * (item.discount)
-            })
-        } else {
-            this.items.forEach((item: any) => {
-                const ttotal = (item.price * item.quantity);
-                item.total = ttotal - ((item.price * item.quantity) * (item.discount));
-                item.total = item.total;
-                total += +ttotal;
-                grandTotal += +item.total;
-                taxValue += +0;
-                discountValue += +(item.price * item.quantity) * (item.discount)
-            })
-        }
+        let totalTaxValue = 0;
+        let totalDiscountValue = 0;
+        const isR1 = this.invoicesForm.get('type')?.value == "R1";
+        const isTaxed = !!this.invoicesForm.get('tax')?.value;
+
+        this.items.forEach((item: any) => {
+
+            if (!isTaxed) item.tax = 0.0;
+
+            const itemTotalValue = +(item.price * item.quantity)
+            const itemDiscountValue = itemTotalValue * (item.discount);
+            const discountedItemTotalValue = itemTotalValue - itemDiscountValue;
+            const itemTaxValue = discountedItemTotalValue * item.tax;
+            const itemTaxedTotalValue = itemTaxValue + discountedItemTotalValue;
+
+            totalDiscountValue += +itemDiscountValue;
+            totalTaxValue += +itemTaxValue;
+            subTotal += +discountedItemTotalValue;
+            grandTotal += +itemTaxedTotalValue;
+
+            if (isR1) item.total = +discountedItemTotalValue;
+            else item.total = +itemTaxedTotalValue;
+
+        })
+
         this.invoicesForm.patchValue({ total: grandTotal });
-        this.invoicesForm.patchValue({ subTotal: total });
-        this.invoicesForm.patchValue({ discountValue: discountValue });
-        this.invoicesForm.patchValue({ taxValue: taxValue });
+        this.invoicesForm.patchValue({ subTotal: subTotal });
+        this.invoicesForm.patchValue({ discountValue: totalDiscountValue });
+        this.invoicesForm.patchValue({ taxValue: totalTaxValue });
     }
 
     // Remove Item

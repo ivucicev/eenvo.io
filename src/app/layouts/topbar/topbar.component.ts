@@ -10,15 +10,17 @@ import { LanguageService } from '../../core/services/language.service';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { PocketBaseService } from '../../core/services/pocket-base.service';
 import { Router } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'eenvo-topbar',
     standalone: true,
-    imports: [SimplebarAngularModule, NgbDropdownModule, CommonModule],
+    imports: [SimplebarAngularModule, NgbDropdownModule, CommonModule, TranslatePipe],
     templateUrl: './topbar.component.html',
     styleUrl: './topbar.component.scss'
 })
 export class TopbarComponent {
+    
     MODE = LAYOUT_MODE;
     SIDEBAR_SIZE = SIDEBAR_SIZE
     currantMode!: string;
@@ -66,17 +68,19 @@ export class TopbarComponent {
         this.store.select(getSidebarSize).subscribe((sSize) => {
             this.sidebarSize = sSize
         })
-        this.loadUserDetails();
+
+        this.pocketbase.authStore$.subscribe(user => {
+            this.loadUserDetails(user);
+        })
 
     }
 
-    private loadUserDetails() {
-        const user = this.pocketbase.auth;
+    private loadUserDetails(user: any) {
         if (user) {
             this.currentUser = {
                 company: (user as any)['expand']['company']['name'],
                 email: user['email'],
-                avatar: user['avatar'] ? this.pocketbase.files.getUrl(user, user['avatar']) : 'assets/images/users/user-dummy-img.jpg',
+                avatar: user['avatar'] ? this.pocketbase.files.getURL(user, user['avatar']) : 'assets/images/users/user-dummy-img.jpg',
                 name: user['name'] || user['email'].split('@')[0]
             };
         }

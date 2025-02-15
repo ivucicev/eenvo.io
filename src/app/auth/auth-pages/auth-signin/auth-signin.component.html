@@ -4,7 +4,8 @@
             <div class="p-lg-5 p-4">
                 <div class="text-center">
                     <h5 class="mb-0">{{ 'Welcome Back!' | translate }}</h5>
-                    <p class="text-muted mt-2">{{ 'Sign in to continue to' | translate }} <span class="text-primary">{{ 'eenvo' | translate }}</span>.</p>
+                    <p class="text-muted mt-2">{{ 'Sign in to continue to' | translate }} <span class="text-primary">{{
+                            'eenvo' | translate }}</span>.</p>
                 </div>
 
                 <div class="mt-4">
@@ -20,8 +21,8 @@
                                 <label for="userpassword" class="form-label">{{ 'Password' | translate }}</label>
                                 <div class="position-relative auth-pass-inputgroup mb-3">
                                     <input formControlName="password" type="password"
-                                        class="form-control pe-5 password-input" placeholder="{{ 'Enter password' | translate }}"
-                                        id="password-input">
+                                        class="form-control pe-5 password-input"
+                                        placeholder="{{ 'Enter password' | translate }}" id="password-input">
                                     <button
                                         class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon"
                                         type="button" id="password-addon"><i
@@ -32,7 +33,8 @@
                             <div class="form-check form-check-primary fs-16 py-2 mb-3">
                                 <div class="float-end">
                                     <a [routerLink]="['/auth/auth-pass-reset']"
-                                        class="text-muted text-decoration-underline fs-14">{{ 'Forgot your password?' | translate }}</a>
+                                        class="text-muted text-decoration-underline fs-14">{{ 'Forgot your password?' |
+                                        translate }}</a>
                                 </div>
                             </div>
 
@@ -47,36 +49,32 @@
 
                                 <ul class="list-inline">
                                     <li class="list-inline-item">
-                                        <a href="javascript:void()"
-                                            class="social-list-item bg-dark text-white border-dark">
-                                            <i class="mdi mdi-apple"></i>
-                                        </a>
-                                    </li>
-                                    <li class="list-inline-item">
-                                        <a href="javascript:void()"
+                                        <button (click)="googleSignIn()" type="button"
                                             class="social-list-item bg-danger text-white border-danger">
                                             <i class="mdi mdi-google"></i>
-                                        </a>
+                                        </button>
                                     </li>
                                     <li class="list-inline-item">
-                                        <a href="javascript:void()"
+                                        <button type="button" (click)="microsoft()"
                                             class="social-list-item bg-secondary text-white border-secondary">
                                             <i class="mdi mdi-microsoft"></i>
-                                        </a>
+                                        </button>
                                     </li>
                                     <li class="list-inline-item">
-                                        <a href="javascript:void()"
+                                        <button type="button" (click)="github()"
                                             class="social-list-item bg-dark text-white border-dark">
                                             <i class="mdi mdi-github"></i>
-                                        </a>
+                                        </button>
                                     </li>
                                 </ul>
 
                             </div>
 
                             <div class="mt-4 text-center">
-                                <p class="mb-0">{{ "Don't have an account ?" | translate }} <a [routerLink]="['/auth/auth-signup']"
-                                        class="fw-medium text-primary text-decoration-underline">{{ 'Signup now' | translate }}</a> </p>
+                                <p class="mb-0">{{ "Don't have an account ?" | translate }} <a
+                                        [routerLink]="['/auth/auth-signup']"
+                                        class="fw-medium text-primary text-decoration-underline">{{ 'Signup now' |
+                                        translate }}</a> </p>
                             </div>
                         </div>
                     </form>

@@ -52,7 +52,7 @@
                         <form class="p-3">
                             <div class="form-group m-0">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Search ..."
+                                    <input type="text" class="form-control" placeholder="{{ 'Search ...' | translate }}"
                                         aria-label="Recipient's username">
                                     <button class="btn btn-primary" type="submit"><i
                                             class="mdi mdi-magnify"></i></button>
@@ -76,7 +76,7 @@
                     <div class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
                         @for (item of listLang; track $index) {
                         <a href="javascript:void(0);" class="dropdown-item notify-item language py-2"
-                            (click)="setLanguage(item.text, item.lang, item.flag)" title="English">
+                            (click)="setLanguage(item.text, item.lang, item.flag)">
                             <img src="{{item.flag}}" alt="user-image" class="me-2 rounded-circle" height="18" />
                             <span class="align-middle">{{item.text}}</span>
                         </a>
@@ -111,10 +111,10 @@
                             {{ currentUser.company }}
                         </h6>
                         <a class="dropdown-item" href="#"><i class="bx bx-user fs-15 align-middle me-1"></i> <span
-                                key="t-profile">{{currentUser.email}}</span></a>
+                                key="t-profile">{{ currentUser.email }}</span></a>
                         <a class="dropdown-item text-danger" (click)="logout()"><i
                                 class="bx bx-power-off fs-15 align-middle me-1 text-danger"></i> <span
-                                key="t-logout">Logout</span></a>
+                                key="t-logout">{{ 'Logout' | translate }}</span></a>
                     </div>
                 </div>
             </div>

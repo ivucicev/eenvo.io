@@ -52,8 +52,8 @@ export class InvoicesComponent {
         this.getData();
     }
 
-    async editInvoice(e: any) {
-        this.currentInvoice = e.data;
+    editInvoice = (e: any) => {
+        this.currentInvoice = e.row.data;
         this.invoicePopupVisible = true;
     }
 

@@ -120,16 +120,16 @@ export class InvoiceGeneratorService {
                     head: [[
                         '#', 
                         this.translate.instant('Product/Service'), 
-                        this.translate.instant('Price'), 
                         this.translate.instant('Quantity'), 
+                        this.translate.instant('Price'), 
                         this.translate.instant('Discount'), 
                         this.translate.instant('Tax'), 
                         this.translate.instant('Total')]],
                     body: invoice.expand.items.map((item: any, i: number) => [
                         i + 1 + '.',
                         item.title,
-                        this.currency.transform(item.price),
                         this.number.transform(item.quantity),
+                        this.currency.transform(item.price),
                         `${item.discount * 100} %`,
                         `${item.tax * 100} %`,
                         this.currency.transform(item.total)

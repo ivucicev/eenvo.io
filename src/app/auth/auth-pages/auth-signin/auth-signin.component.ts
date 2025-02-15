@@ -13,7 +13,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     imports: [
         NgbCarouselModule,
         CommonModule,
-		TranslatePipe,
+        TranslatePipe,
         RouterModule,
         ReactiveFormsModule
     ],
@@ -21,6 +21,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     styleUrl: './auth-signin.component.scss'
 })
 export class AuthSigninComponent {
+
     loginForm: FormGroup;
     errorMessage: string = '';
     isLoading: boolean = false;
@@ -52,6 +53,42 @@ export class AuthSigninComponent {
             } finally {
                 this.isLoading = false;
             }
+        }
+    }
+
+    async googleSignIn() {
+        this.isLoading = true;
+        this.errorMessage = '';
+        try {
+            await this.pocketBaseService.google()
+            this.router.navigate(['/invoices']);
+        } catch (error: any) {
+        } finally {
+            this.isLoading = false;
+        }
+    }
+
+    async github() {
+        this.isLoading = true;
+        this.errorMessage = '';
+        try {
+            await this.pocketBaseService.gh()
+            this.router.navigate(['/invoices']);
+        } catch (error: any) {
+        } finally {
+            this.isLoading = false;
+        }
+    }
+    
+    async microsoft() {
+        this.isLoading = true;
+        this.errorMessage = '';
+        try {
+            await this.pocketBaseService.ms()
+            this.router.navigate(['/invoices']);
+        } catch (error: any) {
+        } finally {
+            this.isLoading = false;
         }
     }
 

@@ -35,6 +35,9 @@ RUN apk add --no-cache supervisor
 # Copy Angular build
 COPY --from=angular-builder /app/dist/eenvo/browser /usr/share/nginx/html
 
+# Copy MS Domain Validation
+COPY --from=angular-builder /app/.well-known /usr/share/nginx/html/.well-known
+
 # Copy PocketBase binary
 COPY --from=pocketbase-builder /pb /pb
 
@@ -60,3 +63,4 @@ CMD ["/bin/sh", "-c", "/entrypoint.sh"]
 
 # docker build . -t ivucicev/eenvo.io:latest
 # docker run --env-file .env -p 80:80 ivucicev/eenvo.io:latest
+# docker run -d --env-file .env -p 443:80 -p 80:80 -v /pb_data:/pb/pb_data --restart always ivucicev/eenvo.io:latest

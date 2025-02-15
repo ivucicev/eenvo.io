@@ -4,6 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { ToastService } from './toast.service';
 import { COLLECTIONS } from '../models/collections';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
     providedIn: 'root'
@@ -12,17 +13,21 @@ export class PocketBaseService {
 
     private authStore = new BehaviorSubject<any>(null);
     private pb: PocketBase;
-    
+
     public authStore$ = this.authStore.asObservable();
     public auth: any = null;
 
-    constructor(private toast: ToastService) {
+    constructor(private toast: ToastService, private translate: TranslateService) {
         this.pb = new PocketBase((window as any)['env'].pocketbase || environment.pocketbase);
 
         // Load any existing auth data
         if (this.pb.authStore.isValid) {
-            this.authStore.next(this.pb.authStore.record);
-            this.auth = this.pb.authStore.record;
+            if (!this.pb.authStore.record?.expand) {
+                this.getUser(this.pb.authStore.record?.id);
+            } else {
+                this.authStore.next(this.pb.authStore.record);
+                this.auth = this.pb.authStore.record;
+            }
         }
 
         this.pb.afterSend = (response, data) => {
@@ -32,11 +37,11 @@ export class PocketBaseService {
                         let messages = '';
                         if (data.data)
                             Object.keys(data.data).forEach(key => {
-                                messages += (key.charAt(0).toUpperCase() + key.slice(1)) + " - " + data.data[key].message + ' ';
+                                messages += translate.instant((key.charAt(0).toUpperCase() + key.slice(1)) + " - " + data.data[key].message) + ' ';
                             })
                         this.toast.error(data?.message + ' ' + messages);
                         break;
-                
+
                     case 500:
                     default:
                         break;
@@ -50,6 +55,12 @@ export class PocketBaseService {
             return { url, options }
         };
 
+    }
+
+    public async getUser(id: any) {
+        const user = await this.users.getOne(id, { expand: 'company' })
+        this.authStore.next(user);
+        this.auth = user;
     }
 
     public get userAuth() {
@@ -87,6 +98,34 @@ export class PocketBaseService {
     }
     public get transactions() {
         return this.pb.collection(COLLECTIONS.TRANSACTIONS);
+    }
+
+    async google() {
+        const authData = await this.users.authWithOAuth2({ provider: 'google', options: { expand: 'company' } });
+        if (!this.pb.authStore.isValid) return;
+        console.log(authData)
+        const user = await this.users.getOne(authData.record.id, { expand: 'company' })
+        this.authStore.next(user);
+        this.auth = user;
+        return user;
+    }
+
+    async ms() {
+        const authData = await this.users.authWithOAuth2({ provider: 'microsoft' });
+        if (!this.pb.authStore.isValid) return;
+        const user = await this.users.getOne(authData.record.id, { expand: 'company' })
+        this.authStore.next(user);
+        this.auth = user;
+        return user;
+    }
+
+    async gh() {
+        const authData = await this.users.authWithOAuth2({ provider: 'github' });
+        if (!this.pb.authStore.isValid) return;
+        const user = await this.users.getOne(authData.record.id, { expand: 'company' })
+        this.authStore.next(user);
+        this.auth = user;
+        return user;
     }
 
     async login(email: string, password: string) {

@@ -6,95 +6,67 @@
                     <h5 class="mb-0">{{ 'Create New Account' | translate }}</h5>
                     <p class="text-muted mt-2">{{ 'Get your free' | translate }} <span class="text-primary">eenvo</span> {{ 'account now' | translate }}</p>
                 </div>
-
                 <div class="mt-4">
                     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-
                         <div class="mb-3">
                             <label for="email " class="form-label">{{ 'Email' | translate }}</label>
                             <input formControlName="email" type="email" class="form-control" id="email" placeholder="{{ 'Enter email' | translate }}">
                         </div>
-
                         <div class="mb-2">
                             <label for="userpassword" class="form-label">{{ 'Password' | translate }}</label>
                             <div class="position-relative auth-pass-inputgroup mb-3">
-                                <input formControlName="password"  type="password" class="form-control pe-5 password-input"
-                                    placeholder="{{ 'Enter password' | translate }}" id="password-input">
-                                <button
-                                    class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon"
-                                    type="button" id="password-addon"><i
-                                        class="las la-eye align-middle fs-18"></i></button>
+                                <input formControlName="password"  type="password" class="form-control pe-5 password-input" placeholder="{{ 'Enter password' | translate }}" id="password-input">
+                                <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon" type="button" id="password-addon"><i class="las la-eye align-middle fs-18"></i></button>
                             </div>
                         </div>
-
                         <div class="mb-3">
                             <label for="username" class="form-label">{{ 'Company' | translate }}</label>
                             <input formControlName="companyName" type="text" class="form-control" id="companyName" placeholder="{{ 'Enter company name' | translate }}">
                         </div>
-
                         <div class="fs-16 pb-2">
-                            <p class="mb-0 fs-14 text-muted fst-italic">{{ 'By registering you agree to the' | translate }}  <span class="text-primary">eenvo</span> <a
-                                    href="javascript:void(0)" class="text-primary text-decoration-underline fst-normal fw-medium"> {{ 'Terms of Use' | translate }}</a></p>
+                            <p class="mb-0 fs-14 text-muted fst-italic">{{ 'By registering you agree to the' | translate }}  <span class="text-primary">eenvo</span> <a href="javascript:void(0)" class="text-primary text-decoration-underline fst-normal fw-medium"> {{ 'Terms of Use' | translate }}</a></p>
                         </div>
-
                         <div class="mt-2">
                             <button class="btn btn-primary w-100" type="submit">{{ 'Sign Up' | translate }}</button>
                         </div>
-
                         <div class="mt-4 text-center">
                             <div class="signin-other-title">
                                 <h5 class="fs-15 mb-3 title">{{ 'Create account with' | translate }}</h5>
                             </div>
-
                             <ul class="list-inline">
                                 <ul class="list-inline">
                                     <li class="list-inline-item">
-                                        <a href="javascript:void()"
-                                            class="social-list-item bg-dark text-white border-dark">
-                                            <i class="mdi mdi-apple"></i>
-                                        </a>
-                                    </li>
-                                    <li class="list-inline-item">
-                                        <a href="javascript:void()"
-                                            class="social-list-item bg-danger text-white border-danger">
+                                        <a href="javascript:void()" class="social-list-item bg-danger text-white border-danger">
                                             <i class="mdi mdi-google"></i>
                                         </a>
                                     </li>
                                     <li class="list-inline-item">
-                                        <a href="javascript:void()"
-                                            class="social-list-item bg-secondary text-white border-secondary">
+                                        <a href="javascript:void()" class="social-list-item bg-secondary text-white border-secondary">
                                             <i class="mdi mdi-microsoft"></i>
                                         </a>
                                     </li>
                                     <li class="list-inline-item">
-                                        <a href="javascript:void()"
-                                            class="social-list-item bg-dark text-white border-dark">
+                                        <a href="javascript:void()" class="social-list-item bg-dark text-white border-dark">
                                             <i class="mdi mdi-github"></i>
                                         </a>
                                     </li>
                                 </ul>
                             </ul>
                         </div>
-
                         <div class="mt-4 text-center">
-                            <p class="mb-0">{{ 'Have an account ?' | translate }} <a  [routerLink]="['/auth/auth-signin']"
-                                    class="fw-medium text-primary text-decoration-underline"> {{ 'Signin' | translate }} </a> </p>
+                            <p class="mb-0">{{ 'Have an account ?' | translate }} <a  [routerLink]="['/auth/auth-signin']" class="fw-medium text-primary text-decoration-underline"> {{ 'Signin' | translate }} </a> </p>
                         </div>
                     </form>
                 </div>
-
             </div>
         </div>
-
         <div class="col-lg-6">
             <div class="d-flex h-100 bg-auth align-items-end">
                 <div class="p-lg-5 p-4">
                     <div class="bg-overlay bg-primary"></div>
                     <div class="p-0 p-sm-4 px-xl-0 py-5">
                         <div id="reviewcarouselIndicators" class="carousel slide auth-carousel">
-
-                            <ngb-carousel [interval]="3000" [showNavigationIndicators]="false"
-                                [showNavigationArrows]="false">
+                            <ngb-carousel [interval]="3000" [showNavigationIndicators]="false" [showNavigationArrows]="false">
                                 <ng-template ngbSlide *ngFor="let testimonial of testimonials">
                                     <div class="testi-contain text-center">
                                         <h5 class="fs-20 text-white mb-0">{{ testimonial.title }}</h5>
@@ -105,11 +77,9 @@
                                 </ng-template>
                             </ngb-carousel>
                         </div>
-                        <!-- end review carousel -->
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
 </div>

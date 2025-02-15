@@ -59,7 +59,7 @@ export class SettingsService {
                 allowColumnResizing: true,
                 wordWrapEnabled: true,
                 scrolling: {
-                    mode: 'virtual'
+                    mode: 'standard'
                 },
                 stateStoring: {
                     savingTimeout: 200
@@ -75,7 +75,7 @@ export class SettingsService {
                         showColonAfterLabel: false,
                     },
                     popup: {
-                        width: '400px',
+                        width: '500px',
                         height: 'auto',
                         maxHeight: '80vh',
                         enableBodyScroll: true,
@@ -125,7 +125,7 @@ export class SettingsService {
                 },
                 paging: {
                     enabled: true,
-                    pageSize: 20
+                    pageSize: 10
                 },
                 sorting: {
                     mode: 'multiple'
@@ -142,7 +142,7 @@ export class SettingsService {
                 },
                 pager: {
                     visible: true,
-                    allowedPageSizes: [20, 50, 100],
+                    allowedPageSizes: [10, 20, 'all'],
                     showPageSizeSelector: true,
                     showInfo: true,
                     showNavigationButtons: true
