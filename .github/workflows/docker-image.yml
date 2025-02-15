@@ -49,12 +49,3 @@ jobs:
             ivucicev/eenvo.io:latest
             ivucicev/eenvo.io:${{ github.run_id }}
           labels: ${{ steps.meta.outputs.labels }}
-
-      - name: Generate artifact attestation
-        uses: actions/attest-build-provenance@v2
-        with:
-          subject-name: ivucicev/eenvo.io
-          subject-digest: ${{ steps.push.outputs.digest }}
-          push-to-registry: true
-
-      #run: docker build . --file dockerfile --tag ivucicev/eenvo.io:$(date +%s) --tag ivucicev/eenvo.io:latest
