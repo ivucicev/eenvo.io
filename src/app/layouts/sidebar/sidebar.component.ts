@@ -7,6 +7,7 @@ import { MenuItem } from './menu.model';
 import { Router, RouterModule } from '@angular/router';
 import { MENU } from './menu';
 import { CommonModule } from '@angular/common';
+import * as pkg from '../../../../package.json'
 
 @Component({
     selector: 'eenvo-sidebar',
@@ -21,6 +22,7 @@ export class SidebarComponent {
     menu: any;
     toggle: any = true;
     menuItems: MenuItem[] = [];
+    version = pkg.version;
 
     @ViewChild('sideMenu') sideMenu!: ElementRef;
     @Output() mobileMenuButtonClicked = new EventEmitter();
