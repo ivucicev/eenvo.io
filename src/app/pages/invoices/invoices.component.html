@@ -1,15 +1,15 @@
 <div class="row">
     <div class="col-4">
-        <eenvo-stats-widget [title]="'Invoices sent last 31 days' | translate" [data]="allData"
+        <eenvo-stats-widget [name]="'Sent invoices'" [title]="'Invoices sent last 31 days'" [data]="allData"
             [secondaryColor]="'bg-primary'"></eenvo-stats-widget>
     </div>
     <div class="col-4">
-        <eenvo-stats-widget [title]="'Paid last 31 days' | translate" [data]="paidInvoices"
+        <eenvo-stats-widget [name]="'Paid invoices'" [title]="'Paid last 31 days'" [data]="paidInvoices"
             [secondaryColor]="'bg-success'"></eenvo-stats-widget>
 
     </div>
     <div class="col-4">
-        <eenvo-stats-widget [title]="'Unpaid last 31 days' | translate" [data]="unpaidInvoices"
+        <eenvo-stats-widget [name]="'Unpaid invoices'" [title]="'Unpaid last 31 days'" [data]="unpaidInvoices"
             [secondaryColor]="'bg-danger'" [color]="'primary'"></eenvo-stats-widget>
     </div>
 </div>

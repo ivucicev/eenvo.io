@@ -2,9 +2,10 @@
     <div class="card-body">
         <div class="d-flex align-items-center">
             <div class="flex-grow-1">
-                <h4 class="fs-22 fw-semibold ff-secondary mb-2" [class.text-white]="color() == 'primary'">{{this.defaultCurrency}}<span
-                        class="counter-value" [countUp]="stats.totalLast31">0</span></h4>
-                <p class="text-uppercase fw-medium fs-14 text-muted mb-0" [class.text-white-50]="color() == 'primary'">{{ 'Invoices Sent' | translate }}
+                <h4 class="fs-22 fw-semibold ff-secondary mb-2" [class.text-white]="color() == 'primary'">
+                    {{this.defaultCurrency}}<span class="counter-value" [countUp]="stats.totalLast31">0</span></h4>
+                <p class="text-uppercase fw-medium fs-14 text-muted mb-0" [class.text-white-50]="color() == 'primary'">
+                    {{ name() | translate }}
                     <span class="text-success fs-14 mb-0 ms-1">
                         <i class="ri-arrow-right-up-line fs-13 align-middle"></i> {{ stats.totalChangePrefix
                         }}<span class="counter-value" [countUp]="stats.totalChange">0</span>%
@@ -19,8 +20,11 @@
         </div>
         <div class="d-flex align-items-end justify-content-between mt-4">
             <div>
-                <span class="badge me-1" [class.bg-success]="secondaryColor() == 'bg-success'" [class.bg-danger]="secondaryColor() == 'bg-danger'" [class.bg-primary]="secondaryColor() == 'bg-primary'">{{stats.totalLast31Count}}</span> <span
-                    [class.text-muted]="color() != 'primary'" [class.text-white]="color() == 'primary'">{{ title() }}</span>
+                <span class="badge me-1" [class.bg-success]="secondaryColor() == 'bg-success'"
+                    [class.bg-danger]="secondaryColor() == 'bg-danger'"
+                    [class.bg-primary]="secondaryColor() == 'bg-primary'">{{stats.totalLast31Count}}</span> <span
+                    [class.text-muted]="color() != 'primary'" [class.text-white]="color() == 'primary'">{{ title() |
+                    translate }} </span>
             </div>
         </div>
     </div>
