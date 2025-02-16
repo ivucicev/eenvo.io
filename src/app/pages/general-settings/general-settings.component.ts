@@ -6,13 +6,15 @@ import { PocketBaseService } from '../../core/services/pocket-base.service';
 import { ToastService } from '../../core/services/toast.service';
 import { SettingsService } from '../../core/services/settings.service';
 import { DateFormats } from '../../core/models/date-formats';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-general-settings',
     standalone: true,
     imports: [
         DxSelectBoxModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        TranslatePipe
     ],
     templateUrl: './general-settings.component.html',
     styleUrl: './general-settings.component.scss'

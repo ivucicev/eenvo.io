@@ -6,6 +6,7 @@ import { environment } from '../../../environments/environment';
 import { PocketBaseService } from '../../core/services/pocket-base.service';
 import { ToastsContainer } from '../../core/componate/toasts-container.component';
 import { ToastService } from '../../core/services/toast.service';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
 	selector: 'eenvo-company',
@@ -16,7 +17,8 @@ import { ToastService } from '../../core/services/toast.service';
 		DxDateBoxModule,
 		DxFormModule,
 		DxFileUploaderModule,
-		ReactiveFormsModule
+		ReactiveFormsModule,
+        TranslatePipe
 	],
 	templateUrl: './company.component.html',
 	styleUrl: './company.component.scss'

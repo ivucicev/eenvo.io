@@ -2,22 +2,19 @@
     <div class="col-lg-12">
         <div class="card">
             <div class="card-header">
-                <h4 class="card-title mb-0 flex-grow-1">Templates</h4>
+                <h4 class="card-title mb-0 flex-grow-1">{{ 'Templates' | translate }}</h4>
             </div>
             <div class="card-body">
-                <dx-data-grid #grid [dataSource]="data" (onInitNewRow)="newRow($event)"
-                    (onEditorPreparing)="onEditorPreparing($event)" (onSaved)="saved($event)" (onRowUpdated)="reload()"
+                <dx-data-grid #grid [dataSource]="data" (onInitNewRow)="newRow($event)" (onSaved)="saved($event)" (onRowUpdated)="reload()"
                     (onRowInserted)="reload()" (onRowRemoved)="reload()">
-                    
-                    <dxi-column dataField="name" caption="Name">
+                    <dxi-column dataField="name" caption="{{ 'Name' | translate }}">
                         <dxi-validation-rule type="required"></dxi-validation-rule>
                     </dxi-column>
-                    <dxi-column dataField="template" caption="Template">
+                    <dxi-column dataField="template" caption="{{ 'Template' | translate }}">
                         <dxi-validation-rule type="required"></dxi-validation-rule>
-                    </dxi-column>
-                    
-                    <dxi-column [visible]="false" dataField="created" caption="Created" dataType="date"></dxi-column>
-                    <dxi-column [visible]="false" dataField="updated" caption="Updated" dataType="date"></dxi-column>
+                    </dxi-column>                    
+                    <dxi-column [visible]="false" dataField="created" caption="{{ 'Created' | translate }}" dataType="date"></dxi-column>
+                    <dxi-column [visible]="false" dataField="updated" caption="{{ 'Updated' | translate }}" dataType="date"></dxi-column>
                 </dx-data-grid>
             </div>
         </div>

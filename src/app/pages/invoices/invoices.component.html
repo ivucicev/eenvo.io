@@ -47,10 +47,7 @@
                     </div>
                 </div>
 
-                <dx-data-grid #grid [dataSource]="data" (onInitNewRow)="newRow($event)"
-                    (onEditorPreparing)="onEditorPreparing($event)" (onSaved)="saved($event)"
-                    (onEditingStart)="editInvoice($event)" (onRowUpdated)="reload()" (onRowInserted)="reload()"
-                    (onRowRemoved)="reload()">
+                <dx-data-grid #grid [dataSource]="data" (onRowDblClick)="rowDoubleClicked($event)" class="hide-default-edit">
 
                     <dxo-editing [allowAdding]="false" [allowUpdating]="false"></dxo-editing>
 
@@ -172,9 +169,9 @@
         </div>
     </dx-popup>
 
-    <dx-popup [width]="'70%'" [height]="'auto'" [maxHeight]="'90%'" [showTitle]="true" [title]="'Information' | translate"
-        [dragEnabled]="false" [hideOnOutsideClick]="true" [showCloseButton]="true" [(visible)]="invoicePopupVisible"
-        (onHiding)="reload()">
+    <dx-popup [width]="'70%'" [height]="'auto'" [maxHeight]="'90%'" [showTitle]="true"
+        [title]="'Information' | translate" [dragEnabled]="false" [hideOnOutsideClick]="true" [showCloseButton]="true"
+        [(visible)]="invoicePopupVisible" (onHiding)="reload()">
 
         <div *dxTemplate="let data of 'content'">
             <eenvo-invoice-detail #invoiceDetail [invoice]="currentInvoice"></eenvo-invoice-detail>

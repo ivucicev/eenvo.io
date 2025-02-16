@@ -10,6 +10,7 @@ export const MENU: MenuItem[] = [
         id: 2,
         label: 'Dashboard',
         icon: 'las la-house-damage',
+        soon: true,
         link: '/',
     },
     {
@@ -23,12 +24,14 @@ export const MENU: MenuItem[] = [
         label: 'Quotes',
         icon: 'las la-paper-plane',
         link: '/quotes',
+        soon: true,
     },
     {
         id: 2,
         label: 'Purchase Orders',
         icon: 'las la-paste',
         link: '/purchase',
+        soon: true,
     },
     {
         id: 2,

@@ -12,7 +12,7 @@ import { CurrencyFormatPipe } from '../../core/pipes/number-format.pipe';
 import { SettingsService } from '../../core/services/settings.service';
 import { StatsWidgetComponent } from '../../core/componate/stats-widget/stats-widget.component';
 import { InvoiceGeneratorService } from '../../core/services/invoice-generator.service';
-
+import { RowDblClickEvent } from 'devextreme/ui/data_grid';
 
 @Component({
     selector: 'eenvo-invoices',
@@ -53,7 +53,7 @@ export class InvoicesComponent {
     }
 
     editInvoice = (e: any) => {
-        this.currentInvoice = e.row.data;
+        this.currentInvoice = e.row?.data || e.data;
         this.invoicePopupVisible = true;
     }
 
@@ -196,10 +196,6 @@ export class InvoicesComponent {
         this.unpaidInvoices = [...this.allData.filter((d: any) => !d.isPaid)];
     }
 
-    async newRow(e: any) {
-
-    }
-
     async saved(e: any) {
         if (e.changes[0].type == 'remove') {
             const toDelete: any = [];
@@ -245,14 +241,8 @@ export class InvoicesComponent {
         this.getData();
     }
 
-    onEditorPreparing(e: any) {
-        if (e.dataField === "created" || e.dataField === "updated") {
-            e.editorOptions.disabled = true;
-        }
-    }
-
-    rowDoubleClicked(e: any) {
-        this.grid?.instance.editRow(e.rowIndex)
+    rowDoubleClicked(e: RowDblClickEvent) {
+        this.editInvoice(e);
     }
 
     downloadPDF = async (e: any) => {

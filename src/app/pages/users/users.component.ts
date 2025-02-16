@@ -2,11 +2,12 @@ import { Component, ViewChild } from '@angular/core';
 import { DxDataGridComponent, DxDataGridModule, DxFileUploaderComponent, DxFileUploaderModule } from 'devextreme-angular';
 import { PocketBaseService } from '../../core/services/pocket-base.service';
 import { environment } from '../../../environments/environment';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'eenvo-users',
   standalone: true,
-  imports: [DxDataGridModule, DxFileUploaderModule],
+  imports: [DxDataGridModule, DxFileUploaderModule, TranslatePipe],
   templateUrl: './users.component.html',
   styleUrl: './users.component.scss'
 })
@@ -64,11 +65,5 @@ public data: any;
 
 	async reload() {
 		this.grid?.instance.refresh();
-	}
-
-	onEditorPreparing(e: any) {
-		if (e.dataField === "created" || e.dataField === "updated") {
-			e.editorOptions.disabled = true;
-		}
 	}
 }

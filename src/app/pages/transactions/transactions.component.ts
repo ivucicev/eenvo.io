@@ -116,12 +116,6 @@ export class TransactionsComponent {
         this.getData();
     }
 
-    onEditorPreparing(e: any) {
-        if (e.dataField === "created" || e.dataField === "updated" || e.dataField == "expand.expense.title" || e.dataField == "expand.invoice.number") {
-            e.editorOptions.disabled = true;  
-        }
-    }
-
     rowDoubleClicked(e: any) {
         this.grid?.instance.editRow(e.rowIndex);
     }

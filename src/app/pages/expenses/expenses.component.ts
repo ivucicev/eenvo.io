@@ -128,12 +128,6 @@ export class ExpensesComponent {
         this.getData();
     }
 
-    onEditorPreparing(e: EditorPreparingEvent) {
-        if (e.dataField === "created" || e.dataField === "updated") {
-            e.editorOptions.disabled = true;
-        }
-    }
-
     rowDoubleClicked(e: any) {
         this.grid?.instance.editRow(e.rowIndex);
     }

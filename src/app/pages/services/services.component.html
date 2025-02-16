@@ -2,30 +2,27 @@
     <div class="col-lg-12">
         <div class="card">
             <div class="card-header">
-                <h4 class="card-title mb-0 flex-grow-1">Services</h4>
-            </div><!-- end card header -->
+                <h4 class="card-title mb-0 flex-grow-1">{{ 'Services' | translate }}</h4>
+            </div>
             <div class="card-body">
-                <dx-data-grid #grid [dataSource]="data" (onInitNewRow)="newRow($event)"
-                    (onEditorPreparing)="onEditorPreparing($event)" (onSaved)="saved($event)" (onRowUpdated)="reload()"
+                <dx-data-grid #grid [dataSource]="data" (onInitNewRow)="newRow($event)" (onSaved)="saved($event)" (onRowUpdated)="reload()"
                     (onRowInserted)="reload()" (onRowRemoved)="reload()">
-                    
-                    <dxi-column dataField="code" caption="Code">
+                    <dxi-column dataField="code" caption="{{ 'Code' | translate }}">
                         <dxi-validation-rule type="required"></dxi-validation-rule>
                     </dxi-column>
-                    <dxi-column dataField="title" caption="Title">
+                    <dxi-column dataField="title" caption="{{ 'Title' | translate }}">
                         <dxi-validation-rule type="required"></dxi-validation-rule>
                     </dxi-column>
-                    <dxi-column dataField="unit" caption="Unit">
+                    <dxi-column dataField="unit" caption="{{ 'Unit' | translate }}">
                         <dxo-lookup
                             [dataSource]="['-', 'Hour', 'Piece', 'Kg', 'Km', 'L', 'Year', 'Month']"></dxo-lookup>
                     </dxi-column>
-                    <dxi-column dataField="quantity" caption="Quantity" dataType="number"></dxi-column>
-                    <dxi-column dataField="price" caption="Price" dataType="number" format="#,##0.00"></dxi-column>
-                    <dxi-column dataField="discount" caption="Discount" dataType="number" format="#0%" editCellTemplate="percentEditor"></dxi-column>
-                    <dxi-column dataField="tax" caption="Tax" dataType="number" format="#0%" editCellTemplate="percentEditor"></dxi-column>
-                    <dxi-column [visible]="false" dataField="created" caption="Created" dataType="date"></dxi-column>
-                    <dxi-column [visible]="false" dataField="updated" caption="Updated" dataType="date"></dxi-column>
-                    
+                    <dxi-column dataField="quantity" caption="{{ 'Quantity' | translate }}" dataType="number"></dxi-column>
+                    <dxi-column dataField="price" caption="{{ 'Price' | translate }}" dataType="number" format="#,##0.00"></dxi-column>
+                    <dxi-column dataField="discount" caption="{{ 'Discount' | translate }}" dataType="number" format="#0%" editCellTemplate="percentEditor"></dxi-column>
+                    <dxi-column dataField="tax" caption="{{ 'Tax' | translate }}" dataType="number" format="#0%" editCellTemplate="percentEditor"></dxi-column>
+                    <dxi-column [visible]="false" dataField="created" caption="{{ 'Created' | translate }}" dataType="date"></dxi-column>
+                    <dxi-column [visible]="false" dataField="updated" caption="{{ 'Updated' | translate }}" dataType="date"></dxi-column>
                     <div *dxTemplate="let cellInfo of 'percentEditor'">
                         <dx-number-box [value]="cellInfo.value" (onValueChanged)="cellInfo.setValue($event.value)"
                             format="#0%" [step]="0.05"

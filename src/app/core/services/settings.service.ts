@@ -166,13 +166,19 @@ export class SettingsService {
                     ] as DataGridPredefinedToolbarItem[]
                 },
                 onRowDblClick: (e) => {
-                    e.component.instance().editRow(e.rowIndex)
+                    if (!e.element.classList.contains('hide-default-edit'))
+                        e.component.instance().editRow(e.rowIndex)
                 },
                 onInitNewRow: (e: any) => {
                     e.component.option('editing.popup.toolbarItems')[0].editorPopupGridInstance = e.component;
                 },
                 onEditingStart: (e: any) => {
                     e.component.option('editing.popup.toolbarItems')[0].editorPopupGridInstance = e.component;
+                },
+                onEditorPreparing: (e: any) => {
+                    if (e.dataField === "created" || e.dataField === "updated") {
+                        e.editorOptions.disabled = true;
+                    }
                 },
                 customizeColumns: (columns) => {
                     columns.forEach(c => {

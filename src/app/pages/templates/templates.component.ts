@@ -2,11 +2,12 @@ import { HttpClient } from '@angular/common/http';
 import { Component, ViewChild } from '@angular/core';
 import { DxDataGridComponent, DxDataGridModule } from 'devextreme-angular';
 import { PocketBaseService } from '../../core/services/pocket-base.service';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
 	selector: 'eenvo-templates',
 	standalone: true,
-	imports: [DxDataGridModule],
+	imports: [DxDataGridModule, TranslatePipe],
 	templateUrl: './templates.component.html',
 	styleUrl: './templates.component.scss'
 })
@@ -47,9 +48,4 @@ export class TemplatesComponent {
 		this.grid?.instance.refresh();
 	}
 
-	onEditorPreparing(e: any) {
-		if (e.dataField === "created" || e.dataField === "updated") {
-			e.editorOptions.disabled = true;
-		}
-	}
 }

@@ -123,7 +123,8 @@
                             </ul>
                         </div>} @else{
                         <a [routerLink]="item.link" routerLinkActive="active"
-                            [routerLinkActiveOptions]="{ exact: true }" class="side-nav-link-ref nav-link menu-link"
+                            [routerLinkActiveOptions]="{ exact: true }" class="side-nav-link-ref nav-link menu-link" 
+                            [class.pe-none]="item.soon"
                             (click)="toggleParentItem($event)">
                             @if(item.icon){
                             <i class="{{ item.icon }}" class=""></i>
@@ -131,7 +132,12 @@
                             <span class=""> {{ item.label | translate }}</span>
                             @if(item.badge){
                             <span class="badge badge-pill {{item.badge.variant}}">{{item.badge.text
-                                | translate}}</span>}
+                                | translate}}</span>
+                            }
+                            @if(item.soon){
+                                <span class="badge badge-pill badge-soft-primary">{{ 'Coming soon'
+                                    | translate}}</span>
+                            }
                         </a>}
 
                     </li>}

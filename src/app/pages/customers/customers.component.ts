@@ -70,10 +70,4 @@ export class CustomersComponent {
         this.getData();
     }
 
-	
-	onEditorPreparing(e: any) {
-		if (e.dataField === "created" || e.dataField === "updated") {
-			e.editorOptions.disabled = true;
-		}
-	}
 }
