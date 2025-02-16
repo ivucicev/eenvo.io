@@ -28,9 +28,9 @@ jobs:
 
       - name: Bump package.json version
         run: |
+          git config --local user.name "github-actions"
+          git config --local user.email "github-actions@github.com"
           npm version patch
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
           git commit -am "Version bump!"
           git push
 
