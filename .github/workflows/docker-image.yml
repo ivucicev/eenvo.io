@@ -34,7 +34,7 @@ jobs:
             echo "Bumped version to $VER"
             git add .
             git commit -a -m "Version bump to v$VER!"
-            git push
+            git push origin main
 
       - name: Log in to Docker Hub
         uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
