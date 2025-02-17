@@ -28,11 +28,12 @@ jobs:
 
       - name: Bump package.json version
         run: |
-          git config --local user.name "github-actions"
-          git config --local user.email "github-actions@github.com"
-          npm version patch
-          git commit -am "Version bump!"
-          git push
+            git config --local user.name "github-actions"
+            git config --local user.email "github-actions@github.com"
+            npm version patch
+            git add package.json
+            git commit -m "Version bump!"
+            git push
 
       - name: Log in to Docker Hub
         uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
