@@ -32,8 +32,14 @@ jobs:
             git config --local user.email "github-actions@github.com"
             VER=$(npm version patch)
             echo "Bumped version to $VER"
-            git add .
-            git commit -a -m "Version bump to v$VER!"
+            git add . || "Nothing changed"
+            # Commit only if there are changes
+            if git diff --cached --quiet; then
+                echo "No changes to commit."
+            else
+                git commit -m "Version bump to $VER"
+                echo "Committed version bump"
+            fi
       
       - name: Push changes
         env:
