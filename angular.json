@@ -78,6 +78,9 @@
 				},
 				"serve": {
 					"builder": "@angular-devkit/build-angular:dev-server",
+                    "options": {
+                        "hmr": true
+                    },
 					"configurations": {
 						"production": {
 							"buildTarget": "eenvo:build:production"

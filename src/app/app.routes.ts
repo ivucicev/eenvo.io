@@ -24,6 +24,17 @@ export const publicGuard: CanActivateFn = async (route, state) => {
     }
     return true;
 };
+/*
+export const completeProfileGuard: CanActivateFn = async (route, state) => {
+    const router = inject(Router);
+    const pb = inject(PocketBaseService);
+    const u = pb.getCurrentUser();
+    const user: any = await pb.getUser(u?.id);
+    if (user?.expand?.company?.name.indexOf('DEFAULT_') > -1) {
+        return router.navigateByUrl('/auth/auth-complete-registration');
+    }
+    return true;
+};*/
 
 export const routes: Routes = [
     { path: 'invoice-print', component: InvoicePrintComponent },

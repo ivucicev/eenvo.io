@@ -1,0 +1,29 @@
+<div class="card my-auto overflow-hidden">
+    <div class="row g-0">
+        <div class="col-lg-6 mx-auto">
+            <div class="p-lg-5 p-4">
+                <div class="text-center">
+                    <h5 class="mb-0">{{ 'Please complete your registration' | translate }}</h5>
+                    <p class="text-muted mt-2">{{ 'We need your company name as bare minimum to complete your profile at ' | translate }} <span class="text-primary">eenvo</span></p>
+                </div>
+                <div class="mt-4">
+                    <form [formGroup]="completeProfile" (ngSubmit)="onSubmit()" class="auth-input">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">{{ 'Name' | translate }}</label>
+                            <input formControlName="name" type="text" class="form-control" id="name" placeholder="{{ 'Enter company name' | translate }}">
+                        </div>
+
+                        <div class="mt-2">
+                            <button [disabled]="completeProfile.invalid" class="btn btn-primary w-100" type="submit">{{ 'Complete' | translate }}</button>
+                        </div>
+
+                        <div class="mt-4 text-center">
+                            <p class="mb-0">{{ 'Back to login? ' | translate }} <a [routerLink]="['/auth/auth-signin']"
+                                    class="fw-medium text-primary text-decoration-underline"> {{ 'Click here' | translate }} </a> </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -6,17 +6,16 @@ import { PocketBaseService } from '../../../core/services/pocket-base.service';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
-    selector: 'eenvo-auth-pass-reset',
+    selector: 'eenvo-auth-complete-registration',
     standalone: true,
     imports: [CommonModule, RouterModule, ReactiveFormsModule, TranslatePipe],
-    templateUrl: './auth-pass-reset.component.html',
-    styleUrl: './auth-pass-reset.component.scss'
+    templateUrl: './auth-complete-registration.component.html',
+    styleUrl: './auth-complete-registration.component.scss'
 })
-export class AuthPassResetComponent {
+export class AuthCompleteRegistrationComponent {
 
-    resetForm: FormGroup;
+    completeProfile: FormGroup;
     isSubmitting = false;
-    resetSuccess = false;
     errorMessage = '';
 
     constructor(
@@ -24,24 +23,21 @@ export class AuthPassResetComponent {
         private pocketbase: PocketBaseService,
         private router: Router
     ) {
-        this.resetForm = this.fb.group({
-            email: ['', [Validators.required, Validators.email]]
+        this.completeProfile = this.fb.group({
+            name: ['', [Validators.required, Validators.minLength(1)]]
         });
     }
 
     async onSubmit() {
-        if (this.resetForm.valid) {
+        if (this.completeProfile.valid) {
             this.isSubmitting = true;
             this.errorMessage = '';
-
             try {
-                await this.pocketbase.users.requestPasswordReset(
-                    this.resetForm.value.email
-                );
-                this.resetSuccess = true;
-                this.router.createUrlTree(['/']);
-
+                const company = await this.pocketbase.registerCompanyName(this.completeProfile.value.name);
+                const user = await this.pocketbase.getUser(this.pocketbase.auth.id);
+                this.router.navigate(['/invoices']);
             } catch (error: any) {
+                console.error(error);
                 this.errorMessage = error.message || 'An error occurred while resetting password';
             } finally {
                 this.isSubmitting = false;

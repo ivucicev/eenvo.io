@@ -1,6 +1,6 @@
 <div class="card my-auto overflow-hidden">
     <div class="row g-0">
-        <div class="col-lg-6">
+        <div class="col-lg-6 mx-auto">
             <div class="p-lg-5 p-4">
                 <div class="text-center">
                     <h5 class="mb-0">{{ 'Create New Account' | translate }}</h5>
@@ -34,50 +34,30 @@
                                 <h5 class="fs-15 mb-3 title">{{ 'Create account with' | translate }}</h5>
                             </div>
                             <ul class="list-inline">
-                                <ul class="list-inline">
-                                    <li class="list-inline-item">
-                                        <a href="javascript:void()" class="social-list-item bg-danger text-white border-danger">
-                                            <i class="mdi mdi-google"></i>
-                                        </a>
-                                    </li>
-                                    <li class="list-inline-item">
-                                        <a href="javascript:void()" class="social-list-item bg-secondary text-white border-secondary">
-                                            <i class="mdi mdi-microsoft"></i>
-                                        </a>
-                                    </li>
-                                    <li class="list-inline-item">
-                                        <a href="javascript:void()" class="social-list-item bg-dark text-white border-dark">
-                                            <i class="mdi mdi-github"></i>
-                                        </a>
-                                    </li>
-                                </ul>
+                                <li class="list-inline-item">
+                                    <button (click)="googleSignIn()" type="button"
+                                        class="social-list-item bg-danger text-white border-danger">
+                                        <i class="mdi mdi-google"></i>
+                                    </button>
+                                </li>
+                                <li class="list-inline-item">
+                                    <button type="button" (click)="microsoft()"
+                                        class="social-list-item bg-secondary text-white border-secondary">
+                                        <i class="mdi mdi-microsoft"></i>
+                                    </button>
+                                </li>
+                                <li class="list-inline-item">
+                                    <button type="button" (click)="github()"
+                                        class="social-list-item bg-dark text-white border-dark">
+                                        <i class="mdi mdi-github"></i>
+                                    </button>
+                                </li>
                             </ul>
                         </div>
                         <div class="mt-4 text-center">
                             <p class="mb-0">{{ 'Have an account ?' | translate }} <a  [routerLink]="['/auth/auth-signin']" class="fw-medium text-primary text-decoration-underline"> {{ 'Signin' | translate }} </a> </p>
                         </div>
                     </form>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-6">
-            <div class="d-flex h-100 bg-auth align-items-end">
-                <div class="p-lg-5 p-4">
-                    <div class="bg-overlay bg-primary"></div>
-                    <div class="p-0 p-sm-4 px-xl-0 py-5">
-                        <div id="reviewcarouselIndicators" class="carousel slide auth-carousel">
-                            <ngb-carousel [interval]="3000" [showNavigationIndicators]="false" [showNavigationArrows]="false">
-                                <ng-template ngbSlide *ngFor="let testimonial of testimonials">
-                                    <div class="testi-contain text-center">
-                                        <h5 class="fs-20 text-white mb-0">{{ testimonial.title }}</h5>
-                                        <p class="fs-15 text-white-50 mt-2 mb-0">
-                                            {{ testimonial.content }}
-                                        </p>
-                                    </div>
-                                </ng-template>
-                            </ngb-carousel>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

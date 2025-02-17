@@ -43,7 +43,9 @@ export class PocketBaseService {
                         break;
 
                     case 500:
-                    default:
+                        this.toast.error('Unexpected error, please try again.');
+                        break;
+                        default:
                         break;
                 }
             }
@@ -61,6 +63,7 @@ export class PocketBaseService {
         const user = await this.users.getOne(id, { expand: 'company' })
         this.authStore.next(user);
         this.auth = user;
+        return user;
     }
 
     public get userAuth() {
@@ -100,32 +103,33 @@ export class PocketBaseService {
         return this.pb.collection(COLLECTIONS.TRANSACTIONS);
     }
 
-    async google() {
-        const authData = await this.users.authWithOAuth2({ provider: 'google', options: { expand: 'company' } });
-        if (!this.pb.authStore.isValid) return;
-        console.log(authData)
-        const user = await this.users.getOne(authData.record.id, { expand: 'company' })
+    async afterLoginRegisterEvent(authData: any) {
+        const user: any = await this.users.getOne(authData.record.id, { expand: 'company' });
         this.authStore.next(user);
         this.auth = user;
-        return user;
+        if (!user.company || !user.expand?.company || user?.expand?.company?.name?.indexOf('DEFAULT_') > -1) {
+            return false
+        } else {
+            return true;
+        }
     }
 
-    async ms() {
+    async google(signup: boolean = false) {
+        const authData = await this.users.authWithOAuth2({ provider: 'google' });
+        if (!this.pb.authStore.isValid) return;
+        return await this.afterLoginRegisterEvent(authData);
+    }
+
+    async ms(signup: boolean = false) {
         const authData = await this.users.authWithOAuth2({ provider: 'microsoft' });
         if (!this.pb.authStore.isValid) return;
-        const user = await this.users.getOne(authData.record.id, { expand: 'company' })
-        this.authStore.next(user);
-        this.auth = user;
-        return user;
+        await this.afterLoginRegisterEvent(authData);
     }
 
-    async gh() {
+    async gh(signup: boolean = false) {
         const authData = await this.users.authWithOAuth2({ provider: 'github' });
         if (!this.pb.authStore.isValid) return;
-        const user = await this.users.getOne(authData.record.id, { expand: 'company' })
-        this.authStore.next(user);
-        this.auth = user;
-        return user;
+        await this.afterLoginRegisterEvent(authData);
     }
 
     async login(email: string, password: string) {
@@ -145,6 +149,25 @@ export class PocketBaseService {
         }
     }
 
+    async registerCompany(name: string, email: string): Promise<any> {
+        return await this.companies.create({
+            name,
+            vatID: 'IDXXXXXXXXXXX',
+            email: email,
+            iban: 'IBXXXXXXXXXXXXX'
+        });
+    }
+
+    async registerCompanyName(name: string): Promise<any> {
+        return await this.companies.update(this.auth.company, {
+            name
+        });
+    }
+
+    async assignCompanyToUser(userId: any, companyId: any) {
+        return await this.users.update(userId, { company: companyId });
+    }
+
     async register(email: string, password: string, companyName: string) {
 
         let company;
@@ -152,12 +175,7 @@ export class PocketBaseService {
 
         try {
 
-            company = await this.companies.create({
-                name: companyName,
-                vatID: 'HRXXXXXXXXXXX',
-                email: email,
-                iban: 'HRXXXXXXXXXXXXX'
-            });
+            company = await this.registerCompany(companyName, email);
 
             user = await this.users.create({
                 email,
@@ -202,21 +220,5 @@ export class PocketBaseService {
 
     getPocketBase() {
         return this.pb;
-    }
-
-    async get() {
-
-    }
-
-    async update() {
-
-    }
-
-    async create() {
-
-    }
-
-    async delete() {
-
     }
 }
