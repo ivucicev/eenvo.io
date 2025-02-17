@@ -30,9 +30,10 @@ jobs:
         run: |
             git config --local user.name "github-actions"
             git config --local user.email "github-actions@github.com"
-            npm version patch
-            git add package.json
-            git commit -m "Version bump!"
+            VER=$(npm version patch)
+            echo "Bumped version to $VER"
+            git add .
+            git commit -a -m "Version bump to v$VER!"
             git push
 
       - name: Log in to Docker Hub
