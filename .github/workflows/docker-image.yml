@@ -60,6 +60,7 @@ jobs:
           images: ivucicev/eenvo.io
 
       - name: Build and push Docker image
+        if: contains(github.event.head_commit.message, 'ci')
         id: push
         uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
         with:
@@ -72,6 +73,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
 
       - name: Run script on DigitalOcean server
+        if: contains(github.event.head_commit.message, 'release')
         uses: appleboy/ssh-action@v0.1.0
         with:
             host: ${{ secrets.DIGITALOCEAN_HOST }}
