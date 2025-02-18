@@ -169,8 +169,8 @@
         </div>
     </dx-popup>
 
-    <dx-popup [width]="'70%'" [height]="'auto'" [maxHeight]="'90%'" [showTitle]="true"
-        [title]="'Information' | translate" [dragEnabled]="false" [hideOnOutsideClick]="true" [showCloseButton]="true"
+    <dx-popup [width]="'70%'" [height]="'auto'" [resizeEnabled]="true" [restorePosition]="true" [maxHeight]="'90%'" [showTitle]="true"
+        [title]="'Information' | translate" [dragEnabled]="true" [hideOnOutsideClick]="true" [showCloseButton]="true"
         [(visible)]="invoicePopupVisible" (onHiding)="reload()">
 
         <div *dxTemplate="let data of 'content'">

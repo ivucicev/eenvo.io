@@ -37,24 +37,29 @@ export class InvoiceGeneratorService {
         this.setDefaults(doc, invoice.number, invoice.customerData.name);
 
         const img = new Image();
-        img.src = environment.pocketbase + '/api/files/companies/' + this.pocketbase.auth.company + '/' + invoice.expand.company.logo;
+
+        if (invoice.expand.company.logo)
+            img.src = environment.pocketbase + '/api/files/companies/' + this.pocketbase.auth.company + '/' + invoice.expand.company.logo;
+        else
+            img.src = "/assets/images/logo-dark.png";
 
         return new Promise((resolve, reject) => {
             img.onload = async () => {
-                
-                await this.translate.get("Seller:").toPromise();
-                
-                const pageWidth = doc.internal.pageSize.getWidth();
-                const pageHeight = doc.internal.pageSize.getHeight();
 
-                let imgWidth = img.naturalWidth;
-                let imgHeight = img.naturalHeight;
+                await this.translate.get("Seller:").toPromise();
 
                 const fixedWidth = FIXED_BANNER_WIDTH;
                 const aspectRatio = img.naturalHeight / img.naturalWidth;
-                const calculatedHeight = fixedWidth * aspectRatio;
+                let calculatedHeight = fixedWidth * aspectRatio;
+                const maxHeight = 25; // Define a maximum height for the image
 
-                doc.addImage(environment.pocketbase + '/api/files/companies/' + this.pocketbase.auth.company + '/' + invoice.expand.company.logo, 'PNG', LEFT_MARGIN, TOP_MARGIN, fixedWidth, calculatedHeight);
+                if (calculatedHeight > maxHeight) {
+                    calculatedHeight = maxHeight;
+                    const adjustedWidth = maxHeight / aspectRatio;
+                    doc.addImage(img.src, 'PNG', LEFT_MARGIN, TOP_MARGIN, adjustedWidth, calculatedHeight);
+                } else {
+                    doc.addImage(img.src, 'PNG', LEFT_MARGIN, TOP_MARGIN, fixedWidth, calculatedHeight);
+                }
 
                 doc.setTextColor(100);
                 doc.setFontSize(16);
@@ -118,12 +123,12 @@ export class InvoiceGeneratorService {
                 doc.autoTable({
                     startY: Y,
                     head: [[
-                        '#', 
-                        this.translate.instant('Product/Service'), 
-                        this.translate.instant('Quantity'), 
-                        this.translate.instant('Price'), 
-                        this.translate.instant('Discount'), 
-                        this.translate.instant('Tax'), 
+                        '#',
+                        this.translate.instant('Product/Service'),
+                        this.translate.instant('Quantity'),
+                        this.translate.instant('Price'),
+                        this.translate.instant('Discount'),
+                        this.translate.instant('Tax'),
                         this.translate.instant('Total')]],
                     body: invoice.expand.items.map((item: any, i: number) => [
                         i + 1 + '.',
@@ -255,7 +260,7 @@ export class InvoiceGeneratorService {
 
         const pageCount = doc.internal.getNumberOfPages();
         for (let i = 0; i <= pageCount; i++) {
-            
+
             doc.setPage(i);
             doc.setFontSize(8);
             doc.setTextColor(100);
@@ -263,14 +268,59 @@ export class InvoiceGeneratorService {
             const splitNote = doc.splitTextToSize(invoice.companyData?.note, doc.internal.pageSize.width - RIGHT_MARGIN - LEFT_MARGIN)
             doc.text(splitNote, LEFT_MARGIN, doc.internal.pageSize.height - 21, 'left');
 
+            let address = false;
+            let legal = false;
+            let contact = false;
+
+            const body = [];
+            const head: any = [[]];
+
+            if (invoice.companyData.address || invoice.companyData.city || invoice.companyData.postal || invoice.companyData.country) {
+                head[0].push(this.translate.instant("Address"));
+                address = true;
+            }
+
+            if ((invoice.companyData.vatID && invoice.companyData?.vatID?.indexOf('XXXXXX') < 0) || (invoice.companyData.iban && invoice.companyData?.iban?.indexOf('XXXXXX') < 0) || invoice.companyData.switft) {
+                head[0].push(this.translate.instant("Legal"));
+                legal = true;
+            }
+
+            if (invoice.companyData?.email || invoice.companyData?.phone || invoice.companyData.web) {
+                head[0].push(this.translate.instant("Contact"));
+                contact = true;
+            }
+
+            // Check if address data is complete
+            if (address) {
+                const addressParts = [];
+                if (invoice.companyData.address) addressParts.push(invoice.companyData.address + ', ');
+                if (invoice.companyData.postal && invoice.companyData.city) addressParts.push(invoice.companyData.postal + ' ' + invoice.companyData.city + ', ');
+                if (invoice.companyData.country) addressParts.push(invoice.companyData.country);
+                body.push(addressParts);
+            }
+
+            // Check if legal data is complete
+            if (legal) {
+                const legalParts = [];
+                if (invoice.companyData.vatID) legalParts.push(this.translate.instant("VATID: ") + invoice.companyData.vatID);
+                if (invoice.companyData.iban) legalParts.push(this.translate.instant("IBAN: ") + invoice.companyData.iban);
+                if (invoice.companyData.swift) legalParts.push(this.translate.instant("SWIFT: ") + invoice.companyData.swift);
+                body.push(legalParts);
+            }
+
+            // Check if contact data is complete
+            if (contact) {
+                const contactParts = [];
+                if (invoice.companyData.phone) contactParts.push(this.translate.instant("Mobile: ") + invoice.companyData.phone);
+                if (invoice.companyData.email) contactParts.push(this.translate.instant("Email: ") + invoice.companyData.email);
+                if (invoice.companyData.web) contactParts.push(this.translate.instant("Web: ") + invoice.companyData.web);
+                body.push(contactParts);
+            }
+
             doc.autoTable({
                 startY: doc.internal.pageSize.height - 40,
-                head: [[this.translate.instant("Address"), this.translate.instant("Legal"), this.translate.instant("Contact")]],
-                body: [
-                    [invoice.companyData.address + ', ', this.translate.instant("VATID: ") + invoice.companyData.vatID, this.translate.instant("Mobile: ") + invoice.companyData.phone],
-                    [invoice.companyData.postal + ' ' + invoice.companyData.city + ', ', this.translate.instant("IBAN: ") + invoice.companyData.iban, this.translate.instant("Email: ") + invoice.companyData.email],
-                    [invoice.companyData.country, this.translate.instant("SWIFT: ") + invoice.companyData.vatID, this.translate.instant("Web: ") + invoice.companyData.web],
-                ],
+                head: head,
+                body: body,
                 headStyles: {
                     fillColor: [255, 255, 255],
                     textColor: [0, 0, 0],
@@ -293,7 +343,7 @@ export class InvoiceGeneratorService {
             const footerY = doc.internal.pageSize.height - footerHeight;
             doc.addImage('/assets/images/pattern-1.png', 'PNG', 0, footerY, doc.internal.pageSize.width, footerHeight, '', 'NONE', 0);
             doc.addImage('/assets/images/pattern-2.png', 'PNG', 0, 0, doc.internal.pageSize.width, 100, '', 'NONE', 0);
-            
+
             const fixedWidth_brand = 15;
             const aspectRatio_brand = 296 / 842;
 

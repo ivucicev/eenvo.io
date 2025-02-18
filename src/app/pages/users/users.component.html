@@ -5,25 +5,29 @@
                 <h4 class="card-title mb-0 flex-grow-1">{{ 'Users' | translate }}</h4>
             </div>
             <div class="card-body">
-                <dx-data-grid #grid [dataSource]="data" (onInitNewRow)="newRow($event)"
-                    (onSaved)="saved($event)" (onRowUpdated)="reload()"
-                    (onRowInserted)="reload()" (onRowRemoved)="reload()">
-                    <dxi-column [allowFiltering]="false" [allowResizing]="false" [allowSorting]="false" [allowSearch]="false" [width]="80" dataField="avatar" caption="" cellTemplate="avatarCell" editCellTemplate="avatarEdit">
+                <dx-data-grid #grid [dataSource]="data" (onInitNewRow)="newRow($event)" (onSaved)="saved($event)"
+                    (onEditingStart)="newRow($event)" (onRowUpdated)="reload()" (onRowInserted)="reload()"
+                    (onRowRemoved)="reload()">
+                    <dxi-column [allowFiltering]="false" [allowResizing]="false" [allowSorting]="false"
+                        [allowSearch]="false" [width]="80" dataField="avatar" caption="" cellTemplate="avatarCell"
+                        editCellTemplate="avatarEdit">
                         <div *dxTemplate="let d of 'avatarCell'">
-                            <img [src]="d.data.avatar ? apiURL + d.data.id + '/' + d.data.avatar : 'assets/images/users/user-dummy-img.jpg'" alt="{{ 'Avatar' | translate }}" width="40" height="40" style="border-radius: 50%;">
+                            <img [src]="d.data.avatar ? apiURL + d.data.id + '/' + d.data.avatar : 'assets/images/users/user-dummy-img.jpg'"
+                                alt="{{ 'Avatar' | translate }}" width="40" height="40" style="border-radius: 50%;">
                         </div>
                         <div *dxTemplate="let d of 'avatarEdit'" class="text-center">
-                            <img id="dropzone-external" [src]="d.data.avatar ? apiURL + d.data.id + '/' + d.data.avatar : 'assets/images/users/user-dummy-img.jpg'" alt="{{ 'Avatar' | translate }}" width="40" height="40" style="border-radius: 50%;">
-                            <dx-file-uploader #uploader
-                                dialogTrigger="#dropzone-external"
-                                dropZone="#dropzone-external"
-                                [multiple]="false"
-                                selectButtonText="{{ '+' | translate }}"
-                                accept="image/*"
-                                [visible]="false"
-                                (onValueChanged)="fileAdded($event)"
-                                uploadMode="instantly">
-                          </dx-file-uploader>
+                            @if (addedFileTemp) {
+                            <img id="dropzone-external" [src]="addedFileTemp" alt="{{ 'Avatar' | translate }}"
+                                width="120" height="120" style="border-radius: 50%;">
+                            } @else {
+                            <img id="dropzone-external"
+                                [src]="d.data.avatar ? apiURL + d.data.id + '/' + d.data.avatar : 'assets/images/users/user-dummy-img.jpg'"
+                                alt="{{ 'Avatar' | translate }}" width="120" height="120" style="border-radius: 50%;">
+                            }
+                            <dx-file-uploader #uploader dialogTrigger="#dropzone-external" dropZone="#dropzone-external"
+                                [multiple]="false" selectButtonText="{{ '+' | translate }}" accept="image/*"
+                                [visible]="false" (onValueChanged)="fileAdded($event)" uploadMode="instantly">
+                            </dx-file-uploader>
                         </div>
                     </dxi-column>
                     <dxi-column dataField="name" caption="{{ 'Name' | translate }}">
@@ -34,9 +38,18 @@
                         <dxi-validation-rule type="email"></dxi-validation-rule>
                     </dxi-column>
                     <dxi-column dataField="password" caption="{{ 'Password' | translate }}"></dxi-column>
-                    <dxi-column dataField="verified" caption="{{ 'Verified' | translate }}" dataType="boolean"></dxi-column>
-                    <dxi-column [visible]="false" dataField="created" caption="{{ 'Created' | translate }}" dataType="date"></dxi-column>
-                    <dxi-column [visible]="false" dataField="updated" caption="{{ 'Updated' | translate }}" dataType="date"></dxi-column>
+                    <dxi-column dataField="verified" caption="{{ 'Verified' | translate }}"
+                        dataType="boolean"></dxi-column>
+                    <dxi-column [visible]="false" dataField="created" caption="{{ 'Created' | translate }}"
+                        dataType="date"></dxi-column>
+                    <dxi-column [visible]="false" dataField="updated" caption="{{ 'Updated' | translate }}"
+                        dataType="date"></dxi-column>
+
+                    <dxi-column type="buttons" [fixed]="true" fixedPosition="right" alignment="right" [showInColumnChooser]="false">
+                        <dxi-button [onClick]="editUser" hint="Edit" icon="edit"></dxi-button>
+                        <dxi-button name="delete"></dxi-button>
+                    </dxi-column>
+
                 </dx-data-grid>
             </div>
         </div>

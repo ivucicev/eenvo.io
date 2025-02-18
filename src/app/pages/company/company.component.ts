@@ -77,6 +77,10 @@ export class CompanyComponent {
 
 		this.data = await this.pocketbase.companies.update(this.data.id, formData);
 
+        this.companyForm.patchValue({ logo: this.data.logo });
+
+	    this.logo = environment.pocketbase + `/api/files/companies/${this.data.id}/${this.data.logo}`;
+
 	}
 
 	async submit() {

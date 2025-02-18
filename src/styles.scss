@@ -22,3 +22,9 @@
  dx-tag-box {
     height: 40px;
  }
+
+ .dx-swatch-swatch-blue .dx-popup-bottom.dx-toolbar .dx-toolbar-after {
+    display: flex;
+    flex-direction: row-reverse;
+    column-gap: 5px;
+}

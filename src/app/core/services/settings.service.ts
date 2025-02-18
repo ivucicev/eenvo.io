@@ -77,11 +77,12 @@ export class SettingsService {
                     popup: {
                         width: '500px',
                         height: 'auto',
+                        resizeEnabled: true,
                         maxHeight: '80vh',
                         enableBodyScroll: true,
                         hideOnOutsideClick: true,
                         showTitle: true,
-                        onShowing: function (e) {
+                        /* onShowing: function (e) {
                             const popup = e.component;
                             const items: any = e.component.option('toolbarItems');
                             const instance = items[0].editorPopupGridInstance.instance();
@@ -96,8 +97,8 @@ export class SettingsService {
                                 })
                                 popup.option('toolbarItems', items);
                             }
-                        },
-                        toolbarItems: [
+                        }, */
+                        /* toolbarItems: [
                             {
                                 widget: 'dxButton',
                                 location: 'after',
@@ -113,7 +114,7 @@ export class SettingsService {
                                 toolbar: 'bottom',
                                 options: { text: 'Save', name: 'save', type: 'success', onClick: () => { } }
                             }
-                        ]
+                        ] */
                     }
                 },
                 headerFilter: {
@@ -172,9 +173,9 @@ export class SettingsService {
                 onInitNewRow: (e: any) => {
                     e.component.option('editing.popup.toolbarItems')[0].editorPopupGridInstance = e.component;
                 },
-                onEditingStart: (e: any) => {
+                /* onEditingStart: (e: any) => {
                     e.component.option('editing.popup.toolbarItems')[0].editorPopupGridInstance = e.component;
-                },
+                }, */
                 onEditorPreparing: (e: any) => {
                     if (e.dataField === "created" || e.dataField === "updated") {
                         e.editorOptions.disabled = true;

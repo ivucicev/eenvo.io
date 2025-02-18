@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, effect, input } from '@angular/core';
-import { UntypedFormGroup, UntypedFormBuilder, Validators, UntypedFormArray, AbstractControl, ReactiveFormsModule, FormGroup, FormControl, FormsModule } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, Validators, ReactiveFormsModule, FormGroup, FormControl, FormsModule } from '@angular/forms';
 import { PocketBaseService } from '../../core/services/pocket-base.service';
 import { environment } from '../../../environments/environment';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastService } from '../../core/services/toast.service';
-import { DxNumberBoxComponent, DxNumberBoxModule } from 'devextreme-angular';
+import { DxNumberBoxModule } from 'devextreme-angular';
 
 @Component({
     selector: 'eenvo-invoice-detail',
@@ -292,7 +292,7 @@ export class InvoiceDetailComponent {
             if (isR1) item.total = +discountedItemTotalValue;
             else item.total = +itemTaxedTotalValue;
 
-        })
+        });
 
         this.invoicesForm.patchValue({ total: grandTotal });
         this.invoicesForm.patchValue({ subTotal: subTotal });
