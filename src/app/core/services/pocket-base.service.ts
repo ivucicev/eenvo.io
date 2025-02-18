@@ -153,6 +153,7 @@ export class PocketBaseService {
         return await this.companies.create({
             name,
             vatID: 'IDXXXXXXXXXXX',
+            isRegistrationComplete: true,
             email: email,
             iban: 'IBXXXXXXXXXXXXX'
         });
@@ -160,7 +161,8 @@ export class PocketBaseService {
 
     async registerCompanyName(name: string): Promise<any> {
         return await this.companies.update(this.auth.company, {
-            name
+            name,
+            isRegistrationComplete: true
         });
     }
 

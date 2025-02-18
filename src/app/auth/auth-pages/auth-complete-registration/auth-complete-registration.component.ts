@@ -34,7 +34,6 @@ export class AuthCompleteRegistrationComponent {
             this.errorMessage = '';
             try {
                 const company = await this.pocketbase.registerCompanyName(this.completeProfile.value.name);
-                const user = await this.pocketbase.getUser(this.pocketbase.auth.id);
                 this.router.navigate(['/invoices']);
             } catch (error: any) {
                 console.error(error);

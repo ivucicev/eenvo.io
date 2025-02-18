@@ -29,6 +29,7 @@ export class InvoiceDetailComponent {
     constructor(private formBuilder: UntypedFormBuilder, private toast: ToastService, private pocketbase: PocketBaseService) {
 
         this.invoicesForm = this.formBuilder.group({
+
             id: [''],
             customer: ['', [Validators.required]],
             number: ['', [Validators.required]],
@@ -159,7 +160,10 @@ export class InvoiceDetailComponent {
     async customerSelected(e: any) {
 
         const c = this.customers.find((customer: any) => customer.name == e.target.value);
+        if (!c) return;
+
         this.invoicesForm.patchValue({ customer: c.id });
+
         this.invoicesForm.get('customerData')?.patchValue({
             name: c.name,
             address: `${c.address}`,
@@ -187,13 +191,16 @@ export class InvoiceDetailComponent {
 
     async serviceSelected(e: any, index: number) {
         const s = this.services.find((service: any) => service.code + " - " + service.title == e.target.value);
-        this.items[index].unit = s.unit;
-        this.items[index].quantity = s.quantity;
-        this.items[index].price = s.price;
-        this.items[index].discount = s.discount;
-        this.items[index].tax = s.tax;
-        this.items[index].total = 0.0;
-        this.items[index].code = s.code;
+        
+        if (s) {
+            this.items[index].unit = s.unit;
+            this.items[index].quantity = s.quantity;
+            this.items[index].price = s.price;
+            this.items[index].discount = s.discount;
+            this.items[index].tax = s.tax;
+            this.items[index].total = 0.0;
+            this.items[index].code = s.code;
+        }
 
         this.recalculate();
 
@@ -232,6 +239,22 @@ export class InvoiceDetailComponent {
 
         invoice.items = itemsCreate.map(i => i.id);
 
+        if (!invoice.customer) {
+            // should create new customer if no customer data provided
+            const customer = {
+                name: invoice.customerData.name,
+                address: invoice.customerData.address,
+                postal: invoice.customerData.postal,
+                city: invoice.customerData.city,
+                country: invoice.customerData.country,
+                vatID: invoice.customerData.vatID,
+            };
+
+            const create = await this.pocketbase.customers.create(customer);
+            invoice.customer = create.id;
+            this.invoicesForm.patchValue({ customer: create.id });
+        }
+
         if (invoice.id) {
             const updated = await this.pocketbase.invoices.update(invoice.id, invoice);
             this.toast.success();
@@ -240,7 +263,7 @@ export class InvoiceDetailComponent {
             this.invoicesForm.patchValue({ id: created.id });
             this.toast.success();
         }
-
+        
     }
 
     recalculate() {

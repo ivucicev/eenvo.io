@@ -19,29 +19,31 @@ export const authGuard: CanActivateFn = async (route, state) => {
 export const publicGuard: CanActivateFn = async (route, state) => {
     const router = inject(Router);
     const pb = inject(PocketBaseService);
-    if (pb.userAuth.isValid) {
-        return router.createUrlTree(['/']);
+    if (pb.userAuth.isValid && pb.auth?.expand?.company?.isRegistrationComplete) {
+        return router.createUrlTree(['/invoices']);
     }
     return true;
 };
-/*
+
 export const completeProfileGuard: CanActivateFn = async (route, state) => {
     const router = inject(Router);
     const pb = inject(PocketBaseService);
     const u = pb.getCurrentUser();
     const user: any = await pb.getUser(u?.id);
-    if (user?.expand?.company?.name.indexOf('DEFAULT_') > -1) {
+    if (!user?.expand?.company?.isRegistrationComplete) {
         return router.navigateByUrl('/auth/auth-complete-registration');
     }
     return true;
-};*/
+};
+
+//&& pb.auth?.expand?.company?.isRegistrationComplete
 
 export const routes: Routes = [
     { path: 'invoice-print', component: InvoicePrintComponent },
     {
         path: '',
         component: LayoutComponent,
-        canActivate: [authGuard],
+        canActivate: [authGuard, completeProfileGuard],
         resolve: { settings: settingsResolver },
         loadChildren: () =>
             import('./layouts/layout.route').then((mod) => mod.PAGE_ROUTES),
