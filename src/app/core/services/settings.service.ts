@@ -78,6 +78,7 @@ export class SettingsService {
                         width: '500px',
                         height: 'auto',
                         resizeEnabled: true,
+                        restorePosition: true,
                         maxHeight: '80vh',
                         enableBodyScroll: true,
                         hideOnOutsideClick: true,

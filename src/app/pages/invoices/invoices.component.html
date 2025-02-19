@@ -47,7 +47,8 @@
                     </div>
                 </div>
 
-                <dx-data-grid #grid [dataSource]="data" (onRowDblClick)="rowDoubleClicked($event)" class="hide-default-edit">
+                <dx-data-grid #grid [dataSource]="data" (onRowDblClick)="rowDoubleClicked($event)"
+                    class="hide-default-edit">
 
                     <dxo-editing [allowAdding]="false" [allowUpdating]="false"></dxo-editing>
 
@@ -169,13 +170,23 @@
         </div>
     </dx-popup>
 
-    <dx-popup [width]="'70%'" [height]="'auto'" [resizeEnabled]="true" [restorePosition]="true" [maxHeight]="'90%'" [showTitle]="true"
-        [title]="'Information' | translate" [dragEnabled]="true" [hideOnOutsideClick]="true" [showCloseButton]="true"
-        [(visible)]="invoicePopupVisible" (onHiding)="reload()">
+    <dx-popup [width]="'70%'" [height]="'auto'" [resizeEnabled]="true" [restorePosition]="true" [maxHeight]="'90%'"
+        [showTitle]="true" [title]="'Information' | translate" [dragEnabled]="true" [hideOnOutsideClick]="true"
+        [showCloseButton]="true" [(visible)]="invoicePopupVisible" [fullScreen]="fullScreen" (onHiding)="reload()">
 
         <div *dxTemplate="let data of 'content'">
             <eenvo-invoice-detail #invoiceDetail [invoice]="currentInvoice"></eenvo-invoice-detail>
         </div>
+
+        <dxi-popup-toolbar-item toolbar="top" location="after">
+            <dxi-item name="close"></dxi-item>
+        </dxi-popup-toolbar-item>
+
+        <dxi-popup-toolbar-item widget="dxButton" toolbar="top" location="after" [options]="{
+            icon: 'fullscreen',
+            onClick: setFullScreen
+        }">
+        </dxi-popup-toolbar-item>
 
         <dxi-popup-toolbar-item toolbar="bottom" location="after">
             <button (click)="close()" class="btn btn-light ms-1"><i class="ri-close-line align-bottom mx-1"></i> {{

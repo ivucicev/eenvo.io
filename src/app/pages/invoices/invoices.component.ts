@@ -34,6 +34,7 @@ export class InvoicesComponent {
     public pdf: any;
     public paidInvoices: any = []
     public unpaidInvoices: any = []
+    public fullScreen: boolean = false;
 
     public filter = {
         all: true,
@@ -253,6 +254,10 @@ export class InvoicesComponent {
     previewPDF = async (e: any) => {
         e?.event?.preventDefault();
         this.pdf = await this.invoiceService.generate(e.row?.data?.id, true)
+    }
+
+    setFullScreen = async () => {
+        this.fullScreen = !this.fullScreen
     }
 
 }
