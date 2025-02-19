@@ -171,9 +171,9 @@ export class SettingsService {
                     if (!e.element.classList.contains('hide-default-edit'))
                         e.component.instance().editRow(e.rowIndex)
                 },
-                onInitNewRow: (e: any) => {
+                /* onInitNewRow: (e: any) => {
                     e.component.option('editing.popup.toolbarItems')[0].editorPopupGridInstance = e.component;
-                },
+                }, */
                 /* onEditingStart: (e: any) => {
                     e.component.option('editing.popup.toolbarItems')[0].editorPopupGridInstance = e.component;
                 }, */
