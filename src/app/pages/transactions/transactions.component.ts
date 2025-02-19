@@ -40,10 +40,10 @@ export class TransactionsComponent {
         this.setTypes();
         this.defaultCurrency = settings.settings?.defaultCurrency || '€';
     }
-    
+
     public async setTypes() {
-        this.types = [ 
-            {  
+        this.types = [
+            {
                 name: await this.translation.get('out').toPromise(),
                 value: 'out'
             },
@@ -57,7 +57,7 @@ export class TransactionsComponent {
     public initNewRow(e: any) {
         e.data['type'] = 'out';
         e.data['date'] = new Date();
-        e.data['total']= 0.0;
+        e.data['total'] = 0.0;
         e.data['user'] = this.pocketbase.auth.id;
     }
 
@@ -84,29 +84,29 @@ export class TransactionsComponent {
         this.data = [...this.allData];
         this.expenses = [...this.allData.filter((s: any) => s.type == 'out')];
         this.inflow = [...this.allData.filter((s: any) => s.type == 'in')];
-        this.dataNetIncome = [...this.allData.map((s: any) => { 
+        this.dataNetIncome = [...this.allData.map((s: any) => {
             return {
                 ...s,
                 total: s.type == 'in' ? s.total : -1 * s.total
             }
-         } )];        
+        })];
     }
 
     async saved(e: any) {
-        if (e.changes[0].type == 'remove') {
-            if (e.changes[0].key.invoice || e.changes[0].key.expense) {
+        if (e.changes[0]?.type == 'remove') {
+            if (e.changes[0]?.key?.invoice || e.changes[0]?.key?.expense) {
                 this.toast.warning('Cannot delete transaction that came from invoice or expense.');
                 e.cancel = true;
+                this.grid?.instance.cancelEditData();
                 return;
             }
             await this.pocketbase.transactions.delete(e.changes[0].key.id);
-        } else {
-            const data = e.changes[0].data;
-            if (data.id) {
-                await this.pocketbase.transactions.update(data.id, data);
-            } else {
-                await this.pocketbase.transactions.create(data);
-            }
+            this.data = [...this.data.filter((f: any) => f.id != e.changes[0].key.id)];
+            return;
+        } else if (e.changes[0]?.type == 'update') {
+            await this.pocketbase.transactions.update(e.changes[0]?.key?.id, e.changes[0]?.data);
+        } else if (e.changes[0]?.type == 'insert') {
+            await this.pocketbase.transactions.create(e.changes[0]?.data);
         }
         this.reload();
     }

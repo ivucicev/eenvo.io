@@ -73,6 +73,8 @@
                         <div *dxTemplate="let d of 'totalTemplate'">
                             {{ d.data.total | currencyFormat }}
                         </div>
+                        <dxi-validation-rule type="required"></dxi-validation-rule>
+                        <dxi-validation-rule type="range" [min]="0.01"></dxi-validation-rule>
                     </dxi-column>
 
                     <dxi-column [visible]="false" dataField="created" [caption]="'Created' | translate"

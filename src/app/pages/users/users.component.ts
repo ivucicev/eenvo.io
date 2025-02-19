@@ -48,31 +48,29 @@ export class UsersComponent {
         reader.readAsDataURL(this.addedFile);
     }
 
-    async saved(e: any) {
+    async saving(e: any) {
         e.cancel = new Promise(async (resolve, reject) => {
-
             let id;
             let data;
-
             try {
-
-
                 if (e.changes[0]?.type == 'remove') {
                     if (e.changes[0].key.id == this.pocketbase.auth.id) return;
                     await this.pocketbase.users.delete(e.changes[0].key.id);
-                } else if (e.changes[0]?.type == 'update' || e.changes[0]?.type == 'insert') {
-                    data = e.changes[0].data;
-                    data.company = this.pocketbase.auth.company;
-                    if (data.id) {
-                        await this.pocketbase.users.update(data.id, data);
-                    } else {
-                        data.passwordConfirm = data.password;
-                        const created = await this.pocketbase.users.create(data);
-                        data.id = created.id;
-                    }
+                    this.data = [...this.data.filter((f: any) => f.id != e.changes[0].key.id)];
+                    return;
+                } else if (e.changes[0]?.type == 'update') {
+                    data = e.changes[0].key;
                     id = data.id;
+                    const changes = e.changes[0].data
+                    await this.pocketbase.users.update(data.id, changes);
+                } else if (e.changes[0]?.type == 'insert') {
+                    const changes = e.changes[0].data
+                    changes.passwordConfirm = changes.password;
+                    changes.verified = undefined;
+                    changes.emailVisibility = true;
+                    const created = await this.pocketbase.users.create(changes);
+                    id = created.id;
                 }
-
                 if (!id && this.grid?.instance.getSelectedRowKeys()?.length && this.grid?.instance.getSelectedRowKeys()[0]) {
                     id = this.grid?.instance.getSelectedRowKeys()[0].id;
                     data = this.grid?.instance.getSelectedRowKeys()[0];
@@ -85,15 +83,17 @@ export class UsersComponent {
                     if (data)
                         data.avatar = uptdAvatar.avatar;
                 }
+
                 this.addedFile = null;
                 this.addedFileTemp = null;
 
+                this.grid?.instance.cancelEditData();
+                this.reload();
                 resolve(true)
             } catch (error) {
-                reject(true)
+                reject(error)
             }
-        })
-
+        });
     }
 
     editUser = (e: any) => {
@@ -101,7 +101,23 @@ export class UsersComponent {
         this.grid?.instance.editRow(e?.row?.rowIndex)
     }
 
+
+    public async pwdReset(email: string) {
+        await this.pocketbase.users.requestPasswordReset(email);
+        this.success();
+    }
+
+    public async activation(email: string) {
+        await this.pocketbase.users.requestVerification(email);
+        this.success();
+    }
+
+    async success() {
+        this.pocketbase.toast.success();
+        this.grid?.instance.cancelEditData();
+    }
+
     async reload() {
-        this.grid?.instance.refresh();
+        this.getData();
     }
 }

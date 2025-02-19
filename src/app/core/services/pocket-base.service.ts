@@ -17,7 +17,7 @@ export class PocketBaseService {
     public authStore$ = this.authStore.asObservable();
     public auth: any = null;
 
-    constructor(private toast: ToastService, private translate: TranslateService) {
+    constructor(public toast: ToastService, private translate: TranslateService) {
         this.pb = new PocketBase((window as any)['env'].pocketbase || environment.pocketbase);
 
         // Load any existing auth data
@@ -30,7 +30,7 @@ export class PocketBaseService {
             }
         }
 
-        this.pb.afterSend = (response, data) => {
+        this.pb.afterSend = (response, data, options?: any) => {
             if (response.status != 200) {
                 switch (response.status) {
                     case 400:
@@ -48,7 +48,9 @@ export class PocketBaseService {
                         default:
                         break;
                 }
-            }
+            } else if (options?.method == "POST" || options?.method == "PATCH" || options?.method == "DELETE") {
+                toast.success();
+             }
             return data;
         };
         this.pb.beforeSend = (url, options) => {

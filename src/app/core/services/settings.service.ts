@@ -50,6 +50,7 @@ export class SettingsService {
                 ],
                 showColumnLines: false,
                 showRowLines: true,
+                columnFixing: { enabled: true },
                 showBorders: false,
                 hoverStateEnabled: true,
                 rowAlternationEnabled: false,
@@ -72,6 +73,7 @@ export class SettingsService {
                     form: {
                         labelLocation: 'top',
                         colCount: 1,
+                        showValidationSummary: true,
                         showColonAfterLabel: false,
                     },
                     popup: {
@@ -160,6 +162,7 @@ export class SettingsService {
                 toolbar: {
                     visible: true,
                     items: [
+                        "groupPanel",
                         "addRowButton",
                         "refresh",
                         "exportButton",

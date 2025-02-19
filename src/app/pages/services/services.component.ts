@@ -27,11 +27,15 @@ export class ServicesComponent {
     }
 
     async newRow(e: any) {
-
+        e.data.unit = '-';
+        e.data.quantity = 1;
+        e.data.price = 0;
+        e.data.discount = 0;
+        e.data.tax = 0;
     }
 
     async saved(e: any) {
-        if (e.changes[0].type == 'remove') {
+        if (e.changes[0]?.type == 'remove') {
             await this.pocketbase.services.delete(e.changes[0].key.id);
         } else {
             const data = e.changes[0].data;

@@ -62,11 +62,6 @@
                     <dxi-column dataField="title" [caption]="'Title' | translate">
                         <dxi-validation-rule type="required"></dxi-validation-rule>
                     </dxi-column>
-                    <dxi-column dataField="expand.invoice.number" [caption]="'Invoice' | translate"></dxi-column>
-                    <dxi-column dataField="expand.expense.title" [caption]="'Expense' | translate"></dxi-column>
-                    <dxi-column dataField="date" [caption]="'Date' | translate" dataType="date">
-                        <dxi-validation-rule type="required"></dxi-validation-rule>
-                    </dxi-column>
                     <dxi-column dataField="total" [caption]="'Total' | translate" dataType="number" format="#,##0.00" cellTemplate="totalTemplate">
                         <div *dxTemplate="let d of 'totalTemplate'" [class.text-danger]="d.data?.type == 'out'" [class.text-primary]="d.data?.type == 'in'">
                             @if (d.data?.type == 'in') {
@@ -78,6 +73,11 @@
                         </div>
                         <dxi-validation-rule type="required"></dxi-validation-rule>
                     </dxi-column>
+                    <dxi-column dataField="date" [caption]="'Date' | translate" dataType="date">
+                        <dxi-validation-rule type="required"></dxi-validation-rule>
+                    </dxi-column>
+                    <dxi-column [editorOptions]="{ disabled: true }" dataField="expand.invoice.number" [caption]="'Invoice' | translate"></dxi-column>
+                    <dxi-column [editorOptions]="{ disabled: true }" dataField="expand.expense.title" [caption]="'Expense' | translate"></dxi-column>
                     <dxi-column [visible]="false" dataField="created" [caption]="'Created' | translate" dataType="date"></dxi-column>
                     <dxi-column [visible]="false" dataField="updated" [caption]="'Updated' | translate" dataType="date"></dxi-column>
                 </dx-data-grid>

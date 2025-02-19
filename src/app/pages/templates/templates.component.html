@@ -5,7 +5,7 @@
                 <h4 class="card-title mb-0 flex-grow-1">{{ 'Templates' | translate }}</h4>
             </div>
             <div class="card-body">
-                <dx-data-grid #grid [dataSource]="data" (onInitNewRow)="newRow($event)" (onSaved)="saved($event)" (onRowUpdated)="reload()"
+                <dx-data-grid #grid [dataSource]="data" (onSaved)="saved($event)" (onRowUpdated)="reload()"
                     (onRowInserted)="reload()" (onRowRemoved)="reload()">
                     <dxi-column dataField="name" caption="{{ 'Name' | translate }}">
                         <dxi-validation-rule type="required"></dxi-validation-rule>

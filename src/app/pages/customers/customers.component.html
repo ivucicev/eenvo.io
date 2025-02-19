@@ -5,7 +5,7 @@
                 <h4 class="card-title mb-0 flex-grow-1">{{ title | translate }}</h4>
             </div>
             <div class="card-body">
-                <dx-data-grid #grid [dataSource]="data" (onInitNewRow)="newRow($event)" (onSaved)="saved($event)" (onRowUpdated)="reload()" (onRowInserted)="reload()" (onRowRemoved)="reload()">
+                <dx-data-grid #grid [dataSource]="data" (onSaved)="saved($event)" (onRowUpdated)="reload()" (onRowInserted)="reload()" (onRowRemoved)="reload()">
                     <dxo-toolbar>
                         <dxi-item name="groupPanel"></dxi-item>
                         <dxi-item location="after">
@@ -26,7 +26,9 @@
                     <dxi-column dataField="name" caption="{{ 'Name' | translate }}">
                         <dxi-validation-rule type="required"></dxi-validation-rule>
                     </dxi-column>
-                    <dxi-column dataField="vatID" caption="{{ 'VAT ID' | translate }}"></dxi-column>
+                    <dxi-column dataField="vatID" caption="{{ 'VAT ID' | translate }}">
+                        <dxi-validation-rule type="stringLength" [ignoreEmptyValue]="true" min="11"></dxi-validation-rule>
+                    </dxi-column>
                     <dxi-column dataField="address" caption="{{ 'Address' | translate }}"></dxi-column>
                     <dxi-column dataField="city" caption="{{ 'City' | translate }}"></dxi-column>
                     <dxi-column dataField="postal" caption="{{ 'Postal Code' | translate }}"></dxi-column>
@@ -40,7 +42,9 @@
                         <dxi-validation-rule type="email"></dxi-validation-rule>
                     </dxi-column>
                     <dxi-column dataField="web" caption="{{ 'Website' | translate }}"></dxi-column>
-                    <dxi-column dataField="iban" caption="{{ 'IBAN' | translate }}"></dxi-column>
+                    <dxi-column dataField="iban" caption="{{ 'IBAN' | translate }}">
+                        <dxi-validation-rule type="stringLength" [ignoreEmptyValue]="true" min="15" max="33"></dxi-validation-rule>
+                    </dxi-column>
                     <dxi-column dataField="note" caption="{{ 'Note' | translate }}"></dxi-column>
                     <dxi-column dataField="due" caption="{{ 'Due Amount' | translate }}" dataType="number"></dxi-column>
                     <dxi-column [visible]="false" dataField="created" caption="{{ 'Created' | translate }}" dataType="date" format="dd.MM.yyyy, HH:mm"></dxi-column>

@@ -5,7 +5,7 @@
                 <h4 class="card-title mb-0 flex-grow-1">{{ 'Users' | translate }}</h4>
             </div>
             <div class="card-body">
-                <dx-data-grid #grid [dataSource]="data" (onInitNewRow)="newRow($event)" (onSaved)="saved($event)"
+                <dx-data-grid #grid [dataSource]="data" (onInitNewRow)="newRow($event)" (onSaving)="saving($event)"
                     (onEditingStart)="newRow($event)" (onRowUpdated)="reload()" (onRowInserted)="reload()"
                     (onRowRemoved)="reload()">
                     <dxi-column [allowFiltering]="false" [allowResizing]="false" [allowSorting]="false"
@@ -28,6 +28,12 @@
                                 [multiple]="false" selectButtonText="{{ '+' | translate }}" accept="image/*"
                                 [visible]="false" (onValueChanged)="fileAdded($event)" uploadMode="instantly">
                             </dx-file-uploader>
+                            @if (d.data.id) {
+                                <br>
+                                <button (click)="pwdReset(d.data.email)" class="mt-3 btn btn-sm btn-clear btn-ghost-info"> <i class="ri ri-lock-fill"></i> {{ 'Send password reset' | translate }} </button>
+                                <br>
+                                <button (click)="activation(d.data.email)" class="mt-1 btn btn-sm btn-clear btn-ghost-info"> <i class="ri ri-mail-send-fill"></i> {{ 'Send activation email' | translate }} </button>
+                            }
                         </div>
                     </dxi-column>
                     <dxi-column dataField="name" caption="{{ 'Name' | translate }}">
@@ -37,15 +43,17 @@
                         <dxi-validation-rule type="required"></dxi-validation-rule>
                         <dxi-validation-rule type="email"></dxi-validation-rule>
                     </dxi-column>
-                    <dxi-column dataField="password" caption="{{ 'Password' | translate }}"></dxi-column>
-                    <dxi-column dataField="verified" caption="{{ 'Verified' | translate }}"
-                        dataType="boolean"></dxi-column>
+                    <dxi-column [visible]="false" dataField="password"
+                        caption="{{ 'Password' | translate }}"></dxi-column>
+                    <dxi-column [editorOptions]="{ disabled: true }" dataField="verified"
+                        caption="{{ 'Verified' | translate }}" dataType="boolean"></dxi-column>
                     <dxi-column [visible]="false" dataField="created" caption="{{ 'Created' | translate }}"
                         dataType="date"></dxi-column>
                     <dxi-column [visible]="false" dataField="updated" caption="{{ 'Updated' | translate }}"
                         dataType="date"></dxi-column>
 
-                    <dxi-column type="buttons" [fixed]="true" fixedPosition="right" alignment="right" [showInColumnChooser]="false">
+                    <dxi-column type="buttons" [fixed]="true" fixedPosition="right" alignment="right"
+                        [showInColumnChooser]="false">
                         <dxi-button [onClick]="editUser" hint="Edit" icon="edit"></dxi-button>
                         <dxi-button name="delete"></dxi-button>
                     </dxi-column>

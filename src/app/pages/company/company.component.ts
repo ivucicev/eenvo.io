@@ -86,7 +86,6 @@ export class CompanyComponent {
 	async submit() {
 		const data = this.companyForm.getRawValue();
 		this.data = await this.pocketbase.companies.update(data.id, data);
-		this.toast.success()
 	}
 
 }

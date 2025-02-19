@@ -95,15 +95,11 @@ export class GeneralSettingsComponent {
             const formData = this.settingsForm.getRawValue();
             formData.updated = new Date();
 
-            try {
-                this.data = await this.pocketbase.settings
-                    .update(this.data.id, formData);
-                this.settingsService.settings = { ...this.data };
-                this.settingsService.reinit();
-                this.toast.success();
-            } catch (error) {
-                this.toast.error('Error updating settings');
-            }
+            this.data = await this.pocketbase.settings
+                .update(this.data.id, formData);
+            this.settingsService.settings = { ...this.data };
+            this.settingsService.reinit();
+
         }
     }
 }
