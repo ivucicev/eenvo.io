@@ -4,7 +4,6 @@ import { UntypedFormGroup, UntypedFormBuilder, Validators, ReactiveFormsModule, 
 import { PocketBaseService } from '../../core/services/pocket-base.service';
 import { environment } from '../../../environments/environment';
 import { TranslateModule } from '@ngx-translate/core';
-import { ToastService } from '../../core/services/toast.service';
 import { DxNumberBoxModule } from 'devextreme-angular';
 
 @Component({
@@ -26,7 +25,7 @@ export class InvoiceDetailComponent {
 
     public readonly invoice = input<any>();
 
-    constructor(private formBuilder: UntypedFormBuilder, private toast: ToastService, private pocketbase: PocketBaseService) {
+    constructor(private formBuilder: UntypedFormBuilder, private pocketbase: PocketBaseService) {
 
         this.invoicesForm = this.formBuilder.group({
 
@@ -228,10 +227,12 @@ export class InvoiceDetailComponent {
             if (item.id)
                 allItems.push(this.pocketbase.items.update(item.id, item, {
                     '$autoCancel': false,
+                    headers: { notoast: '1' }
                 }));
             else
                 allItems.push(this.pocketbase.items.create(item, {
                     '$autoCancel': false,
+                    headers: { notoast: '1' }
                 }));
         })
 
@@ -257,11 +258,9 @@ export class InvoiceDetailComponent {
 
         if (invoice.id) {
             const updated = await this.pocketbase.invoices.update(invoice.id, invoice);
-            this.toast.success();
         } else {
             const created = await this.pocketbase.invoices.create(invoice);
             this.invoicesForm.patchValue({ id: created.id });
-            this.toast.success();
         }
         
     }

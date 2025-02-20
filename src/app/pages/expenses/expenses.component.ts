@@ -90,33 +90,13 @@ export class ExpensesComponent {
         // updating or deleting or creating expense should automatically track transaction
         const change = e.changes[0];
         const data = change?.data;
-        let updateTransaction;
-        if (data) {
-            data.user = this.pocketbase.auth.id;
-            if (data.id)
-                updateTransaction = await this.pocketbase.transactions.getFirstListItem(`expense = '${data.id}'`);
-        }
         if (change?.type === 'remove') {
             await this.pocketbase.expenses.delete(change.key.id);
-            if (updateTransaction?.id)
-                await this.pocketbase.transactions.delete(change.key.id);
         } else if (change?.type === 'update' || change?.type === 'insert') {
-            const transaction = {
-                expense: data.id,
-                date: data.date,
-                title: data.title,
-                total: data.total,
-                user: data.user,
-                type: 'out'
-            };
             if (data.id) {
                 await this.pocketbase.expenses.update(data.id, data);
-                if (updateTransaction?.id)
-                    await this.pocketbase.transactions.update(updateTransaction.id, transaction);
             } else {
                 const createdExpense = await this.pocketbase.expenses.create(data);
-                transaction.expense = createdExpense.id;
-                await this.pocketbase.transactions.create(transaction);
             }
         }
         this.reload();

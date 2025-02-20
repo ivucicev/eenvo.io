@@ -4,7 +4,6 @@ import { PocketBaseService } from '../../core/services/pocket-base.service';
 import { InvoiceDetailComponent } from '../invoice-detail/invoice-detail.component';
 import { FormsModule } from '@angular/forms';
 import { DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
-import { ToastService } from '../../core/services/toast.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
@@ -49,7 +48,7 @@ export class InvoicesComponent {
     @ViewChild('invoiceDetail')
     public detail?: InvoiceDetailComponent;
 
-    constructor(private pocketbase: PocketBaseService, private invoiceService: InvoiceGeneratorService, private settingsService: SettingsService, private activatedRoute: ActivatedRoute, private sanitizer: DomSanitizer, private toast: ToastService) {
+    constructor(private pocketbase: PocketBaseService, private invoiceService: InvoiceGeneratorService, private settingsService: SettingsService, private activatedRoute: ActivatedRoute, private sanitizer: DomSanitizer) {
         this.getData();
     }
 
@@ -77,26 +76,11 @@ export class InvoicesComponent {
             e.row.data.isPaid = true;
             e.row.data.paymentDate = new Date()
         }
-        this.toast.success();
-
-        await this.createTransaction(e.row?.data);
 
         this.reload()
 
         e?.event?.preventDefault();
     };
-
-    async createTransaction(invoice: any) {
-        const transaction = {
-            date: invoice.paymentDate,
-            title: invoice.number,
-            total: invoice.total,
-            user: this.pocketbase.auth.id,
-            invoice: invoice.id,
-            type: 'in'
-        };
-        await this.pocketbase.transactions.create(transaction);
-    }
 
     duplicateInvoice = async (e: DxDataGridTypes.ColumnButtonClickEvent) => {
         const originalInvoice = e.row?.data;
@@ -142,10 +126,12 @@ export class InvoicesComponent {
                     quantity: item.quantity,
                     discount: item.discount,
                     tax: item.tax,
-                    total: item.total
+                    total: item.total,
+
                 };
                 allItems.push(this.pocketbase.items.create(newItem, {
                     '$autoCancel': false,
+                    headers: { notoast: '1' }
                 }));
             }
         }
@@ -157,7 +143,6 @@ export class InvoicesComponent {
         // Create the new invoice
         const createdInvoice = await this.pocketbase.invoices.create(newInvoice);
 
-        this.toast.success();
         this.reload();
 
         e?.event?.preventDefault();

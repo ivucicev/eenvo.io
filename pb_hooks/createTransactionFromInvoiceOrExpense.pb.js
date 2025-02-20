@@ -1,12 +1,16 @@
 /// <reference path="../pb_data/types.d.ts" />
 
-//const PocketBase = require('pocketbase');
 
-
-onCollectionAfterUpdateSuccess((e) => {
-    // e.app
-    // e.collection
-    // create transaction here
-    
+onRecordAfterCreateSuccess((e) => {
+    const transactionData = {
+        expense: e.record.get('id'),
+        date: e.record.get('date'),
+        title: e.record.get('title'),
+        company: e.record.get('company'),
+        total: e.record.get('total'),
+        user: e.record.get('user'),
+        type: 'out'
+    };
+    $app.db().insert('transactions', transactionData).execute();
     e.next()
-    }, "invoices", "expenses")
+}, "expenses");

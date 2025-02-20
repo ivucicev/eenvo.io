@@ -31,6 +31,7 @@ export class PocketBaseService {
         }
 
         this.pb.afterSend = (response, data, options?: any) => {
+            console.log()
             if (response.status != 200) {
                 switch (response.status) {
                     case 400:
@@ -45,12 +46,13 @@ export class PocketBaseService {
                     case 500:
                         this.toast.error('Unexpected error, please try again.');
                         break;
-                        default:
+                    default:
                         break;
                 }
             } else if (options?.method == "POST" || options?.method == "PATCH" || options?.method == "DELETE") {
-                toast.success();
-             }
+                if (!options.headers.notoast)
+                    toast.success();
+            }
             return data;
         };
         this.pb.beforeSend = (url, options) => {
