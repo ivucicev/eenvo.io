@@ -47,7 +47,7 @@
                     </div>
                 </div>
 
-                <dx-data-grid #grid [dataSource]="data" (onRowDblClick)="rowDoubleClicked($event)"
+                <dx-data-grid #grid [dataSource]="data" (onSaved)="saved($event)" (onRowDblClick)="rowDoubleClicked($event)"
                     class="hide-default-edit">
 
                     <dxo-editing [allowAdding]="false" [allowUpdating]="false"></dxo-editing>

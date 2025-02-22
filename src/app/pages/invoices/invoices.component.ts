@@ -183,15 +183,16 @@ export class InvoicesComponent {
     }
 
     async saved(e: any) {
-        if (e.changes[0].type == 'remove') {
+        if (e.changes[0]?.type == 'remove') {
             const toDelete: any = [];
             e.changes[0].key.items?.forEach((item: any) => {
+                console.log(item)
                 toDelete.push(this.pocketbase.items.delete(item, {
                     '$autoCancel': false,
                 }));
             })
             const deleted = await Promise.all(toDelete);
-            await this.pocketbase.invoices.delete(e.changes[0].key.id);
+            //await this.pocketbase.invoices.delete(e.changes[0].key.id);
         }
         this.reload();
     }
