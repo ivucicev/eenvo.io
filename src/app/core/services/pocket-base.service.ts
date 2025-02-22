@@ -19,7 +19,6 @@ export class PocketBaseService {
 
     constructor(public toast: ToastService, private translate: TranslateService) {
         this.pb = new PocketBase((window as any)['env'].pocketbase || environment.pocketbase);
-
         // Load any existing auth data
         if (this.pb.authStore.isValid) {
             if (!this.pb.authStore.record?.expand) {
@@ -160,7 +159,7 @@ export class PocketBaseService {
             isRegistrationComplete: true,
             email: email,
             iban: 'IBXXXXXXXXXXXXX'
-        });
+        }, { headers: { notoast: '1' }});
     }
 
     async registerCompanyName(name: string): Promise<any> {
@@ -189,7 +188,9 @@ export class PocketBaseService {
                 passwordConfirm: password,
                 companyName,
                 company: company.id
-            });
+            }, { headers: {
+                notoast: '1'
+            } });
 
             await this.users.requestVerification(email);
 
