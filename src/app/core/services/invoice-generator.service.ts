@@ -272,7 +272,6 @@ export class InvoiceGeneratorService {
             let legal = false;
             let contact = false;
 
-            const body = [];
             const head: any = [[]];
 
             if (invoice.companyData.address || invoice.companyData.city || invoice.companyData.postal || invoice.companyData.country) {
@@ -289,32 +288,41 @@ export class InvoiceGeneratorService {
                 head[0].push(this.translate.instant("Contact"));
                 contact = true;
             }
+            let row1: any = [];
+            let row2: any = [];
+            let row3: any = [];
+            let body: any = [row1, row2, row3];
 
             // Check if address data is complete
             if (address) {
-                const addressParts = [];
-                if (invoice.companyData.address) addressParts.push(invoice.companyData.address + ', ');
-                if (invoice.companyData.postal && invoice.companyData.city) addressParts.push(invoice.companyData.postal + ' ' + invoice.companyData.city + ', ');
-                if (invoice.companyData.country) addressParts.push(invoice.companyData.country);
-                body.push(addressParts);
+                if (invoice.companyData.address) row1.push(invoice.companyData.address + ', ');
+                else row1.push('')
+                if (invoice.companyData.postal || invoice.companyData.city) row2.push(invoice.companyData.postal + ' ' + invoice.companyData.city + ', ');
+                else row2.push('')
+                if (invoice.companyData.country) row3.push(invoice.companyData.country);
+                else row3.push('')
             }
 
             // Check if legal data is complete
+            const legalParts = [];
             if (legal) {
-                const legalParts = [];
-                if (invoice.companyData.vatID) legalParts.push(this.translate.instant("VATID: ") + invoice.companyData.vatID);
-                if (invoice.companyData.iban) legalParts.push(this.translate.instant("IBAN: ") + invoice.companyData.iban);
-                if (invoice.companyData.swift) legalParts.push(this.translate.instant("SWIFT: ") + invoice.companyData.swift);
-                body.push(legalParts);
+                if (invoice.companyData.vatID) row1.push(this.translate.instant("VATID: ") + invoice.companyData.vatID);
+                else row1.push('')
+                if (invoice.companyData.iban) row2.push(this.translate.instant("IBAN: ") + invoice.companyData.iban);
+                else row2.push('')
+                if (invoice.companyData.swift) row3.push(this.translate.instant("SWIFT: ") + invoice.companyData.swift);
+                else row3.push('')
             }
 
             // Check if contact data is complete
+            const contactParts = [];
             if (contact) {
-                const contactParts = [];
-                if (invoice.companyData.phone) contactParts.push(this.translate.instant("Mobile: ") + invoice.companyData.phone);
-                if (invoice.companyData.email) contactParts.push(this.translate.instant("Email: ") + invoice.companyData.email);
-                if (invoice.companyData.web) contactParts.push(this.translate.instant("Web: ") + invoice.companyData.web);
-                body.push(contactParts);
+                if (invoice.companyData.phone) row1.push(this.translate.instant("Mobile: ") + invoice.companyData.phone);
+                else row1.push('')
+                if (invoice.companyData.email) row2.push(this.translate.instant("Email: ") + invoice.companyData.email);
+                else row2.push('')
+                if (invoice.companyData.web) row3.push(this.translate.instant("Web: ") + invoice.companyData.web);
+                else row3.push('')
             }
 
             doc.autoTable({

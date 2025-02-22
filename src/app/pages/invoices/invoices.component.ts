@@ -192,7 +192,6 @@ export class InvoicesComponent {
                 }));
             })
             const deleted = await Promise.all(toDelete);
-            //await this.pocketbase.invoices.delete(e.changes[0].key.id);
         }
         this.reload();
     }
