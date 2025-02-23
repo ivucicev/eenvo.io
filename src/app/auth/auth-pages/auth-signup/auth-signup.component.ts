@@ -21,6 +21,7 @@ export class AuthSignupComponent {
 	registerForm: FormGroup;
 	errorMessage: string = '';
 	isLoading: boolean = false;
+    passwordVisible: boolean = false;
 
 	constructor(
 		private fb: FormBuilder,

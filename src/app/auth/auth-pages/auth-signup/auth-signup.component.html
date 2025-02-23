@@ -15,8 +15,8 @@
                         <div class="mb-2">
                             <label for="userpassword" class="form-label">{{ 'Password' | translate }}</label>
                             <div class="position-relative auth-pass-inputgroup mb-3">
-                                <input formControlName="password"  type="password" class="form-control pe-5 password-input" placeholder="{{ 'Enter password' | translate }}" id="password-input">
-                                <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon" type="button" id="password-addon"><i class="las la-eye align-middle fs-18"></i></button>
+                                <input formControlName="password" [attr.type]="passwordVisible ? 'text' : 'password'" class="form-control pe-5 password-input" placeholder="{{ 'Enter password' | translate }}" id="password-input">
+                                <button (click)="passwordVisible=!passwordVisible" class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon" type="button" id="password-addon"><i class="las la-eye align-middle fs-18"></i></button>
                             </div>
                         </div>
                         <div class="mb-3">
