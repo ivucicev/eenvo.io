@@ -18,7 +18,12 @@ export class PocketBaseService {
     public auth: any = null;
 
     constructor(public toast: ToastService, private translate: TranslateService) {
-        this.pb = new PocketBase((window as any)['env'].pocketbase || environment.pocketbase);
+
+        if (this.isDemoSubdomain()) {
+            this.pb = new PocketBase(environment.demo);
+        } else {
+            this.pb = new PocketBase((window as any)['env'].pocketbase || environment.pocketbase);
+        } 
         // Load any existing auth data
         if (this.pb.authStore.isValid) {
             if (!this.pb.authStore.record?.expand) {
@@ -60,6 +65,20 @@ export class PocketBaseService {
             return { url, options }
         };
 
+    }
+
+    private getSubdomain(): string | null {
+        const host = window.location.hostname;
+        const parts = host.split('.');
+        if (parts.length > 2) {
+            return parts[0]; // Assuming the subdomain is the first part
+        }
+        return null;
+    }
+
+    public isDemoSubdomain(): boolean {
+        const subdomain = this.getSubdomain();
+        return subdomain === 'demo';
     }
 
     public async getUser(id: any) {
