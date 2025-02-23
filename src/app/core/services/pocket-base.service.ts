@@ -69,43 +69,6 @@ export class PocketBaseService {
         return user;
     }
 
-    public get userAuth() {
-        return this.pb.authStore;
-    }
-    public get files() {
-        return this.pb.files;
-    }
-    public get invoices() {
-        return this.pb.collection(COLLECTIONS.INVOICES);
-    }
-    public get customers() {
-        return this.pb.collection(COLLECTIONS.CUSTOMERS);
-    }
-    public get companies() {
-        return this.pb.collection(COLLECTIONS.COMPANIES);
-    }
-    public get users() {
-        return this.pb.collection(COLLECTIONS.USERS);
-    }
-    public get expenses() {
-        return this.pb.collection(COLLECTIONS.EXPENSES);
-    }
-    public get items() {
-        return this.pb.collection(COLLECTIONS.ITEMS);
-    }
-    public get services() {
-        return this.pb.collection(COLLECTIONS.SERVICES);
-    }
-    public get settings() {
-        return this.pb.collection(COLLECTIONS.SETTINGS);
-    }
-    public get templates() {
-        return this.pb.collection(COLLECTIONS.TEMPLATES);
-    }
-    public get transactions() {
-        return this.pb.collection(COLLECTIONS.TRANSACTIONS);
-    }
-
     async afterLoginRegisterEvent(authData: any) {
         const user: any = await this.users.getOne(authData.record.id, { expand: 'company' });
         this.authStore.next(user);
@@ -228,4 +191,43 @@ export class PocketBaseService {
     getPocketBase() {
         return this.pb;
     }
+
+    // REPO
+    public get userAuth() {
+        return this.pb.authStore;
+    }
+    public get files() {
+        return this.pb.files;
+    }
+    public get invoices() {
+        return this.pb.collection(COLLECTIONS.INVOICES);
+    }
+    public get customers() {
+        return this.pb.collection(COLLECTIONS.CUSTOMERS);
+    }
+    public get companies() {
+        return this.pb.collection(COLLECTIONS.COMPANIES);
+    }
+    public get users() {
+        return this.pb.collection(COLLECTIONS.USERS);
+    }
+    public get expenses() {
+        return this.pb.collection(COLLECTIONS.EXPENSES);
+    }
+    public get items() {
+        return this.pb.collection(COLLECTIONS.ITEMS);
+    }
+    public get services() {
+        return this.pb.collection(COLLECTIONS.SERVICES);
+    }
+    public get settings() {
+        return this.pb.collection(COLLECTIONS.SETTINGS);
+    }
+    public get templates() {
+        return this.pb.collection(COLLECTIONS.TEMPLATES);
+    }
+    public get transactions() {
+        return this.pb.collection(COLLECTIONS.TRANSACTIONS);
+    }
+
 }
