@@ -38,8 +38,9 @@ export class InvoiceGeneratorService {
 
         const img = new Image();
 
-        if (invoice.expand.company.logo)
-            img.src = environment.pocketbase + '/api/files/companies/' + this.pocketbase.auth.company + '/' + invoice.expand.company.logo;
+        if (invoice.expand.company.logo) {
+            img.src = (this.pocketbase.isDemoSubdomain() ? environment.demo : environment.pocketbase) + '/api/files/companies/' + this.pocketbase.auth.company + '/' + invoice.expand.company.logo;
+        }
         else
             img.src = "/assets/images/logo-dark.png";
 

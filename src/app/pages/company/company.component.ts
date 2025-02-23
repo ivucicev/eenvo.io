@@ -28,13 +28,16 @@ export class CompanyComponent {
 
 	companyForm!: FormGroup;
 	public countries: any = []
-	public logo = environment.pocketbase + '/api/files/companies/';
+	public logo: string;
 
 	@ViewChild('uploader')
 	public file?: DxFileUploaderComponent;
 
 	constructor(private http: HttpClient, private toast: ToastService, private pocketbase: PocketBaseService) {
-		this.http.get<any[]>('assets/json/country-list.json').subscribe(data => {
+		
+        this.logo = (this.pocketbase.isDemoSubdomain() ? environment.demo : environment.pocketbase) + '/api/files/companies/';
+
+        this.http.get<any[]>('assets/json/country-list.json').subscribe(data => {
 			this.countries = data; // Output JSON as an array
 		});
 		this.companyForm = new FormGroup({
@@ -79,7 +82,7 @@ export class CompanyComponent {
 
         this.companyForm.patchValue({ logo: this.data.logo });
 
-	    this.logo = environment.pocketbase + `/api/files/companies/${this.data.id}/${this.data.logo}`;
+	    this.logo = (this.pocketbase.isDemoSubdomain() ? environment.demo : environment.pocketbase) + `/api/files/companies/${this.data.id}/${this.data.logo}`;
 
 	}
 
