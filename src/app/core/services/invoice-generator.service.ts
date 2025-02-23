@@ -38,6 +38,7 @@ export class InvoiceGeneratorService {
 
         const img = new Image();
 
+        // dont forget demo
         if (invoice.expand.company.logo) {
             img.src = (this.pocketbase.isDemoSubdomain() ? environment.demo : environment.pocketbase) + '/api/files/companies/' + this.pocketbase.auth.company + '/' + invoice.expand.company.logo;
         }
