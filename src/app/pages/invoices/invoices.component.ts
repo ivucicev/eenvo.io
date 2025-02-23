@@ -186,7 +186,6 @@ export class InvoicesComponent {
         if (e.changes[0]?.type == 'remove') {
             const toDelete: any = [];
             e.changes[0].key.items?.forEach((item: any) => {
-                console.log(item)
                 toDelete.push(this.pocketbase.items.delete(item, {
                     '$autoCancel': false,
                 }));
