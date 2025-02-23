@@ -7,7 +7,11 @@
                     <p class="text-muted mt-2">{{ 'Sign in to continue to' | translate }} <span class="text-primary">{{
                             'eenvo' | translate }}</span>.</p>
                 </div>
-
+                <div class="text-center my-5">
+                    <div class="alert alert-borderless alert-warning text-center mb-2 mx-2" role="alert">
+                        {{ 'This is demo environment. Data will reset every hour, so keep that in mind. Login in with email demo@eenvo.io and password demo@eenvo' | translate }}
+                    </div>
+                </div>
                 <div class="mt-4">
                     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
                         <div class="auth-input">

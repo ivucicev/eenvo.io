@@ -24,6 +24,7 @@ export class AuthSigninComponent {
     errorMessage: string = '';
     isLoading: boolean = false;
     passwordVisible: boolean = false;
+    isDemo = false;
 
     constructor(
         private fb: FormBuilder,
@@ -34,6 +35,11 @@ export class AuthSigninComponent {
             email: ['', [Validators.required, Validators.email]],
             password: ['', [Validators.required, Validators.minLength(8)]]
         });
+
+        this.isDemo = this.pocketBaseService.isDemoSubdomain();
+        if (this.pocketBaseService.isDemoSubdomain()) {
+            this.loginForm.patchValue({email: 'demo@eenvo.io', password: 'demo@eenvo'});
+        }
     }
 
     async onSubmit() {
