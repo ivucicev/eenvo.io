@@ -37,6 +37,7 @@ export class AuthSigninComponent {
         });
 
         this.isDemo = this.pocketBaseService.isDemoSubdomain();
+        
         if (this.isDemo) {
             this.loginForm.patchValue({email: 'demo@eenvo.io', password: 'demo@eenvo'});
         }
