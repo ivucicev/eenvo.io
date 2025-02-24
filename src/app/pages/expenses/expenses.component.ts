@@ -102,6 +102,7 @@ export class ExpensesComponent {
         // updating or deleting or creating expense should automatically track transaction
         const change = e.changes[0];
         const data = change?.data;
+        let id = null
 
         if (change?.type === 'remove') {
             await this.pocketbase.expenses.delete(change.key.id);
@@ -109,34 +110,23 @@ export class ExpensesComponent {
             if (data.id) {
                 await this.pocketbase.expenses.update(data.id, data);
             } else {
-                data.id = await this.pocketbase.expenses.create(data);
+                const res = await this.pocketbase.expenses.create(data);
+                id = res.id;
             }
         }
 
-        console.log(this.currentExpense)
-
-
         // add documents
-        if (this.currentExpense?.id && this.addedFiles && this.addedFiles.length) {
-            await this.pocketbase.expenses.update(this.currentExpense.id, { "files+": this.addedFiles }, { headers: { nototast: '1' } });
+        if ((this.currentExpense?.id || id) && this.addedFiles && this.addedFiles.length) {
+            await this.pocketbase.expenses.update(this.currentExpense?.id ?? id, { "files+": this.addedFiles }, { headers: { notoast: '1' } });
             this.addedFiles.length = 0;
         }
 
 
         // remove documents
         if (this.currentExpense?.id && this.filesToRemove && this.filesToRemove.length) {
-            await this.pocketbase.expenses.update(this.currentExpense.id, { 'files-': this.filesToRemove }, { headers: { nototast: '1' } });
+            await this.pocketbase.expenses.update(this.currentExpense.id, { 'files-': this.filesToRemove }, { headers: { notoast: '1' } });
             this.filesToRemove.length = 0;
         }
-
-        /* if (data?.id && this.addedFiles && this.addedFiles.length) {
-             const formData = new FormData();
-             this.addedFiles.forEach(f => {
-                 formData.append('files', f);
-             })
- 
-             await this.pocketbase.expenses.update(data.id, formData);
-         }*/
 
         this.reload();
     }
