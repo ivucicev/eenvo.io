@@ -7,3 +7,4 @@ pb_data
 .env
 import
 src/devextreme-license.ts
+pocketbase.exe
