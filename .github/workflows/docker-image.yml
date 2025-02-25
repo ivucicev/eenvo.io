@@ -60,8 +60,6 @@ jobs:
           context: .
           file: ./dockerfile
           push: true
-          build-args: |
-            DEVEXTREME_KEY=${{ secrets.DEVEX }}
           tags: |
             ivucicev/eenvo.io:latest
             ivucicev/eenvo.io:${{ github.run_id }}
