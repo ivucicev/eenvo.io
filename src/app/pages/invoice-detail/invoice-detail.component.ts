@@ -22,6 +22,8 @@ export class InvoiceDetailComponent {
     items: any = [];
     logo = environment.pocketbase + '/api/files/companies/';
     isPaid = false;
+    taxValueMap: any = [];
+
 
     public readonly invoice = input<any>();
 
@@ -273,11 +275,13 @@ export class InvoiceDetailComponent {
         const isR1 = this.invoicesForm.get('type')?.value == "R1";
         const isTaxed = !!this.invoicesForm.get('tax')?.value;
 
+        const taxValueMap: { [key: number]: number } = {};
+
         this.items.forEach((item: any) => {
 
             if (!isTaxed) item.tax = 0.0;
 
-            const itemTotalValue = +(item.price * item.quantity)
+            const itemTotalValue = +(item.price * item.quantity);
             const itemDiscountValue = itemTotalValue * (item.discount);
             const discountedItemTotalValue = itemTotalValue - itemDiscountValue;
             const itemTaxValue = discountedItemTotalValue * item.tax;
@@ -291,12 +295,18 @@ export class InvoiceDetailComponent {
             if (isR1) item.total = +discountedItemTotalValue;
             else item.total = +itemTaxedTotalValue;
 
+            if (!taxValueMap[item.tax]) {
+                taxValueMap[item.tax] = 0;
+            }
+            taxValueMap[item.tax] += itemTaxValue;
         });
 
         this.invoicesForm.patchValue({ total: grandTotal });
         this.invoicesForm.patchValue({ subTotal: subTotal });
         this.invoicesForm.patchValue({ discountValue: totalDiscountValue });
         this.invoicesForm.patchValue({ taxValue: totalTaxValue });
+
+        this.taxValueMap = Object.keys(taxValueMap).map((k: any) => { return {tax: k, value: taxValueMap[k] } })
     }
 
     // Remove Item

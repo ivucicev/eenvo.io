@@ -159,7 +159,8 @@
                                 <label>{{ 'INVOICE DETAILS' | translate }}</label>
                             </div> -->
                             <div class="mb-2">
-                                <label for="date-field" class="text-muted text-uppercase fw-semibold">{{ 'Invoice number' | translate }}</label>
+                                <label for="date-field" class="text-muted text-uppercase fw-semibold">{{ 'Invoice
+                                    number' | translate }}</label>
                                 <input type="text" class="form-control bg-light border-0" id="number"
                                     placeholder="{{ 'Invoice number' | translate }}" required formControlName="number"
                                     [ngClass]="{ 'is-invalid': submitted && form['number'].errors }" />
@@ -168,7 +169,8 @@
                                 </div>
                             </div>
                             <div class="mb-2">
-                                <label for="date-field"  class="text-muted text-uppercase fw-semibold">{{ 'Invoice type' | translate }}</label>
+                                <label for="date-field" class="text-muted text-uppercase fw-semibold">{{ 'Invoice type'
+                                    | translate }}</label>
                                 <select class="form-select bg-light border-0" formControlName="type">
                                     <option value="-" selected>-</option>
                                     <option value="R">R</option>
@@ -177,7 +179,8 @@
                                 </select>
                             </div>
                             <div class="mb-2">
-                                <label for="choices-payment-type"  class="text-muted text-uppercase fw-semibold">{{ 'Payment type' | translate
+                                <label for="choices-payment-type" class="text-muted text-uppercase fw-semibold">{{
+                                    'Payment type' | translate
                                     }}</label>
                                 <select formControlName="paymentType" class="form-control input-light bg-light border-0"
                                     id="choices-payment-type">
@@ -201,7 +204,8 @@
                                 <label>&nbsp;</label>
                             </div> -->
                             <div class="mb-2">
-                                <label for="date-field" class="text-muted text-uppercase fw-semibold">{{ 'Invoice date' | translate }}</label>
+                                <label for="date-field" class="text-muted text-uppercase fw-semibold">{{ 'Invoice date'
+                                    | translate }}</label>
                                 <input type="date" class="form-control bg-light border-0" id="date" placeholder="date"
                                     required formControlName="date"
                                     [ngClass]="{ 'is-invalid': submitted && form['date'].errors }" />
@@ -210,7 +214,8 @@
                                 </div>
                             </div>
                             <div class="mb-2">
-                                <label for="date-field" class="text-muted text-uppercase fw-semibold">{{ 'Delivery date' | translate }}</label>
+                                <label for="date-field" class="text-muted text-uppercase fw-semibold">{{ 'Delivery date'
+                                    | translate }}</label>
                                 <input type="date" class="form-control bg-light border-0" id="deliveryDate"
                                     placeholder="Delivery date" formControlName="deliveryDate"
                                     [ngClass]="{ 'is-invalid': submitted && form['deliveryDate'].errors }" />
@@ -219,7 +224,8 @@
                                 </div>
                             </div>
                             <div class="mb-2">
-                                <label for="date-field" class="text-muted text-uppercase fw-semibold">{{ 'Due date' | translate }}</label>
+                                <label for="date-field" class="text-muted text-uppercase fw-semibold">{{ 'Due date' |
+                                    translate }}</label>
                                 <input type="date" class="form-control bg-light border-0" id="dueDate" placeholder="Due"
                                     required formControlName="dueDate"
                                     [ngClass]="{ 'is-invalid': submitted && form['dueDate'].errors }" />
@@ -400,6 +406,20 @@
                                                     </td>
                                                 </tr>
                                                 @if (invoicesForm.get('tax')?.value) {
+                                                @for(taxValue of taxValueMap; track $index) {
+                                                @if (taxValue.value > 0) {
+                                                <tr>
+                                                    <th scope="row">{{ 'Tax' | translate }} <sub>{{taxValue.tax *
+                                                            100}}%</sub> </th>
+                                                    <td>
+                                                        <dx-number-box [value]="taxValue.value" [readOnly]="true"
+                                                            data-currency="true" type="number"
+                                                            class="form-control product-price bg-light border-0"
+                                                            [inputAttr]="{ 'aria-label': 'Currency Format' }"></dx-number-box>
+                                                    </td>
+                                                </tr>
+                                                }
+                                                }
                                                 <tr>
                                                     <th scope="row">{{ 'Tax' | translate }}</th>
                                                     <td>
@@ -437,14 +457,14 @@
                         </table>
                     </div>
                     <div class="mt-2">
-                        <label for="note"
-                            class="form-label text-muted text-uppercase fw-semibold">{{ 'NOTES' | translate }}</label>
+                        <label for="note" class="form-label text-muted text-uppercase fw-semibold">{{ 'NOTES' |
+                            translate }}</label>
                         <textarea class="form-control" formControlName="note" id="note"
                             placeholder="{{ 'Notes - visible on invoice.' | translate }}" rows="4" required></textarea>
                     </div>
                     <div class="mt-2">
-                        <label for="internalNote"
-                            class="form-label text-muted text-uppercase fw-semibold">{{ 'INTERNAL NOTES' | translate
+                        <label for="internalNote" class="form-label text-muted text-uppercase fw-semibold">{{ 'INTERNAL
+                            NOTES' | translate
                             }}</label>
                         <textarea class="form-control" formControlName="internalNote" id="internalNote"
                             placeholder="{{ 'Internal notes - not visible on invoice.' | translate }}" rows="4"
