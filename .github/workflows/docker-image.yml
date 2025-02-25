@@ -51,6 +51,8 @@ jobs:
           images: ivucicev/eenvo.io
 
       - name: Build and push Docker image
+        env:
+            DEVEXTREME_KEY: ${{ secrets.DEVEX }}
         if: contains(github.event.head_commit.message, 'ci')
         id: push
         uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671

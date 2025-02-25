@@ -6,3 +6,4 @@ dist
 pb_data
 .env
 import
+src/devextreme-license.ts
