@@ -1,13 +1,10 @@
 import { Component, ViewChild } from '@angular/core';
 import { DxButtonModule, DxDataGridComponent, DxDataGridModule, DxFileUploaderModule, DxLookupComponent, DxLookupModule, DxPieChartModule, DxPopupModule, DxSelectBoxModule } from 'devextreme-angular';
 import { PocketBaseService } from '../../core/services/pocket-base.service';
-import { ToastService } from '../../core/services/toast.service';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { CurrencyFormatPipe } from '../../core/pipes/number-format.pipe';
 import { StatsWidgetComponent } from '../../core/componate/stats-widget/stats-widget.component';
-import { EditorPreparingEvent } from 'devextreme/ui/data_grid';
-import { ValueChangedEvent } from 'devextreme/ui/file_uploader';
 import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
@@ -35,7 +32,7 @@ export class ExpensesComponent {
     @ViewChild('grid')
     public grid?: DxDataGridComponent;
 
-    constructor(private pocketbase: PocketBaseService, private toast: ToastService, private sanitizer: DomSanitizer) {
+    constructor(private pocketbase: PocketBaseService, private sanitizer: DomSanitizer) {
         this.getData();
 
         this.getCustomers();
