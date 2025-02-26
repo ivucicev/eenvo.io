@@ -1,6 +1,6 @@
 {
 	"name": "eenvo",
-	"version": "0.5.13",
+	"version": "0.5.14",
 	"scripts": {
 		"ng": "ng",
 		"start": "ng serve",
