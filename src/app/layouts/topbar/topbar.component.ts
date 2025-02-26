@@ -23,7 +23,7 @@ export class TopbarComponent {
 
     MODE = LAYOUT_MODE;
     SIDEBAR_SIZE = SIDEBAR_SIZE
-    currantMode!: string;
+    currentMode!: string;
     sidebarSize!: string;
     element: any;
 
@@ -63,14 +63,22 @@ export class TopbarComponent {
 
 
     constructor(private store: Store, private router: Router, private pocketbase: PocketBaseService, @Inject(DOCUMENT) private document: any, public languageService: LanguageService, public _cookiesService: CookieService) {
+        
+        
         this.element = document.documentElement;
+        
+        this.currentMode = localStorage.getItem('theme') || this.MODE.LIGHTMODE;
+        this.store.dispatch(changeMode({ mode: this.currentMode }));
+        this.changeDxTheme();
 
         this.store.select(getLayoutMode).subscribe((mode) => {
-            this.currantMode = mode
+            this.currentMode = mode
         })
+
         this.store.select(getSidebarSize).subscribe((sSize) => {
             this.sidebarSize = sSize
         })
+        
 
         this.pocketbase.authStore$.subscribe(user => {
             this.loadUserDetails(user);
@@ -118,9 +126,21 @@ export class TopbarComponent {
 
     }
 
+    changeDxTheme() {
+        this.document.body.classList.remove('dx-swatch-swatch-blue');
+        this.document.body.classList.remove('dx-swatch-swatch-blue-dark');
+        if (this.currentMode === this.MODE.LIGHTMODE) {
+            this.document.body.classList.add('dx-swatch-swatch-blue');
+        } else if (this.currentMode === this.MODE.DARKMODE) {
+            this.document.body.classList.add('dx-swatch-swatch-blue-dark');
+        }
+    }
+
     modeChange() {
-        const mode = this.currantMode === this.MODE.LIGHTMODE ? this.MODE.DARKMODE : this.MODE.LIGHTMODE
+        const mode = this.currentMode === this.MODE.LIGHTMODE ? this.MODE.DARKMODE : this.MODE.LIGHTMODE
         this.store.dispatch(changeMode({ mode }));
+        this.changeDxTheme();
+        localStorage.setItem('theme', this.currentMode)
     }
 
     windowScroll() {

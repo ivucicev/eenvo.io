@@ -79,7 +79,7 @@ export const layoutReducer = createReducer(
         document.documentElement.setAttribute('data-topbar', 'light');
         document.documentElement.setAttribute('data-sidebar', 'light');
         document.documentElement.setAttribute('data-layout-style', 'default');
-        document.documentElement.setAttribute('data-bs-theme', 'light');
+        document.documentElement.setAttribute('data-bs-theme', localStorage.getItem('theme') || 'light');
         document.documentElement.setAttribute('data-layout-width', 'fluid');
         document.documentElement.setAttribute('data-layout-position', 'fixed');
         document.documentElement.setAttribute('data-sidebar-image', 'none');
