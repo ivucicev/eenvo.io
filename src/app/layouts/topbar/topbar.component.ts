@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, Output, Signal, signal } from '@angular/core';
 import { SimplebarAngularModule } from 'simplebar-angular';
 import { Store } from '@ngrx/store';
 import { getLayoutMode, getSidebarSize } from '../../store/layouts/layout-selector';
@@ -20,7 +20,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     styleUrl: './topbar.component.scss'
 })
 export class TopbarComponent {
-    
+
     MODE = LAYOUT_MODE;
     SIDEBAR_SIZE = SIDEBAR_SIZE
     currantMode!: string;
@@ -33,6 +33,7 @@ export class TopbarComponent {
     valueset: any;
     countryName: any;
     userData: any;
+    isDemo = false;
 
     // Add new properties for user details
     currentUser: {
@@ -46,6 +47,8 @@ export class TopbarComponent {
             name: '',
             company: ''
         };
+
+    countdownMinutes: Signal<number> = signal(0);
 
     @Output() mobileMenuButtonClicked = new EventEmitter();
 
@@ -72,6 +75,12 @@ export class TopbarComponent {
         this.pocketbase.authStore$.subscribe(user => {
             this.loadUserDetails(user);
         })
+
+        this.isDemo = this.pocketbase.isDemoSubdomain();
+
+        if (this.isDemo)
+            this.startCountdownToCron()
+
 
     }
 
@@ -122,7 +131,7 @@ export class TopbarComponent {
             document.getElementById('page-topbar')?.classList.add('topbar-shadow')
         } else {
             if ((document.getElementById('back-to-top') as HTMLElement)?.style)
-            (document.getElementById('back-to-top') as HTMLElement).style.display = "none";
+                (document.getElementById('back-to-top') as HTMLElement).style.display = "none";
             document.getElementById('page-topbar')?.classList.remove('topbar-shadow')
         }
     }
@@ -174,4 +183,34 @@ export class TopbarComponent {
         this.cookieValue = lang;
         this.languageService.setLanguage(lang);
     }
+
+    /**
+     * Timer method that counts down to the next execution of the cron expression "0 *|/3 * * *"
+     * The cron expression executes every 3 hours on the server in Etc/UTC timezone.
+     */
+
+    startCountdownToCron() {
+        const cronIntervalHours = 3;
+        const utcNow = new Date();
+        const currentUTCHours = utcNow.getUTCHours();
+        const nextExecutionHour = Math.ceil(currentUTCHours / cronIntervalHours) * cronIntervalHours;
+        const nextExecutionDate = new Date(utcNow);
+
+        if (nextExecutionHour >= 24) {
+            nextExecutionDate.setUTCDate(utcNow.getUTCDate() + 1);
+            nextExecutionDate.setUTCHours(0, 0, 0, 0);
+        } else {
+            nextExecutionDate.setUTCHours(nextExecutionHour, 0, 0, 0);
+        }
+
+        const countdownMilliseconds = nextExecutionDate.getTime() - utcNow.getTime();
+        const countdownMinutes = Math.floor(countdownMilliseconds / (1000 * 60));
+        this.countdownMinutes = signal(countdownMinutes);
+
+        const to = setTimeout(() => {
+            this.startCountdownToCron();
+        }, 60000);
+
+    }
+
 }

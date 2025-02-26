@@ -9,7 +9,7 @@
             </span>
             <span class="logo-lg">
                 <img src="assets/images/logo-dark.png" alt="" height="50">
-                <span class="badge badge-pill badge-soft-primary version-badge">v{{ version }}</span>
+                <span class="badge badge-pill badge-soft-primary version-badge">@if (isDemo) { DEMO } v{{ version }}</span>
             </span>
         </a>
         <!-- Light Logo-->
@@ -20,7 +20,7 @@
             </span>
             <span class="logo-lg">
                 <img src="assets/images/logo-light.png" alt="" height="50">
-                <span class="badge badge-pill badge-soft-primary version-badge">v{{ version }}</span>
+                <span class="badge badge-pill badge-soft-primary version-badge">@if (isDemo) { DEMO } v{{ version }}</span>
             </span>
         </a>
         <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover"

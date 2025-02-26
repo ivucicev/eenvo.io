@@ -8,6 +8,7 @@ import { Router, RouterModule } from '@angular/router';
 import { MENU } from './menu';
 import { CommonModule } from '@angular/common';
 import * as pkg from '../../../../package.json'
+import { PocketBaseService } from '../../core/services/pocket-base.service';
 
 @Component({
     selector: 'eenvo-sidebar',
@@ -23,12 +24,14 @@ export class SidebarComponent {
     toggle: any = true;
     menuItems: MenuItem[] = [];
     version = pkg.version;
+    isDemo = false;
 
     @ViewChild('sideMenu') sideMenu!: ElementRef;
     @Output() mobileMenuButtonClicked = new EventEmitter();
 
-    constructor(private router: Router, public translate: TranslateService) {
+    constructor(private router: Router, public translate: TranslateService, private pocketbase: PocketBaseService) {
         translate.setDefaultLang('en');
+        this.isDemo = pocketbase.isDemoSubdomain();
     }
 
     ngOnInit(): void {

@@ -32,17 +32,26 @@
                     </span>
                 </button>
 
-               <!-- <div class="header-item fs-16 px-3 fs-16 header-item vertical-menu-btn topnav-hamburger ">
+                <!--<div class="header-item fs-16 px-3 fs-16 header-item vertical-menu-btn topnav-hamburger ">
                         <button style="height: 40px !important;" type="button" class="ms-2 pe-5 btn btn-soft-primary btn-label right rounded-pill btn-sm"><i class="ri-add-fill label-icon align-middle rounded-pill fs-16 ms-2"></i> Invoice </button>
                         <button style="height: 40px !important;" type="button" class="ms-2 pe-5 btn btn-soft-primary btn-label right rounded-pill btn-sm"><i class="ri-add-fill label-icon align-middle rounded-pill fs-16 ms-2"></i> Expense </button>
                         <button style="height: 40px !important;" type="button" class="ms-2 pe-5 btn btn-soft-primary btn-label right rounded-pill btn-sm"><i class="ri-add-fill label-icon align-middle rounded-pill fs-16 ms-2"></i> Customer </button>
                 </div> -->
-                
-            </div>
-            
-            <div class="d-flex align-items-center">
-                
 
+            </div>
+
+            <div class="d-flex">
+                @if (isDemo) {
+                <div class="text-center my-5 justify-self-center">
+                    <div class="alert alert-borderless alert-warning text-center mb-2 mx-2" role="alert">
+                        <i class="ri ri-alert-fill"></i>
+                        {{ 'Next data reset in ' | translate }} {{ countdownMinutes() }} {{ ' Minutes' | translate }}
+                    </div>
+                </div>
+                }
+            </div>
+
+            <div class="d-flex align-items-center">
                 <div class="dropdown d-md-none topbar-head-dropdown header-item" ngbDropdown>
                     <button type="button" class="btn btn-icon btn-topbar btn-ghost-primary rounded-circle"
                         ngbDropdownToggle>
@@ -64,7 +73,7 @@
 
                 <div class="dropdown ms-1 topbar-head-dropdown header-item" ngbDropdown>
                     <button type="button" class="btn btn-icon btn-topbar btn-ghost-primary rounded-circle"
-                    ngbDropdownToggle>
+                        ngbDropdownToggle>
                         @if(flagvalue == undefined){
                         <img id="header-lang-img" src="{{valueset}}" alt="Header Language" height="20"
                             class="rounded" />
@@ -100,10 +109,11 @@
                 </div>
 
                 <div class="dropdown header-item" ngbDropdown>
-                    <button type="button" class="btn d-flex align-items-center" id="page-header-user-dropdown" ngbDropdownToggle>
+                    <button type="button" class="btn d-flex align-items-center" id="page-header-user-dropdown"
+                        ngbDropdownToggle>
                         <span class="d-flex align-items-center">
-                            <img class="rounded-circle header-profile-user" [src]="currentUser.avatar" onerror="this.src='assets/images/users/user-dummy-img.jpg'"
-                            alt="Header Avatar">
+                            <img class="rounded-circle header-profile-user" [src]="currentUser.avatar"
+                                onerror="this.src='assets/images/users/user-dummy-img.jpg'" alt="Header Avatar">
                         </span>
                     </button>
                     <div class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
@@ -113,8 +123,8 @@
                         <a class="dropdown-item" href="#"><i class="bx bx-user fs-15 align-middle me-1"></i> <span
                                 key="t-profile">{{ currentUser.email }}</span></a>
                         <a class="dropdown-item text-danger" (click)="logout()"><i
-                                class="bx bx-power-off fs-15 align-middle me-1 text-danger"></i> <span
-                                key="t-logout">{{ 'Logout' | translate }}</span></a>
+                                class="bx bx-power-off fs-15 align-middle me-1 text-danger"></i> <span key="t-logout">{{
+                                'Logout' | translate }}</span></a>
                     </div>
                 </div>
             </div>
