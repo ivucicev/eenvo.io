@@ -185,7 +185,7 @@ export class TopbarComponent {
     }
 
     /**
-     * Timer method that counts down to the next execution of the cron expression "0 *|/3 * * *"
+     * Timer method that counts down to the next execution of the cron expression "0 *\/3 * * *"
      * The cron expression executes every 3 hours on the server in Etc/UTC timezone.
      */
 
@@ -193,24 +193,24 @@ export class TopbarComponent {
         const cronIntervalHours = 3;
         const utcNow = new Date();
         const currentUTCHours = utcNow.getUTCHours();
-        const nextExecutionHour = Math.ceil(currentUTCHours / cronIntervalHours) * cronIntervalHours;
+        const currentUTCMinutes = utcNow.getUTCMinutes();
+        const nextExecutionHour = Math.floor(currentUTCHours / cronIntervalHours) * cronIntervalHours + cronIntervalHours;
         const nextExecutionDate = new Date(utcNow);
 
         if (nextExecutionHour >= 24) {
             nextExecutionDate.setUTCDate(utcNow.getUTCDate() + 1);
-            nextExecutionDate.setUTCHours(0, 0, 0, 0);
+            nextExecutionDate.setUTCHours(nextExecutionHour % 24, 0, 0, 0);
         } else {
             nextExecutionDate.setUTCHours(nextExecutionHour, 0, 0, 0);
         }
 
         const countdownMilliseconds = nextExecutionDate.getTime() - utcNow.getTime();
-        const countdownMinutes = Math.floor(countdownMilliseconds / (1000 * 60));
+        const countdownMinutes = Math.ceil(countdownMilliseconds / (1000 * 60));
         this.countdownMinutes = signal(countdownMinutes);
 
         const to = setTimeout(() => {
             this.startCountdownToCron();
         }, 60000);
-
     }
 
 }
