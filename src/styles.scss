@@ -28,3 +28,7 @@
     flex-direction: row-reverse;
     column-gap: 5px;
 }
+
+.animation-fade-up {
+    animation: fadeInUp 0.5s none linear;
+}

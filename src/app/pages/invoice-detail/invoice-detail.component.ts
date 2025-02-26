@@ -23,6 +23,7 @@ export class InvoiceDetailComponent {
     logo = environment.pocketbase + '/api/files/companies/';
     isPaid = false;
     taxValueMap: any = [];
+    showAdditionalTaxes = true;
 
 
     public readonly invoice = input<any>();
@@ -192,7 +193,7 @@ export class InvoiceDetailComponent {
 
     async serviceSelected(e: any, index: number) {
         const s = this.services.find((service: any) => service.code + " - " + service.title == e.target.value);
-        
+
         if (s) {
             this.items[index].unit = s.unit;
             this.items[index].quantity = s.quantity;
@@ -264,7 +265,7 @@ export class InvoiceDetailComponent {
             const created = await this.pocketbase.invoices.create(invoice);
             this.invoicesForm.patchValue({ id: created.id });
         }
-        
+
     }
 
     recalculate() {
@@ -306,7 +307,9 @@ export class InvoiceDetailComponent {
         this.invoicesForm.patchValue({ discountValue: totalDiscountValue });
         this.invoicesForm.patchValue({ taxValue: totalTaxValue });
 
-        this.taxValueMap = Object.keys(taxValueMap).map((k: any) => { return {tax: k, value: taxValueMap[k] } })
+        this.taxValueMap = Object.keys(taxValueMap)
+            .map((k: any) => { return { tax: k, value: taxValueMap[k] } })
+            .filter(f => f.value > 0)
     }
 
     // Remove Item

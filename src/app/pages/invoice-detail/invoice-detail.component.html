@@ -407,8 +407,8 @@
                                                 </tr>
                                                 @if (invoicesForm.get('tax')?.value) {
                                                 @for(taxValue of taxValueMap; track $index) {
-                                                @if (taxValue.value > 0) {
-                                                <tr>
+                                                @if (taxValue.value > 0 && showAdditionalTaxes) {
+                                                <tr class="animation-fade-up">
                                                     <th scope="row">{{ 'Tax' | translate }} <sub>{{taxValue.tax *
                                                             100}}%</sub> </th>
                                                     <td>
@@ -420,8 +420,13 @@
                                                 </tr>
                                                 }
                                                 }
+                                                @if (taxValueMap.length > 1) {
                                                 <tr>
-                                                    <th scope="row">{{ 'Tax' | translate }}</th>
+                                                    <th scope="row"> 
+                                                        @if (showAdditionalTaxes) {<i class="ri ri-arrow-up-s-line negative-m-17 cursor-pointer" (click)="showAdditionalTaxes = !showAdditionalTaxes"></i>}
+                                                        @if (!showAdditionalTaxes) {<i class="ri ri-arrow-right-s-line negative-m-17 cursor-pointer" (click)="showAdditionalTaxes = !showAdditionalTaxes"></i>}
+                                                        {{ 'Tax' | translate }}
+                                                    </th>
                                                     <td>
                                                         <dx-number-box formControlName="taxValue" [readOnly]="true"
                                                             data-currency="true" type="number"
@@ -429,6 +434,7 @@
                                                             [inputAttr]="{ 'aria-label': 'Currency Format' }"></dx-number-box>
                                                     </td>
                                                 </tr>
+                                                }
                                                 }
                                                 <tr>
                                                     <th scope="row">{{ 'Discount' | translate }}</th>
