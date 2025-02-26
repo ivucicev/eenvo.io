@@ -185,8 +185,20 @@ export class InvoiceGeneratorService {
                 doc.text(this.currency.transform(invoice.discountValue), RIGHT_END, Y, { align: 'right' });
 
                 if (invoice.tax) {
-                    doc.text(this.translate.instant("VAT:"), RIGHT_END - 55, Y += 4);
-                    doc.text(this.currency.transform(invoice.taxValue), RIGHT_END, Y, { align: 'right' });
+                    
+                    if (invoice.taxValueGroups && Object.keys(invoice.taxValueGroups).length) {
+                        Object.keys(invoice.taxValueGroups).forEach((taxValue :any) => {
+                            console.log(taxValue)
+                            doc.text(this.translate.instant("VAT ({{tax}}%):", {tax: invoice.taxValueGroups[taxValue].tax * 100}), RIGHT_END - 55, Y += 4);
+                            doc.text(this.currency.transform(invoice.taxValueGroups[taxValue].value), RIGHT_END, Y, { align: 'right' });
+                        })
+                    }
+                    
+                    if (invoice.taxValueGroups && Object.keys(invoice.taxValueGroups).length > 1) {
+                        doc.text(this.translate.instant("VAT:"), RIGHT_END - 55, Y += 4);
+                        doc.text(this.currency.transform(invoice.taxValue), RIGHT_END, Y, { align: 'right' });
+                    }
+
                 }
 
                 doc.setDrawColor(180, 180, 180);

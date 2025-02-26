@@ -19,7 +19,7 @@ export const PAGE_ROUTES: Routes = [
 	{ path: 'users', component: UsersComponent },
 	{ path: 'invoices', component: InvoicesComponent, title: 'Invoices' },
 	{ path: 'quotes', component: InvoicesComponent, title: 'Quotes' },
-	{ path: 'purchase', component: InvoicesComponent, title: 'Purchase orders' },
+	{ path: 'purchase', component: InvoicesComponent, title: 'Purchase' },
 	{ path: 'expenses', component: ExpensesComponent },
 	{ path: 'transactions', component: TransactionsComponent },
 	{ path: 'company', component: CompanyComponent },

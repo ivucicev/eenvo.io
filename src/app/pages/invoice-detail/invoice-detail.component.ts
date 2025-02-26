@@ -131,6 +131,8 @@ export class InvoiceDetailComponent {
 
         this.invoicesForm.patchValue(i);
 
+        this.taxValueMap = i.taxValueGroups || {};
+
         if (i.date)
             this.invoicesForm.patchValue({ date: new Date(i.date).toISOString().split('T')[0] });
         if (i.deliveryDate)
@@ -258,6 +260,8 @@ export class InvoiceDetailComponent {
             invoice.customer = create.id;
             this.invoicesForm.patchValue({ customer: create.id });
         }
+
+        invoice.taxValueGroups = this.taxValueMap;
 
         if (invoice.id) {
             const updated = await this.pocketbase.invoices.update(invoice.id, invoice);
