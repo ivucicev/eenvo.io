@@ -1,27 +1,26 @@
 import { Injectable } from '@angular/core';
-import { CookieService } from 'ngx-cookie-service';
 import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LanguageService {
-  public languages: string[] = ['en', 'de', 'fr', 'it','sp', 'hr'];
+  public languages: string[] = ['en', 'de', 'fr', 'it', 'es', 'hr', 'pl'];
 
-  constructor(public translate: TranslateService, private cookieService: CookieService) {
+  constructor(public translate: TranslateService) {
 
     let browserLang:any;
     /**
      * cookie Language Get
     */
     this.translate.addLangs(this.languages);
-    if (this.cookieService.check('lang')) {
-      browserLang = this.cookieService.get('lang');
+    if (localStorage.getItem('lang')) {
+      browserLang = localStorage.getItem('lang') || 'en';
     }
     else {
       browserLang = translate.getBrowserLang();
     }
-    translate.use(browserLang.match(/de|en|fr|it|sp|hr/) ? browserLang : 'en');
+    translate.use(browserLang.match(/de|en|fr|it|es|hr|pl/) ? browserLang : 'en');
   }
 
   /**
@@ -29,7 +28,7 @@ export class LanguageService {
    */
   public setLanguage(lang: any) {
     this.translate.use(lang);
-    this.cookieService.set('lang', lang);
+    localStorage.setItem('lang', lang);
   }
 
 }

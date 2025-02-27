@@ -5,12 +5,13 @@ import { getLayoutMode, getSidebarSize } from '../../store/layouts/layout-select
 import { LAYOUT_MODE, SIDEBAR_SIZE } from '../../store/layouts/layout';
 import { changeMode } from '../../store/layouts/layout-action';
 import { CommonModule, DOCUMENT } from '@angular/common';
-import { CookieService } from 'ngx-cookie-service';
 import { LanguageService } from '../../core/services/language.service';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { PocketBaseService } from '../../core/services/pocket-base.service';
 import { Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
+import { locale, loadMessages } from "devextreme/localization";
+
 
 @Component({
     selector: 'eenvo-topbar',
@@ -28,7 +29,7 @@ export class TopbarComponent {
     element: any;
 
     selectedItem!: any;
-    cookieValue: any;
+    lang: any = localStorage.getItem('lang');
     flagvalue: any;
     valueset: any;
     countryName: any;
@@ -54,19 +55,20 @@ export class TopbarComponent {
 
     listLang = [
         { text: 'English', flag: 'assets/images/flags/us.svg', lang: 'en' },
-        { text: 'Española', flag: 'assets/images/flags/spain.svg', lang: 'sp' },
+        { text: 'Española', flag: 'assets/images/flags/spain.svg', lang: 'es' },
         { text: 'Deutsche', flag: 'assets/images/flags/germany.svg', lang: 'de' },
         { text: 'Italiana', flag: 'assets/images/flags/italy.svg', lang: 'it' },
         { text: 'Francias', flag: 'assets/images/flags/fr.svg', lang: 'fr' },
+        { text: 'Polish', flag: 'assets/images/flags/pl.svg', lang: 'pl' },
         { text: 'Hrvatski', flag: 'assets/images/flags/hr.svg', lang: 'hr' }
     ];
 
 
-    constructor(private store: Store, private router: Router, private pocketbase: PocketBaseService, @Inject(DOCUMENT) private document: any, public languageService: LanguageService, public _cookiesService: CookieService) {
-        
-        
+    constructor(private store: Store, private router: Router, private pocketbase: PocketBaseService, @Inject(DOCUMENT) private document: any, public languageService: LanguageService) {
+        this.loadLang();
+
         this.element = document.documentElement;
-        
+
         this.currentMode = localStorage.getItem('theme') || this.MODE.LIGHTMODE;
         this.store.dispatch(changeMode({ mode: this.currentMode }));
         this.changeDxTheme();
@@ -78,7 +80,7 @@ export class TopbarComponent {
         this.store.select(getSidebarSize).subscribe((sSize) => {
             this.sidebarSize = sSize
         })
-        
+
 
         this.pocketbase.authStore$.subscribe(user => {
             this.loadUserDetails(user);
@@ -88,7 +90,6 @@ export class TopbarComponent {
 
         if (this.isDemo)
             this.startCountdownToCron()
-
 
     }
 
@@ -112,11 +113,9 @@ export class TopbarComponent {
         }
     }
 
-    ngOnInit(): void {
-
+    async ngOnInit() {
         // Cookies wise Language set
-        this.cookieValue = this._cookiesService.get('lang');
-        const val = this.listLang.filter(x => x.lang === this.cookieValue);
+        const val = this.listLang.filter(x => x.lang === this.lang);
         this.countryName = val.map(element => element.text);
         if (val.length === 0) {
             if (this.flagvalue === undefined) { this.valueset = 'assets/images/flags/us.svg'; }
@@ -200,8 +199,16 @@ export class TopbarComponent {
     setLanguage(text: string, lang: string, flag: string) {
         this.countryName = text;
         this.flagvalue = flag;
-        this.cookieValue = lang;
+        this.lang = lang;
+        localStorage.setItem('lang', lang);
         this.languageService.setLanguage(lang);
+        this.loadLang();
+        window.location.reload();
+    }
+
+    async loadLang() {
+        const lang = localStorage.getItem('lang') || 'en';
+        locale(lang);
     }
 
     /**

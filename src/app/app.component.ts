@@ -6,6 +6,17 @@ import { Store } from '@ngrx/store';
 import { LAYOUT_TYPES } from './store/layouts/layout';
 import { LayoutState } from './store/layouts/layout-reducers';
 
+
+import hrMessages from "../assets/i18n/messages/hr.json";
+import deMessages from "devextreme/localization/messages/de.json";
+import enMessages from "devextreme/localization/messages/en.json";
+import esMessages from "devextreme/localization/messages/es.json";
+import itMessages from "devextreme/localization/messages/it.json";
+import frMessages from "devextreme/localization/messages/fr.json";
+import plMessages from "devextreme/localization/messages/pl.json";
+
+import { loadMessages } from "devextreme/localization";
+
 @Component({
 	selector: 'eenvo-root',
 	standalone: true,
@@ -19,9 +30,21 @@ export class AppComponent {
 	layOutData!: LayoutState;
 
 	constructor(private store: Store<RootReducerState>) {
+
+        loadMessages(hrMessages)
+        loadMessages(deMessages)
+        loadMessages(enMessages)
+        loadMessages(esMessages)
+        loadMessages(itMessages)
+        loadMessages(frMessages)
+        loadMessages(plMessages)
+
 		this.store.select('layout').subscribe((data) => {
 			this.layOutData = data;
 		})
+
+
+
 	}
 
 	ngOnInit(): void {
@@ -40,5 +63,6 @@ export class AppComponent {
 	changeLayout(layout: string) {
 		this.store.dispatch(changelayout({ layout }));
 	}
+
 }
 
