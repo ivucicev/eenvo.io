@@ -54,7 +54,7 @@ services:
       - pocketbase
       - pocketbase-demo
 
-  supervisor:
+  supervisor: # this shiuld be removed
     image: alpine:latest
     build:
       context: .
