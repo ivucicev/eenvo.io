@@ -55,7 +55,7 @@ export class TopbarComponent {
     listLang = [
         { text: 'English', flag: 'assets/images/flags/us.svg', lang: 'en' },
         { text: 'Española', flag: 'assets/images/flags/spain.svg', lang: 'sp' },
-        { text: 'Deutsche', flag: 'assets/images/flags/germany.svg', lang: 'gr' },
+        { text: 'Deutsche', flag: 'assets/images/flags/germany.svg', lang: 'de' },
         { text: 'Italiana', flag: 'assets/images/flags/italy.svg', lang: 'it' },
         { text: 'Francias', flag: 'assets/images/flags/fr.svg', lang: 'fr' },
         { text: 'Hrvatski', flag: 'assets/images/flags/hr.svg', lang: 'hr' }
