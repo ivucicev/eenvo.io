@@ -10,7 +10,7 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { PocketBaseService } from '../../core/services/pocket-base.service';
 import { Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
-import { locale, loadMessages } from "devextreme/localization";
+import { locale } from "devextreme/localization";
 
 
 @Component({
