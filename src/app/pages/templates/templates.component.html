@@ -6,7 +6,7 @@
             </div>
             <div class="card-body">
                 <dx-data-grid #grid [dataSource]="data" (onSaved)="saved($event)" (onRowUpdated)="reload()"
-                    (onRowInserted)="reload()" (onRowRemoved)="reload()">
+                    (onRowInserted)="reload()">
                     <dxi-column dataField="name" caption="{{ 'Name' | translate }}">
                         <dxi-validation-rule type="required"></dxi-validation-rule>
                     </dxi-column>

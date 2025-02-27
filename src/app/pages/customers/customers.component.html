@@ -5,7 +5,7 @@
                 <h4 class="card-title mb-0 flex-grow-1">{{ title | translate }}</h4>
             </div>
             <div class="card-body">
-                <dx-data-grid #grid [dataSource]="data" (onSaved)="saved($event)" (onRowUpdated)="reload()" (onRowInserted)="reload()" (onRowRemoved)="reload()">
+                <dx-data-grid #grid [dataSource]="data" (onSaved)="saved($event)" (onRowUpdated)="reload()" (onRowInserted)="reload()">
                     <dxo-toolbar>
                         <dxi-item name="groupPanel"></dxi-item>
                         <dxi-item location="after">

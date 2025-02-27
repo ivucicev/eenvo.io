@@ -37,6 +37,7 @@ export class ServicesComponent {
     async saved(e: any) {
         if (e.changes[0]?.type == 'remove') {
             await this.pocketbase.services.delete(e.changes[0].key.id);
+            this.data = [...this.data.filter((f : any) => f.id != e.changes[0].key.id)]
         } else {
             const data = e.changes[0].data;
             data.company = this.pocketbase.auth.company;

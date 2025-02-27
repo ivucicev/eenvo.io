@@ -102,6 +102,7 @@ export class TransactionsComponent {
             }
             await this.pocketbase.transactions.delete(e.changes[0].key.id);
             this.data = [...this.data.filter((f: any) => f.id != e.changes[0].key.id)];
+            this.grid?.instance.refresh();
             return;
         } else if (e.changes[0]?.type == 'update') {
             await this.pocketbase.transactions.update(e.changes[0]?.key?.id, e.changes[0]?.data);
