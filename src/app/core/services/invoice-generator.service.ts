@@ -193,10 +193,12 @@ export class InvoiceGeneratorService {
                 if (invoice.tax) {
 
                     if (invoice.taxValueGroups && Object.keys(invoice.taxValueGroups).length) {
-                        Object.keys(invoice.taxValueGroups).forEach(async (taxValue: any) => {
+                        const taxKeys = Object.keys(invoice.taxValueGroups);
+                        for (var i = 0; i < taxKeys.length; i++) {
+                            const taxValue = taxKeys[i];
                             doc.text(await this.getTranslation("VAT ({{tax}}%):", { tax: invoice.taxValueGroups[taxValue].tax * 100 }), RIGHT_END - 55, Y += 4);
                             doc.text(this.currency.transform(invoice.taxValueGroups[taxValue].value), RIGHT_END, Y, { align: 'right' });
-                        })
+                        }
                     }
 
                     if (invoice.taxValueGroups && Object.keys(invoice.taxValueGroups).length > 1) {
