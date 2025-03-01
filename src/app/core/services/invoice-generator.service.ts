@@ -7,7 +7,8 @@ import 'jspdf-autotable';
 import * as font from "../../../assets/js/jspdffont.js"
 import { DomSanitizer } from '@angular/platform-browser';
 import { CurrencyFormatPipe, DateFormatPipe, FractionFormatPipe, NumberFormatPipe } from '../pipes/number-format.pipe';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateCompiler, TranslateParser, TranslateService } from '@ngx-translate/core';
+import { map, Observable, of } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -15,12 +16,17 @@ import { TranslateService } from '@ngx-translate/core';
 export class InvoiceGeneratorService {
 
     private readonly FONT_NAME = 'dejavu-sans.book';
+    private language = 'en';
+    private translationCache: { [lang: string]: any } = {}; // Cache storage
 
-    constructor(private pocketbase: PocketBaseService, private date: DateFormatPipe, private currency: CurrencyFormatPipe, private fraction: FractionFormatPipe, private number: NumberFormatPipe, private sanitizer: DomSanitizer, private translate: TranslateService) { }
+    constructor(private pocketbase: PocketBaseService, private compiler: TranslateCompiler, private date: DateFormatPipe, private currency: CurrencyFormatPipe, private fraction: FractionFormatPipe, private number: NumberFormatPipe, private parser: TranslateParser, private sanitizer: DomSanitizer, private translate: TranslateService) { }
 
     generate = async (id: any, preview = false) => {
 
         const invoice: any = await this.pocketbase.invoices.getOne(id, { expand: 'customer,user,company,items' });
+
+        this.language = invoice.language || 'en';
+        //this.translate.use(invoice.language || 'en')
 
         const doc: jsPDF | any = new jsPDF('p', 'mm', 'a4');
 
@@ -67,21 +73,21 @@ export class InvoiceGeneratorService {
                 doc.setFontSize(16);
 
                 Y += 10;
-                doc.text(this.translate.instant("Invoice"), SECOND_COLUMN_MARGIN, Y);
+                doc.text(await this.getTranslation("Invoice"), SECOND_COLUMN_MARGIN, Y);
                 doc.text(`${invoice.number}`, RIGHT_END, Y, { align: 'right' });
 
                 Y += 5;
                 doc.setFontSize(10);
-                doc.text(this.translate.instant("Issue Date"), SECOND_COLUMN_MARGIN, Y);
+                doc.text(await this.getTranslation("Issue Date"), SECOND_COLUMN_MARGIN, Y);
                 doc.text(this.date.transform(invoice.date), RIGHT_END, Y, { align: 'right' });
 
                 Y += 5;
-                doc.text(this.translate.instant("Due Date"), SECOND_COLUMN_MARGIN, Y);
+                doc.text(await this.getTranslation("Due Date"), SECOND_COLUMN_MARGIN, Y);
                 doc.text(this.date.transform(invoice.dueDate), RIGHT_END, Y, { align: 'right' });
 
                 Y += 5;
                 if (invoice.deliveryDate) {
-                    doc.text(this.translate.instant("Delivery Date"), SECOND_COLUMN_MARGIN, Y);
+                    doc.text(await this.getTranslation("Delivery Date"), SECOND_COLUMN_MARGIN, Y);
                     doc.text(this.date.transform(invoice.deliveryDate), RIGHT_END, Y, { align: 'right' });
                 }
 
@@ -89,8 +95,8 @@ export class InvoiceGeneratorService {
                 Y = 65;
                 doc.setFontSize(12);
                 doc.setFont(this.FONT_NAME, "bold")
-                doc.text(this.translate.instant("Seller:"), LEFT_MARGIN, Y);
-                doc.text(this.translate.instant("Buyer:"), SECOND_COLUMN_MARGIN, Y);
+                doc.text(await this.getTranslation("Seller:"), LEFT_MARGIN, Y);
+                doc.text(await this.getTranslation("Buyer:"), SECOND_COLUMN_MARGIN, Y);
 
                 doc.setFont(this.FONT_NAME, "normal")
                 doc.setFontSize(10);
@@ -126,12 +132,12 @@ export class InvoiceGeneratorService {
                     startY: Y,
                     head: [[
                         '#',
-                        this.translate.instant('Product/Service'),
-                        this.translate.instant('Quantity'),
-                        this.translate.instant('Price'),
-                        this.translate.instant('Discount'),
-                        this.translate.instant('Tax'),
-                        this.translate.instant('Total')]],
+                        await this.getTranslation('Product/Service'),
+                        await this.getTranslation('Quantity'),
+                        await this.getTranslation('Price'),
+                        await this.getTranslation('Discount'),
+                        await this.getTranslation('Tax'),
+                        await this.getTranslation('Total')]],
                     body: invoice.expand.items.map((item: any, i: number) => [
                         i + 1 + '.',
                         item.title,
@@ -178,24 +184,23 @@ export class InvoiceGeneratorService {
                 doc.line(LEFT_MARGIN, Y, RIGHT_END, Y);
 
                 doc.setFontSize(10);
-                doc.text(this.translate.instant("Subtotal:"), RIGHT_END - 55, Y += 6);
+                doc.text(await this.getTranslation("Subtotal:"), RIGHT_END - 55, Y += 6);
                 doc.text(this.currency.transform(invoice.subTotal), RIGHT_END, Y, { align: 'right' });
 
-                doc.text(this.translate.instant("Discount:"), RIGHT_END - 55, Y += 4);
+                doc.text(await this.getTranslation("Discount:"), RIGHT_END - 55, Y += 4);
                 doc.text(this.currency.transform(invoice.discountValue), RIGHT_END, Y, { align: 'right' });
 
                 if (invoice.tax) {
-                    
+
                     if (invoice.taxValueGroups && Object.keys(invoice.taxValueGroups).length) {
-                        Object.keys(invoice.taxValueGroups).forEach((taxValue :any) => {
-                            console.log(taxValue)
-                            doc.text(this.translate.instant("VAT ({{tax}}%):", {tax: invoice.taxValueGroups[taxValue].tax * 100}), RIGHT_END - 55, Y += 4);
+                        Object.keys(invoice.taxValueGroups).forEach(async (taxValue: any) => {
+                            doc.text(await this.getTranslation("VAT ({{tax}}%):", { tax: invoice.taxValueGroups[taxValue].tax * 100 }), RIGHT_END - 55, Y += 4);
                             doc.text(this.currency.transform(invoice.taxValueGroups[taxValue].value), RIGHT_END, Y, { align: 'right' });
                         })
                     }
-                    
+
                     if (invoice.taxValueGroups && Object.keys(invoice.taxValueGroups).length > 1) {
-                        doc.text(this.translate.instant("VAT:"), RIGHT_END - 55, Y += 4);
+                        doc.text(await this.getTranslation("VAT:"), RIGHT_END - 55, Y += 4);
                         doc.text(this.currency.transform(invoice.taxValue), RIGHT_END, Y, { align: 'right' });
                     }
 
@@ -206,7 +211,7 @@ export class InvoiceGeneratorService {
                 doc.line(RIGHT_END - 55, Y += 2, RIGHT_END, Y);
 
                 doc.setFont(this.FONT_NAME, "bold")
-                doc.text(this.translate.instant("Total:"), RIGHT_END - 55, Y += 4);
+                doc.text(await this.getTranslation("Total:"), RIGHT_END - 55, Y += 4);
                 doc.text(this.currency.transform(invoice.total), RIGHT_END, Y, { align: 'right' });
 
                 Y = this.pageBreak(Y, 30, doc, PAGE_BREAK, TOP_MARGIN)
@@ -216,17 +221,17 @@ export class InvoiceGeneratorService {
                 doc.setFontSize(10);
 
                 doc.setFont(this.FONT_NAME, "bold")
-                doc.text(this.translate.instant("Payment"), LEFT_MARGIN, Y += 25);
+                doc.text(await this.getTranslation("Payment"), LEFT_MARGIN, Y += 25);
 
                 doc.setFont(this.FONT_NAME, "normal")
-                doc.text(this.translate.instant("IBAN ") + invoice.paymentData.iban + "" + (invoice.paymentData.reference ? (this.translate.instant(" Reference ") + invoice.paymentData.reference) : ''), LEFT_MARGIN, Y += 5);
+                doc.text(await this.getTranslation("IBAN ") + invoice.paymentData.iban + "" + (invoice.paymentData.reference ? (await this.getTranslation(" Reference ") + invoice.paymentData.reference) : ''), LEFT_MARGIN, Y += 5);
 
 
                 Y = this.pageBreak(Y, 30, doc, PAGE_BREAK, TOP_MARGIN)
 
                 if (invoice.note) {
                     doc.setFont(this.FONT_NAME, "bold")
-                    doc.text(this.translate.instant("Note"), LEFT_MARGIN, Y += 15);
+                    doc.text(await this.getTranslation("Note"), LEFT_MARGIN, Y += 15);
 
                     doc.setFont(this.FONT_NAME, "normal")
                     const splitNote = doc.splitTextToSize(invoice.note, doc.internal.pageSize.width - RIGHT_MARGIN - LEFT_MARGIN)
@@ -237,7 +242,7 @@ export class InvoiceGeneratorService {
                 Y = this.pageBreak(Y, 30, doc, PAGE_BREAK, TOP_MARGIN)
 
                 doc.setFont(this.FONT_NAME, "bold")
-                doc.text(this.translate.instant("Issued by"), LEFT_MARGIN, Y += 25);
+                doc.text(await this.getTranslation("Issued by"), LEFT_MARGIN, Y += 25);
 
 
                 doc.setFont(this.FONT_NAME, "normal")
@@ -270,7 +275,7 @@ export class InvoiceGeneratorService {
         return Y;
     }
 
-    addFooter(doc: any, invoice: any, LEFT_MARGIN: any, RIGHT_MARGIN: any) {
+    async addFooter(doc: any, invoice: any, LEFT_MARGIN: any, RIGHT_MARGIN: any) {
 
         const pageCount = doc.internal.getNumberOfPages();
         for (let i = 0; i <= pageCount; i++) {
@@ -289,17 +294,17 @@ export class InvoiceGeneratorService {
             const head: any = [[]];
 
             if (invoice.companyData.address || invoice.companyData.city || invoice.companyData.postal || invoice.companyData.country) {
-                head[0].push(this.translate.instant("Address"));
+                head[0].push(await this.getTranslation("Address"));
                 address = true;
             }
 
             if ((invoice.companyData.vatID && invoice.companyData?.vatID?.indexOf('XXXXXX') < 0) || (invoice.companyData.iban && invoice.companyData?.iban?.indexOf('XXXXXX') < 0) || invoice.companyData.switft) {
-                head[0].push(this.translate.instant("Legal"));
+                head[0].push(await this.getTranslation("Legal"));
                 legal = true;
             }
 
             if (invoice.companyData?.email || invoice.companyData?.phone || invoice.companyData.web) {
-                head[0].push(this.translate.instant("Contact"));
+                head[0].push(await this.getTranslation("Contact"));
                 contact = true;
             }
             let row1: any = [];
@@ -320,22 +325,22 @@ export class InvoiceGeneratorService {
             // Check if legal data is complete
             const legalParts = [];
             if (legal) {
-                if (invoice.companyData.vatID) row1.push(this.translate.instant("VATID: ") + invoice.companyData.vatID);
+                if (invoice.companyData.vatID) row1.push(await this.getTranslation("VATID: ") + invoice.companyData.vatID);
                 else row1.push('')
-                if (invoice.companyData.iban) row2.push(this.translate.instant("IBAN: ") + invoice.companyData.iban);
+                if (invoice.companyData.iban) row2.push(await this.getTranslation("IBAN: ") + invoice.companyData.iban);
                 else row2.push('')
-                if (invoice.companyData.swift) row3.push(this.translate.instant("SWIFT: ") + invoice.companyData.swift);
+                if (invoice.companyData.swift) row3.push(await this.getTranslation("SWIFT: ") + invoice.companyData.swift);
                 else row3.push('')
             }
 
             // Check if contact data is complete
             const contactParts = [];
             if (contact) {
-                if (invoice.companyData.phone) row1.push(this.translate.instant("Mobile: ") + invoice.companyData.phone);
+                if (invoice.companyData.phone) row1.push(await this.getTranslation("Mobile: ") + invoice.companyData.phone);
                 else row1.push('')
-                if (invoice.companyData.email) row2.push(this.translate.instant("Email: ") + invoice.companyData.email);
+                if (invoice.companyData.email) row2.push(await this.getTranslation("Email: ") + invoice.companyData.email);
                 else row2.push('')
-                if (invoice.companyData.web) row3.push(this.translate.instant("Web: ") + invoice.companyData.web);
+                if (invoice.companyData.web) row3.push(await this.getTranslation("Web: ") + invoice.companyData.web);
                 else row3.push('')
             }
 
@@ -372,16 +377,16 @@ export class InvoiceGeneratorService {
             doc.addImage("assets/images/logo-dark.png", 'PNG', doc.internal.pageSize.width / 2 - 15 / 2, doc.internal.pageSize.height - 10, 15, fixedWidth_brand * aspectRatio_brand);
 
             doc.setFontSize(6);
-            doc.text(this.translate.instant("Powered by eenvo.io – Your Smart & Effortless Invoicing Solution."), doc.internal.pageSize.width / 2, doc.internal.pageSize.height - 2, 'center');
+            doc.text(await this.getTranslation("Powered by eenvo.io – Your Smart & Effortless Invoicing Solution."), doc.internal.pageSize.width / 2, doc.internal.pageSize.height - 2, 'center');
         }
 
     }
 
-    setDefaults(doc: any, number: string, name: string) {
+    async setDefaults(doc: any, number: string, name: string) {
         // Set document properties
         doc.setProperties({
-            title: this.translate.instant(`Invoice ${number}`),
-            subject: this.translate.instant('invoice for ') + name,
+            title: await this.getTranslation(`Invoice ${number}`),
+            subject: await this.getTranslation('invoice for ') + name,
             author: 'eenvo.io'
         });
 
@@ -392,5 +397,27 @@ export class InvoiceGeneratorService {
         doc.addFont('dejavu-sans.book-bold.ttf', this.FONT_NAME, 'bold');
 
         doc.setFont(this.FONT_NAME)
+    }
+
+    private loadTranslations(): Observable<any> {
+        if (this.translationCache[this.language]) {
+            return of(this.translationCache[this.language]); // Return cached translations
+        }
+
+        return this.translate.getTranslation(this.language).pipe(
+            map(translations => {
+                this.translationCache[this.language] = translations; // Store in cache
+                return translations;
+            })
+        );
+    }
+
+    getTranslation(key: string, params?: any): Promise<string | undefined> {
+        return this.loadTranslations().pipe(
+            map(translations => {
+              const rawText = translations[key] || key;
+              return params ? this.parser.interpolate(rawText, params) : rawText;
+            })
+          ).toPromise();
     }
 }

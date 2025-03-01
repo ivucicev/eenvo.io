@@ -4,7 +4,7 @@ import { PocketBaseService } from '../../core/services/pocket-base.service';
 import { InvoiceDetailComponent } from '../invoice-detail/invoice-detail.component';
 import { FormsModule } from '@angular/forms';
 import { DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute } from '@angular/router';
 import { CurrencyFormatPipe } from '../../core/pipes/number-format.pipe';
 import { SettingsService } from '../../core/services/settings.service';
@@ -47,7 +47,7 @@ export class InvoicesComponent {
     @ViewChild('invoiceDetail')
     public detail?: InvoiceDetailComponent;
 
-    constructor(private pocketbase: PocketBaseService, private invoiceService: InvoiceGeneratorService, private settingsService: SettingsService, private activatedRoute: ActivatedRoute) {
+    constructor(private pocketbase: PocketBaseService, private invoiceService: InvoiceGeneratorService, private translate: TranslateService, private settingsService: SettingsService, private activatedRoute: ActivatedRoute) {
         this.getData();
     }
 

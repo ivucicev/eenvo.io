@@ -54,7 +54,7 @@ export class InvoiceDetailComponent {
             shippingHandlingFee: [0],
             useBillingAndShippingAddress: [false],
             billingAddressSameAsShippingAddress: [true],
-
+            language: localStorage.getItem('lang') || 'en',
             customerData: new FormGroup({
                 name: new FormControl('', [Validators.required]),
                 address: new FormControl('', [Validators.required]),

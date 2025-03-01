@@ -233,6 +233,21 @@
                                     {{ 'Please enter a valid date' | translate }}
                                 </div>
                             </div>
+                            <div class="mb-2">
+                                <label for="choices-lang" class="text-muted text-uppercase fw-semibold">{{
+                                    'Invoice language' | translate
+                                    }}</label>
+                                <select formControlName="language" class="form-control input-light bg-light border-0"
+                                    id="choices-lang">
+                                    <option value="en">{{ 'English' | translate }}</option>
+                                    <option value="es">{{ 'Spanish' | translate }}</option>
+                                    <option value="de">{{ 'German' | translate }}</option>
+                                    <option value="it">{{ 'Italian' | translate }}</option>
+                                    <option value="fr">{{ 'French' | translate }}</option>
+                                    <option value="pl">{{ 'Polish' | translate }}</option>
+                                    <option value="hr">{{ 'Croatian' | translate }}</option>
+                                </select>
+                            </div>
                             <!--
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" id="shipping"
