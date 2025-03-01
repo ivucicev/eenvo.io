@@ -40,7 +40,7 @@ export class InvoiceGeneratorService {
 
         let Y = TOP_MARGIN;
 
-        this.setDefaults(doc, invoice.number, invoice.customerData.name);
+        await this.setDefaults(doc, invoice.number, invoice.customerData.name);
 
         const img = new Image();
 
@@ -249,16 +249,17 @@ export class InvoiceGeneratorService {
                 doc.text(invoice.expand.user.name, LEFT_MARGIN, Y += 5);
 
                 // add footer
-                this.addFooter(doc, invoice, LEFT_MARGIN, RIGHT_MARGIN);
+                await this.addFooter(doc, invoice, LEFT_MARGIN, RIGHT_MARGIN);
 
                 // Generate PDF
-                var out = doc.output('blob');
-                const blob = new Blob([out], { type: 'application/pdf' });
-
-                if (!preview)
-                    resolve(doc.save(`${invoice.number}_${invoice.customerData.name}.pdf`));
-                else
+                
+                if (preview) {
+                    var out = doc.output('blob');
+                    const blob = new Blob([out], { type: 'application/pdf' });
                     resolve(this.sanitizer.bypassSecurityTrustResourceUrl(`${URL.createObjectURL(blob)}#toolbar=1`))
+                }
+                else
+                    resolve(doc.save(`${invoice.number}_${invoice.customerData.name}.pdf`));
 
                 reject(null)
 
@@ -415,9 +416,9 @@ export class InvoiceGeneratorService {
     getTranslation(key: string, params?: any): Promise<string | undefined> {
         return this.loadTranslations().pipe(
             map(translations => {
-              const rawText = translations[key] || key;
-              return params ? this.parser.interpolate(rawText, params) : rawText;
+                const rawText = translations[key] || key;
+                return params ? this.parser.interpolate(rawText, params) : rawText;
             })
-          ).toPromise();
+        ).toPromise();
     }
 }
