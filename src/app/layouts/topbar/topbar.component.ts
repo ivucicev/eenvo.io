@@ -8,7 +8,7 @@ import { CommonModule, DOCUMENT } from '@angular/common';
 import { LanguageService } from '../../core/services/language.service';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { PocketBaseService } from '../../core/services/pocket-base.service';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { locale } from "devextreme/localization";
 
@@ -16,7 +16,7 @@ import { locale } from "devextreme/localization";
 @Component({
     selector: 'eenvo-topbar',
     standalone: true,
-    imports: [SimplebarAngularModule, NgbDropdownModule, CommonModule, TranslatePipe],
+    imports: [SimplebarAngularModule, NgbDropdownModule, CommonModule, TranslatePipe, RouterModule],
     templateUrl: './topbar.component.html',
     styleUrl: './topbar.component.scss'
 })
