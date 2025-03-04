@@ -35,7 +35,6 @@ export class PocketBaseService {
         }
 
         this.pb.afterSend = (response, data, options?: any) => {
-            console.log()
             if (response.status != 200) {
                 switch (response.status) {
                     case 400:

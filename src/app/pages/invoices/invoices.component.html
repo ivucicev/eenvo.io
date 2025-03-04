@@ -180,7 +180,7 @@
         [showCloseButton]="true" [(visible)]="invoicePopupVisible" [fullScreen]="fullScreen" (onHiding)="reload()">
 
         <div *dxTemplate="let data of 'content'">
-            <eenvo-invoice-detail #invoiceDetail [invoice]="currentInvoice"></eenvo-invoice-detail>
+            <eenvo-invoice-detail (invoiceCreated)="invoiceCreatedEvent($event)" #invoiceDetail [invoice]="currentInvoice"></eenvo-invoice-detail>
         </div>
 
         <dxi-popup-toolbar-item widget="dxButton" toolbar="top" location="after" [options]="{

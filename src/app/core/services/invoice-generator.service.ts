@@ -25,6 +25,15 @@ export class InvoiceGeneratorService {
 
         const invoice: any = await this.pocketbase.invoices.getOne(id, { expand: 'customer,user,company,items' });
 
+        invoice.companyData = { ...invoice.expand.company, note: invoice.expand.company.additional };
+        if(!invoice.paymentData.iban || invoice.paymentData.iban.indexOf('IBXXX') > -1){
+            invoice.paymentData.iban = invoice.expand.company.iban;
+        }  
+
+        if(!invoice.paymentData.swift){
+            invoice.paymentData.swift = invoice.expand.company.swift;
+        }
+
         this.language = invoice.language || 'en';
         //this.translate.use(invoice.language || 'en')
 
@@ -37,6 +46,8 @@ export class InvoiceGeneratorService {
         const SECOND_COLUMN_MARGIN = 120;
         const FIXED_BANNER_WIDTH = 70;
         const PAGE_BREAK = 255;
+        const TITLE_SPACE = 10;
+        const TEXT_SPACE = 5;
 
         let Y = TOP_MARGIN;
 
@@ -56,36 +67,39 @@ export class InvoiceGeneratorService {
 
                 await this.translate.get("Seller:").toPromise();
 
-                const fixedWidth = FIXED_BANNER_WIDTH;
-                const aspectRatio = img.naturalHeight / img.naturalWidth;
-                let calculatedHeight = fixedWidth * aspectRatio;
-                const maxHeight = 25; // Define a maximum height for the image
-
-                if (calculatedHeight > maxHeight) {
-                    calculatedHeight = maxHeight;
-                    const adjustedWidth = maxHeight / aspectRatio;
-                    doc.addImage(img.src, 'PNG', LEFT_MARGIN, TOP_MARGIN, adjustedWidth, calculatedHeight);
-                } else {
-                    doc.addImage(img.src, 'PNG', LEFT_MARGIN, TOP_MARGIN, fixedWidth, calculatedHeight);
+                // if no logo uploaded do not use logo at all
+                if (invoice.expand.company.logo) {
+                    const fixedWidth = FIXED_BANNER_WIDTH;
+                    const aspectRatio = img.naturalHeight / img.naturalWidth;
+                    let calculatedHeight = fixedWidth * aspectRatio;
+                    const maxHeight = 25; // Define a maximum height for the image
+                    
+                    if (calculatedHeight > maxHeight) {
+                        calculatedHeight = maxHeight;
+                        const adjustedWidth = maxHeight / aspectRatio;
+                        doc.addImage(img.src, 'PNG', LEFT_MARGIN, TOP_MARGIN, adjustedWidth, calculatedHeight);
+                    } else {
+                        doc.addImage(img.src, 'PNG', LEFT_MARGIN, TOP_MARGIN, fixedWidth, calculatedHeight);
+                    }
                 }
 
                 doc.setTextColor(100);
                 doc.setFontSize(16);
 
-                Y += 10;
+                Y += TITLE_SPACE;
                 doc.text(await this.getTranslation("Invoice"), SECOND_COLUMN_MARGIN, Y);
                 doc.text(`${invoice.number}`, RIGHT_END, Y, { align: 'right' });
 
-                Y += 5;
+                Y += TEXT_SPACE;
                 doc.setFontSize(10);
                 doc.text(await this.getTranslation("Issue Date"), SECOND_COLUMN_MARGIN, Y);
                 doc.text(this.date.transform(invoice.date), RIGHT_END, Y, { align: 'right' });
 
-                Y += 5;
+                Y += TEXT_SPACE;
                 doc.text(await this.getTranslation("Due Date"), SECOND_COLUMN_MARGIN, Y);
                 doc.text(this.date.transform(invoice.dueDate), RIGHT_END, Y, { align: 'right' });
 
-                Y += 5;
+                Y += TEXT_SPACE;
                 if (invoice.deliveryDate) {
                     doc.text(await this.getTranslation("Delivery Date"), SECOND_COLUMN_MARGIN, Y);
                     doc.text(this.date.transform(invoice.deliveryDate), RIGHT_END, Y, { align: 'right' });
@@ -103,28 +117,28 @@ export class InvoiceGeneratorService {
 
                 // company data
                 if (invoice.companyData.name)
-                    doc.text(invoice.companyData.name, LEFT_MARGIN, Y += 5);
+                    doc.text(invoice.companyData.name, LEFT_MARGIN, Y += TEXT_SPACE);
                 if (invoice.companyData.address)
-                    doc.text(invoice.companyData.address + ', ', LEFT_MARGIN, Y += 5);
+                    doc.text(invoice.companyData.address + ', ', LEFT_MARGIN, Y += TEXT_SPACE);
                 if (invoice.companyData.postal)
-                    doc.text(invoice.companyData.postal + ' ' + invoice.companyData.city, LEFT_MARGIN, Y += 5);
+                    doc.text(invoice.companyData.postal + ' ' + invoice.companyData.city, LEFT_MARGIN, Y += TEXT_SPACE);
                 if (invoice.companyData.country)
-                    doc.text(invoice.companyData.country, LEFT_MARGIN, Y += 5);
+                    doc.text(invoice.companyData.country, LEFT_MARGIN, Y += TEXT_SPACE);
                 if (invoice.companyData.vatID)
-                    doc.text(invoice.companyData.vatID, LEFT_MARGIN, Y += 5);
+                    doc.text(invoice.companyData.vatID, LEFT_MARGIN, Y += TEXT_SPACE);
 
                 Y = 65;
                 // customer data
-                if (invoice.companyData.name)
-                    doc.text(invoice.customerData.name, SECOND_COLUMN_MARGIN, Y += 5);
-                if (invoice.companyData.address)
-                    doc.text(invoice.customerData.address + ', ', SECOND_COLUMN_MARGIN, Y += 5);
-                if (invoice.companyData.postal)
-                    doc.text(invoice.customerData.postal + ' ' + invoice.customerData.city, SECOND_COLUMN_MARGIN, Y += 5);
-                if (invoice.companyData.country)
-                    doc.text(invoice.customerData.country, SECOND_COLUMN_MARGIN, Y += 5);
-                if (invoice.companyData.vatID)
-                    doc.text(invoice.customerData.vatID, SECOND_COLUMN_MARGIN, Y += 5);
+                if (invoice.customerData.name)
+                    doc.text(invoice.customerData.name, SECOND_COLUMN_MARGIN, Y += TEXT_SPACE);
+                if (invoice.customerData.address)
+                    doc.text(invoice.customerData.address + ', ', SECOND_COLUMN_MARGIN, Y += TEXT_SPACE);
+                if (invoice.customerData.postal)
+                    doc.text(invoice.customerData.postal + ' ' + invoice.customerData.city, SECOND_COLUMN_MARGIN, Y += TEXT_SPACE);
+                if (invoice.customerData.country)
+                    doc.text(invoice.customerData.country, SECOND_COLUMN_MARGIN, Y += TEXT_SPACE);
+                if (invoice.customerData.vatID)
+                    doc.text(invoice.customerData.vatID, SECOND_COLUMN_MARGIN, Y += TEXT_SPACE);
 
                 Y = 100;
                 // Items table with reduced padding and soft borders
@@ -184,10 +198,10 @@ export class InvoiceGeneratorService {
                 doc.line(LEFT_MARGIN, Y, RIGHT_END, Y);
 
                 doc.setFontSize(10);
-                doc.text(await this.getTranslation("Subtotal:"), RIGHT_END - 55, Y += 6);
+                doc.text(await this.getTranslation("Subtotal:"), RIGHT_END - 55, Y += TEXT_SPACE);
                 doc.text(this.currency.transform(invoice.subTotal), RIGHT_END, Y, { align: 'right' });
 
-                doc.text(await this.getTranslation("Discount:"), RIGHT_END - 55, Y += 4);
+                doc.text(await this.getTranslation("Discount:"), RIGHT_END - 55, Y += TEXT_SPACE);
                 doc.text(this.currency.transform(invoice.discountValue), RIGHT_END, Y, { align: 'right' });
 
                 if (invoice.tax) {
@@ -196,13 +210,13 @@ export class InvoiceGeneratorService {
                         const taxKeys = Object.keys(invoice.taxValueGroups);
                         for (var i = 0; i < taxKeys.length; i++) {
                             const taxValue = taxKeys[i];
-                            doc.text(await this.getTranslation("VAT ({{tax}}%):", { tax: invoice.taxValueGroups[taxValue].tax * 100 }), RIGHT_END - 55, Y += 4);
+                            doc.text(await this.getTranslation("VAT ({{tax}}%):", { tax: invoice.taxValueGroups[taxValue].tax * 100 }), RIGHT_END - 55, Y += TEXT_SPACE);
                             doc.text(this.currency.transform(invoice.taxValueGroups[taxValue].value), RIGHT_END, Y, { align: 'right' });
                         }
                     }
 
                     if (invoice.taxValueGroups && Object.keys(invoice.taxValueGroups).length > 1) {
-                        doc.text(await this.getTranslation("VAT:"), RIGHT_END - 55, Y += 4);
+                        doc.text(await this.getTranslation("VAT:"), RIGHT_END - 55, Y += TEXT_SPACE);
                         doc.text(this.currency.transform(invoice.taxValue), RIGHT_END, Y, { align: 'right' });
                     }
 
@@ -213,7 +227,7 @@ export class InvoiceGeneratorService {
                 doc.line(RIGHT_END - 55, Y += 2, RIGHT_END, Y);
 
                 doc.setFont(this.FONT_NAME, "bold")
-                doc.text(await this.getTranslation("Total:"), RIGHT_END - 55, Y += 4);
+                doc.text(await this.getTranslation("Total:"), RIGHT_END - 55, Y += TEXT_SPACE);
                 doc.text(this.currency.transform(invoice.total), RIGHT_END, Y, { align: 'right' });
 
                 Y = this.pageBreak(Y, 30, doc, PAGE_BREAK, TOP_MARGIN)
@@ -222,33 +236,58 @@ export class InvoiceGeneratorService {
                 doc.setFont(this.FONT_NAME, "normal")
                 doc.setFontSize(10);
 
-                doc.setFont(this.FONT_NAME, "bold")
-                doc.text(await this.getTranslation("Payment"), LEFT_MARGIN, Y += 25);
+                if (invoice.paymentType) {
+                    doc.setFont(this.FONT_NAME, "bold")
+                    doc.text(await this.getTranslation("Payment type"), LEFT_MARGIN, Y += TITLE_SPACE);
+                    
+                    doc.setFont(this.FONT_NAME, "normal");
+                    doc.text(await this.getTranslation(invoice.paymentType), LEFT_MARGIN, Y += TEXT_SPACE);
 
-                doc.setFont(this.FONT_NAME, "normal")
-                doc.text(await this.getTranslation("IBAN ") + invoice.paymentData.iban + "" + (invoice.paymentData.reference ? (await this.getTranslation(" Reference ") + invoice.paymentData.reference) : ''), LEFT_MARGIN, Y += 5);
+                }
 
+                if (invoice.paymentData.reference || invoice.paymentData.iban || invoice.paymentData.swift) {
+
+                    doc.setFont(this.FONT_NAME, "bold")
+                    doc.text(await this.getTranslation("Payment"), LEFT_MARGIN, Y += TITLE_SPACE);
+                    
+                    doc.setFont(this.FONT_NAME, "normal")
+                    
+                    let paymentText = '';
+                    
+                    if (invoice.paymentData.reference) {
+                        paymentText = await this.getTranslation("Reference ") + invoice.paymentData.reference;
+                    }
+                    
+                    if (invoice.paymentData.iban) {
+                        paymentText = await this.getTranslation("IBAN ") + invoice.paymentData.iban + " " + paymentText;
+                    }
+                    if (invoice.paymentData.swift) {
+                        paymentText = await this.getTranslation("SWIFT ") + invoice.paymentData.swift + " " + paymentText;
+                    }
+                    
+                    doc.text(paymentText, LEFT_MARGIN, Y += TEXT_SPACE);
+                }
 
                 Y = this.pageBreak(Y, 30, doc, PAGE_BREAK, TOP_MARGIN)
 
                 if (invoice.note) {
                     doc.setFont(this.FONT_NAME, "bold")
-                    doc.text(await this.getTranslation("Note"), LEFT_MARGIN, Y += 15);
+                    doc.text(await this.getTranslation("Note"), LEFT_MARGIN, Y += TITLE_SPACE);
 
                     doc.setFont(this.FONT_NAME, "normal")
                     const splitNote = doc.splitTextToSize(invoice.note, doc.internal.pageSize.width - RIGHT_MARGIN - LEFT_MARGIN)
-                    doc.text(splitNote, LEFT_MARGIN, Y += 5);
+                    doc.text(splitNote, LEFT_MARGIN, Y += TEXT_SPACE);
                 }
 
                 //page break check
                 Y = this.pageBreak(Y, 30, doc, PAGE_BREAK, TOP_MARGIN)
 
                 doc.setFont(this.FONT_NAME, "bold")
-                doc.text(await this.getTranslation("Issued by"), LEFT_MARGIN, Y += 25);
+                doc.text(await this.getTranslation("Issued by"), LEFT_MARGIN, Y += TITLE_SPACE);
 
 
                 doc.setFont(this.FONT_NAME, "normal")
-                doc.text(invoice.expand.user.name, LEFT_MARGIN, Y += 5);
+                doc.text(invoice.expand.user.name, LEFT_MARGIN, Y += TEXT_SPACE);
 
                 // add footer
                 await this.addFooter(doc, invoice, LEFT_MARGIN, RIGHT_MARGIN);
@@ -261,7 +300,7 @@ export class InvoiceGeneratorService {
                     resolve(this.sanitizer.bypassSecurityTrustResourceUrl(`${URL.createObjectURL(blob)}#toolbar=1`))
                 }
                 else
-                    resolve(doc.save(`${invoice.number}_${invoice.customerData.name}.pdf`));
+                    resolve(doc.save(`${invoice.number}_${new Date().getFullYear()}.pdf`));
 
                 reject(null)
 
@@ -287,8 +326,10 @@ export class InvoiceGeneratorService {
             doc.setFontSize(8);
             doc.setTextColor(100);
 
-            const splitNote = doc.splitTextToSize(invoice.companyData?.note, doc.internal.pageSize.width - RIGHT_MARGIN - LEFT_MARGIN)
-            doc.text(splitNote, LEFT_MARGIN, doc.internal.pageSize.height - 21, 'left');
+            if (invoice.companyData?.note) {
+                const splitNote = doc.splitTextToSize(invoice.companyData?.note, doc.internal.pageSize.width - RIGHT_MARGIN - LEFT_MARGIN)
+                doc.text(splitNote, LEFT_MARGIN, doc.internal.pageSize.height - 21, 'left');
+            }
 
             let address = false;
             let legal = false;
@@ -310,6 +351,7 @@ export class InvoiceGeneratorService {
                 head[0].push(await this.getTranslation("Contact"));
                 contact = true;
             }
+
             let row1: any = [];
             let row2: any = [];
             let row3: any = [];

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, effect, input } from '@angular/core';
+import { Component, effect, input, output } from '@angular/core';
 import { UntypedFormGroup, UntypedFormBuilder, Validators, ReactiveFormsModule, FormGroup, FormControl, FormsModule } from '@angular/forms';
 import { PocketBaseService } from '../../core/services/pocket-base.service';
 import { environment } from '../../../environments/environment';
@@ -25,77 +25,12 @@ export class InvoiceDetailComponent {
     taxValueMap: any = [];
     showAdditionalTaxes = true;
 
-
     public readonly invoice = input<any>();
+    public invoiceCreated = output<any>();
 
     constructor(private formBuilder: UntypedFormBuilder, private pocketbase: PocketBaseService) {
 
-        this.invoicesForm = this.formBuilder.group({
-
-            id: [''],
-            customer: ['', [Validators.required]],
-            number: ['', [Validators.required]],
-            tax: [true, [Validators.required]],
-            isPaid: [false, [Validators.required]],
-            type: ['-', [Validators.required]],
-            paymentType: ['Transaction', [Validators.required]],
-            date: [new Date().toISOString().split('T')[0], [Validators.required]],
-            deliveryDate: [null],
-            dueDate: [null],
-            paymentDate: [null],
-            note: [''],
-            internalNote: [''],
-            user: [this.pocketbase.auth.id, [Validators.required]],
-            total: [0, [Validators.required]],
-            subTotal: [0, [Validators.required]],
-            taxValue: [0, [Validators.required]],
-            discountValue: [0, [Validators.required]],
-            showShippingHandlingFees: [false],
-            shippingHandlingFee: [0],
-            useBillingAndShippingAddress: [false],
-            billingAddressSameAsShippingAddress: [true],
-            language: localStorage.getItem('lang') || 'en',
-            customerData: new FormGroup({
-                name: new FormControl('', [Validators.required]),
-                address: new FormControl('', [Validators.required]),
-                city: new FormControl('', [Validators.required]),
-                postal: new FormControl('', [Validators.required]),
-                country: new FormControl('', [Validators.required]),
-                vatID: new FormControl('', [Validators.required]),
-                contact: new FormControl('', [Validators.required]),
-            }),
-
-            shippingData: new FormGroup({
-                name: new FormControl('', [Validators.required]),
-                address: new FormControl('', [Validators.required]),
-                city: new FormControl('', [Validators.required]),
-                postal: new FormControl('', [Validators.required]),
-                country: new FormControl('', [Validators.required]),
-                contact: new FormControl('', [Validators.required]),
-            }),
-
-            companyData: new FormGroup({
-                name: new FormControl(this.pocketbase.auth.expand.company.name, [Validators.required]),
-                address: new FormControl(`${this.pocketbase.auth.expand.company.address}`, [Validators.required]),
-                city: new FormControl(`${this.pocketbase.auth.expand.company.city}`, [Validators.required]),
-                postal: new FormControl(`${this.pocketbase.auth.expand.company.postal}`, [Validators.required]),
-                country: new FormControl(`${this.pocketbase.auth.expand.company.country}`, [Validators.required]),
-                vatID: new FormControl(this.pocketbase.auth.expand.company.vatID, [Validators.required]),
-                note: new FormControl(this.pocketbase.auth.expand.company.additional, [Validators.required]),
-                phone: new FormControl(this.pocketbase.auth.expand.company.phone, [Validators.required]),
-                swift: new FormControl(this.pocketbase.auth.expand.company.swift, [Validators.required]),
-                web: new FormControl(this.pocketbase.auth.expand.company.web, [Validators.required]),
-                iban: new FormControl(this.pocketbase.auth.expand.company.iban, [Validators.required]),
-                email: new FormControl(this.pocketbase.auth.expand.company.email, [Validators.required]),
-            }),
-
-            paymentData: new FormGroup({
-                iban: new FormControl(this.pocketbase.auth.expand.company.iban, [Validators.required]),
-                reference: new FormControl('', [Validators.required]),
-                name: new FormControl(this.pocketbase.auth.expand.company.name, [Validators.required]),
-            })
-
-        });
+        this.setFormDefaults();
 
         this.addItem();
         this.getCustomers();
@@ -106,11 +41,79 @@ export class InvoiceDetailComponent {
         this.invoicesForm.get('tax')?.valueChanges.subscribe(this.recalculate.bind(this))
         this.invoicesForm.get('type')?.valueChanges.subscribe(this.recalculate.bind(this))
         this.invoicesForm.get('number')?.valueChanges.subscribe(this.setReference.bind(this))
-
+        
         effect(() => {
             this.setCurrentInvoice(this.invoice());
         })
     }
+
+    setFormDefaults = () => this.invoicesForm = this.formBuilder.group({
+
+        id: [''],
+        customer: ['', [Validators.required]],
+        number: ['', [Validators.required]],
+        tax: [true, [Validators.required]],
+        isPaid: [false, [Validators.required]],
+        type: ['-', [Validators.required]],
+        paymentType: ['Transaction', [Validators.required]],
+        date: [new Date().toISOString().split('T')[0], [Validators.required]],
+        deliveryDate: [null],
+        dueDate: [new Date((new Date().setDate(new Date().getDate() + 7))).toISOString().split('T')[0]],
+        paymentDate: [null],
+        note: [''],
+        internalNote: [''],
+        user: [this.pocketbase.auth.id, [Validators.required]],
+        total: [0, [Validators.required]],
+        subTotal: [0, [Validators.required]],
+        taxValue: [0, [Validators.required]],
+        discountValue: [0, [Validators.required]],
+        showShippingHandlingFees: [false],
+        shippingHandlingFee: [0],
+        useBillingAndShippingAddress: [false],
+        billingAddressSameAsShippingAddress: [true],
+        language: localStorage.getItem('lang') || 'en',
+        customerData: new FormGroup({
+            name: new FormControl('', [Validators.required]),
+            address: new FormControl('', [Validators.required]),
+            city: new FormControl('', [Validators.required]),
+            postal: new FormControl('', [Validators.required]),
+            country: new FormControl('', [Validators.required]),
+            vatID: new FormControl('', [Validators.required]),
+            contact: new FormControl('', [Validators.required]),
+        }),
+
+        shippingData: new FormGroup({
+            name: new FormControl('', [Validators.required]),
+            address: new FormControl('', [Validators.required]),
+            city: new FormControl('', [Validators.required]),
+            postal: new FormControl('', [Validators.required]),
+            country: new FormControl('', [Validators.required]),
+            contact: new FormControl('', [Validators.required]),
+        }),
+
+        companyData: new FormGroup({
+            name: new FormControl(this.pocketbase.auth.expand.company.name, [Validators.required]),
+            address: new FormControl(`${this.pocketbase.auth.expand.company.address}`, [Validators.required]),
+            city: new FormControl(`${this.pocketbase.auth.expand.company.city}`, [Validators.required]),
+            postal: new FormControl(`${this.pocketbase.auth.expand.company.postal}`, [Validators.required]),
+            country: new FormControl(`${this.pocketbase.auth.expand.company.country}`, [Validators.required]),
+            vatID: new FormControl(this.pocketbase.auth.expand.company.vatID, [Validators.required]),
+            note: new FormControl(this.pocketbase.auth.expand.company.additional, [Validators.required]),
+            phone: new FormControl(this.pocketbase.auth.expand.company.phone, [Validators.required]),
+            swift: new FormControl(this.pocketbase.auth.expand.company.swift, [Validators.required]),
+            web: new FormControl(this.pocketbase.auth.expand.company.web, [Validators.required]),
+            iban: new FormControl(this.pocketbase.auth.expand.company.iban, [Validators.required]),
+            email: new FormControl(this.pocketbase.auth.expand.company.email, [Validators.required]),
+        }),
+
+        paymentData: new FormGroup({
+            iban: new FormControl(this.pocketbase.auth.expand.company.iban, [Validators.required]),
+            reference: new FormControl('', [Validators.required]),
+            name: new FormControl(this.pocketbase.auth.expand.company.name, [Validators.required]),
+            swift: new FormControl(this.pocketbase.auth.expand.company.swift),
+        })
+
+    });
 
     addItem() {
         this.items.push({
@@ -125,7 +128,10 @@ export class InvoiceDetailComponent {
 
     async setCurrentInvoice(invoice: any) {
 
-        if (!invoice?.id) return;
+        if (!invoice?.id) {
+            this.setFormDefaults();
+            return;
+        };
 
         const i: any = await this.pocketbase.invoices.getOne(invoice.id, { expand: 'items' });
 
@@ -256,7 +262,9 @@ export class InvoiceDetailComponent {
                 vatID: invoice.customerData.vatID,
             };
 
-            const create = await this.pocketbase.customers.create(customer);
+            const create = await this.pocketbase.customers.create(customer, {
+                headers: { notoast: '1' }
+            });
             invoice.customer = create.id;
             this.invoicesForm.patchValue({ customer: create.id });
         }
@@ -268,6 +276,7 @@ export class InvoiceDetailComponent {
         } else {
             const created = await this.pocketbase.invoices.create(invoice);
             this.invoicesForm.patchValue({ id: created.id });
+            this.invoiceCreated.emit(created);
         }
 
     }
