@@ -5,6 +5,7 @@ import { PocketBaseService } from '../../core/services/pocket-base.service';
 import { environment } from '../../../environments/environment';
 import { TranslateModule } from '@ngx-translate/core';
 import { DxNumberBoxModule } from 'devextreme-angular';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
     selector: 'eenvo-invoice-detail',

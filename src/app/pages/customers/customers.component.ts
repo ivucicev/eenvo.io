@@ -32,6 +32,9 @@ export class CustomersComponent {
         this.getData();
 
         this.http.get<any[]>('assets/json/country-list.json').subscribe(data => {
+            data.forEach(d => {
+                d.countryName = d.countryName[localStorage.getItem('lang') || 'en'] ?? d.country2LetterCode;
+            })
             this.countries = data;
         });
     }

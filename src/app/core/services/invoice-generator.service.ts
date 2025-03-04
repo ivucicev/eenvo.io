@@ -9,6 +9,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { CurrencyFormatPipe, DateFormatPipe, FractionFormatPipe, NumberFormatPipe } from '../pipes/number-format.pipe';
 import { TranslateCompiler, TranslateParser, TranslateService } from '@ngx-translate/core';
 import { map, Observable, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
     providedIn: 'root'
@@ -18,19 +19,39 @@ export class InvoiceGeneratorService {
     private readonly FONT_NAME = 'dejavu-sans.book';
     private language = 'en';
     private translationCache: { [lang: string]: any } = {}; // Cache storage
+    private countries: any = [];
 
-    constructor(private pocketbase: PocketBaseService, private compiler: TranslateCompiler, private date: DateFormatPipe, private currency: CurrencyFormatPipe, private fraction: FractionFormatPipe, private number: NumberFormatPipe, private parser: TranslateParser, private sanitizer: DomSanitizer, private translate: TranslateService) { }
+    constructor(private pocketbase: PocketBaseService, private compiler: TranslateCompiler, private date: DateFormatPipe, private currency: CurrencyFormatPipe, private fraction: FractionFormatPipe, private number: NumberFormatPipe, private parser: TranslateParser, private sanitizer: DomSanitizer, private translate: TranslateService, private http: HttpClient) {
+        this.loadCountries();
+    }
+
+    loadCountries() {
+        this.http.get<any[]>('assets/json/country-list.json').subscribe(data => {
+            this.countries = data;
+        });
+    }
+
+    getLocalizedCountryName(localizedName: string) {
+        if (!localizedName) return "";
+        const country = this.countries.find((c: { countryName: { [key: string]: string } }) =>
+            Object.values(c.countryName).includes(localizedName)
+        );
+
+        if (!country) return localizedName;
+
+        return country.countryName[this.language] ?? country.country2LetterCode;
+    }
 
     generate = async (id: any, preview = false) => {
 
         const invoice: any = await this.pocketbase.invoices.getOne(id, { expand: 'customer,user,company,items' });
 
         invoice.companyData = { ...invoice.expand.company, note: invoice.expand.company.additional };
-        if(!invoice.paymentData.iban || invoice.paymentData.iban.indexOf('IBXXX') > -1){
+        if (!invoice.paymentData.iban || invoice.paymentData.iban.indexOf('IBXXX') > -1) {
             invoice.paymentData.iban = invoice.expand.company.iban;
-        }  
+        }
 
-        if(!invoice.paymentData.swift){
+        if (!invoice.paymentData.swift) {
             invoice.paymentData.swift = invoice.expand.company.swift;
         }
 
@@ -73,7 +94,7 @@ export class InvoiceGeneratorService {
                     const aspectRatio = img.naturalHeight / img.naturalWidth;
                     let calculatedHeight = fixedWidth * aspectRatio;
                     const maxHeight = 25; // Define a maximum height for the image
-                    
+
                     if (calculatedHeight > maxHeight) {
                         calculatedHeight = maxHeight;
                         const adjustedWidth = maxHeight / aspectRatio;
@@ -123,7 +144,7 @@ export class InvoiceGeneratorService {
                 if (invoice.companyData.postal)
                     doc.text(invoice.companyData.postal + ' ' + invoice.companyData.city, LEFT_MARGIN, Y += TEXT_SPACE);
                 if (invoice.companyData.country)
-                    doc.text(invoice.companyData.country, LEFT_MARGIN, Y += TEXT_SPACE);
+                    doc.text(this.getLocalizedCountryName(invoice.companyData.country), LEFT_MARGIN, Y += TEXT_SPACE);
                 if (invoice.companyData.vatID)
                     doc.text(invoice.companyData.vatID, LEFT_MARGIN, Y += TEXT_SPACE);
 
@@ -136,7 +157,7 @@ export class InvoiceGeneratorService {
                 if (invoice.customerData.postal)
                     doc.text(invoice.customerData.postal + ' ' + invoice.customerData.city, SECOND_COLUMN_MARGIN, Y += TEXT_SPACE);
                 if (invoice.customerData.country)
-                    doc.text(invoice.customerData.country, SECOND_COLUMN_MARGIN, Y += TEXT_SPACE);
+                    doc.text(this.getLocalizedCountryName(invoice.customerData.country), SECOND_COLUMN_MARGIN, Y += TEXT_SPACE);
                 if (invoice.customerData.vatID)
                     doc.text(invoice.customerData.vatID, SECOND_COLUMN_MARGIN, Y += TEXT_SPACE);
 
@@ -239,7 +260,7 @@ export class InvoiceGeneratorService {
                 if (invoice.paymentType) {
                     doc.setFont(this.FONT_NAME, "bold")
                     doc.text(await this.getTranslation("Payment type"), LEFT_MARGIN, Y += TITLE_SPACE);
-                    
+
                     doc.setFont(this.FONT_NAME, "normal");
                     doc.text(await this.getTranslation(invoice.paymentType), LEFT_MARGIN, Y += TEXT_SPACE);
 
@@ -249,22 +270,22 @@ export class InvoiceGeneratorService {
 
                     doc.setFont(this.FONT_NAME, "bold")
                     doc.text(await this.getTranslation("Payment"), LEFT_MARGIN, Y += TITLE_SPACE);
-                    
+
                     doc.setFont(this.FONT_NAME, "normal")
-                    
+
                     let paymentText = '';
-                    
+
                     if (invoice.paymentData.reference) {
                         paymentText = await this.getTranslation("Reference ") + invoice.paymentData.reference;
                     }
-                    
+
                     if (invoice.paymentData.iban) {
                         paymentText = await this.getTranslation("IBAN ") + invoice.paymentData.iban + " " + paymentText;
                     }
                     if (invoice.paymentData.swift) {
                         paymentText = await this.getTranslation("SWIFT ") + invoice.paymentData.swift + " " + paymentText;
                     }
-                    
+
                     doc.text(paymentText, LEFT_MARGIN, Y += TEXT_SPACE);
                 }
 
@@ -293,7 +314,7 @@ export class InvoiceGeneratorService {
                 await this.addFooter(doc, invoice, LEFT_MARGIN, RIGHT_MARGIN);
 
                 // Generate PDF
-                
+
                 if (preview) {
                     var out = doc.output('blob');
                     const blob = new Blob([out], { type: 'application/pdf' });
@@ -363,7 +384,7 @@ export class InvoiceGeneratorService {
                 else row1.push('')
                 if (invoice.companyData.postal || invoice.companyData.city) row2.push(invoice.companyData.postal + ' ' + invoice.companyData.city + ', ');
                 else row2.push('')
-                if (invoice.companyData.country) row3.push(invoice.companyData.country);
+                if (invoice.companyData.country) row3.push(this.getLocalizedCountryName(invoice.companyData.country));
                 else row3.push('')
             }
 
