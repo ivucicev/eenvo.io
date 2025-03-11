@@ -10,7 +10,7 @@ export const MENU: MenuItem[] = [
         id: 2,
         label: 'Dashboard',
         icon: 'las la-bolt',
-        soon: true,
+        soon: false,
         link: '/',
     },
     {

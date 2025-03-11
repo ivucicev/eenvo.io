@@ -1,1 +1,76 @@
-<eenvo-page-title title="Dashboard" [breadcrumbItems]="breadCrumbItems"></eenvo-page-title>
+<div class="input-group">
+    <dx-drop-down-button class="btn btn-sm btn-light ms-0 p-0" [icon]="'event'" [dropDownOptions]="dropdownOptions"
+        [text]="''" [items]="dateRangeOptions" (onItemClick)="onPredefinedOptionClick($event)" displayExpr="text"
+        keyExpr="value" [showArrowIcon]="false">
+    </dx-drop-down-button>
+
+    <dx-date-range-box id='dateRange' [showClearButton]="true" [(value)]="value" [style]="{ maxWidth: '350px'}"
+        class="d-flex" [endDateLabel]="''" [startDateLabel]="''" [showDropDownButton]="false"
+        (onValueChanged)="onValueChanged($event)" [startDatePlaceholder]="'StartDate' | translate"
+        [endDatePlaceholder]="'EndDate' | translate">
+    </dx-date-range-box>
+
+</div>
+
+<div class="row">
+    <!-- <div class="col-3">
+       <eenvo-stats-widget [name]="'Cashflow'" [title]="'Cashflow last 31 days'" [data]="data" [secondaryColor]="'bg-primary'"></eenvo-stats-widget>
+    </div>
+    <div class="col-3">
+       <eenvo-stats-widget [name]="'Income'" [title]="'Income last 31 days'" [data]="inflow" [secondaryColor]="'bg-success'"></eenvo-stats-widget>
+    </div>
+    <div class="col-3">
+       <eenvo-stats-widget [name]="'Expenses'" [title]="'Expenses last 31 days'" [data]="expenses" [secondaryColor]="'bg-success'"></eenvo-stats-widget>
+    </div>
+    <div class="col-3">
+        <eenvo-stats-widget [name]="'Net income'" [title]="'Net income last 31 days'" [data]="dataNetIncome" [secondaryColor]="'bg-danger'" [color]="'primary'"></eenvo-stats-widget>
+    </div>-->
+</div>
+
+<div class="row mt-3">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <dx-chart id="chart" title="{{ 'Income' | translate }}" [dataSource]="incomeData">
+                    <dxo-legend [visible]="false"></dxo-legend>
+                    <dxi-series type="bar"></dxi-series>
+                    <dxo-argument-axis [tickInterval]="10">
+                        <dxo-label>
+                            <dxo-format type="decimal"></dxo-format>
+                        </dxo-label>
+                    </dxo-argument-axis>
+                </dx-chart>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <dx-pie-chart id="pie" type="doughnut" title="{{ 'Invoices per customer' | translate }}"
+                    palette="Soft Pastel" [dataSource]="invoicesPerCustomer">
+                    <dxi-series argumentField="name">
+                        <dxo-label [visible]="true" format="#,##0.00">
+                            <dxo-connector [visible]="true"></dxo-connector>
+                        </dxo-label>
+                    </dxi-series>
+                    <dxo-legend [margin]="0" horizontalAlignment="right" verticalAlignment="top"></dxo-legend>
+                </dx-pie-chart>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <dx-pie-chart id="pie" type="doughnut" title="{{ 'Expenses per customer' | translate }}"
+                    palette="Soft Pastel" [dataSource]="expensesPerCustomer">
+                    <dxi-series argumentField="name">
+                        <dxo-label [visible]="true" format="#,##0.00">
+                            <dxo-connector [visible]="true"></dxo-connector>
+                        </dxo-label>
+                    </dxi-series>
+                    <dxo-legend [margin]="0" horizontalAlignment="right" verticalAlignment="top"></dxo-legend>
+                </dx-pie-chart>
+            </div>
+        </div>
+    </div>
+</div>

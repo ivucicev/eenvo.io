@@ -1,0 +1,17 @@
+:host ::ng-deep .dx-daterangebox {
+
+    .dx-dropdowneditor.dx-dropdowneditor-field-clickable,
+    .dx-dropdowneditor.dx-dropdowneditor-field-clickable .dx-texteditor-input {
+        cursor: pointer;
+        border: none;
+    }
+}
+
+.input-group {
+    position: relative;
+    display: flex;
+    flex-wrap: nowrap;
+    width: 100%;
+    flex-direction: row-reverse;
+    align-items: center;
+}
