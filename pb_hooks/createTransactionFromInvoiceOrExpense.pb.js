@@ -9,6 +9,8 @@ onRecordAfterCreateSuccess((e) => {
         company: e.record.get('company'),
         total: e.record.get('total'),
         user: e.record.get('user'),
+        created: new Date(),
+        updated: new Date(),
         type: 'out'
     };
     $app.db().insert('transactions', transactionData).execute();

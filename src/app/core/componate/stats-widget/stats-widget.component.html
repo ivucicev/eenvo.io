@@ -6,26 +6,36 @@
                     {{this.defaultCurrency}}<span class="counter-value" [countUp]="stats.totalLast31">0</span></h4>
                 <p class="text-uppercase fw-medium fs-14 text-muted mb-0" [class.text-white-50]="color() == 'primary'">
                     {{ name() | translate }}
+                    @if (title()) {
                     <span class="text-success fs-14 mb-0 ms-1">
                         <i class="ri-arrow-right-up-line fs-13 align-middle"></i> {{ stats.totalChangePrefix
                         }}<span class="counter-value" [countUp]="stats.totalChange">0</span>%
                     </span>
+                    }
                 </p>
             </div>
+            @if (!title()) {
+            <span class="badge me-2" [class.bg-success]="secondaryColor() == 'bg-success'"
+                [class.bg-danger]="secondaryColor() == 'bg-danger'"
+                [class.bg-primary]="secondaryColor() == 'bg-primary'">{{stats.totalLast31Count}}</span>
+            }
             <div class="avatar-sm flex-shrink-0">
                 <span class="avatar-title bg-light rounded-circle fs-3">
                     <i class="las la-file-alt fs-24 text-primary"></i>
                 </span>
             </div>
         </div>
+        @if (title()) {
         <div class="d-flex align-items-end justify-content-between mt-4">
             <div>
                 <span class="badge me-1" [class.bg-success]="secondaryColor() == 'bg-success'"
                     [class.bg-danger]="secondaryColor() == 'bg-danger'"
-                    [class.bg-primary]="secondaryColor() == 'bg-primary'">{{stats.totalLast31Count}}</span> <span
-                    [class.text-muted]="color() != 'primary'" [class.text-white]="color() == 'primary'">{{ title() |
-                    translate }} </span>
+                    [class.bg-primary]="secondaryColor() == 'bg-primary'">{{stats.totalLast31Count}}</span>
+                <span [class.text-muted]="color() != 'primary'" [class.text-white]="color() == 'primary'">{{ title() |
+                    translate }}
+                </span>
             </div>
         </div>
+        }
     </div>
 </div>

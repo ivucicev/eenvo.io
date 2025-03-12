@@ -3,12 +3,14 @@ import { DxChartModule, DxDateRangeBoxModule, DxDropDownBoxModule, DxDropDownBut
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { take } from 'rxjs';
 import { PocketBaseService } from '../../../core/services/pocket-base.service';
+import { CurrencyFormatPipe } from '../../../core/pipes/number-format.pipe';
+import { StatsWidgetComponent } from '../../../core/componate/stats-widget/stats-widget.component';
 
 
 @Component({
     selector: 'eenvo-dashboard',
     standalone: true,
-    imports: [DxDateRangeBoxModule, DxChartModule, DxPieChartModule, DxDropDownButtonModule, TranslateModule],
+    imports: [DxDateRangeBoxModule, StatsWidgetComponent, DxChartModule, DxPieChartModule, DxDropDownButtonModule, TranslateModule],
     templateUrl: './dashboard.component.html',
     styleUrl: './dashboard.component.scss'
 })
@@ -21,6 +23,11 @@ export class DashboardComponent {
     public invoicesPerCustomer: any = [];
     public expensesPerCustomer: any = [];
     public incomeData: any = [];
+    public revenueExpenseData: any = [];
+    public unpaidInvoices: any = [];
+    public cashflowData: any = [];
+    public netIncome: any = [];
+    public inflow: any = [];
 
     private defaultRangeValue: [Date, Date] = [new Date(), new Date()];
     private dateRangeOptionValues = Object.values(DateRangeOptionEnum).filter((v) => !isNaN(Number(v)));
@@ -35,8 +42,11 @@ export class DashboardComponent {
 
     constructor(
         private translateService: TranslateService,
-        private pb: PocketBaseService
+        private pb: PocketBaseService,
+        private format: CurrencyFormatPipe
     ) {
+        this.onPredefinedOptionClick({ itemData: {value: DateRangeOptionEnum.ThisYear} } );
+        this.getDataInPeriod();
     }
 
     public onValueChanged(event: any) {
@@ -136,10 +146,73 @@ export class DashboardComponent {
         // Convert the object to an array
         this.incomeData = Object.values(groupedInvoices);
 
+        // Calculate the period
+        let earliestDate = new Date(Math.min(...this.invoices.map((invoice: any) => new Date(invoice.date)), ...this.expenses.map((expense: any) => new Date(expense.date))));
+        let latestDate = new Date(Math.max(...this.invoices.map((invoice: any) => new Date(invoice.date)), ...this.expenses.map((expense: any) => new Date(expense.date))));
+        let periodInDays = (latestDate.getTime() - earliestDate.getTime()) / (1000 * 60 * 60 * 24); // in days
+
+        let revenueData;
+        let expenseData;
+
+        if (periodInDays <= 31) {
+            // Group by day
+            revenueData = this.groupByDay(this.invoices);
+            expenseData = this.groupByDay(this.expenses);
+        } else {
+            // Group by month and year
+            revenueData = this.groupByMonthYear(this.invoices);
+            expenseData = this.groupByMonthYear(this.expenses);
+        }
+
+        let combinedData = [];
+        for (let period in revenueData) {
+            combinedData.push({
+                income: revenueData[period].value || 0,
+                expense: expenseData[period]?.value || 0,
+                period: period
+            });
+        }
+
+        this.revenueExpenseData = [...combinedData];
+
+        this.unpaidInvoices = [...this.invoices.filter((d: any) => !d.isPaid)];
+        this.cashflowData = [...this.transactions];
+       // this.expenses = [...this.allData.filter((s: any) => s.type == 'out')];
+        this.inflow = [...this.transactions.filter((s: any) => s.type == 'in')];
+        this.netIncome = [...this.transactions.map((s: any) => {
+            return {
+                ...s,
+                total: s.type == 'in' ? s.total : -1 * s.total
+            }
+        })];
 
     }
 
+    groupByDay(data: any[]) {
+        return data.reduce((acc, item) => {
+            let date = new Date(item.date).toISOString().split('T')[0]; // get the date part
+            if (!acc[date]) {
+                acc[date] = { date: date, value: 0 };
+            }
+            acc[date].value += item.total;
+            return acc;
+        }, {});
+    }
+
+    groupByMonthYear(data: any[]) {
+        return data.reduce((acc, item) => {
+            let date = new Date(item.date);
+            let monthYear = `${date.getMonth() + 1}-${date.getFullYear()}`; // get the month and year
+            if (!acc[monthYear]) {
+                acc[monthYear] = { monthYear: monthYear, value: 0 };
+            }
+            acc[monthYear].value += item.total;
+            return acc;
+        }, {});
+    }
+
     public onPredefinedOptionClick(e: any) {
+
         const today = new Date();
         let value: [Date, Date] = [new Date(), new Date()];
 
@@ -165,7 +238,7 @@ export class DashboardComponent {
             case DateRangeOptionEnum.Last7Days:
                 value = DateRangeHelper.getLastNDaysRange(7);
                 break;
-            case DateRangeOptionEnum.Last30Days:
+            case DateRangeOptionEnum.LastMonth:
                 value = DateRangeHelper.getLastNDaysRange(30);
                 break;
             case DateRangeOptionEnum.Last60Days:
@@ -191,6 +264,12 @@ export class DashboardComponent {
                 break;
         }
         this.value = value;
+    }
+
+    incomeTooltip = (e: any) => {
+        return {
+            text: this.format.transform(e.value),
+        }
     }
 
     ngOnInit(): void {

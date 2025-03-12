@@ -23,6 +23,8 @@ onRecordAfterUpdateSuccess((e) => {
         company: e.record.get('company'),
         total: e.record.get('total'),
         user: e.record.get('user'),
+        created: e.record.get('created') ?? new Date(),
+        updated: new Date(),
     };
 
 
@@ -58,6 +60,8 @@ onRecordAfterUpdateSuccess((e) => {
         invoice: e.record.id,
         total: e.record.get('total'),
         user: e.record.get('user'),
+        updated: new Date(),
+        created: e.record.get('created') ?? new Date(),
         type: 'in'
     };
 

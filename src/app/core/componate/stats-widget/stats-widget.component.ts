@@ -18,8 +18,8 @@ export class StatsWidgetComponent {
     public readonly color = input<any>();
     public readonly secondaryColor = input<any>();    
     public readonly title = input<any>();    
-    public readonly name = input<any>();    
-
+    public readonly name = input<any>(); 
+    
     constructor() {
         effect(() => {
             this.calculateInvoiceStats(this.data())
