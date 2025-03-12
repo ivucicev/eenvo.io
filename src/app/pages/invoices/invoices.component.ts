@@ -221,6 +221,7 @@ export class InvoicesComponent {
         try {
             this.pdf = await this.invoiceService.generate(id, true);
         } catch (e) {
+            console.error(e);
         }
     }
 
