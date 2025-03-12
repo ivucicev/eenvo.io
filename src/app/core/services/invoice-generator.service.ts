@@ -108,7 +108,12 @@ export class InvoiceGeneratorService {
                 doc.setFontSize(16);
 
                 Y += TITLE_SPACE;
-                doc.text(await this.getTranslation("Invoice"), SECOND_COLUMN_MARGIN, Y);
+                let type = '';
+                if (invoice.type && invoice.type != '-') {
+                    type = invoice.type;
+                }
+                let invoiceType = `${await this.getTranslation("Invoice")} ${type}`;
+                doc.text(invoiceType, SECOND_COLUMN_MARGIN, Y);
                 doc.text(`${invoice.number}`, RIGHT_END, Y, { align: 'right' });
 
                 Y += TEXT_SPACE;
