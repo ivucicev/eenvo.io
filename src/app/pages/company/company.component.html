@@ -4,12 +4,30 @@
             <div class="card-header">
                 <h4 class="card-title mb-0 flex-grow-1">{{ 'Company' | translate }}</h4>
             </div>
-            <dx-file-uploader #uploader dialogTrigger="#dropzone-external" dropZone="#dropzone-external" [multiple]="false" selectButtonText="{{ '+' | translate }}" accept="image/*" [visible]="false" (onValueChanged)="fileAdded($event)" uploadMode="instantly">
+            <dx-file-uploader #uploader dialogTrigger="#dropzone-external" dropZone="#dropzone-external"
+                [multiple]="false" selectButtonText="{{ '+' | translate }}" accept="image/*" [visible]="false"
+                (onValueChanged)="fileAdded($event)" uploadMode="instantly">
             </dx-file-uploader>
             <div class="card-body">
                 <form [formGroup]="companyForm" (ngSubmit)="submit()" class="container mt-4">
-                    <div class="mb-3 text-center">
-                        <img id="dropzone-external" [src]="this.logo" onerror="this.src='assets/images/addphoto.png'" alt="{{ 'Company Logo' | translate }}" height="350" class="rounded img-fluid w-50" />
+                    <div class="profile-user mx-auto mb-3 justify-content-center d-flex">
+                        <div class="position-relative show-onhover">
+                            <label for="profile-img-file-input" class="d-block" style="cursor: pointer;" tabindex="0"
+                                id="dropzone-external">
+                                <span
+                                    class="overflow-hidden border border-dashed d-flex align-items-center justify-content-center rounded"
+                                    style="padding: 10px">
+                                    <img [src]="this.logo" onerror="this.src='assets/images/addphoto.png'"
+                                        class="card-logo user-profile-image img-fluid" style="height: 350px"
+                                        alt="logo dark">
+                                </span>
+                            </label>
+                            @if (this.logo) {
+                            <button type="button" class="btn btn-icon btn-danger btn-sm position-absolute onhover"
+                                style="right: 0px; top: 0px;" (click)="fileAdded(null)"> <i class="las la-times"></i>
+                            </button>
+                            }
+                        </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-12">
@@ -46,7 +64,8 @@
                     <div class="row mb-3">
                         <div class="col-md-12">
                             <label for="country">{{ 'Country' | translate }}</label>
-                            <input list="countries" id="country" formControlName="country" name="country" class="form-control">
+                            <input list="countries" id="country" formControlName="country" name="country"
+                                class="form-control">
                             <datalist id="countries">
                                 @for(c of countries; track $index) {
                                 <option value="{{c.countryName}}">
@@ -89,7 +108,8 @@
                     <div class="row mb-3">
                         <div class="col-md-12">
                             <label for="additional" class="form-label">{{ 'Additional Info' | translate }}</label>
-                            <textarea class="form-control" id="additional" rows="3" formControlName="additional"></textarea>
+                            <textarea class="form-control" id="additional" rows="3"
+                                formControlName="additional"></textarea>
                         </div>
                     </div>
                     <div class="text-center mt-4">

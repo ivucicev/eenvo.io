@@ -1,143 +1,144 @@
-<div class="row">
-    <div class="col-4">
-        <eenvo-stats-widget [name]="'Expenses'" [title]="'Expenses last 31 days' | translate" [data]="data"
-            [secondaryColor]="'bg-primary'"></eenvo-stats-widget>
-    </div>
-    <div class="col-8">
-        <!-- <div class="card">
-            <div class="card-body">
-                <div class="d-flex align-items-center">                    
-                    <dx-pie-chart width="100%" id="pie" type="doughnut" palette="Soft Pastel"
-                        [dataSource]="chartDS">
-                        <dxi-series argumentField="region">
-                        </dxi-series>
-                        <dxo-export [enabled]="true"></dxo-export>
-                        <dxo-legend [margin]="0" horizontalAlignment="right" verticalAlignment="top"></dxo-legend>
-                    </dx-pie-chart>
+<div class="h-100 d-flex flex-column">
+    <div class="row">
+        <div class="col-4">
+            <eenvo-stats-widget [name]="'Expenses'" [title]="'Expenses last 31 days' | translate" [data]="data"
+                [secondaryColor]="'bg-primary'"></eenvo-stats-widget>
+        </div>
+        <div class="col-8">
+            <!-- <div class="card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <dx-pie-chart width="100%" id="pie" type="doughnut" palette="Soft Pastel"
+                            [dataSource]="chartDS">
+                            <dxi-series argumentField="region">
+                            </dxi-series>
+                            <dxo-export [enabled]="true"></dxo-export>
+                            <dxo-legend [margin]="0" horizontalAlignment="right" verticalAlignment="top"></dxo-legend>
+                        </dx-pie-chart>
+                    </div>
                 </div>
-            </div>
-        </div> -->
-        ​
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-lg-12">
-        <div class="card">
-            <div class="card-body">
-                <dx-data-grid #grid [dataSource]="data" (onInitNewRow)="initNewRow($event)" (onSaved)="saved($event)"
-                    (onEditingStart)="editExpense($event)" (onRowUpdated)="reload()" (onRowInserted)="reload()"
-                    (onRowRemoved)="reload()">
-
-                    <dxo-toolbar>
-                        <dxi-item>
-                            <div *dxTemplate>
-                                <select class="form-select form-select-sm border-0" [(ngModel)]="selectedYear"
-                                    (change)="reload()">
-                                    <option [value]="currentYear" selected>{{currentYear}}</option>
-                                    <option [value]="currentYear - 1">{{currentYear - 1}}</option>
-                                    <option [value]="currentYear - 2">{{currentYear - 2}}</option>
-                                    <option [value]="currentYear - 3">{{currentYear - 3}}</option>
-                                    <option [value]="currentYear - 4">{{currentYear - 4}}</option>
-                                </select>
-                            </div>
-                        </dxi-item>
-                        <dxi-item name="groupPanel"></dxi-item>
-                        <dxi-item location="after">
-                            <div *dxTemplate>
-                                <dx-button stylingMode="text" (click)="newExpense()" icon="add"
-                                    [text]="'New' | translate"> </dx-button>
-                            </div>
-                        </dxi-item>
-                        <dxi-item location="after">
-                            <div *dxTemplate>
-                                <dx-button stylingMode="text" icon="refresh" (onClick)="reload()"> </dx-button>
-                            </div>
-                        </dxi-item>
-                        <dxi-item name="exportButton"></dxi-item>
-                        <dxi-item name="columnChooserButton"></dxi-item>
-                        <dxi-item name="searchPanel"></dxi-item>
-                    </dxo-toolbar>
-
-                    <dxi-column dataField="customer" [caption]="'Customer/Vendor' | translate">
-                        <dxo-lookup [dataSource]="customers" displayExpr="name" valueExpr="id">
-                        </dxo-lookup>
-                    </dxi-column>
-                    <dxi-column dataField="title" [caption]="'Title' | translate"></dxi-column>
-                    <dxi-column dataField="description" [caption]="'Description' | translate"></dxi-column>
-                    <dxi-column dataField="date" [caption]="'Date' | translate" dataType="date">
-                        <dxi-validation-rule type="required"></dxi-validation-rule>
-                    </dxi-column>
-
-                    <dxi-column dataField="total" [caption]="'Total' | translate" dataType="number" format="#,##0.00"
-                        cellTemplate="totalTemplate">
-                        <div *dxTemplate="let d of 'totalTemplate'">
-                            {{ d.data.total | currencyFormat }}
-                        </div>
-                        <dxi-validation-rule type="required"></dxi-validation-rule>
-                        <dxi-validation-rule type="range" [min]="0.01"></dxi-validation-rule>
-                    </dxi-column>
-
-                    <dxi-column dataField="files" [caption]="'Attachments' | translate"
-                        editCellTemplate="attachmentEdit" cellTemplate="attachmentTemplate">
-                        <div *dxTemplate="let d of 'attachmentTemplate'">
-                            @for(file of d.data.files; track $index) {
-                            <span class="badge badge-soft-info cursor-pointer mx-1"> <span
-                                    (click)="getFile(d.data, file)"><i class="ri-attachment-line"></i> {{file}} </span>
-                            </span>
-                            }
-                        </div>
-                        <div *dxTemplate="let d of 'attachmentEdit'">
-                            @for(file of d.data.files; track $index) {
-                            <span class="badge badge-soft-info cursor-pointer mx-1"><span
-                                    (click)="getFile(d.data, file)"><i class="ri-attachment-line"></i> {{file}} </span>
-                                <i class="ri-close-fill" (click)="removeFile(d.data, file)"></i> </span>
-                            }
-                            @for(file of addedFiles; track $index) {
-                            <span class="badge badge-soft-info cursor-pointer mx-1"> <i class="ri-attachment-line"></i>
-                                {{file.name}} <i class="ri-close-fill" (click)="removeAddedFile($index)"></i> </span>
-                            }
-                            <div class="dropzone dz-clickable text-center mt-1" id="dropzone-external">
-                                <div class="dz-message needsclick">
-                                    <div class="mb-3">
-                                        <i class="display-4 text-muted ri-upload-cloud-2-fill"></i>
-                                    </div>
-                                    <h4>{{ 'Drop files here or click to upload.' | translate }}</h4>
-                                </div>
-                            </div>
-                            <dx-file-uploader [showFileList]="true" #uploader dialogTrigger="#dropzone-external"
-                                dropZone="#dropzone-external" [multiple]="true" selectButtonText="{{ '+' | translate }}"
-                                accept="image/*,application/pdf,application/vnd.ms-excel,application/msword"
-                                [visible]="false" (onValueChanged)="fileAdded($event)" uploadMode="useForm">
-                            </dx-file-uploader>
-                        </div>
-                    </dxi-column>
-
-                    <dxi-column [visible]="false" dataField="created" [caption]="'Created' | translate"
-                        dataType="date"></dxi-column>
-                    <dxi-column [visible]="false" dataField="updated" [caption]="'Updated' | translate"
-                        dataType="date"></dxi-column>
-
-                </dx-data-grid>
-            </div>
-
+            </div> -->
+            ​
         </div>
     </div>
 
+    <div class="row h-grow">
+        <div class="col-lg-12 h-grow">
+            <div class="card h-grow m-0">
+                <div class="card-body h-grow">
+                    <div class="contain h-grow">
+                        <dx-data-grid class="contain-grid" #grid [dataSource]="data" (onInitNewRow)="initNewRow($event)"
+                            (onSaved)="saved($event)" (onEditingStart)="editExpense($event)" (onRowUpdated)="reload()"
+                            (onRowInserted)="reload()" (onRowRemoved)="reload()">
+                            <dxo-toolbar>
+                                <dxi-item>
+                                    <div *dxTemplate>
+                                        <select class="form-select form-select-sm border-0" [(ngModel)]="selectedYear"
+                                            (change)="reload()">
+                                            <option [value]="currentYear" selected>{{currentYear}}</option>
+                                            <option [value]="currentYear - 1">{{currentYear - 1}}</option>
+                                            <option [value]="currentYear - 2">{{currentYear - 2}}</option>
+                                            <option [value]="currentYear - 3">{{currentYear - 3}}</option>
+                                            <option [value]="currentYear - 4">{{currentYear - 4}}</option>
+                                        </select>
+                                    </div>
+                                </dxi-item>
+                                <dxi-item name="groupPanel"></dxi-item>
+                                <dxi-item location="after">
+                                    <div *dxTemplate>
+                                        <dx-button stylingMode="text" (click)="newExpense()" icon="add"
+                                            [text]="'New' | translate"> </dx-button>
+                                    </div>
+                                </dxi-item>
+                                <dxi-item location="after">
+                                    <div *dxTemplate>
+                                        <dx-button stylingMode="text" icon="refresh" (onClick)="reload()"> </dx-button>
+                                    </div>
+                                </dxi-item>
+                                <dxi-item name="exportButton"></dxi-item>
+                                <dxi-item name="columnChooserButton"></dxi-item>
+                                <dxi-item name="searchPanel"></dxi-item>
+                            </dxo-toolbar>
+                            <dxi-column dataField="customer" [caption]="'Customer/Vendor' | translate">
+                                <dxo-lookup [dataSource]="customers" displayExpr="name" valueExpr="id">
+                                </dxo-lookup>
+                            </dxi-column>
+                            <dxi-column dataField="title" [caption]="'Title' | translate"></dxi-column>
+                            <dxi-column dataField="description" [caption]="'Description' | translate"></dxi-column>
+                            <dxi-column dataField="date" [caption]="'Date' | translate" dataType="date">
+                                <dxi-validation-rule type="required"></dxi-validation-rule>
+                            </dxi-column>
+                            <dxi-column dataField="total" [caption]="'Total' | translate" dataType="number"
+                                format="#,##0.00" cellTemplate="totalTemplate">
+                                <div *dxTemplate="let d of 'totalTemplate'">
+                                    {{ d.data.total | currencyFormat }}
+                                </div>
+                                <dxi-validation-rule type="required"></dxi-validation-rule>
+                                <dxi-validation-rule type="range" [min]="0.01"></dxi-validation-rule>
+                            </dxi-column>
+                            <dxi-column dataField="files" [caption]="'Attachments' | translate"
+                                editCellTemplate="attachmentEdit" cellTemplate="attachmentTemplate">
+                                <div *dxTemplate="let d of 'attachmentTemplate'">
+                                    @for(file of d.data.files; track $index) {
+                                    <span class="badge badge-soft-info cursor-pointer mx-1"> <span
+                                            (click)="getFile(d.data, file)"><i class="ri-attachment-line"></i> {{file}}
+                                        </span>
+                                    </span>
+                                    }
+                                </div>
+                                <div *dxTemplate="let d of 'attachmentEdit'">
+                                    @for(file of d.data.files; track $index) {
+                                    <span class="badge badge-soft-info cursor-pointer mx-1"><span
+                                            (click)="getFile(d.data, file)"><i class="ri-attachment-line"></i> {{file}}
+                                        </span>
+                                        <i class="ri-close-fill" (click)="removeFile(d.data, file)"></i> </span>
+                                    }
+                                    @for(file of addedFiles; track $index) {
+                                    <span class="badge badge-soft-info cursor-pointer mx-1"> <i
+                                            class="ri-attachment-line"></i>
+                                        {{file.name}} <i class="ri-close-fill" (click)="removeAddedFile($index)"></i>
+                                    </span>
+                                    }
+                                    <div class="dropzone dz-clickable text-center mt-1" id="dropzone-external">
+                                        <div class="dz-message needsclick">
+                                            <div class="mb-3">
+                                                <i class="display-4 text-muted ri-upload-cloud-2-fill"></i>
+                                            </div>
+                                            <h4>{{ 'Drop files here or click to upload.' | translate }}</h4>
+                                        </div>
+                                    </div>
+                                    <dx-file-uploader [showFileList]="true" #uploader dialogTrigger="#dropzone-external"
+                                        dropZone="#dropzone-external" [multiple]="true"
+                                        selectButtonText="{{ '+' | translate }}"
+                                        accept="image/*,application/pdf,application/vnd.ms-excel,application/msword"
+                                        [visible]="false" (onValueChanged)="fileAdded($event)" uploadMode="useForm">
+                                    </dx-file-uploader>
+                                </div>
+                            </dxi-column>
+                            <dxi-column [visible]="false" dataField="created" [caption]="'Created' | translate"
+                                dataType="date"></dxi-column>
+                            <dxi-column [visible]="false" dataField="updated" [caption]="'Updated' | translate"
+                                dataType="date"></dxi-column>
+                        </dx-data-grid>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<dx-popup [showTitle]="true" [dragEnabled]="false" [resizeEnabled]="true" [restorePosition]="true" [title]="previewTitle"
-    [fullScreen]="fullScreen" [hideOnOutsideClick]="true" [showCloseButton]="true" [(visible)]="showPreview"
-    class="preview-modal">
+<dx-popup [wrapperAttr]="{class: 'detail-popup'}" [showTitle]="true" [dragEnabled]="false" [resizeEnabled]="true"
+    [restorePosition]="true" [title]="previewTitle" [fullScreen]="fullScreen" [hideOnOutsideClick]="true"
+    [showCloseButton]="true" [(visible)]="showPreview" class="preview-modal">
     <dxi-popup-toolbar-item widget="dxButton" toolbar="top" location="after" [options]="{
-        icon: 'fullscreen',
-        onClick: setFullScreen }">
+                icon: 'fullscreen',
+                onClick: setFullScreen }">
     </dxi-popup-toolbar-item>
     <div *dxTemplate="let data of 'content'" class="padding-0">
         @if (isPdf) {
-            <iframe controls [src]="contentUrl" type="application/pdf" width="100%" height="100%"></iframe>
+        <iframe controls [src]="contentUrl" type="application/pdf" width="100%" height="100%"></iframe>
         } @else {
-            <img [src]="contentUrl">
+        <img [src]="contentUrl">
         }
     </div>
 </dx-popup>

@@ -1,0 +1,12 @@
+.content-wrapper {
+    display: flex;
+    flex-direction: row-reverse;
+    flex-grow: 1;
+    gap: 0.5rem;
+
+    white-space: nowrap;
+
+    .btn {
+        display: flex;
+    }
+}

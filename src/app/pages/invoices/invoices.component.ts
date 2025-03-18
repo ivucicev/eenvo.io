@@ -11,11 +11,12 @@ import { SettingsService } from '../../core/services/settings.service';
 import { StatsWidgetComponent } from '../../core/componate/stats-widget/stats-widget.component';
 import { InvoiceGeneratorService } from '../../core/services/invoice-generator.service';
 import { RowDblClickEvent } from 'devextreme/ui/data_grid';
+import { ActionBarComponent } from '../../shared/action-bar/action-bar.component';
 
 @Component({
     selector: 'eenvo-invoices',
     standalone: true,
-    imports: [DxDataGridModule, CurrencyFormatPipe, TranslateModule, DxButtonModule, DxPopupModule, InvoiceDetailComponent, DxSelectBoxModule, FormsModule, StatsWidgetComponent],
+    imports: [DxDataGridModule, CurrencyFormatPipe, TranslateModule, DxButtonModule, DxPopupModule, InvoiceDetailComponent, DxSelectBoxModule, FormsModule, StatsWidgetComponent, ActionBarComponent],
     templateUrl: './invoices.component.html',
     styleUrl: './invoices.component.scss'
 })

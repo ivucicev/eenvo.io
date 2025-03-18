@@ -8,4 +8,4 @@ import { licenseKey } from './devextreme-license';
 config({ licenseKey });
 
 bootstrapApplication(AppComponent, appConfig)
-  .catch((err) => console.error(err));
+    .catch((err) => console.error(err));

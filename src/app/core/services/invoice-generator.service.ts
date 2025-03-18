@@ -363,7 +363,7 @@ export class InvoiceGeneratorService {
                 address = true;
             }
 
-            if ((invoice.companyData.vatID && invoice.companyData?.vatID?.indexOf('XXXXXX') < 0) || (invoice.companyData.iban && invoice.companyData?.iban?.indexOf('XXXXXX') < 0) || invoice.companyData.switft) {
+            if ((invoice.companyData.vatID && invoice.companyData?.vatID?.indexOf('XXXXXX') < 0) || (invoice.companyData.iban && invoice.companyData?.iban?.indexOf('XXXXXX') < 0) || invoice.companyData.swift) {
                 head[0].push(await this.getTranslation("Legal"));
                 legal = true;
             }

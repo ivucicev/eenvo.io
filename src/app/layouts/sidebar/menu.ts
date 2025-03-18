@@ -92,12 +92,12 @@ export const MENU: MenuItem[] = [
                 link: '/templates',
                 parentId: 52
             },
-           /* {
-                id: 55,
-                label: 'Taxes',
-                link: '/taxes',
-                parentId: 52
-            },*/
+            /* {
+                 id: 55,
+                 label: 'Taxes',
+                 link: '/taxes',
+                 parentId: 52
+             },*/
         ]
     },
 ]

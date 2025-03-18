@@ -5,3 +5,13 @@
 .negative-m-17 {
     margin-left: -17.5px;
 }
+
+.invoice-table {
+    td {
+        min-width: 120px;
+    }
+
+    td.action {
+        min-width: min-content;
+    }
+}

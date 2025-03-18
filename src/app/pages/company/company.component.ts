@@ -4,7 +4,6 @@ import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angula
 import { DxSelectBoxModule, DxTextAreaModule, DxDateBoxModule, DxFormModule, DxFileUploaderComponent, DxFileUploaderModule } from 'devextreme-angular';
 import { environment } from '../../../environments/environment';
 import { PocketBaseService } from '../../core/services/pocket-base.service';
-import { ToastsContainer } from '../../core/componate/toasts-container.component';
 import { ToastService } from '../../core/services/toast.service';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -28,14 +27,15 @@ export class CompanyComponent {
 
     companyForm!: FormGroup;
     public countries: any = []
-    public logo: string;
+    public logo: string | null = null;
+
+    environment: string;
 
     @ViewChild('uploader')
     public file?: DxFileUploaderComponent;
 
     constructor(private http: HttpClient, private toast: ToastService, private pocketbase: PocketBaseService) {
-
-        this.logo = (this.pocketbase.isDemoSubdomain() ? environment.demo : environment.pocketbase) + '/api/files/companies/';
+        this.environment = this.pocketbase.isDemoSubdomain() ? environment.demo : environment.pocketbase;
 
         this.http.get<any[]>('assets/json/country-list.json').subscribe(data => {
             data.forEach(d => {
@@ -43,7 +43,7 @@ export class CompanyComponent {
             })
             this.countries = data;
         });
-        
+
         this.companyForm = new FormGroup({
             id: new FormControl('', [Validators.required]),
             logo: new FormControl(''), // Image URL
@@ -71,13 +71,11 @@ export class CompanyComponent {
         this.data = await this.pocketbase.companies.getOne(this.pocketbase.auth.company);
         this.companyForm.patchValue(this.data);
 
-        this.logo += this.data.id + '/' + this.data.logo;
-
+        this.setLogo();
     }
 
-    async fileAdded(e: any) {
-
-        const file = e.value[0];
+    async fileAdded(e: any | null) {
+        const file = e?.value[0] ?? [null];
 
         const formData = new FormData();
         formData.append('logo', file);
@@ -86,8 +84,11 @@ export class CompanyComponent {
 
         this.companyForm.patchValue({ logo: this.data.logo });
 
-        this.logo = (this.pocketbase.isDemoSubdomain() ? environment.demo : environment.pocketbase) + `/api/files/companies/${this.data.id}/${this.data.logo}`;
+        this.setLogo();
+    }
 
+    private setLogo() {
+        this.logo = this.data.logo ? (this.environment + `/api/files/companies/${this.data.id}/${this.data.logo}`) : null;
     }
 
     async submit() {

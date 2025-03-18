@@ -5,7 +5,6 @@ import { PocketBaseService } from '../../core/services/pocket-base.service';
 import { environment } from '../../../environments/environment';
 import { TranslateModule } from '@ngx-translate/core';
 import { DxNumberBoxModule } from 'devextreme-angular';
-import { HttpClient } from '@angular/common/http';
 
 @Component({
     selector: 'eenvo-invoice-detail',
@@ -23,8 +22,9 @@ export class InvoiceDetailComponent {
     items: any = [];
     logo = environment.pocketbase + '/api/files/companies/';
     isPaid = false;
-    taxValueMap: any = [];
+    taxGroups: { tax: number, value: number }[] = [];
     showAdditionalTaxes = true;
+    readonly = false;
 
     public readonly invoice = input<any>();
     public invoiceCreated = output<any>();
@@ -42,7 +42,7 @@ export class InvoiceDetailComponent {
         this.invoicesForm.get('tax')?.valueChanges.subscribe(this.recalculate.bind(this))
         this.invoicesForm.get('type')?.valueChanges.subscribe(this.recalculate.bind(this))
         this.invoicesForm.get('number')?.valueChanges.subscribe(this.setReference.bind(this))
-        
+
         effect(() => {
             this.setCurrentInvoice(this.invoice());
         })
@@ -128,9 +128,9 @@ export class InvoiceDetailComponent {
     }
 
     async setCurrentInvoice(invoice: any) {
+        this.setFormDefaults();
 
         if (!invoice?.id) {
-            this.setFormDefaults();
             return;
         };
 
@@ -138,7 +138,7 @@ export class InvoiceDetailComponent {
 
         this.invoicesForm.patchValue(i);
 
-        this.taxValueMap = i.taxValueGroups || {};
+        this.taxGroups = i.taxValueGroups || [];
 
         if (i.date)
             this.invoicesForm.patchValue({ date: new Date(i.date).toISOString().split('T')[0] });
@@ -149,8 +149,14 @@ export class InvoiceDetailComponent {
 
         this.items = i.expand?.items || [];
 
-        if (i.isPaid) this.invoicesForm.disable();
-        this.isPaid = i.isPaid;
+        if (i.isPaid) {
+            this.isPaid = i.isPaid;
+            this.invoicesForm.disable();
+            this.readonly = true;
+        } else {
+            this.readonly = false;
+            this.invoicesForm.enable();
+        }
 
     }
 
@@ -270,7 +276,7 @@ export class InvoiceDetailComponent {
             this.invoicesForm.patchValue({ customer: create.id });
         }
 
-        invoice.taxValueGroups = this.taxValueMap;
+        invoice.taxValueGroups = this.taxGroups;
 
         if (invoice.id) {
             const updated = await this.pocketbase.invoices.update(invoice.id, invoice);
@@ -321,7 +327,7 @@ export class InvoiceDetailComponent {
         this.invoicesForm.patchValue({ discountValue: totalDiscountValue });
         this.invoicesForm.patchValue({ taxValue: totalTaxValue });
 
-        this.taxValueMap = Object.keys(taxValueMap)
+        this.taxGroups = Object.keys(taxValueMap)
             .map((k: any) => { return { tax: k, value: taxValueMap[k] } })
             .filter(f => f.value > 0)
     }

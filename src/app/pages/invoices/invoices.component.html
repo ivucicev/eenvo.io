@@ -1,219 +1,237 @@
-<div class="row">
-    <div class="col-4">
-        <eenvo-stats-widget [name]="'Sent invoices'" [title]="'Invoices sent last 31 days'" [data]="allData"
-            [secondaryColor]="'bg-primary'"></eenvo-stats-widget>
-    </div>
-    <div class="col-4">
-        <eenvo-stats-widget [name]="'Paid invoices'" [title]="'Paid last 31 days'" [data]="paidInvoices"
-            [secondaryColor]="'bg-success'"></eenvo-stats-widget>
+<div class="h-100 d-flex flex-column">
+    <div class="row">
+        <div class="col-4">
+            <eenvo-stats-widget [name]="'Sent invoices'" [title]="'Invoices sent last 31 days'" [data]="allData"
+                [secondaryColor]="'bg-primary'"></eenvo-stats-widget>
+        </div>
+        <div class="col-4">
+            <eenvo-stats-widget [name]="'Paid invoices'" [title]="'Paid last 31 days'" [data]="paidInvoices"
+                [secondaryColor]="'bg-success'"></eenvo-stats-widget>
 
+        </div>
+        <div class="col-4">
+            <eenvo-stats-widget [name]="'Unpaid invoices'" [title]="'Unpaid last 31 days'" [data]="unpaidInvoices"
+                [secondaryColor]="'bg-danger'" [color]="'primary'"></eenvo-stats-widget>
+        </div>
     </div>
-    <div class="col-4">
-        <eenvo-stats-widget [name]="'Unpaid invoices'" [title]="'Unpaid last 31 days'" [data]="unpaidInvoices"
-            [secondaryColor]="'bg-danger'" [color]="'primary'"></eenvo-stats-widget>
-    </div>
-</div>
 
-<div class="row">
-    <div class="col-lg-12">
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <ul class="nav nav-tabs nav-tabs-custom nav-success mb-3" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link" [class.active]="filter.all" (click)="setFilter(true)">
-                                    {{ 'All' | translate }}
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" [class.active]="filter.paid" (click)="setFilter(false, true)">
-                                    {{ 'Paid' | translate }}
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" [class.active]="filter.pending"
-                                    (click)="setFilter(false,false,true)">
-                                    {{ 'Pending' | translate }}
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" [class.active]="filter.overdue"
-                                    (click)="setFilter(false,false,false, true)">
-                                    {{ 'Overdue' | translate }}
-                                </a>
-                            </li>
-                        </ul>
+    <div class="row h-grow">
+        <div class="col-lg-12 h-grow">
+            <div class="card h-grow m-0">
+                <div class="card-body h-grow">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <ul class="nav nav-tabs nav-tabs-custom nav-success mb-3" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link" [class.active]="filter.all" (click)="setFilter(true)">
+                                        {{ 'All' | translate }}
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" [class.active]="filter.paid" (click)="setFilter(false, true)">
+                                        {{ 'Paid' | translate }}
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" [class.active]="filter.pending"
+                                        (click)="setFilter(false,false,true)">
+                                        {{ 'Pending' | translate }}
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" [class.active]="filter.overdue"
+                                        (click)="setFilter(false,false,false, true)">
+                                        {{ 'Overdue' | translate }}
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
+
+                    <div class="contain h-grow">
+                        <dx-data-grid #grid [dataSource]="data" (onSaved)="saved($event)"
+                            (onRowDblClick)="rowDoubleClicked($event)" class="hide-default-edit contain-grid">
+                            <dxo-editing [allowAdding]="false" [allowUpdating]="false"></dxo-editing>
+                            <dxo-toolbar>
+                                <dxi-item>
+                                    <div *dxTemplate>
+                                        <select class="form-select form-select-sm border-0" [(ngModel)]="selectedYear"
+                                            (change)="reload()">
+                                            <option [value]="currentYear" selected>{{currentYear}}</option>
+                                            <option [value]="currentYear - 1">{{currentYear - 1}}</option>
+                                            <option [value]="currentYear - 2">{{currentYear - 2}}</option>
+                                            <option [value]="currentYear - 3">{{currentYear - 3}}</option>
+                                            <option [value]="currentYear - 4">{{currentYear - 4}}</option>
+                                        </select>
+                                    </div>
+                                </dxi-item>
+                                <dxi-item name="groupPanel"></dxi-item>
+                                <dxi-item location="after">
+                                    <div *dxTemplate>
+                                        <dx-button stylingMode="text" (click)="newInvoice()" icon="add"
+                                            [text]="'New' | translate"> </dx-button>
+                                    </div>
+                                </dxi-item>
+                                <dxi-item location="after">
+                                    <div *dxTemplate>
+                                        <dx-button stylingMode="text" icon="refresh" (onClick)="reload()"> </dx-button>
+                                    </div>
+                                </dxi-item>
+                                <dxi-item name="exportButton"></dxi-item>
+                                <dxi-item name="columnChooserButton"></dxi-item>
+                                <dxi-item name="searchPanel"></dxi-item>
+                            </dxo-toolbar>
+                            <dxi-column caption="" cellTemplate="notesTemplate" [showInColumnChooser]="false">
+                                <div *dxTemplate="let d of 'notesTemplate'">
+                                    @if (d.data.internalNote) {
+                                    <i class="text-warning cursor-pointer ri-sticky-note-fill"
+                                        [title]="d.data.internalNote"></i>
+                                    }
+                                </div>
+                            </dxi-column>
+                            <dxi-column type="buttons" [fixed]="true" fixedPosition="right" alignment="right"
+                                [showInColumnChooser]="false">
+                                <dxi-button [visible]="isMarkAsPayedVisible" [onClick]="markAsPayed"
+                                    hint="Mark as payed" icon="check"></dxi-button>
+                                <dxi-button [onClick]="editInvoice" hint="Edit" icon="edit"></dxi-button>
+                                <dxi-button icon="download" [onClick]="downloadPDF"></dxi-button>
+                                <dxi-button icon="eyeopen" [onClick]="previewPDF"></dxi-button>
+                                <dxi-button icon="copy" [visible]="true" [onClick]="duplicateInvoice"></dxi-button>
+                                <dxi-button name="delete"></dxi-button>
+                            </dxi-column>
+                            <dxi-column dataField="number" [caption]="'Number' | translate"
+                                cellTemplate="numberTemplate">
+                                <div *dxTemplate="let d of 'numberTemplate'">
+                                    <strong>{{ d.data.number }}</strong>
+                                </div>
+                            </dxi-column>
+                            <dxi-column dataField="customerData.name" [caption]="'Customer' | translate"></dxi-column>
+                            <dxi-column [visible]="false" dataField="paymentDate" [caption]="'Payment Date' | translate"
+                                dataType="date"></dxi-column>
+                            <dxi-column [visible]="false" dataField="type" [caption]="'Type' | translate"></dxi-column>
+                            <dxi-column [visible]="false" dataField="tax" [caption]="'Tax' | translate"></dxi-column>
+                            <dxi-column dataField="paymentType" [visible]="false"
+                                [caption]="'Payment Type' | translate"></dxi-column>
+                            <dxi-column [visible]="false" dataField="date" [caption]="'Invoice Date' | translate"
+                                dataType="datetime"></dxi-column>
+                            <dxi-column [visible]="false" dataField="deliveryDate"
+                                [caption]="'Delivery Date' | translate" dataType="date"></dxi-column>
+                            <dxi-column dataField="expand.user.name" [caption]="'User' | translate"></dxi-column>
+                            <dxi-column dataField="total" [caption]="'Total' | translate" dataType="number"
+                                format="#,##0.00" cellTemplate="totalTemplate">
+                                <div *dxTemplate="let d of 'totalTemplate'">
+                                    {{ d.data.total | currencyFormat }}
+                                </div>
+                            </dxi-column>
+                            <dxi-column dataField="isPaid" [caption]="'Is Paid' | translate" dataType="boolean"
+                                cellTemplate="isPaidTemplate">
+                                <div *dxTemplate="let d of 'isPaidTemplate'">
+                                    @if (d.data.isPaid) {
+                                    <span class="badge rounded-pill text-success bg-success-subtle">{{ 'Paid' |
+                                        translate }}
+                                        <i class="label-icon las la-check-double"></i> </span>
+                                    }
+                                    @else {
+                                    @if (d.data.dueDate && d.data.dueDate > currentDate) {
+                                    <span class="badge rounded-pill text-info bg-primary-subtle">{{ 'Pending' |
+                                        translate }}
+                                        <i class="label-icon las la-hourglass-half"></i> </span>
+                                    }
+                                    @else {
+                                    <span class="badge rounded-pill text-danger bg-danger-subtle">{{ 'Overdue' |
+                                        translate
+                                        }} <i class="label-icon las la-clock rounded-pill"></i> </span>
+                                    }
+                                    }
+                                </div>
+                            </dxi-column>
+                            <dxi-column dataField="dueDate" [caption]="'Due Date' | translate"
+                                dataType="date"></dxi-column>
+                            <dxi-column sortOrder="desc" [visible]="false" dataField="created"
+                                [caption]="'Created' | translate"></dxi-column>
+                            <dxi-column [visible]="false" dataField="updated" [caption]="'Updated' | translate"
+                                dataType="date"></dxi-column>
+                        </dx-data-grid>
+                    </div>
+
                 </div>
-
-                <dx-data-grid #grid [dataSource]="data" (onSaved)="saved($event)" (onRowDblClick)="rowDoubleClicked($event)"
-                    class="hide-default-edit">
-
-                    <dxo-editing [allowAdding]="false" [allowUpdating]="false"></dxo-editing>
-
-                    <dxo-toolbar>
-                        <dxi-item>
-                            <div *dxTemplate>
-                                <select class="form-select form-select-sm border-0" [(ngModel)]="selectedYear"
-                                    (change)="reload()">
-                                    <option [value]="currentYear" selected>{{currentYear}}</option>
-                                    <option [value]="currentYear - 1">{{currentYear - 1}}</option>
-                                    <option [value]="currentYear - 2">{{currentYear - 2}}</option>
-                                    <option [value]="currentYear - 3">{{currentYear - 3}}</option>
-                                    <option [value]="currentYear - 4">{{currentYear - 4}}</option>
-                                </select>
-                            </div>
-                        </dxi-item>
-                        <dxi-item name="groupPanel"></dxi-item>
-                        <dxi-item location="after">
-                            <div *dxTemplate>
-                                <dx-button stylingMode="text" (click)="newInvoice()" icon="add"
-                                    [text]="'New' | translate"> </dx-button>
-                            </div>
-                        </dxi-item>
-                        <dxi-item location="after">
-                            <div *dxTemplate>
-                                <dx-button stylingMode="text" icon="refresh" (onClick)="reload()"> </dx-button>
-                            </div>
-                        </dxi-item>
-                        <dxi-item name="exportButton"></dxi-item>
-                        <dxi-item name="columnChooserButton"></dxi-item>
-                        <dxi-item name="searchPanel"></dxi-item>
-                    </dxo-toolbar>
-
-                    <dxi-column caption="" cellTemplate="notesTemplate" [showInColumnChooser]="false">
-                        <div *dxTemplate="let d of 'notesTemplate'">
-                            @if (d.data.internalNote) {
-                            <i class="text-warning cursor-pointer ri-sticky-note-fill"
-                                [title]="d.data.internalNote"></i>
-                            }
-                        </div>
-                    </dxi-column>
-
-                    <dxi-column type="buttons" [fixed]="true" fixedPosition="right" alignment="right"
-                        [showInColumnChooser]="false">
-                        <dxi-button [visible]="isMarkAsPayedVisible" [onClick]="markAsPayed" hint="Mark as payed"
-                            icon="check"></dxi-button>
-                        <dxi-button [onClick]="editInvoice" hint="Edit" icon="edit"></dxi-button>
-                        <dxi-button icon="download" [onClick]="downloadPDF"></dxi-button>
-                        <dxi-button icon="eyeopen" [onClick]="previewPDF"></dxi-button>
-                        <dxi-button icon="copy" [visible]="true" [onClick]="duplicateInvoice"></dxi-button>
-                        <dxi-button name="delete"></dxi-button>
-                    </dxi-column>
-
-                    <dxi-column dataField="number" [caption]="'Number' | translate" cellTemplate="numberTemplate">
-                        <div *dxTemplate="let d of 'numberTemplate'">
-                            <strong>{{ d.data.number }}</strong>
-                        </div>
-                    </dxi-column>
-                    <dxi-column dataField="customerData.name" [caption]="'Customer' | translate"></dxi-column>
-                    <dxi-column [visible]="false" dataField="paymentDate" [caption]="'Payment Date' | translate"
-                        dataType="date"></dxi-column>
-
-                    <dxi-column [visible]="false" dataField="type" [caption]="'Type' | translate"></dxi-column>
-                    <dxi-column [visible]="false" dataField="tax" [caption]="'Tax' | translate"></dxi-column>
-
-                    <dxi-column dataField="paymentType" [visible]="false"
-                        [caption]="'Payment Type' | translate"></dxi-column>
-
-                    <dxi-column [visible]="false" dataField="date" [caption]="'Invoice Date' | translate"
-                        dataType="datetime"></dxi-column>
-                    <dxi-column [visible]="false" dataField="deliveryDate" [caption]="'Delivery Date' | translate"
-                        dataType="date"></dxi-column>
-
-
-                    <dxi-column dataField="expand.user.name" [caption]="'User' | translate"></dxi-column>
-                    <dxi-column dataField="total" [caption]="'Total' | translate" dataType="number" format="#,##0.00"
-                        cellTemplate="totalTemplate">
-                        <div *dxTemplate="let d of 'totalTemplate'">
-                            {{ d.data.total | currencyFormat }}
-                        </div>
-                    </dxi-column>
-                    <dxi-column dataField="isPaid" [caption]="'Is Paid' | translate" dataType="boolean"
-                        cellTemplate="isPaidTemplate">
-                        <div *dxTemplate="let d of 'isPaidTemplate'">
-                            @if (d.data.isPaid) {
-                            <span class="badge rounded-pill text-success bg-success-subtle">{{ 'Paid' | translate }} <i
-                                    class="label-icon las la-check-double"></i> </span>
-                            }
-                            @else {
-                            @if (d.data.dueDate && d.data.dueDate > currentDate) {
-                            <span class="badge rounded-pill text-info bg-primary-subtle">{{ 'Pending' | translate }} <i
-                                    class="label-icon las la-hourglass-half"></i> </span>
-                            }
-                            @else {
-                            <span class="badge rounded-pill text-danger bg-danger-subtle">{{ 'Overdue' | translate }} <i
-                                    class="label-icon las la-clock rounded-pill"></i> </span>
-                            }
-                            }
-                        </div>
-                    </dxi-column>
-
-                    <dxi-column dataField="dueDate" [caption]="'Due Date' | translate" dataType="date"></dxi-column>
-                    <dxi-column sortOrder="desc" [visible]="false" dataField="created"
-                        [caption]="'Created' | translate"></dxi-column>
-                    <dxi-column [visible]="false" dataField="updated" [caption]="'Updated' | translate"
-                        dataType="date"></dxi-column>
-
-                </dx-data-grid>
-
             </div>
         </div>
     </div>
+</div>
 
-
-    <dx-popup [showTitle]="true" [dragEnabled]="false" [resizeEnabled]="true" [restorePosition]="true" [fullScreen]="fullScreen" [hideOnOutsideClick]="true" [showCloseButton]="true"
-        [(visible)]="this.pdf" class="preview-modal">
-        <dxi-popup-toolbar-item widget="dxButton" toolbar="top" location="after" [options]="{
+<dx-popup [wrapperAttr]="{class: 'detail-popup'}" [showTitle]="true" [dragEnabled]="false" [resizeEnabled]="true"
+    [restorePosition]="true" [fullScreen]="fullScreen" [hideOnOutsideClick]="true" [showCloseButton]="true"
+    [(visible)]="this.pdf" class="preview-modal">
+    <dxi-popup-toolbar-item widget="dxButton" toolbar="top" location="after" [options]="{
             icon: 'fullscreen',
             onClick: setFullScreen
         }">
-        </dxi-popup-toolbar-item>
-        <div *dxTemplate="let data of 'content'" class="padding-0">
-            <iframe controls [src]="this.pdf" type="application/pdf" width="100%" height="100%"></iframe>
-        </div>
-    </dx-popup>
+    </dxi-popup-toolbar-item>
+    <div *dxTemplate="let data of 'content'" class="padding-0">
+        <iframe controls [src]="this.pdf" type="application/pdf" width="100%" height="100%"></iframe>
+    </div>
+</dx-popup>
 
-    <dx-popup [width]="'70%'" [height]="'auto'" [resizeEnabled]="true" [restorePosition]="true" [maxHeight]="'90%'"
-        [showTitle]="true" [title]="'Information' | translate" [dragEnabled]="true" [hideOnOutsideClick]="true"
-        [showCloseButton]="true" [(visible)]="invoicePopupVisible" [fullScreen]="fullScreen" (onHiding)="reload()">
+<dx-popup [wrapperAttr]="{class: 'detail-popup toolbar-bottom-full'}" [width]="'70%'" [height]="'auto'"
+    [resizeEnabled]="true" [restorePosition]="true" [maxHeight]="'90%'" [showTitle]="true"
+    [title]="'Information' | translate" [dragEnabled]="true" [hideOnOutsideClick]="true" [showCloseButton]="true"
+    [(visible)]="invoicePopupVisible" [fullScreen]="fullScreen" (onHiding)="reload()">
 
-        <div *dxTemplate="let data of 'content'">
-            <eenvo-invoice-detail (invoiceCreated)="invoiceCreatedEvent($event)" #invoiceDetail [invoice]="currentInvoice"></eenvo-invoice-detail>
-        </div>
+    <div *dxTemplate="let data of 'content'">
+        <eenvo-invoice-detail class="h-grow" (invoiceCreated)="invoiceCreatedEvent($event)" #invoiceDetail
+            [invoice]="currentInvoice">
+        </eenvo-invoice-detail>
 
-        <dxi-popup-toolbar-item widget="dxButton" toolbar="top" location="after" [options]="{
+    </div>
+
+    <dxi-popup-toolbar-item widget="dxButton" toolbar="top" location="after" [options]="{
             icon: 'fullscreen',
             onClick: setFullScreen
         }">
-        </dxi-popup-toolbar-item>
+    </dxi-popup-toolbar-item>
 
-        <dxi-popup-toolbar-item toolbar="bottom" location="after">
-            <button (click)="close()" class="btn btn-light ms-1"><i class="ri-close-line align-bottom mx-1"></i> {{
-                'Close' | translate }}</button>
-            @if (currentInvoice) {
-            <button (click)="delete()" class="btn btn-danger ms-1"><i
-                    class="ri-delete-bin-line align-bottom mx-1"></i>{{ 'Delete' | translate
-                }}</button>
-            <button (click)="send()" class="btn btn-warning ms-1"><i class="ri-alarm-fill align-bottom mx-1"></i>{{
-                'Schedule' | translate
-                }}</button>
-            <button (click)="send()" class="btn btn-dark ms-1"><i class="ri-repeat-fill align-bottom mx-1"></i>{{
-                'Recurr' | translate
-                }}</button>
-            <button (click)="send()" class="btn btn-secondary ms-1"><i
-                    class="ri-send-plane-fill align-bottom mx-1"></i>{{ 'Send' | translate
-                }}</button>
-            <button (click)="download(currentInvoice.id)" class="btn btn-success ms-1"><i
-                    class="ri-download-2-line align-bottom mx-1"></i>{{ 'Download' | translate
-                }}</button>
-            <button (click)="preview(currentInvoice.id)" class="btn btn-info ms-1"><i
-                    class="ri-eye-fill align-bottom mx-1"></i> {{ 'Preview' | translate }}</button>
-            }
-            <button type="submit" (click)="detail?.saveInvoice()" class="btn btn-primary ms-1"><i
-                    class="ri-check-double-line align-bottom mx-1"></i>{{ 'Save' | translate
-                }}</button>
-        </dxi-popup-toolbar-item>
+    <dxi-popup-toolbar-item toolbar="bottom" location="after">
+        <eenvo-action-bar class="w-100">
+            <ng-template>
+                <button type="submit" (click)="detail?.saveInvoice()" class="btn btn-primary ms-1">
+                    <i class="ri-check-double-line align-bottom mx-1"></i>
+                    {{ 'Save' | translate }}
+                </button>
 
-    </dx-popup>
+                @if (currentInvoice) {
+                <button (click)="preview(currentInvoice.id)" class="btn btn-info ms-1">
+                    <i class="ri-eye-fill align-bottom mx-1"></i>
+                    {{ 'Preview' | translate }}
+                </button>
+                <button (click)="download(currentInvoice.id)" class="btn btn-success ms-1">
+                    <i class="ri-download-2-line align-bottom mx-1"></i>
+                    {{ 'Download' | translate
+                    }}
+                </button>
+                <button (click)="send()" class="btn btn-secondary ms-1">
+                    <i class="ri-send-plane-fill align-bottom mx-1"></i>
+                    {{ 'Send' | translate }}
+                </button>
+                <button (click)="send()" class="btn btn-dark ms-1">
+                    <i class="ri-repeat-fill align-bottom mx-1"></i>
+                    {{ 'Recurr' | translate }}
+                </button>
+                <button (click)="send()" class="btn btn-warning ms-1">
+                    <i class="ri-alarm-fill align-bottom mx-1"></i>
+                    {{'Schedule' | translate }}
+                </button>
+                <button (click)="delete()" class="btn btn-danger ms-1">
+                    <i class="ri-delete-bin-line align-bottom mx-1"></i>
+                    {{'Delete' | translate }}
+                </button>
+                <button (click)="close()" class="btn btn-light ms-1">
+                    <i class="ri-close-line align-bottom mx-1"></i>
+                    {{'Close' | translate }}
+                </button>
+                }
+
+            </ng-template>
+        </eenvo-action-bar>
+    </dxi-popup-toolbar-item>
+</dx-popup>

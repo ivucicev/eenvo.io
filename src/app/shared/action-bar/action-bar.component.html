@@ -1,0 +1,16 @@
+<ngx-simplebar #simplebar class="simplebar-x h-100">
+  <div class="content-wrapper">
+    @if (actions()?.length) {
+    @for (action of actions(); track $index) {
+    <button [ngClass]="action.class" (click)="action.action()" class="d-flex">
+      @if (action.icon) {
+      <i [ngClass]="action.icon" class="me-2"></i>
+      }
+      {{ action.label | translate }}
+    </button>
+    }
+    } @else if(template != null) {
+    <ng-container *ngTemplateOutlet="template"></ng-container>
+    }
+  </div>
+</ngx-simplebar>

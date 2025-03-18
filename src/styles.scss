@@ -1,29 +1,168 @@
-
 .dropdown-toggle::after {
-    display:none;
+    display: none;
 }
 
 /* .btn-primary {background-image: linear-gradient(to right, #02AAB0 0%, #00CDAC  51%, #02AAB0  100%)}
 .btn-primary {
    transition: 0.5s;
    background-size: 200% auto;
-   color: white;            
+   color: white;
    box-shadow: 0 0 20px #eee;
    display: block;
  }
 
  .btn-primary:hover {
-   background-position: right center; 
+   background-position: right center;
    color: #fff;
    text-decoration: none;
  }
  */
 
- dx-tag-box {
-    height: 40px;
- }
+.dx-popup-bottom.dx-toolbar {
+    border-top: var(--in-border-width) var(--in-border-style) var(--in-border-color) !important;
+    padding: 12px 16px !important;
+}
 
- .dx-swatch-swatch-blue .dx-popup-bottom.dx-toolbar .dx-toolbar-after {
+.toolbar-bottom-full {
+    .dx-popup-bottom.dx-toolbar {
+        .dx-toolbar-after {
+            position: relative;
+            width: 100%;
+
+            .dx-item.dx-toolbar-item.dx-toolbar-button {
+                width: 100%;
+                display: flex;
+
+                .dx-toolbar-item-content {
+                    width: 100%;
+                    display: flex;
+                }
+            }
+        }
+    }
+}
+
+.dx-popup-fullscreen {
+    &.dx-overlay-content {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .dx-popup-content {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+    }
+}
+
+.detail-popup.dx-popup-wrapper {
+    >.dx-overlay-content {
+        min-width: 500px;
+        min-height: 750px;
+    }
+}
+
+.page-content {
+    padding: calc(70px + 1.5rem) calc(1.5rem * 0.5) 1.5rem calc(1.5rem * 0.5) !important;
+}
+
+// sidebar collapsed fixes: behave like expanded (no page expanding, stay in scrollable area)
+@media (min-width: 768px) {
+    [data-layout=vertical][data-sidebar-size=sm] {
+        min-height: unset;
+    }
+}
+
+[data-layout=vertical][data-sidebar-size=sm] .navbar-menu {
+    .simplebar-content-wrapper {
+        overflow-x: hidden !important;
+        position: fixed;
+
+        max-height: calc(100vh - (70px + 25px)) !important; // .navbar-menu padding .navbar-menu pading-top
+    }
+
+    position: fixed;
+
+    ul.navbar-nav>li {
+        width: 70px;
+
+        &:hover {
+            width: calc(190px + 70px);
+        }
+
+        &:last-child {
+            .menu-dropdown {
+                display: inline-block !important;
+                position: relative !important;
+                opacity: 0;
+
+                // .menu-dropdown default classes
+                width: 70px;
+                width: 200px;
+                padding: 0.5rem 0;
+            }
+        }
+
+        &:hover .menu-dropdown {
+            opacity: 1;
+        }
+    }
+}
+
+// expand/scale page content to full page
+.contain {
+    min-height: 375px;
+    position: relative !important;
+    overflow: hidden !important;
+
+    // contains grids and lists in a way that they do not grow over the parent element (inner content scroll)
+    // needs to have parent with set height
+    .contain-grid {
+        width: 100% !important;
+        height: 100% !important;
+        position: absolute !important;
+
+
+        .dx-datagrid-rowsview .dx-datagrid-table .dx-row.dx-freespace-row,
+        .dx-datagrid-rowsview .dx-datagrid-table .dx-row.dx-virtual-row {
+            display: none;
+        }
+    }
+}
+
+.h-grow {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+
+    .dx-gridbase-container {
+        flex-grow: 1;
+    }
+
+    .dx-pivotgrid-container {
+        flex-grow: 1;
+    }
+}
+
+.main-content {
+    height: 100vh;
+
+    .page-content {
+        height: 100%;
+    }
+}
+
+// limit max/min grid col sizes: rows are still manually resizable
+.dx-datagrid .dx-row>td {
+    max-width: 325px !important;
+    width: 100px; // fallback so headers are not 'squashed' if no data exists in grid
+}
+
+dx-tag-box {
+    height: 40px;
+}
+
+.dx-swatch-swatch-blue .dx-popup-bottom.dx-toolbar .dx-toolbar-after {
     display: flex;
     flex-direction: row-reverse;
     column-gap: 5px;
@@ -31,4 +170,51 @@
 
 .animation-fade-up {
     animation: fadeInUp 0.5s none linear;
+}
+
+.simplebar-x {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    flex-grow: 1;
+
+    overflow-x: auto;
+
+    /* Firefox */
+    scrollbar-width: none;
+
+    /* IE and Edge */
+    -ms-overflow-style: none;
+
+    /* Chrome, Safari, and Opera */
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    .simplebar-track.simplebar-horizontal {
+        left: 0;
+        height: 8px !important;
+    }
+
+    .simplebar-wrapper {
+        .simplebar-content {
+            display: flex;
+        }
+
+        .simplebar-content-wrapper {
+            align-content: center;
+        }
+    }
+}
+
+.onhover {
+    display: none !important;
+}
+
+.show-onhover {
+    &:hover {
+        .onhover {
+            display: inline-flex !important;
+        }
+    }
 }
