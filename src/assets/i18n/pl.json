@@ -67,7 +67,7 @@
     "Reference": "Referencja",
     "INVOICE DETAILS": "SZCZEGÓŁY FAKTURY",
     "Invoice number": "Numer faktury",
-    "Please enter valid inovice number": "Proszę wprowadzić prawidłowy numer faktury",
+    "Please enter valid invoice number": "Proszę wprowadzić prawidłowy numer faktury",
     "Invoice type": "Typ faktury",
     "Invoice date": "Data faktury",
     "Please enter a valid date": "Proszę wprowadzić prawidłową datę",
@@ -98,7 +98,6 @@
     "Preview": "Podgląd",
     "Show Shipping/Handling fees": "Pokaż opłaty za wysyłkę/obsługę",
     "Use billing and shipping address": "Użyj adresu rozliczeniowego i wysyłkowego",
-    "Invoice 234334234234": "Faktura 234334234234",
     "invoice for ": "faktura dla ",
     "Invoice": "Faktura",
     "Issue Date": "Data wystawienia",
@@ -271,7 +270,8 @@
     "Failed to create record. Date - Cannot be blank. ": "Nie udało się utworzyć rekordu. Data - Nie może być pusta.",
     "Invoice ": "Faktura ",
     "Next data reset in ": "Następny reset danych za ",
-    " Minutes": " Minut",    "ThisYear": "This Year",
+    " Minutes": " Minut",
+    "ThisYear": "This Year",
     "LastYear": "Zeszły Rok",
     "ThisMonth": "Ten Miesiąc",
     "LastMonth": "Zeszły Miesiąc",
@@ -289,5 +289,6 @@
     "EndDate": "Data Końcowa",
     "Revenue & Expense": "Przychody i Wydatki",
     "Income per customer": "Dochód na klienta",
-    "Expenses per customer": "Wydatki na klienta"  
+    "Expenses per customer": "Wydatki na klienta",
+    "Mark as paid": "Oznacz jako opłacone"
 }

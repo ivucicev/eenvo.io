@@ -7,11 +7,12 @@ import { LAYOUT_TYPES } from './store/layouts/layout';
 import { LayoutState } from './store/layouts/layout-reducers';
 
 import { loadMessages } from "devextreme/localization";
+import { FooterActionBarComponent } from './shared/footer-action-bar/footer-action-bar.component';
 
 @Component({
     selector: 'eenvo-root',
     standalone: true,
-    imports: [RouterOutlet],
+    imports: [RouterOutlet, FooterActionBarComponent],
     templateUrl: './app.component.html',
     styleUrl: './app.component.scss'
 })
@@ -21,8 +22,7 @@ export class AppComponent {
     layOutData!: LayoutState;
 
     constructor(private store: Store<RootReducerState>) {
-
-        const lang =localStorage.getItem('lang') || 'en';
+        const lang = localStorage.getItem('lang') || 'en';
         if (lang == 'hr') {
             import("../assets/i18n/messages/hr.json").then(res => {
                 loadMessages(res)

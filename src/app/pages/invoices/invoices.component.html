@@ -91,8 +91,8 @@
                             </dxi-column>
                             <dxi-column type="buttons" [fixed]="true" fixedPosition="right" alignment="right"
                                 [showInColumnChooser]="false">
-                                <dxi-button [visible]="isMarkAsPayedVisible" [onClick]="markAsPayed"
-                                    hint="Mark as payed" icon="check"></dxi-button>
+                                <dxi-button [visible]="isMarkAsPayedVisible" [onClick]="markAsPaid"
+                                    [hint]="'Mark as paid' | translate" icon="check"></dxi-button>
                                 <dxi-button [onClick]="editInvoice" hint="Edit" icon="edit"></dxi-button>
                                 <dxi-button icon="download" [onClick]="downloadPDF"></dxi-button>
                                 <dxi-button icon="eyeopen" [onClick]="previewPDF"></dxi-button>
@@ -200,14 +200,19 @@
                 </button>
 
                 @if (currentInvoice) {
+                @if(!currentInvoice.isPaid) {
+                <button (click)="markAsPaid(currentInvoice.id)" class="btn btn-soft-success ms-1">
+                    <i class="ri-check-double-line align-bottom mx-1"></i>
+                    {{ 'Mark as paid' | translate }}
+                </button>
+                }
                 <button (click)="preview(currentInvoice.id)" class="btn btn-info ms-1">
                     <i class="ri-eye-fill align-bottom mx-1"></i>
                     {{ 'Preview' | translate }}
                 </button>
                 <button (click)="download(currentInvoice.id)" class="btn btn-success ms-1">
                     <i class="ri-download-2-line align-bottom mx-1"></i>
-                    {{ 'Download' | translate
-                    }}
+                    {{ 'Download' | translate }}
                 </button>
                 <button (click)="send()" class="btn btn-secondary ms-1">
                     <i class="ri-send-plane-fill align-bottom mx-1"></i>
@@ -221,7 +226,7 @@
                     <i class="ri-alarm-fill align-bottom mx-1"></i>
                     {{'Schedule' | translate }}
                 </button>
-                <button (click)="delete()" class="btn btn-danger ms-1">
+                <button type="button" (click)="delete(currentInvoice)" class="btn btn-danger ms-1">
                     <i class="ri-delete-bin-line align-bottom mx-1"></i>
                     {{'Delete' | translate }}
                 </button>

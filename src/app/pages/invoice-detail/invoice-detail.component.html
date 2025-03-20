@@ -1,11 +1,11 @@
 <div class="row justify-content-center">
     <div class="col-xxl-12 p-0">
         <form (ngSubmit)="saveInvoice()" [formGroup]="invoicesForm" id="invoice_form">
-            <div class="card-body border-bottom border-bottom-dashed p-4 d-sm-none">
+            @if (invoicesForm.controls['isPaid'].value) {
+            <div class="card-body border-bottom border-bottom-dashed p-4">
                 <div class="row">
                     <div class="col-lg-6">
                         <div class="profile-user mx-auto mb-3">
-                            <input id="profile-img-file-input" type="file" class="profile-img-file-input" />
                             <label for="profile-img-file-input" class="d-block" tabindex="0">
                                 <span
                                     class="overflow-hidden border border-dashed d-flex align-items-center justify-content-center rounded"
@@ -17,9 +17,8 @@
                         </div>
                     </div>
                     <div class="col-lg-6">
-                        @if (readonly) {
                         <div role="alert" class="alert alert-primary alert-outline ng-star-inserted">
-                            <i class="ri-check-double-line"></i> <strong>{{ 'Invoice has been paid.' | translate
+                            <i class="ri-check-double-line mx-1"></i> <strong>{{ 'Invoice has been paid.' | translate
                                 }}</strong> {{ 'Editing is disabled.' | translate }}
                         </div>
                         <div class="mb-2">
@@ -27,11 +26,11 @@
                             <input type="date" class="form-control bg-light border-0" id="paymentDate"
                                 formControlName="paymentDate" />
                         </div>
-                        }
                     </div>
                 </div>
             </div>
-            <div class="card-body p-4 border-top border-top-dashed">
+            }
+            <div class="card-body p-4">
                 <div class="row">
                     <div class="col-lg-4">
                         <div>
@@ -162,9 +161,9 @@
                             </label>
                             <input type="text" class="form-control bg-light border-0" id="number"
                                 placeholder="{{ 'Invoice number' | translate }}" required formControlName="number"
-                                [ngClass]="{ 'is-invalid': submitted && form['number'].errors }" />
+                                [ngClass]="{ 'is-invalid': submitted && invoicesForm.controls['number'].errors }" />
                             <div class="invalid-feedback">
-                                {{ 'Please enter valid inovice number' | translate }}
+                                {{ 'Please enter valid invoice number' | translate }}
                             </div>
                         </div>
                         <div class="mb-2">
@@ -207,7 +206,7 @@
                                 | translate }}</label>
                             <input type="date" class="form-control bg-light border-0" id="date" placeholder="date"
                                 required formControlName="date"
-                                [ngClass]="{ 'is-invalid': submitted && form['date'].errors }" />
+                                [ngClass]="{ 'is-invalid': submitted && invoicesForm.controls['date'].errors }" />
                             <div class="invalid-feedback">
                                 {{ 'Please enter a valid date' | translate }}
                             </div>
@@ -217,7 +216,7 @@
                                 | translate }}</label>
                             <input type="date" class="form-control bg-light border-0" id="deliveryDate"
                                 placeholder="Delivery date" formControlName="deliveryDate"
-                                [ngClass]="{ 'is-invalid': submitted && form['deliveryDate'].errors }" />
+                                [ngClass]="{ 'is-invalid': submitted && invoicesForm.controls['deliveryDate'].errors }" />
                             <div class="invalid-feedback">
                                 {{ 'Please enter a valid date' | translate }}
                             </div>
@@ -227,7 +226,7 @@
                                 translate }}</label>
                             <input type="date" class="form-control bg-light border-0" id="dueDate" placeholder="Due"
                                 required formControlName="dueDate"
-                                [ngClass]="{ 'is-invalid': submitted && form['dueDate'].errors }" />
+                                [ngClass]="{ 'is-invalid': submitted && invoicesForm.controls['dueDate'].errors }" />
                             <div class="invalid-feedback">
                                 {{ 'Please enter a valid date' | translate }}
                             </div>
@@ -274,7 +273,7 @@
                                     <div class="mb-2">
                                         <input type="text" class="form-control bg-light border-0" id="shippingName"
                                             placeholder="Name" required formControlName="shippingName"
-                                            [ngClass]="{ 'is-invalid': submitted && form['shippingName'].errors }" />
+                                            [ngClass]="{ 'is-invalid': submitted && invoicesForm.controls['shippingName'].errors }" />
                                         <div class="invalid-feedback">
                                             Please enter a full name
                                         </div>
@@ -282,7 +281,7 @@
                                     <div class="mb-2">
                                         <textarea class="form-control bg-light border-0" id="shippingAddress" rows="3"
                                             placeholder="Address" required formControlName="shippingAddress"
-                                            [ngClass]="{ 'is-invalid': submitted && form['shippingAddress'].errors }"></textarea>
+                                            [ngClass]="{ 'is-invalid': submitted && invoicesForm.controls['shippingAddress'].errors }"></textarea>
                                         <div class="invalid-feedback">
                                             Please enter a address
                                         </div>
@@ -291,7 +290,7 @@
                                         <input type="text" class="form-control bg-light border-0"
                                             data-plugin="cleave-phone" id="shippingPhoneno" placeholder="(123)456-7890"
                                             required formControlName="shippingPhoneno"
-                                            [ngClass]="{ 'is-invalid': submitted && form['shippingPhoneno'].errors }" />
+                                            [ngClass]="{ 'is-invalid': submitted && invoicesForm.controls['shippingPhoneno'].errors }" />
                                         <div class="invalid-feedback">
                                             Please enter a phone number
                                         </div>
@@ -299,7 +298,7 @@
                                     <div>
                                         <input type="text" class="form-control bg-light border-0" id="shippingTaxno"
                                             placeholder="Tax Number" required formControlName="shippingTaxno"
-                                            [ngClass]="{ 'is-invalid': submitted && form['shippingTaxno'].errors }" />
+                                            [ngClass]="{ 'is-invalid': submitted && invoicesForm.controls['shippingTaxno'].errors }" />
                                         <div class="invalid-feedback">
                                             Please enter a tax number
                                         </div>
@@ -483,8 +482,9 @@
                     </table>
                 </div>
                 <div class="mt-2">
-                    <label for="note" class="form-label text-muted text-uppercase fw-semibold">{{ 'NOTES' |
-                        translate }}</label>
+                    <label for="note" class="form-label text-muted text-uppercase fw-semibold">
+                        {{ 'NOTES' | translate }}
+                    </label>
                     <textarea class="form-control" formControlName="note" id="note"
                         placeholder="{{ 'Notes - visible on invoice.' | translate }}" rows="4" required></textarea>
                 </div>

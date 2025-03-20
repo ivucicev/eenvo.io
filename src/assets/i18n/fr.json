@@ -67,7 +67,7 @@
     "Reference": "Référence",
     "INVOICE DETAILS": "DÉTAILS DE LA FACTURE",
     "Invoice number": "Numéro de facture",
-    "Please enter valid inovice number": "Veuillez entrer un numéro de facture valide",
+    "Please enter valid invoice number": "Veuillez entrer un numéro de facture valide",
     "Invoice type": "Type de facture",
     "Invoice date": "Date de la facture",
     "Please enter a valid date": "Veuillez entrer une date valide",
@@ -98,7 +98,6 @@
     "Preview": "Aperçu",
     "Show Shipping/Handling fees": "Afficher les frais de livraison/manutention",
     "Use billing and shipping address": "Utiliser l'adresse de facturation et de livraison",
-    "Invoice 234334234234": "Facture 234334234234",
     "invoice for ": "facture pour ",
     "Invoice": "Facture",
     "Issue Date": "Date d'émission",
@@ -290,5 +289,6 @@
     "EndDate": "Date de Fin",
     "Revenue & Expense": "Revenus & Dépenses",
     "Income per customer": "Revenu par client",
-    "Expenses per customer": "Dépenses par client"  
+    "Expenses per customer": "Dépenses par client",
+    "Mark as paid": "Marquer comme payé"
 }

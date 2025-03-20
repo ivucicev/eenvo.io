@@ -1,6 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
-import { NavigationStart, Router } from '@angular/router';
 import { ActionBarComponent } from '../action-bar/action-bar.component';
 import { ButtonAction, ButtonActionService } from '../../core/services/button-action.service';
 
@@ -18,17 +17,10 @@ export class FooterActionBarComponent implements OnDestroy {
     public actions: ButtonAction[] = [];
 
     constructor(
-        private buttonActionService: ButtonActionService,
-        private router: Router
+        private buttonActionService: ButtonActionService
     ) {
         this.buttonActionService.actions$.pipe(takeUntil(this.destroy$)).subscribe(actions => {
             this.actions = actions ?? [];
-        });
-
-        this.router.events.subscribe(event => {
-            if (event instanceof NavigationStart) {
-                this.buttonActionService.clearActions();
-            }
         });
     }
 

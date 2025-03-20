@@ -11,6 +11,7 @@ import { PocketBaseService } from '../../core/services/pocket-base.service';
 import { Router, RouterModule } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { locale } from "devextreme/localization";
+import { AppConstants } from '../../core/constants/AppConstants';
 
 
 @Component({
@@ -53,18 +54,15 @@ export class TopbarComponent {
 
     @Output() mobileMenuButtonClicked = new EventEmitter();
 
-    listLang = [
-        { text: 'English', flag: 'assets/images/flags/us.svg', lang: 'en' },
-        { text: 'Española', flag: 'assets/images/flags/spain.svg', lang: 'es' },
-        { text: 'Deutsche', flag: 'assets/images/flags/germany.svg', lang: 'de' },
-        { text: 'Italiana', flag: 'assets/images/flags/italy.svg', lang: 'it' },
-        { text: 'Francias', flag: 'assets/images/flags/fr.svg', lang: 'fr' },
-        { text: 'Polish', flag: 'assets/images/flags/pl.svg', lang: 'pl' },
-        { text: 'Hrvatski', flag: 'assets/images/flags/hr.svg', lang: 'hr' }
-    ];
+    listLang = AppConstants.LANGS;
 
-
-    constructor(private store: Store, private router: Router, private pocketbase: PocketBaseService, @Inject(DOCUMENT) private document: any, public languageService: LanguageService) {
+    constructor(
+        private store: Store,
+        private router: Router,
+        private pocketbase: PocketBaseService,
+        @Inject(DOCUMENT) private document: any,
+        public languageService: LanguageService
+    ) {
         this.loadLang();
 
         this.element = document.documentElement;

@@ -67,7 +67,7 @@
     "Reference": "Reference",
     "INVOICE DETAILS": "INVOICE DETAILS",
     "Invoice number": "Invoice number",
-    "Please enter valid inovice number": "Please enter valid inovice number",
+    "Please enter valid invoice number": "Please enter valid invoice number",
     "Invoice type": "Invoice type",
     "Invoice date": "Invoice date",
     "Please enter a valid date": "Please enter a valid date",
@@ -98,7 +98,6 @@
     "Preview": "Preview",
     "Show Shipping/Handling fees": "Show Shipping/Handling fees",
     "Use billing and shipping address": "Use billing and shipping address",
-    "Invoice 234334234234": "Invoice 234334234234",
     "invoice for ": "invoice for ",
     "Invoice": "Invoice",
     "Issue Date": "Issue Date",
@@ -290,5 +289,6 @@
     "EndDate": "End Date",
     "Revenue & Expense": "Revenue & Expense",
     "Income per customer": "Income per customer",
-    "Expenses per customer": "Expenses per customer"    
+    "Expenses per customer": "Expenses per customer",
+    "Mark as paid": "Mark as paid"
 }

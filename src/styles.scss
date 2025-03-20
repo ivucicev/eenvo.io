@@ -55,6 +55,12 @@
     }
 }
 
+.dx-popup-wrapper {
+    >.dx-overlay-content {
+        min-width: 300px;
+    }
+}
+
 .detail-popup.dx-popup-wrapper {
     >.dx-overlay-content {
         min-width: 500px;
@@ -169,7 +175,7 @@ dx-tag-box {
 }
 
 .animation-fade-up {
-    animation: fadeInUp 0.5s none linear;
+    animation: fadeInUp 0.2s none linear;
 }
 
 .simplebar-x {
@@ -216,5 +222,11 @@ dx-tag-box {
         .onhover {
             display: inline-flex !important;
         }
+    }
+}
+
+.btn {
+    i {
+        align-self: center;
     }
 }

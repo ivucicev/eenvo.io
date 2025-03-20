@@ -1,14 +1,14 @@
 import { Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
 // Language
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { LanguageService } from '../../core/services/language.service';
 import { SimplebarAngularModule } from 'simplebar-angular';
 import { MenuItem } from './menu.model';
-import { Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { MENU } from './menu';
 import { CommonModule } from '@angular/common';
 import * as pkg from '../../../../package.json'
 import { PocketBaseService } from '../../core/services/pocket-base.service';
+import { LanguageService } from '../../core/services/language.service';
 
 @Component({
     selector: 'eenvo-sidebar',
@@ -29,7 +29,10 @@ export class SidebarComponent {
     @ViewChild('sideMenu') sideMenu!: ElementRef;
     @Output() mobileMenuButtonClicked = new EventEmitter();
 
-    constructor(private router: Router, public translate: TranslateService, private pocketbase: PocketBaseService) {
+    constructor(
+        pocketbase: PocketBaseService,
+        translate: TranslateService
+    ) {
         translate.setDefaultLang('en');
         this.isDemo = pocketbase.isDemoSubdomain();
     }

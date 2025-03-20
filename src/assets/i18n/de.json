@@ -67,7 +67,7 @@
     "Reference": "Referenz",
     "INVOICE DETAILS": "RECHNUNGSDATEN",
     "Invoice number": "Rechnungsnummer",
-    "Please enter valid inovice number": "Bitte geben Sie eine gültige Rechnungsnummer ein",
+    "Please enter valid invoice number": "Bitte geben Sie eine gültige Rechnungsnummer ein",
     "Invoice type": "Rechnungstyp",
     "Invoice date": "Rechnungsdatum",
     "Please enter a valid date": "Bitte geben Sie ein gültiges Datum ein",
@@ -289,5 +289,6 @@
     "EndDate": "Enddatum",
     "Revenue & Expense": "Einnahmen & Ausgaben",
     "Income per customer": "Einnahmen pro Kunde",
-    "Expenses per customer": "Ausgaben pro Kunde"  
+    "Expenses per customer": "Ausgaben pro Kunde",
+    "Mark as paid": "Als bezahlt markieren"
 }

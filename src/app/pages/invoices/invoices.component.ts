@@ -4,10 +4,8 @@ import { PocketBaseService } from '../../core/services/pocket-base.service';
 import { InvoiceDetailComponent } from '../invoice-detail/invoice-detail.component';
 import { FormsModule } from '@angular/forms';
 import { DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { ActivatedRoute } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { CurrencyFormatPipe } from '../../core/pipes/number-format.pipe';
-import { SettingsService } from '../../core/services/settings.service';
 import { StatsWidgetComponent } from '../../core/componate/stats-widget/stats-widget.component';
 import { InvoiceGeneratorService } from '../../core/services/invoice-generator.service';
 import { RowDblClickEvent } from 'devextreme/ui/data_grid';
@@ -48,8 +46,12 @@ export class InvoicesComponent {
     @ViewChild('invoiceDetail')
     public detail?: InvoiceDetailComponent;
 
-    constructor(private pocketbase: PocketBaseService, private invoiceService: InvoiceGeneratorService, private translate: TranslateService, private settingsService: SettingsService, private activatedRoute: ActivatedRoute) {
+    constructor(
+        private pocketbase: PocketBaseService,
+        private invoiceService: InvoiceGeneratorService) {
         this.getData();
+
+        this.dxMarkAsPaid = this.dxMarkAsPaid.bind(this);
     }
 
     editInvoice = (e: any) => {
@@ -66,20 +68,26 @@ export class InvoicesComponent {
         return !row.data.isPaid;
     }
 
-    markAsPayed = async (e: DxDataGridTypes.ColumnButtonClickEvent) => {
+    dxMarkAsPaid = async (e: DxDataGridTypes.ColumnButtonClickEvent) => {
+        await this.markAsPaid(e.row?.data.id);
 
-        await this.pocketbase.invoices.update(e.row?.data.id, {
-            'isPaid': true,
-            'paymentDate': new Date()
-        })
         if (e.row?.data) {
             e.row.data.isPaid = true;
             e.row.data.paymentDate = new Date()
         }
 
-        this.reload()
-
         e?.event?.preventDefault();
+    };
+
+    markAsPaid(id: string) {
+        const res = this.pocketbase.invoices.update(id, {
+            'isPaid': true,
+            'paymentDate': new Date()
+        });
+
+        this.close(true);
+
+        return res;
     };
 
     duplicateInvoice = async (e: DxDataGridTypes.ColumnButtonClickEvent) => {
@@ -167,9 +175,8 @@ export class InvoicesComponent {
     }
 
     async getData() {
-
-        const thisYear = new Date(this.selectedYear, 0, 1).toISOString();//.slice(0, 10);
-        const currentYearEnd = new Date(+this.selectedYear + 1, 0, 1).toISOString();//.slice(0, 10);
+        const thisYear = new Date(this.selectedYear, 0, 1).toISOString();
+        const currentYearEnd = new Date(+this.selectedYear + 1, 0, 1).toISOString();
 
         this.allData = await this.pocketbase.invoices.getFullList({
             expand: 'customer,user',
@@ -184,20 +191,26 @@ export class InvoicesComponent {
 
     async saved(e: any) {
         if (e.changes[0]?.type == 'remove') {
+            const invoice = e.changes[0].key;
             const toDelete: any = [];
-            e.changes[0].key.items?.forEach((item: any) => {
-                toDelete.push(this.pocketbase.items.delete(item, {
+
+            invoice.items?.forEach((itemId: string) => {
+                toDelete.push(this.pocketbase.items.delete(itemId, {
                     '$autoCancel': false,
                 }));
-            })
-            const deleted = await Promise.all(toDelete);
+            });
+            const res = await Promise.all(toDelete);
+            if (!res) {
+                return;
+            }
+
         }
         this.reload();
     }
 
-    async delete() {
-        this.close();
-        this.grid?.instance.deleteRow(this.grid?.instance.getRowIndexByKey(this.grid?.instance.getSelectedRowKeys()[0]));
+    async delete(invoice: any) {
+        this.close(false);
+        this.grid?.instance.deleteRow(this.grid?.instance.getRowIndexByKey(invoice));
     }
 
     async download(id: any) {
@@ -215,10 +228,13 @@ export class InvoicesComponent {
         alert("Not yet implemented.");
     }
 
-    async close() {
+    async close(reload = false) {
         this.pdf = null;
         this.invoicePopupVisible = false;
-        this.reload();
+
+        if (reload) {
+            this.reload();
+        }
     }
 
     async reload() {

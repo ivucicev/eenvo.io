@@ -67,7 +67,7 @@
     "Reference": "Referenca",
     "INVOICE DETAILS": "DETALJI FAKTURE",
     "Invoice number": "Broj fakture",
-    "Please enter valid inovice number": "Molimo unesite ispravan broj fakture",
+    "Please enter valid invoice number": "Molimo unesite ispravan broj fakture",
     "Invoice type": "Tip fakture",
     "Invoice date": "Datum fakture",
     "Please enter a valid date": "Molimo unesite ispravan datum",
@@ -289,5 +289,6 @@
     "EndDate": "Datum Završetka",
     "Revenue & Expense": "Prihod i Trošak",
     "Income per customer": "Prihod po kupcu",
-    "Expenses per customer": "Troškovi po kupcu"  
+    "Expenses per customer": "Troškovi po kupcu",
+    "Mark as paid": "Označi kao plaćeno"
 }
