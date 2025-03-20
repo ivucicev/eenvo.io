@@ -45,7 +45,7 @@ export class DashboardComponent {
         private pb: PocketBaseService,
         private format: CurrencyFormatPipe
     ) {
-        this.onPredefinedOptionClick({ itemData: {value: DateRangeOptionEnum.ThisYear} } );
+        this.onPredefinedOptionClick({ itemData: { value: DateRangeOptionEnum.ThisYear } });
         this.getDataInPeriod();
     }
 
@@ -177,7 +177,7 @@ export class DashboardComponent {
 
         this.unpaidInvoices = [...this.invoices.filter((d: any) => !d.isPaid)];
         this.cashflowData = [...this.transactions];
-       // this.expenses = [...this.allData.filter((s: any) => s.type == 'out')];
+        // this.expenses = [...this.allData.filter((s: any) => s.type == 'out')];
         this.inflow = [...this.transactions.filter((s: any) => s.type == 'in')];
         this.netIncome = [...this.transactions.map((s: any) => {
             return {
@@ -238,7 +238,7 @@ export class DashboardComponent {
             case DateRangeOptionEnum.Last7Days:
                 value = DateRangeHelper.getLastNDaysRange(7);
                 break;
-            case DateRangeOptionEnum.LastMonth:
+            case DateRangeOptionEnum.Last30Days:
                 value = DateRangeHelper.getLastNDaysRange(30);
                 break;
             case DateRangeOptionEnum.Last60Days:
