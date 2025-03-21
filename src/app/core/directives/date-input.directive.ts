@@ -1,5 +1,5 @@
-import { Directive, ElementRef, HostListener } from '@angular/core';
-import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
+import { Directive } from '@angular/core';
+import { AbstractControl, NG_VALIDATORS, Validator, ValidationErrors } from '@angular/forms';
 
 /**
  * `<input type="date"/>` requires ISO date format (`dd-mm-yyyy`).
@@ -10,50 +10,28 @@ import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
  */
 @Directive({
     selector: 'input[type=date][formControlName]',
+    standalone: true,
     providers: [
-        {
-            provide: NG_VALUE_ACCESSOR,
-            useExisting: DateInputDirective,
-            multi: true,
-        },
+        { provide: NG_VALIDATORS, useExisting: DateInputDirective, multi: true }
     ],
-    standalone: true
+
 })
-export class DateInputDirective implements ControlValueAccessor {
+export class DateInputDirective implements Validator {
 
-    @HostListener('input', ['$event.target.value'])
-    handleInput(value: string): void {
-        this.onChange(value);
-    }
+    validate(control: AbstractControl): ValidationErrors | null {
+        if (!control.value) return null;
 
-    constructor(private el: ElementRef) { }
-
-    writeValue(value: Date | string): void {
-        if (!value) return;
         try {
-            const date = new Date(value);
+            const date = new Date(control.value);
             if (date instanceof Date) {
                 const formattedValue = date.toISOString().split('T')[0];
 
-                if (formattedValue == value) return;
+                if (formattedValue == control.value) return null;
 
-                this.el.nativeElement.value = formattedValue;
-            } else {
-                this.el.nativeElement.value = null;
+                control.setValue(formattedValue, { emitEvent: false, onlySelf: true });
             }
+        } catch {
         }
-        catch {
-        }
-    }
-
-    onChange = (_: any) => { };
-    onTouched = () => { };
-
-    registerOnChange(fn: any): void {
-        this.onChange = fn;
-    }
-
-    registerOnTouched(fn: any): void {
-        this.onTouched = fn;
+        return null;
     }
 }

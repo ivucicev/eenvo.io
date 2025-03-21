@@ -5,3 +5,18 @@
 @import "variables-dark";
 @import "bootstrap/scss/bootstrap";
 
+.form-select[disabled],
+.form-control[disabled] {
+    @extend .bg-light;
+    border: none;
+}
+
+.form-check-input[disabled]~.form-check-label,
+.form-check-input:disabled~.form-check-label {
+    opacity: 1;
+}
+
+.form-select:not([disabled]),
+.form-control:not([disabled]) {
+    cursor: text;
+}

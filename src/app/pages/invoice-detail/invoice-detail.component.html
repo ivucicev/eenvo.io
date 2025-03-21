@@ -3,9 +3,9 @@
         <form (ngSubmit)="saveInvoice()" [formGroup]="invoicesForm" id="invoice_form">
             @if (invoicesForm.controls['isPaid'].value) {
             <div class="card-body border-bottom border-bottom-dashed p-4">
-                <div class="row">
-                    <div class="col-lg-6">
-                        <div class="profile-user mx-auto mb-3">
+                <div class="d-flex flex-row justify-content-between flex-wrap">
+                    <div class="d-flex me-3 mb-3 flex-grow-1">
+                        <div class="profile-user">
                             <label for="profile-img-file-input" class="d-block" tabindex="0">
                                 <span
                                     class="overflow-hidden border border-dashed d-flex align-items-center justify-content-center rounded"
@@ -16,15 +16,14 @@
                             </label>
                         </div>
                     </div>
-                    <div class="col-lg-6">
+                    <div class="d-flex flex-column ms-auto flex-grow-1">
                         <div role="alert" class="alert alert-primary alert-outline ng-star-inserted">
                             <i class="ri-check-double-line mx-1"></i> <strong>{{ 'Invoice has been paid.' | translate
                                 }}</strong> {{ 'Editing is disabled.' | translate }}
                         </div>
                         <div class="mb-2">
                             <label for="date-field">{{ 'Payment date' | translate }}</label>
-                            <input type="date" class="form-control bg-light border-0" id="paymentDate"
-                                formControlName="paymentDate" />
+                            <input type="date" class="form-control " id="paymentDate" formControlName="paymentDate" />
                         </div>
                     </div>
                 </div>
@@ -39,8 +38,7 @@
                         </div>
                         <div class="mb-2" formGroupName="customerData">
                             <input placeholder="{{ 'Name' | translate }}" (input)="customerSelected($event)"
-                                list="customers" id="customer" formControlName="name"
-                                class="form-control bg-light border-0">
+                                list="customers" id="customer" formControlName="name" class="form-control ">
                             <datalist id="customers">
                                 @for(c of customers; track c.id) {
                                 <option [value]="c.name" [attr.data-id]="c.id">{{ c.name }}</option>
@@ -52,37 +50,37 @@
                         </div>
 
                         <div class="mb-2" formGroupName="customerData">
-                            <input type="text" placeholder="{{ 'Address' | translate }}"
-                                class="form-control bg-light border-0" id="address" formControlName="address">
+                            <input type="text" placeholder="{{ 'Address' | translate }}" class="form-control "
+                                id="address" formControlName="address">
                         </div>
 
                         <div class="row mb-2" formGroupName="customerData">
                             <div class="col-md-6">
-                                <input type="text" placeholder="{{ 'Postal Code' | translate }}"
-                                    class="form-control bg-light border-0" id="postal" formControlName="postal">
+                                <input type="text" placeholder="{{ 'Postal Code' | translate }}" class="form-control "
+                                    id="postal" formControlName="postal">
                             </div>
                             <div class="col-md-6">
-                                <input type="text" placeholder="{{ 'City' | translate }}"
-                                    class="form-control bg-light border-0" id="city" formControlName="city">
+                                <input type="text" placeholder="{{ 'City' | translate }}" class="form-control "
+                                    id="city" formControlName="city">
                             </div>
                         </div>
 
                         <div class="mb-2" formGroupName="customerData">
                             <input list="countries" placeholder="{{ 'Country' | translate }}" id="country"
-                                formControlName="country" name="country" class="form-control bg-light border-0">
+                                formControlName="country" name="country" class="form-control ">
                             <datalist id="countries">
 
                             </datalist>
                         </div>
                         <div class="mb-2" formGroupName="customerData">
-                            <input type="text" class="form-control bg-light border-0" id="vatID"
-                                placeholder="{{ 'VAT ID' | translate }}" required formControlName="vatID" />
+                            <input type="text" class="form-control " id="vatID" placeholder="{{ 'VAT ID' | translate }}"
+                                required formControlName="vatID" />
                             <div class="invalid-feedback">
                                 {{ 'Please enter a tax number' | translate }}
                             </div>
                         </div>
                         <!-- <div class="mb-2" formGroupName="customerData">
-                                <input type="text" class="form-control bg-light border-0" data-plugin="cleave-phone"
+                                <input type="text" class="form-control " data-plugin="cleave-phone"
                                     id="contact" placeholder="{{ 'Contact' | translate }}" required
                                     formControlName="contact" />
                                 <div class="invalid-feedback">
@@ -112,7 +110,7 @@
                             </div>
                             <div class="mb-2" formGroupName="shippingData">
                                 <input placeholder="{{ 'Name' | translate }}" formControlName="name"
-                                    class="form-control bg-light border-0">
+                                    class="form-control ">
                                 <div class="invalid-feedback">
                                     {{ 'Please enter a full name' | translate }}
                                 </div>
@@ -120,27 +118,27 @@
 
                             <div class="mb-2" formGroupName="shippingData">
                                 <input type="text" placeholder="{{ 'Address' | translate }}"
-                                    class="form-control bg-light border-0" id="address" formControlName="address">
+                                    class="form-control " id="address" formControlName="address">
                             </div>
 
                             <div class="row mb-2" formGroupName="shippingData">
                                 <div class="col-md-6">
                                     <input type="text" placeholder="{{ 'Postal Code' | translate }}"
-                                        class="form-control bg-light border-0" id="postal" formControlName="postal">
+                                        class="form-control " id="postal" formControlName="postal">
                                 </div>
                                 <div class="col-md-6">
                                     <input type="text" placeholder="{{ 'City' | translate }}"
-                                        class="form-control bg-light border-0" id="city" formControlName="city">
+                                        class="form-control " id="city" formControlName="city">
                                 </div>
                             </div>
 
                             <div class="mb-2" formGroupName="shippingData">
                                 <input list="countries" placeholder="{{ 'Country' | translate }}" id="country"
-                                    formControlName="country" name="country" class="form-control bg-light border-0">
+                                    formControlName="country" name="country" class="form-control ">
                             </div>
 
                             <div class="mb-2" formGroupName="shippingData">
-                                <input type="text" class="form-control bg-light border-0" data-plugin="cleave-phone"
+                                <input type="text" class="form-control " data-plugin="cleave-phone"
                                     id="contact" placeholder="{{ 'Contact' | translate }}" required
                                     formControlName="contact" />
                                 <div class="invalid-feedback">
@@ -159,7 +157,7 @@
                             <label for="date-field" class="text-muted text-uppercase fw-semibold">
                                 {{ 'Invoice number' | translate }}
                             </label>
-                            <input type="text" class="form-control bg-light border-0" id="number"
+                            <input type="text" class="form-control " id="number"
                                 placeholder="{{ 'Invoice number' | translate }}" required formControlName="number"
                                 [ngClass]="{ 'is-invalid': submitted && invoicesForm.controls['number'].errors }" />
                             <div class="invalid-feedback">
@@ -169,7 +167,7 @@
                         <div class="mb-2">
                             <label for="date-field" class="text-muted text-uppercase fw-semibold">{{ 'Invoice type'
                                 | translate }}</label>
-                            <select class="form-select bg-light border-0" formControlName="type">
+                            <select class="form-select " formControlName="type">
                                 <option value="-" selected>-</option>
                                 <option value="R">R</option>
                                 <option value="R1">R1</option>
@@ -180,7 +178,7 @@
                             <label for="choices-payment-type" class="text-muted text-uppercase fw-semibold">{{
                                 'Payment type' | translate
                                 }}</label>
-                            <select formControlName="paymentType" class="form-control input-light bg-light border-0"
+                            <select formControlName="paymentType" class="form-control input-light "
                                 id="choices-payment-type">
                                 <option value="" disabled>{{ 'Payment Method' | translate }}</option>
                                 <option value="Transaction">{{ 'Transaction' | translate }}</option>
@@ -204,8 +202,8 @@
                         <div class="mb-2">
                             <label for="date-field" class="text-muted text-uppercase fw-semibold">{{ 'Invoice date'
                                 | translate }}</label>
-                            <input type="date" class="form-control bg-light border-0" id="date" placeholder="date"
-                                required formControlName="date"
+                            <input type="date" class="form-control " id="date" placeholder="date" required
+                                formControlName="date"
                                 [ngClass]="{ 'is-invalid': submitted && invoicesForm.controls['date'].errors }" />
                             <div class="invalid-feedback">
                                 {{ 'Please enter a valid date' | translate }}
@@ -214,8 +212,8 @@
                         <div class="mb-2">
                             <label for="date-field" class="text-muted text-uppercase fw-semibold">{{ 'Delivery date'
                                 | translate }}</label>
-                            <input type="date" class="form-control bg-light border-0" id="deliveryDate"
-                                placeholder="Delivery date" formControlName="deliveryDate"
+                            <input type="date" class="form-control " id="deliveryDate" placeholder="Delivery date"
+                                formControlName="deliveryDate"
                                 [ngClass]="{ 'is-invalid': submitted && invoicesForm.controls['deliveryDate'].errors }" />
                             <div class="invalid-feedback">
                                 {{ 'Please enter a valid date' | translate }}
@@ -224,8 +222,8 @@
                         <div class="mb-2">
                             <label for="date-field" class="text-muted text-uppercase fw-semibold">{{ 'Due date' |
                                 translate }}</label>
-                            <input type="date" class="form-control bg-light border-0" id="dueDate" placeholder="Due"
-                                required formControlName="dueDate"
+                            <input type="date" class="form-control " id="dueDate" placeholder="Due" required
+                                formControlName="dueDate"
                                 [ngClass]="{ 'is-invalid': submitted && invoicesForm.controls['dueDate'].errors }" />
                             <div class="invalid-feedback">
                                 {{ 'Please enter a valid date' | translate }}
@@ -235,8 +233,7 @@
                             <label for="choices-lang" class="text-muted text-uppercase fw-semibold">{{
                                 'Invoice language' | translate
                                 }}</label>
-                            <select formControlName="language" class="form-control input-light bg-light border-0"
-                                id="choices-lang">
+                            <select formControlName="language" class="form-control input-light " id="choices-lang">
                                 <option value="en">{{ 'English' | translate }}</option>
                                 <option value="es">{{ 'Spanish' | translate }}</option>
                                 <option value="de">{{ 'German' | translate }}</option>
@@ -271,7 +268,7 @@
                                             Address</label>
                                     </div>
                                     <div class="mb-2">
-                                        <input type="text" class="form-control bg-light border-0" id="shippingName"
+                                        <input type="text" class="form-control " id="shippingName"
                                             placeholder="Name" required formControlName="shippingName"
                                             [ngClass]="{ 'is-invalid': submitted && invoicesForm.controls['shippingName'].errors }" />
                                         <div class="invalid-feedback">
@@ -279,7 +276,7 @@
                                         </div>
                                     </div>
                                     <div class="mb-2">
-                                        <textarea class="form-control bg-light border-0" id="shippingAddress" rows="3"
+                                        <textarea class="form-control " id="shippingAddress" rows="3"
                                             placeholder="Address" required formControlName="shippingAddress"
                                             [ngClass]="{ 'is-invalid': submitted && invoicesForm.controls['shippingAddress'].errors }"></textarea>
                                         <div class="invalid-feedback">
@@ -287,7 +284,7 @@
                                         </div>
                                     </div>
                                     <div class="mb-2">
-                                        <input type="text" class="form-control bg-light border-0"
+                                        <input type="text" class="form-control "
                                             data-plugin="cleave-phone" id="shippingPhoneno" placeholder="(123)456-7890"
                                             required formControlName="shippingPhoneno"
                                             [ngClass]="{ 'is-invalid': submitted && invoicesForm.controls['shippingPhoneno'].errors }" />
@@ -296,7 +293,7 @@
                                         </div>
                                     </div>
                                     <div>
-                                        <input type="text" class="form-control bg-light border-0" id="shippingTaxno"
+                                        <input type="text" class="form-control " id="shippingTaxno"
                                             placeholder="Tax Number" required formControlName="shippingTaxno"
                                             [ngClass]="{ 'is-invalid': submitted && invoicesForm.controls['shippingTaxno'].errors }" />
                                         <div class="invalid-feedback">
@@ -341,7 +338,7 @@
                                         <input [ngModelOptions]="{standalone: true}"
                                             (input)="serviceSelected($event, $index)" [(ngModel)]="item.title"
                                             list="services" id="name" type="text" [readOnly]="readonly"
-                                            class="form-control bg-light border-0 form-control-sm" id="name"
+                                            class="form-control  form-control-sm" id="name"
                                             placeholder="Product/Service" required>
                                         <datalist id="services">
                                             @for(s of services; track s.id) {
@@ -352,7 +349,7 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <dx-number-box [attr.data-unit]="item.unit" class="form-control bg-light border-0"
+                                    <dx-number-box [attr.data-unit]="item.unit" class="form-control "
                                         [readOnly]="readonly" (onValueChanged)="recalculate()" [step]="1"
                                         [(ngModel)]="item.quantity" [ngModelOptions]="{standalone: true}"
                                         [inputAttr]="{ 'aria-label': 'Percent Format' }"></dx-number-box>
@@ -360,20 +357,18 @@
                                 <td>
                                     <dx-number-box data-currency="true" (onValueChanged)="recalculate()"
                                         [readOnly]="readonly" [ngModelOptions]="{standalone: true}"
-                                        [(ngModel)]="item.price" type="number"
-                                        class="form-control product-price bg-light border-0">
+                                        [(ngModel)]="item.price" type="number" class="form-control product-price ">
                                     </dx-number-box>
                                 </td>
                                 <td class="text-end">
-                                    <dx-number-box class="form-control bg-light border-0"
-                                        (onValueChanged)="recalculate()" format="#0%" [step]="0.05"
-                                        [readOnly]="readonly" [(ngModel)]="item.discount"
+                                    <dx-number-box class="form-control " (onValueChanged)="recalculate()" format="#0%"
+                                        [step]="0.05" [readOnly]="readonly" [(ngModel)]="item.discount"
                                         [ngModelOptions]="{standalone: true}"
                                         [inputAttr]="{ 'aria-label': 'Percent Format' }"></dx-number-box>
                                 </td>
                                 @if (invoicesForm.get('tax')?.value) {
                                 <td class="text-end">
-                                    <dx-number-box class="form-control bg-light border-0" [readOnly]="readonly"
+                                    <dx-number-box class="form-control " [readOnly]="readonly"
                                         (onValueChanged)="recalculate()" format="#0%" [step]="0.05"
                                         [(ngModel)]="item.tax" [ngModelOptions]="{standalone: true}"
                                         [inputAttr]="{ 'aria-label': 'Percent Format' }"></dx-number-box>
@@ -382,8 +377,7 @@
                                 <td class="text-end">
                                     <dx-number-box (onValueChanged)="recalculate()" [readOnly]="readonly"
                                         [ngModelOptions]="{standalone: true}" [(ngModel)]="item.total"
-                                        data-currency="true" [readOnly]="true"
-                                        class="form-control product-price bg-light border-0"
+                                        data-currency="true" [readOnly]="true" class="form-control product-price "
                                         [inputAttr]="{ 'aria-label': 'Currency Format' }"></dx-number-box>
                                 </td>
                                 @if (!readonly) {
@@ -416,7 +410,7 @@
                                                 <td style="width: 180px;">
                                                     <dx-number-box formControlName="subTotal" [readOnly]="true"
                                                         data-currency="true" type="number"
-                                                        class="form-control product-price bg-light border-0"
+                                                        class="form-control product-price "
                                                         [inputAttr]="{ 'aria-label': 'Currency Format' }"></dx-number-box>
                                                 </td>
                                             </tr>
@@ -429,7 +423,7 @@
                                                 <td>
                                                     <dx-number-box [value]="taxValue.value" [readOnly]="true"
                                                         data-currency="true" type="number"
-                                                        class="form-control product-price bg-light border-0"
+                                                        class="form-control product-price "
                                                         [inputAttr]="{ 'aria-label': 'Currency Format' }"></dx-number-box>
                                                 </td>
                                             </tr>
@@ -449,7 +443,7 @@
                                                 <td>
                                                     <dx-number-box formControlName="taxValue" [readOnly]="true"
                                                         data-currency="true" type="number"
-                                                        class="form-control product-price bg-light border-0"
+                                                        class="form-control product-price "
                                                         [inputAttr]="{ 'aria-label': 'Currency Format' }"></dx-number-box>
                                                 </td>
                                             </tr>
@@ -460,7 +454,7 @@
                                                 <td>
                                                     <dx-number-box formControlName="discountValue" [readOnly]="true"
                                                         data-currency="true" type="number"
-                                                        class="form-control product-price bg-light border-0"
+                                                        class="form-control product-price "
                                                         [inputAttr]="{ 'aria-label': 'Currency Format' }"></dx-number-box>
                                                 </td>
                                             </tr>
@@ -470,7 +464,7 @@
                                                 <td>
                                                     <dx-number-box formControlName="total" [readOnly]="true"
                                                         data-currency="true" type="number"
-                                                        class="form-control product-price bg-light border-0"
+                                                        class="form-control product-price "
                                                         [inputAttr]="{ 'aria-label': 'Currency Format' }"></dx-number-box>
                                                 </td>
                                             </tr>
