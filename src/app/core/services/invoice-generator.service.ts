@@ -305,7 +305,8 @@ export class InvoiceGeneratorService {
                     doc.text(splitNote, LEFT_MARGIN, Y += TEXT_SPACE);
 
                     // fix multiline text
-                    Y += splitNote.length;
+                    if (splitNote.length)
+                        Y += splitNote.length + TITLE_SPACE;
                 }
 
                 //page break check
