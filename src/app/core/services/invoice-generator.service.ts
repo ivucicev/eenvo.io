@@ -304,6 +304,7 @@ export class InvoiceGeneratorService {
                     const splitNote = doc.splitTextToSize(invoice.note, doc.internal.pageSize.width - RIGHT_MARGIN - LEFT_MARGIN)
                     doc.text(splitNote, LEFT_MARGIN, Y += TEXT_SPACE);
 
+                    // fix multiline text
                     Y += splitNote.length / 2;
                 }
 
