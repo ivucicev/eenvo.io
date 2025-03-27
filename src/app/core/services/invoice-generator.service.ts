@@ -303,6 +303,8 @@ export class InvoiceGeneratorService {
                     doc.setFont(this.FONT_NAME, "normal")
                     const splitNote = doc.splitTextToSize(invoice.note, doc.internal.pageSize.width - RIGHT_MARGIN - LEFT_MARGIN)
                     doc.text(splitNote, LEFT_MARGIN, Y += TEXT_SPACE);
+
+                    Y += splitNote.length / 2;
                 }
 
                 //page break check
