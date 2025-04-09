@@ -58,7 +58,7 @@ export class InvoiceGeneratorService {
         this.language = invoice.language || 'en';
         //this.translate.use(invoice.language || 'en')
 
-        const doc: jsPDF | any = new jsPDF('p', 'mm', 'a4');
+        const doc: jsPDF | any = new jsPDF('p', 'mm', 'a4', true);
 
         const LEFT_MARGIN = 15;
         const RIGHT_MARGIN = 15;
@@ -98,9 +98,9 @@ export class InvoiceGeneratorService {
                     if (calculatedHeight > maxHeight) {
                         calculatedHeight = maxHeight;
                         const adjustedWidth = maxHeight / aspectRatio;
-                        doc.addImage(img.src, 'PNG', LEFT_MARGIN, TOP_MARGIN, adjustedWidth, calculatedHeight);
+                        doc.addImage(img.src, 'JPEG', LEFT_MARGIN, TOP_MARGIN, adjustedWidth, calculatedHeight, undefined, 'FAST');
                     } else {
-                        doc.addImage(img.src, 'PNG', LEFT_MARGIN, TOP_MARGIN, fixedWidth, calculatedHeight);
+                        doc.addImage(img.src, 'JPEG', LEFT_MARGIN, TOP_MARGIN, fixedWidth, calculatedHeight, undefined, 'FAST');
                     }
                 }
 
@@ -443,13 +443,14 @@ export class InvoiceGeneratorService {
 
             const footerHeight = 100;
             const footerY = doc.internal.pageSize.height - footerHeight;
-            doc.addImage('/assets/images/pattern-1.png', 'PNG', 0, footerY, doc.internal.pageSize.width, footerHeight, '', 'NONE', 0);
-            doc.addImage('/assets/images/pattern-2.png', 'PNG', 0, 0, doc.internal.pageSize.width, 100, '', 'NONE', 0);
+
+            doc.addImage('/assets/images/pattern-1.png', 'JPEG', 0, footerY, doc.internal.pageSize.width, footerHeight, '', 'FAST', 0);
+            doc.addImage('/assets/images/pattern-2.png', 'JPEG', 0, 0, doc.internal.pageSize.width, 100, '', 'FAST', 0);
 
             const fixedWidth_brand = 15;
             const aspectRatio_brand = 296 / 842;
 
-            doc.addImage("assets/images/logo-dark.png", 'PNG', doc.internal.pageSize.width / 2 - 15 / 2, doc.internal.pageSize.height - 10, 15, fixedWidth_brand * aspectRatio_brand);
+            doc.addImage("assets/images/logo-dark.png", 'JPEG', doc.internal.pageSize.width / 2 - 15 / 2, doc.internal.pageSize.height - 10, 15, fixedWidth_brand * aspectRatio_brand);
 
             doc.setFontSize(6);
             doc.text(await this.getTranslation("Powered by eenvo.io – Your Smart & Effortless Invoicing Solution."), doc.internal.pageSize.width / 2, doc.internal.pageSize.height - 2, 'center');
