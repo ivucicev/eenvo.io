@@ -154,16 +154,24 @@
                                 <label>{{ 'INVOICE DETAILS' | translate }}</label>
                             </div> -->
                         <div class="mb-2">
+                            @if(isQuote()) {
+                            <label for="date-field" class="text-muted text-uppercase fw-semibold">
+                                {{ 'Quote number' | translate }}
+                            </label>
+                            } @else {
                             <label for="date-field" class="text-muted text-uppercase fw-semibold">
                                 {{ 'Invoice number' | translate }}
                             </label>
+                            }
                             <input type="text" class="form-control " id="number"
-                                placeholder="{{ 'Invoice number' | translate }}" required formControlName="number"
+                                [placeholder]="isQuote() ? ('Quote number' | translate) : ('Invoice number' | translate)"
+                                required formControlName="number"
                                 [ngClass]="{ 'is-invalid': submitted && invoicesForm.controls['number'].errors }" />
                             <div class="invalid-feedback">
                                 {{ 'Please enter valid invoice number' | translate }}
                             </div>
                         </div>
+                        @if (!isQuote()) {
                         <div class="mb-2">
                             <label for="date-field" class="text-muted text-uppercase fw-semibold">{{ 'Invoice type'
                                 | translate }}</label>
@@ -174,6 +182,7 @@
                                 <option value="A">A</option>
                             </select>
                         </div>
+                        }
                         <div class="mb-2">
                             <label for="choices-payment-type" class="text-muted text-uppercase fw-semibold">{{
                                 'Payment type' | translate
@@ -200,8 +209,13 @@
                                 <label>&nbsp;</label>
                             </div> -->
                         <div class="mb-2">
+                            @if (isQuote()) {
+                            <label for="date-field" class="text-muted text-uppercase fw-semibold">{{ 'Quote date'
+                                | translate }}</label>
+                            } @else {
                             <label for="date-field" class="text-muted text-uppercase fw-semibold">{{ 'Invoice date'
                                 | translate }}</label>
+                            }
                             <input type="date" class="form-control " id="date" placeholder="date" required
                                 formControlName="date"
                                 [ngClass]="{ 'is-invalid': submitted && invoicesForm.controls['date'].errors }" />
@@ -209,6 +223,7 @@
                                 {{ 'Please enter a valid date' | translate }}
                             </div>
                         </div>
+                        @if (!isQuote()) {
                         <div class="mb-2">
                             <label for="date-field" class="text-muted text-uppercase fw-semibold">{{ 'Delivery date'
                                 | translate }}</label>
@@ -219,6 +234,7 @@
                                 {{ 'Please enter a valid date' | translate }}
                             </div>
                         </div>
+                        }
                         <div class="mb-2">
                             <label for="date-field" class="text-muted text-uppercase fw-semibold">{{ 'Due date' |
                                 translate }}</label>
@@ -230,9 +246,8 @@
                             </div>
                         </div>
                         <div class="mb-2">
-                            <label for="choices-lang" class="text-muted text-uppercase fw-semibold">{{
-                                'Invoice language' | translate
-                                }}</label>
+                            <label for="choices-lang" class="text-muted text-uppercase fw-semibold">{{ 'Language' |
+                                translate }}</label>
                             <select formControlName="language" class="form-control input-light " id="choices-lang">
                                 <option value="en">{{ 'English' | translate }}</option>
                                 <option value="es">{{ 'Spanish' | translate }}</option>
@@ -486,9 +501,16 @@
                     <label for="internalNote" class="form-label text-muted text-uppercase fw-semibold">
                         {{ 'INTERNAL NOTES' | translate }}
                     </label>
+                    @if (isQuote()) {
+                    <textarea class="form-control" formControlName="internalNote" id="internalNote"
+                        placeholder="{{ 'Internal notes - not visible on quote.' | translate }}" rows="4"
+                        required></textarea>
+                    }
+                    @else {
                     <textarea class="form-control" formControlName="internalNote" id="internalNote"
                         placeholder="{{ 'Internal notes - not visible on invoice.' | translate }}" rows="4"
                         required></textarea>
+                    }
                 </div>
             </div>
         </form>

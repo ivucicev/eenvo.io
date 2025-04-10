@@ -1,4 +1,5 @@
 <div class="h-100 d-flex flex-column">
+    @if (!this.isQuote) {
     <div class="row">
         <div class="col-4">
             <eenvo-stats-widget [name]="'Sent invoices'" [title]="'Invoices sent last 31 days'" [data]="allData"
@@ -14,11 +15,17 @@
                 [secondaryColor]="'bg-danger'" [color]="'primary'"></eenvo-stats-widget>
         </div>
     </div>
-
+    }
     <div class="row h-grow">
         <div class="col-lg-12 h-grow">
             <div class="card h-grow m-0">
+                @if(this.isQuote) {
+                <div class="card-header">
+                    <h4 class="card-title mb-0 flex-grow-1">{{ title | translate }}</h4>
+                </div>
+                }
                 <div class="card-body h-grow">
+                    @if(!this.isQuote){
                     <div class="row">
                         <div class="col-md-12">
                             <ul class="nav nav-tabs nav-tabs-custom nav-success mb-3" role="tablist">
@@ -47,7 +54,7 @@
                             </ul>
                         </div>
                     </div>
-
+                    }
                     <div class="contain h-grow">
                         <dx-data-grid #grid [dataSource]="data" (onSaved)="saved($event)"
                             (onRowDblClick)="rowDoubleClicked($event)" class="hide-default-edit contain-grid">
@@ -91,8 +98,10 @@
                             </dxi-column>
                             <dxi-column type="buttons" [fixed]="true" fixedPosition="right" alignment="right"
                                 [showInColumnChooser]="false">
-                                <dxi-button [visible]="isMarkAsPayedVisible" [onClick]="markAsPaid"
+                                <dxi-button [visible]="!isQuote" [onClick]="dxMarkAsPaid"
                                     [hint]="'Mark as paid' | translate" icon="check"></dxi-button>
+                                <dxi-button [visible]="isQuote" [onClick]="convertToInvoice"
+                                    [hint]="'Convert to invoice' | translate" icon="exportselected"></dxi-button>
                                 <dxi-button [onClick]="editInvoice" hint="Edit" icon="edit"></dxi-button>
                                 <dxi-button icon="download" [onClick]="downloadPDF"></dxi-button>
                                 <dxi-button icon="eyeopen" [onClick]="previewPDF"></dxi-button>
@@ -123,8 +132,8 @@
                                     {{ d.data.total | currencyFormat }}
                                 </div>
                             </dxi-column>
-                            <dxi-column dataField="isPaid" [caption]="'Is Paid' | translate" dataType="boolean"
-                                cellTemplate="isPaidTemplate">
+                            <dxi-column dataField="isPaid" [caption]="'Is Paid' | translate" [visible]="!this.isQuote"
+                                dataType="boolean" cellTemplate="isPaidTemplate">
                                 <div *dxTemplate="let d of 'isPaidTemplate'">
                                     @if (d.data.isPaid) {
                                     <span class="badge rounded-pill text-success bg-success-subtle">{{ 'Paid' |
@@ -179,8 +188,8 @@
     [(visible)]="invoicePopupVisible" [fullScreen]="fullScreen" (onHiding)="reload()">
 
     <div *dxTemplate="let data of 'content'">
-        <eenvo-invoice-detail class="h-grow" (invoiceCreated)="invoiceCreatedEvent($event)" #invoiceDetail
-            [invoice]="currentInvoice">
+        <eenvo-invoice-detail class="h-grow" [isQuote]="isQuote" (invoiceCreated)="invoiceCreatedEvent($event)"
+            #invoiceDetail [invoice]="currentInvoice">
         </eenvo-invoice-detail>
 
     </div>
@@ -200,11 +209,13 @@
                 </button>
 
                 @if (currentInvoice) {
+                @if (!isQuote) {
                 @if(!currentInvoice.isPaid) {
                 <button (click)="markAsPaid(currentInvoice.id)" class="btn btn-soft-success ms-1">
                     <i class="ri-check-double-line align-bottom mx-1"></i>
                     {{ 'Mark as paid' | translate }}
                 </button>
+                }
                 }
                 <button (click)="preview(currentInvoice.id)" class="btn btn-info ms-1">
                     <i class="ri-eye-fill align-bottom mx-1"></i>
@@ -214,10 +225,13 @@
                     <i class="ri-download-2-line align-bottom mx-1"></i>
                     {{ 'Download' | translate }}
                 </button>
+
                 <button (click)="send()" class="btn btn-secondary ms-1">
                     <i class="ri-send-plane-fill align-bottom mx-1"></i>
                     {{ 'Send' | translate }}
                 </button>
+
+                @if (!isQuote) {
                 <button (click)="send()" class="btn btn-dark ms-1">
                     <i class="ri-repeat-fill align-bottom mx-1"></i>
                     {{ 'Recurr' | translate }}
@@ -226,6 +240,8 @@
                     <i class="ri-alarm-fill align-bottom mx-1"></i>
                     {{'Schedule' | translate }}
                 </button>
+                }
+
                 <button type="button" (click)="delete(currentInvoice)" class="btn btn-danger ms-1">
                     <i class="ri-delete-bin-line align-bottom mx-1"></i>
                     {{'Delete' | translate }}

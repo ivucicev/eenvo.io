@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, effect, model, output } from '@angular/core';
+import { Component, effect, input, model, output } from '@angular/core';
 import { UntypedFormGroup, UntypedFormBuilder, Validators, ReactiveFormsModule, FormGroup, FormControl, FormsModule } from '@angular/forms';
 import { PocketBaseService } from '../../core/services/pocket-base.service';
 import { environment } from '../../../environments/environment';
@@ -28,6 +28,7 @@ export class InvoiceDetailComponent {
 
     public invoice = model<any>();
     public invoiceCreated = output<any>();
+    public isQuote = input<boolean>(false);
 
     constructor(private formBuilder: UntypedFormBuilder, private pocketbase: PocketBaseService) {
 
@@ -73,6 +74,7 @@ export class InvoiceDetailComponent {
             useBillingAndShippingAddress: [false],
             billingAddressSameAsShippingAddress: [true],
             language: localStorage.getItem('lang') || 'en',
+            isQuote: [this.isQuote()],
             customerData: new FormGroup({
                 name: new FormControl('', [Validators.required]),
                 address: new FormControl('', [Validators.required]),
@@ -266,6 +268,7 @@ export class InvoiceDetailComponent {
         }
 
         invoice.taxValueGroups = this.taxGroups;
+        invoice.isQuote = this.isQuote();
 
         if (invoice.id) {
             const updated = await this.pocketbase.invoices.update(invoice.id, invoice);

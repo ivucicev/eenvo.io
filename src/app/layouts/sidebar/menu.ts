@@ -24,7 +24,6 @@ export const MENU: MenuItem[] = [
         label: 'Quotes',
         icon: 'las la-paper-plane',
         link: '/quotes',
-        soon: true,
     },
     {
         id: 2,

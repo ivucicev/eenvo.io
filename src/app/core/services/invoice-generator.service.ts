@@ -20,6 +20,7 @@ export class InvoiceGeneratorService {
     private language = 'en';
     private translationCache: { [lang: string]: any } = {}; // Cache storage
     private countries: any = [];
+    private isQuote: boolean = false;
 
     constructor(private pocketbase: PocketBaseService, private compiler: TranslateCompiler, private date: DateFormatPipe, private currency: CurrencyFormatPipe, private fraction: FractionFormatPipe, private number: NumberFormatPipe, private parser: TranslateParser, private sanitizer: DomSanitizer, private translate: TranslateService, private http: HttpClient) {
         this.loadCountries();
@@ -56,6 +57,8 @@ export class InvoiceGeneratorService {
         }
 
         this.language = invoice.language || 'en';
+        this.isQuote = invoice.isQuote;
+
         //this.translate.use(invoice.language || 'en')
 
         const doc: jsPDF | any = new jsPDF('p', 'mm', 'a4', true);
@@ -112,7 +115,7 @@ export class InvoiceGeneratorService {
                 if (invoice.type && invoice.type != '-') {
                     type = invoice.type;
                 }
-                let invoiceType = `${await this.getTranslation("Invoice")} ${type}`;
+                let invoiceType = `${this.isQuote ? await this.getTranslation("Quote") : await this.getTranslation("Invoice")} ${type}`;
                 doc.text(invoiceType, SECOND_COLUMN_MARGIN, Y);
                 doc.text(`${invoice.number}`, RIGHT_END, Y, { align: 'right' });
 
@@ -121,12 +124,19 @@ export class InvoiceGeneratorService {
                 doc.text(await this.getTranslation("Issue Date"), SECOND_COLUMN_MARGIN, Y);
                 doc.text(this.date.transform(invoice.date), RIGHT_END, Y, { align: 'right' });
 
-                Y += TEXT_SPACE;
-                doc.text(await this.getTranslation("Due Date"), SECOND_COLUMN_MARGIN, Y);
-                doc.text(this.date.transform(invoice.dueDate), RIGHT_END, Y, { align: 'right' });
+                if (invoice.isQuote) {
+                    Y += TEXT_SPACE;
+                    const validDays = Math.ceil((new Date(invoice.dueDate).getTime() - new Date(invoice.date).getTime()) / (1000 * 60 * 60 * 24));
+                    doc.text(await this.getTranslation("Quote is valid for"), SECOND_COLUMN_MARGIN, Y);
+                    doc.text(`${validDays} days`, RIGHT_END, Y, { align: 'right' });
+                } else {
+                    Y += TEXT_SPACE;
+                    doc.text(await this.getTranslation("Due Date"), SECOND_COLUMN_MARGIN, Y);
+                    doc.text(this.date.transform(invoice.dueDate), RIGHT_END, Y, { align: 'right' });
+                }
 
                 Y += TEXT_SPACE;
-                if (invoice.deliveryDate) {
+                if (invoice.deliveryDate && !invoice.isQuote) {
                     doc.text(await this.getTranslation("Delivery Date"), SECOND_COLUMN_MARGIN, Y);
                     doc.text(this.date.transform(invoice.deliveryDate), RIGHT_END, Y, { align: 'right' });
                 }
@@ -444,13 +454,13 @@ export class InvoiceGeneratorService {
             const footerHeight = 100;
             const footerY = doc.internal.pageSize.height - footerHeight;
 
-            doc.addImage('/assets/images/pattern-1.png', 'JPEG', 0, footerY, doc.internal.pageSize.width, footerHeight, '', 'FAST', 0);
-            doc.addImage('/assets/images/pattern-2.png', 'JPEG', 0, 0, doc.internal.pageSize.width, 100, '', 'FAST', 0);
+            doc.addImage('/assets/images/pattern-1.png', 'JPEG', 0, footerY, doc.internal.pageSize.width, footerHeight, undefined, 'FAST', 0);
+            doc.addImage('/assets/images/pattern-2.png', 'JPEG', 0, 0, doc.internal.pageSize.width, 100, undefined, 'FAST', 0);
 
             const fixedWidth_brand = 15;
             const aspectRatio_brand = 296 / 842;
 
-            doc.addImage("assets/images/logo-dark.png", 'JPEG', doc.internal.pageSize.width / 2 - 15 / 2, doc.internal.pageSize.height - 10, 15, fixedWidth_brand * aspectRatio_brand);
+            doc.addImage("assets/images/logo-dark.png", 'JPEG', doc.internal.pageSize.width / 2 - 15 / 2, doc.internal.pageSize.height - 10, 15, fixedWidth_brand * aspectRatio_brand, undefined, 'FAST');
 
             doc.setFontSize(6);
             doc.text(await this.getTranslation("Powered by eenvo.io – Your Smart & Effortless Invoicing Solution."), doc.internal.pageSize.width / 2, doc.internal.pageSize.height - 2, 'center');

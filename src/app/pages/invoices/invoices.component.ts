@@ -10,6 +10,7 @@ import { StatsWidgetComponent } from '../../core/componate/stats-widget/stats-wi
 import { InvoiceGeneratorService } from '../../core/services/invoice-generator.service';
 import { RowDblClickEvent } from 'devextreme/ui/data_grid';
 import { ActionBarComponent } from '../../shared/action-bar/action-bar.component';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'eenvo-invoices',
@@ -32,6 +33,8 @@ export class InvoicesComponent {
     public paidInvoices: any = []
     public unpaidInvoices: any = []
     public fullScreen: boolean = false;
+    public isQuote = false;
+    public title: any = "Invoices";
 
     public filter = {
         all: true,
@@ -48,7 +51,13 @@ export class InvoicesComponent {
 
     constructor(
         private pocketbase: PocketBaseService,
-        private invoiceService: InvoiceGeneratorService) {
+        private invoiceService: InvoiceGeneratorService, private activatedRoute: ActivatedRoute) {
+
+        activatedRoute.title.subscribe(title => {
+            this.isQuote = title == "Quotes";
+            this.title = title;
+        })
+
         this.getData();
 
         this.dxMarkAsPaid = this.dxMarkAsPaid.bind(this);
@@ -79,8 +88,8 @@ export class InvoicesComponent {
         e?.event?.preventDefault();
     };
 
-    markAsPaid(id: string) {
-        const res = this.pocketbase.invoices.update(id, {
+    markAsPaid = async (id: string) => {
+        const res = await this.pocketbase.invoices.update(id, {
             'isPaid': true,
             'paymentDate': new Date()
         });
@@ -89,6 +98,16 @@ export class InvoicesComponent {
 
         return res;
     };
+
+    convertToInvoice = async (e: DxDataGridTypes.ColumnButtonClickEvent) => {
+        const res = await this.pocketbase.invoices.update(e.row?.data.id, {
+            'isQuote': false,
+        });
+
+        this.close(true);
+
+        return res;
+    }
 
     duplicateInvoice = async (e: DxDataGridTypes.ColumnButtonClickEvent) => {
         const originalInvoice = e.row?.data;
@@ -121,6 +140,7 @@ export class InvoicesComponent {
             taxValue: fullInvoice.taxValue,
             currency: fullInvoice.currency,
             user: fullInvoice.user,
+            isQuote: this.isQuote,
             items: []
         };
 
@@ -180,7 +200,7 @@ export class InvoicesComponent {
 
         this.allData = await this.pocketbase.invoices.getFullList({
             expand: 'customer,user',
-            filter: `date > "${thisYear}" && date <= "${currentYearEnd}"`,
+            filter: `date > "${thisYear}" && date <= "${currentYearEnd}" && isQuote = ${this.isQuote}`,
             sort: '-date'
         });
 
