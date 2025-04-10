@@ -306,5 +306,6 @@
     "Internal notes - not visible on quote.": "Notes internes - non visibles sur le devis.",
     "Convert to invoice": "Convertir en facture",
     "Quote is valid for": "Le devis est valable pour",
-    "days": "jours"
+    "days": "jours",
+    "Quote": "Devis"
 }

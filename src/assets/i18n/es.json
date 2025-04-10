@@ -306,5 +306,6 @@
     "Internal notes - not visible on quote.": "Notas internas - no visibles en la cotización.",
     "Convert to invoice": "Convertir a factura",
     "Quote is valid for": "La cotización es válida por",
-    "days": "días"
+    "days": "días",
+    "Quote": "Cotización"
 }
