@@ -290,5 +290,21 @@
     "Revenue & Expense": "Przychody i Wydatki",
     "Income per customer": "Dochód na klienta",
     "Expenses per customer": "Wydatki na klienta",
-    "Mark as paid": "Oznacz jako opłacone"
+    "Mark as paid": "Oznacz jako opłacone",
+    "Invoice language": "Język faktury",
+    "English": "Angielski",
+    "Spanish": "Hiszpański",
+    "German": "Niemiecki",
+    "Italian": "Włoski",
+    "French": "Francuski",
+    "Polish": "Polski",
+    "Croatian": "Chorwacki",
+    "Quote number": "Numer oferty",
+    "Language": "Język",
+    "Qute date": "Data oferty",
+    "Quote date": "Data oferty",
+    "Internal notes - not visible on quote.": "Notatki wewnętrzne - niewidoczne na ofercie.",
+    "Convert to invoice": "Przekształć w fakturę",
+    "Quote is valid for": "Oferta jest ważna przez",
+    "days": "dni"
 }

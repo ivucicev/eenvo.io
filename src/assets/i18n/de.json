@@ -290,5 +290,21 @@
     "Revenue & Expense": "Einnahmen & Ausgaben",
     "Income per customer": "Einnahmen pro Kunde",
     "Expenses per customer": "Ausgaben pro Kunde",
-    "Mark as paid": "Als bezahlt markieren"
+    "Mark as paid": "Als bezahlt markieren",
+    "Invoice language": "Rechnungssprache",
+    "English": "Englisch",
+    "Spanish": "Spanisch",
+    "German": "Deutsch",
+    "Italian": "Italienisch",
+    "French": "Französisch",
+    "Polish": "Polnisch",
+    "Croatian": "Kroatisch",
+    "Quote number": "Angebotsnummer",
+    "Language": "Sprache",
+    "Qute date": "Angebotsdatum",
+    "Quote date": "Angebotsdatum",
+    "Internal notes - not visible on quote.": "Interne Notizen - nicht sichtbar im Angebot.",
+    "Convert to invoice": "In Rechnung umwandeln",
+    "Quote is valid for": "Angebot ist gültig für",
+    "days": "Tage"
 }

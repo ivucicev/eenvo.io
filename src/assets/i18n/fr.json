@@ -290,5 +290,21 @@
     "Revenue & Expense": "Revenus & Dépenses",
     "Income per customer": "Revenu par client",
     "Expenses per customer": "Dépenses par client",
-    "Mark as paid": "Marquer comme payé"
+    "Mark as paid": "Marquer comme payé",
+    "Invoice language": "Langue de la facture",
+    "English": "Anglais",
+    "Spanish": "Espagnol",
+    "German": "Allemand",
+    "Italian": "Italien",
+    "French": "Français",
+    "Polish": "Polonais",
+    "Croatian": "Croate",
+    "Quote number": "Numéro de devis",
+    "Language": "Langue",
+    "Qute date": "Date de devis",
+    "Quote date": "Date de devis",
+    "Internal notes - not visible on quote.": "Notes internes - non visibles sur le devis.",
+    "Convert to invoice": "Convertir en facture",
+    "Quote is valid for": "Le devis est valable pour",
+    "days": "jours"
 }

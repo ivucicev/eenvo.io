@@ -128,7 +128,7 @@ export class InvoiceGeneratorService {
                     Y += TEXT_SPACE;
                     const validDays = Math.ceil((new Date(invoice.dueDate).getTime() - new Date(invoice.date).getTime()) / (1000 * 60 * 60 * 24));
                     doc.text(await this.getTranslation("Quote is valid for"), SECOND_COLUMN_MARGIN, Y);
-                    doc.text(`${validDays} days`, RIGHT_END, Y, { align: 'right' });
+                    doc.text(`${validDays} ${await this.getTranslation('days')}`, RIGHT_END, Y, { align: 'right' });
                 } else {
                     Y += TEXT_SPACE;
                     doc.text(await this.getTranslation("Due Date"), SECOND_COLUMN_MARGIN, Y);

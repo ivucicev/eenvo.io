@@ -290,5 +290,21 @@
     "Revenue & Expense": "Ingresos y Gastos",
     "Income per customer": "Ingresos por cliente",
     "Expenses per customer": "Gastos por cliente",
-    "Mark as paid": "Marcar como pagado"
+    "Mark as paid": "Marcar como pagado",
+    "Invoice language": "Idioma de la factura",
+    "English": "Inglés",
+    "Spanish": "Español",
+    "German": "Alemán",
+    "Italian": "Italiano",
+    "French": "Francés",
+    "Polish": "Polaco",
+    "Croatian": "Croata",
+    "Quote number": "Número de cotización",
+    "Language": "Idioma",
+    "Qute date": "Fecha de cotización",
+    "Quote date": "Fecha de cotización",
+    "Internal notes - not visible on quote.": "Notas internas - no visibles en la cotización.",
+    "Convert to invoice": "Convertir a factura",
+    "Quote is valid for": "La cotización es válida por",
+    "days": "días"
 }

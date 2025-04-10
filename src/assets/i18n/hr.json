@@ -290,5 +290,21 @@
     "Revenue & Expense": "Prihod i Trošak",
     "Income per customer": "Prihod po kupcu",
     "Expenses per customer": "Troškovi po kupcu",
-    "Mark as paid": "Označi kao plaćeno"
+    "Mark as paid": "Označi kao plaćeno",
+    "Invoice language": "Jezik fakture",
+    "English": "Engleski",
+    "Spanish": "Španjolski",
+    "German": "Njemački",
+    "Italian": "Talijanski",
+    "French": "Francuski",
+    "Polish": "Poljski",
+    "Croatian": "Hrvatski",
+    "Quote number": "Broj ponude",
+    "Language": "Jezik",
+    "Qute date": "Datum ponude",
+    "Quote date": "Datum ponude",
+    "Internal notes - not visible on quote.": "Unutarnje bilješke - nisu vidljive na ponudi.",
+    "Convert to invoice": "Pretvori u fakturu",
+    "Quote is valid for": "Ponuda vrijedi",
+    "days": "dana"
 }
