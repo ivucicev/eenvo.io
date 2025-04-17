@@ -21,6 +21,7 @@ export class InvoiceGeneratorService {
     private translationCache: { [lang: string]: any } = {}; // Cache storage
     private countries: any = [];
     private isQuote: boolean = false;
+    private isPO: boolean = false;
 
     constructor(private pocketbase: PocketBaseService, private compiler: TranslateCompiler, private date: DateFormatPipe, private currency: CurrencyFormatPipe, private fraction: FractionFormatPipe, private number: NumberFormatPipe, private parser: TranslateParser, private sanitizer: DomSanitizer, private translate: TranslateService, private http: HttpClient) {
         this.loadCountries();
@@ -58,6 +59,7 @@ export class InvoiceGeneratorService {
 
         this.language = invoice.language || 'en';
         this.isQuote = invoice.isQuote;
+        this.isPO = invoice.isPO;
 
         //this.translate.use(invoice.language || 'en')
 
@@ -115,7 +117,9 @@ export class InvoiceGeneratorService {
                 if (invoice.type && invoice.type != '-') {
                     type = invoice.type;
                 }
-                let invoiceType = `${this.isQuote ? await this.getTranslation("Quote") : await this.getTranslation("Invoice")} ${type}`;
+
+                let invoiceType = `${this.isQuote ? await this.getTranslation("Quote") : this.isPO ? await this.getTranslation('Purchse order') : await this.getTranslation("Invoice")} ${type}`;
+
                 doc.text(invoiceType, SECOND_COLUMN_MARGIN, Y);
                 doc.text(`${invoice.number}`, RIGHT_END, Y, { align: 'right' });
 
@@ -136,7 +140,7 @@ export class InvoiceGeneratorService {
                 }
 
                 Y += TEXT_SPACE;
-                if (invoice.deliveryDate && !invoice.isQuote) {
+                if (invoice.deliveryDate && !invoice.isQuote && !invoice.isPO) {
                     doc.text(await this.getTranslation("Delivery Date"), SECOND_COLUMN_MARGIN, Y);
                     doc.text(this.date.transform(invoice.deliveryDate), RIGHT_END, Y, { align: 'right' });
                 }
@@ -145,8 +149,8 @@ export class InvoiceGeneratorService {
                 Y = 65;
                 doc.setFontSize(12);
                 doc.setFont(this.FONT_NAME, "bold")
-                doc.text(await this.getTranslation("Seller:"), LEFT_MARGIN, Y);
-                doc.text(await this.getTranslation("Buyer:"), SECOND_COLUMN_MARGIN, Y);
+                doc.text(this.isPO ? await this.getTranslation("Buyer:") : await this.getTranslation("Seller:"), LEFT_MARGIN, Y);
+                doc.text(this.isPO ? await this.getTranslation("Vendor:") : await this.getTranslation("Buyer:"), SECOND_COLUMN_MARGIN, Y);
 
                 doc.setFont(this.FONT_NAME, "normal")
                 doc.setFontSize(10);
@@ -177,18 +181,26 @@ export class InvoiceGeneratorService {
                     doc.text(invoice.customerData.vatID, SECOND_COLUMN_MARGIN, Y += TEXT_SPACE);
 
                 Y = 100;
+
                 // Items table with reduced padding and soft borders
-                doc.autoTable({
-                    startY: Y,
-                    head: [[
-                        '#',
-                        await this.getTranslation('Product/Service'),
-                        await this.getTranslation('Quantity'),
-                        await this.getTranslation('Price'),
-                        await this.getTranslation('Discount'),
-                        await this.getTranslation('Tax'),
-                        await this.getTranslation('Total')]],
-                    body: invoice.expand.items.map((item: any, i: number) => [
+                const tableHeader = [
+                    '#',
+                    await this.getTranslation('Product/Service'),
+                    await this.getTranslation('Quantity'),
+                    await this.getTranslation('Price'),
+                    await this.getTranslation('Discount'),
+                    await this.getTranslation('Tax'),
+                    await this.getTranslation('Total')
+                ];
+
+                if (this.isPO && invoice.hideValues) {
+                    tableHeader.splice(3, tableHeader.length)
+                } else if (!invoice.tax) {
+                    tableHeader.splice(5, 1)
+                }
+
+                const tableBody = invoice.expand.items.map((item: any, i: number) => {
+                    const row = [
                         i + 1 + '.',
                         item.title,
                         this.number.transform(item.quantity),
@@ -196,7 +208,20 @@ export class InvoiceGeneratorService {
                         `${item.discount * 100} %`,
                         `${item.tax * 100} %`,
                         this.currency.transform(item.total)
-                    ]),
+                    ];
+
+                    if (this.isPO && invoice.hideValues) {
+                        row.splice(3, row.length)
+                    } else if (!invoice.tax) {
+                        tableHeader.splice(5, 1)
+                    }
+                    return row;
+                })
+
+                doc.autoTable({
+                    startY: Y,
+                    head: [tableHeader],
+                    body: tableBody,
                     headStyles: {
                         1: { cellWidth: 50 },
                         fillColor: [255, 255, 255],
@@ -234,13 +259,16 @@ export class InvoiceGeneratorService {
                 doc.line(LEFT_MARGIN, Y, RIGHT_END, Y);
 
                 doc.setFontSize(10);
-                doc.text(await this.getTranslation("Subtotal:"), RIGHT_END - 55, Y += TEXT_SPACE);
-                doc.text(this.currency.transform(invoice.subTotal), RIGHT_END, Y, { align: 'right' });
 
-                doc.text(await this.getTranslation("Discount:"), RIGHT_END - 55, Y += TEXT_SPACE);
-                doc.text(this.currency.transform(invoice.discountValue), RIGHT_END, Y, { align: 'right' });
+                if (!invoice.hideValues) {
+                    doc.text(await this.getTranslation("Subtotal:"), RIGHT_END - 55, Y += TEXT_SPACE);
+                    doc.text(this.currency.transform(invoice.subTotal), RIGHT_END, Y, { align: 'right' });
+    
+                    doc.text(await this.getTranslation("Discount:"), RIGHT_END - 55, Y += TEXT_SPACE);
+                    doc.text(this.currency.transform(invoice.discountValue), RIGHT_END, Y, { align: 'right' });
+                }
 
-                if (invoice.tax) {
+                if (invoice.tax && !invoice.hideValues) {
 
                     if (invoice.taxValueGroups && Object.keys(invoice.taxValueGroups).length) {
                         const taxKeys = Object.keys(invoice.taxValueGroups);
@@ -257,14 +285,15 @@ export class InvoiceGeneratorService {
                     }
 
                 }
-
-                doc.setDrawColor(180, 180, 180);
-                doc.setLineWidth(0.1);
-                doc.line(RIGHT_END - 55, Y += 2, RIGHT_END, Y);
-
-                doc.setFont(this.FONT_NAME, "bold")
-                doc.text(await this.getTranslation("Total:"), RIGHT_END - 55, Y += TEXT_SPACE);
-                doc.text(this.currency.transform(invoice.total), RIGHT_END, Y, { align: 'right' });
+                
+                if (!invoice.hideValues) {
+                    doc.setDrawColor(180, 180, 180);
+                    doc.setLineWidth(0.1);
+                    doc.line(RIGHT_END - 55, Y += 2, RIGHT_END, Y);
+                    doc.setFont(this.FONT_NAME, "bold")
+                    doc.text(await this.getTranslation("Total:"), RIGHT_END - 55, Y += TEXT_SPACE);
+                    doc.text(this.currency.transform(invoice.total), RIGHT_END, Y, { align: 'right' });
+                }
 
                 Y = this.pageBreak(Y, 30, doc, PAGE_BREAK, TOP_MARGIN)
 
@@ -272,7 +301,7 @@ export class InvoiceGeneratorService {
                 doc.setFont(this.FONT_NAME, "normal")
                 doc.setFontSize(10);
 
-                if (invoice.paymentType) {
+                if (invoice.paymentType && !this.isPO) {
                     doc.setFont(this.FONT_NAME, "bold")
                     doc.text(await this.getTranslation("Payment type"), LEFT_MARGIN, Y += TITLE_SPACE);
 
@@ -281,7 +310,7 @@ export class InvoiceGeneratorService {
 
                 }
 
-                if (invoice.paymentData.reference || invoice.paymentData.iban || invoice.paymentData.swift) {
+                if (!this.isPO && (invoice.paymentData.reference || invoice.paymentData.iban || invoice.paymentData.swift)) {
 
                     doc.setFont(this.FONT_NAME, "bold")
                     doc.text(await this.getTranslation("Payment"), LEFT_MARGIN, Y += TITLE_SPACE);
@@ -302,6 +331,13 @@ export class InvoiceGeneratorService {
                     }
 
                     doc.text(paymentText, LEFT_MARGIN, Y += TEXT_SPACE);
+                }
+
+                if (this.isPO) {
+                    doc.setFont(this.FONT_NAME, "bold")
+                    doc.text(await this.getTranslation("Shipping"), LEFT_MARGIN, Y += TITLE_SPACE);
+                    doc.setFont(this.FONT_NAME, "normal");
+                    doc.text(invoice.poShipping, LEFT_MARGIN, Y += TEXT_SPACE);
                 }
 
                 Y = this.pageBreak(Y, 30, doc, PAGE_BREAK, TOP_MARGIN)
@@ -325,9 +361,27 @@ export class InvoiceGeneratorService {
                 doc.setFont(this.FONT_NAME, "bold")
                 doc.text(await this.getTranslation("Issued by"), LEFT_MARGIN, Y += TITLE_SPACE);
 
-
                 doc.setFont(this.FONT_NAME, "normal")
                 doc.text(invoice.expand.user.name, LEFT_MARGIN, Y += TEXT_SPACE);
+
+                // signature part
+                if (this.isPO){
+
+                    doc.setFont(this.FONT_NAME, "bold")
+                    doc.text(await this.getTranslation("Approved by"), RIGHT_END - 55, Y);
+                    doc.setFont(this.FONT_NAME, "normal")
+
+                    //left
+                    doc.setDrawColor(180, 180, 180);
+                    doc.setLineWidth(0.1);
+                    doc.line(0 + LEFT_MARGIN, Y += 15, LEFT_MARGIN + 55, Y);
+
+                    
+                    //right
+                    doc.setDrawColor(180, 180, 180);
+                    doc.setLineWidth(0.1);
+                    doc.line(RIGHT_END - 55, Y, RIGHT_END, Y);
+                }
 
                 // add footer
                 await this.addFooter(doc, invoice, LEFT_MARGIN, RIGHT_MARGIN);

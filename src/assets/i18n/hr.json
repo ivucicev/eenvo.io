@@ -307,5 +307,18 @@
     "Convert to invoice": "Pretvori u fakturu",
     "Quote is valid for": "Ponuda vrijedi",
     "days": "dana",
-    "Quote": "Ponuda"
+    "Quote": "Ponuda",
+    "Purchase order number": "Broj narudžbenice",
+    "Purchase order date": "Datum narudžbenice",
+    "Internal notes - not visible on purchase order.": "Interne bilješke – nisu vidljive na narudžbenici.",
+    "Show values": "Prikaži vrijednosti",
+    "Shipping": "Dostava",
+    "Price - Cannot be blank.": "Cijena – ne smije biti prazna.",
+    "Failed to create record. Price - Cannot be blank. Total - Cannot be blank. ": "Neuspjelo stvaranje zapisa. Cijena – ne smije biti prazna. Ukupno – ne smije biti prazno.",
+    "Number - Cannot be blank.": "Broj – ne smije biti prazan.",
+    "Failed to create record. Number - Cannot be blank. ": "Neuspjelo stvaranje zapisa. Broj – ne smije biti prazan.",
+    "Notes - visible on purchase order.": "Bilješke – vidljive na narudžbenici.",
+    "Notes - visible on quote.": "Bilješke – vidljive na ponudi.",
+    "VENDOR": "DOBAVLJAČ",
+    "Hide values": "Sakrij vrijednosti"
 }

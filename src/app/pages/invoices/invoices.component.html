@@ -1,5 +1,5 @@
 <div class="h-100 d-flex flex-column">
-    @if (!this.isQuote) {
+    @if (!this.isQuote && !this.isPO) {
     <div class="row">
         <div class="col-4">
             <eenvo-stats-widget [name]="'Sent invoices'" [title]="'Invoices sent last 31 days'" [data]="allData"
@@ -19,13 +19,13 @@
     <div class="row h-grow">
         <div class="col-lg-12 h-grow">
             <div class="card h-grow m-0">
-                @if(this.isQuote) {
+                @if(this.isQuote || this.isPO) {
                 <div class="card-header">
                     <h4 class="card-title mb-0 flex-grow-1">{{ title | translate }}</h4>
                 </div>
                 }
                 <div class="card-body h-grow">
-                    @if(!this.isQuote){
+                    @if(!this.isQuote && !this.isPO){
                     <div class="row">
                         <div class="col-md-12">
                             <ul class="nav nav-tabs nav-tabs-custom nav-success mb-3" role="tablist">
@@ -132,7 +132,7 @@
                                     {{ d.data.total | currencyFormat }}
                                 </div>
                             </dxi-column>
-                            <dxi-column dataField="isPaid" [caption]="'Is Paid' | translate" [visible]="!this.isQuote"
+                            <dxi-column dataField="isPaid" [caption]="'Is Paid' | translate" [visible]="!this.isQuote && !this.isPO"
                                 dataType="boolean" cellTemplate="isPaidTemplate">
                                 <div *dxTemplate="let d of 'isPaidTemplate'">
                                     @if (d.data.isPaid) {
@@ -184,11 +184,11 @@
 
 <dx-popup [wrapperAttr]="{class: 'detail-popup toolbar-bottom-full'}" [width]="'70%'" [height]="'auto'"
     [resizeEnabled]="true" [restorePosition]="true" [maxHeight]="'90%'" [showTitle]="true"
-    [title]="'Information' | translate" [dragEnabled]="true" [hideOnOutsideClick]="true" [showCloseButton]="true"
+    [title]="title | translate" [dragEnabled]="true" [hideOnOutsideClick]="true" [showCloseButton]="true"
     [(visible)]="invoicePopupVisible" [fullScreen]="fullScreen" (onHiding)="reload()">
 
     <div *dxTemplate="let data of 'content'">
-        <eenvo-invoice-detail class="h-grow" [isQuote]="isQuote" (invoiceCreated)="invoiceCreatedEvent($event)"
+        <eenvo-invoice-detail class="h-grow" [isQuote]="isQuote" [isPO]="isPO" (invoiceCreated)="invoiceCreatedEvent($event)"
             #invoiceDetail [invoice]="currentInvoice">
         </eenvo-invoice-detail>
 
@@ -209,7 +209,7 @@
                 </button>
 
                 @if (currentInvoice) {
-                @if (!isQuote) {
+                @if (!isQuote && !isPO) {
                 @if(!currentInvoice.isPaid) {
                 <button (click)="markAsPaid(currentInvoice.id)" class="btn btn-soft-success ms-1">
                     <i class="ri-check-double-line align-bottom mx-1"></i>
@@ -231,7 +231,7 @@
                     {{ 'Send' | translate }}
                 </button>
 
-                @if (!isQuote) {
+                @if (!isQuote && !isPO) {
                 <button (click)="send()" class="btn btn-dark ms-1">
                     <i class="ri-repeat-fill align-bottom mx-1"></i>
                     {{ 'Recurr' | translate }}

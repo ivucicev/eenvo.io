@@ -307,5 +307,18 @@
     "Convert to invoice": "Convertir en facture",
     "Quote is valid for": "Le devis est valable pour",
     "days": "jours",
-    "Quote": "Devis"
+    "Quote": "Devis",
+    "Purchase order number": "Numéro de bon de commande",
+    "Purchase order date": "Date du bon de commande",
+    "Internal notes - not visible on purchase order.": "Notes internes – non visibles sur le bon de commande.",
+    "Show values": "Afficher les valeurs",
+    "Shipping": "Expédition",
+    "Price - Cannot be blank.": "Prix – ne peut pas être vide.",
+    "Failed to create record. Price - Cannot be blank. Total - Cannot be blank. ": "Échec de la création de l'enregistrement. Prix – ne peut pas être vide. Total – ne peut pas être vide.",
+    "Number - Cannot be blank.": "Numéro – ne peut pas être vide.",
+    "Failed to create record. Number - Cannot be blank. ": "Échec de la création de l'enregistrement. Numéro – ne peut pas être vide.",
+    "Notes - visible on purchase order.": "Notes – visibles sur le bon de commande.",
+    "Notes - visible on quote.": "Notes – visibles sur le devis.",
+    "VENDOR": "FOURNISSEUR",
+    "Hide values": "Masquer les valeurs"
 }

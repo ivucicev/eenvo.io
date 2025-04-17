@@ -29,13 +29,11 @@ export class InvoiceDetailComponent {
     public invoice = model<any>();
     public invoiceCreated = output<any>();
     public isQuote = input<boolean>(false);
+    public isPO = input<boolean>(false);
 
     constructor(private formBuilder: UntypedFormBuilder, private pocketbase: PocketBaseService) {
 
         this.initForm();
-        this.addItem();
-
-        this.getCustomers();
         this.getServices();
 
         this.logo += this.pocketbase.auth.company + '/' + this.pocketbase.auth.expand.company.logo;
@@ -75,6 +73,9 @@ export class InvoiceDetailComponent {
             billingAddressSameAsShippingAddress: [true],
             language: localStorage.getItem('lang') || 'en',
             isQuote: [this.isQuote()],
+            isPO: [this.isPO()],
+            poShipping: [''],
+            hideValues: [false],
             customerData: new FormGroup({
                 name: new FormControl('', [Validators.required]),
                 address: new FormControl('', [Validators.required]),
@@ -124,10 +125,10 @@ export class InvoiceDetailComponent {
         this.items.push({
             title: '',
             quantity: 1.0,
-            total: 0,
+            total: this.isPO() ? 1 : 0,
             discount: 0,
             tax: 0,
-            price: 0
+            price: this.isPO() ? 1 : 0
         });
     }
 
@@ -165,7 +166,9 @@ export class InvoiceDetailComponent {
     }
 
     async getCustomers() {
-        this.customers = await this.pocketbase.customers.getFullList();
+        this.customers = await this.pocketbase.customers.getFullList({
+            filter: `isVendor = ${this.isPO()}`
+        });
     }
 
     async getServices() {
@@ -269,6 +272,7 @@ export class InvoiceDetailComponent {
 
         invoice.taxValueGroups = this.taxGroups;
         invoice.isQuote = this.isQuote();
+        invoice.isPO = this.isPO();
 
         if (invoice.id) {
             const updated = await this.pocketbase.invoices.update(invoice.id, invoice);
@@ -328,5 +332,10 @@ export class InvoiceDetailComponent {
     removeItem(index: any) {
         this.items.splice(index, 1);
         this.recalculate();
+    }
+
+    ngOnInit() {
+        this.getCustomers();
+        this.addItem();
     }
 }

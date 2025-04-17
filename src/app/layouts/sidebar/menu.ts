@@ -10,7 +10,6 @@ export const MENU: MenuItem[] = [
         id: 2,
         label: 'Dashboard',
         icon: 'las la-bolt',
-        soon: false,
         link: '/',
     },
     {
@@ -30,7 +29,6 @@ export const MENU: MenuItem[] = [
         label: 'Purchase Orders',
         icon: 'las la-paste',
         link: '/purchase',
-        soon: true,
     },
     {
         id: 2,

@@ -33,8 +33,13 @@
                 <div class="row">
                     <div class="col-lg-4">
                         <div>
+                            @if (isPO()) {
+                            <label for="customer" class="text-muted text-uppercase fw-semibold">{{ 'VENDOR' |
+                                translate }}</label>
+                            } @else {
                             <label for="customer" class="text-muted text-uppercase fw-semibold">{{ 'BUYER' |
                                 translate }}</label>
+                            }
                         </div>
                         <div class="mb-2" formGroupName="customerData">
                             <input placeholder="{{ 'Name' | translate }}" (input)="customerSelected($event)"
@@ -158,20 +163,34 @@
                             <label for="date-field" class="text-muted text-uppercase fw-semibold">
                                 {{ 'Quote number' | translate }}
                             </label>
-                            } @else {
+                            } @else if (isPO()) {
+                            <label for="date-field" class="text-muted text-uppercase fw-semibold">
+                                {{ 'Purchase order number' | translate }}
+                            </label>
+                            }
+                            @else {
                             <label for="date-field" class="text-muted text-uppercase fw-semibold">
                                 {{ 'Invoice number' | translate }}
                             </label>
                             }
                             <input type="text" class="form-control " id="number"
-                                [placeholder]="isQuote() ? ('Quote number' | translate) : ('Invoice number' | translate)"
+                                [placeholder]="isQuote() ? ('Quote number' | translate) : ( isPO() ? ('Purchase order number' | translate) : ('Invoice number' | translate))"
                                 required formControlName="number"
                                 [ngClass]="{ 'is-invalid': submitted && invoicesForm.controls['number'].errors }" />
                             <div class="invalid-feedback">
                                 {{ 'Please enter valid invoice number' | translate }}
                             </div>
                         </div>
-                        @if (!isQuote()) {
+                        @if (isPO()) {
+                        <div class="mb-2">
+                            <label for="date-field" class="text-muted text-uppercase fw-semibold">
+                                {{ 'Shipping' | translate }}
+                            </label>
+                            <input type="text" class="form-control " id="number" [placeholder]="'Shipping' | translate"
+                                required formControlName="poShipping" />
+                        </div>
+                        }
+                        @if (!isQuote() && !isPO()) {
                         <div class="mb-2">
                             <label for="date-field" class="text-muted text-uppercase fw-semibold">{{ 'Invoice type'
                                 | translate }}</label>
@@ -183,6 +202,7 @@
                             </select>
                         </div>
                         }
+                        @if (!isPO()) {
                         <div class="mb-2">
                             <label for="choices-payment-type" class="text-muted text-uppercase fw-semibold">{{
                                 'Payment type' | translate
@@ -197,12 +217,24 @@
                                 <option value="Other">{{ 'Other' | translate }}</option>
                             </select>
                         </div>
+                        }
+
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" id="tax" formControlName="tax" checked>
                             <label class="form-check-label" for="tax">
                                 {{ 'Show Tax' | translate }}
                             </label>
                         </div>
+
+                        @if (isPO()) {
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="hideValues" formControlName="hideValues"
+                                checked>
+                            <label class="form-check-label" for="hideValues">
+                                {{ 'Hide values' | translate }}
+                            </label>
+                        </div>
+                        }
                     </div>
                     <div class="col-lg-4 ms-auto">
                         <!-- <div>
@@ -211,6 +243,10 @@
                         <div class="mb-2">
                             @if (isQuote()) {
                             <label for="date-field" class="text-muted text-uppercase fw-semibold">{{ 'Quote date'
+                                | translate }}</label>
+                            } @else if (isPO()) {
+                            <label for="date-field" class="text-muted text-uppercase fw-semibold">{{ 'Purchase order
+                                date'
                                 | translate }}</label>
                             } @else {
                             <label for="date-field" class="text-muted text-uppercase fw-semibold">{{ 'Invoice date'
@@ -223,7 +259,7 @@
                                 {{ 'Please enter a valid date' | translate }}
                             </div>
                         </div>
-                        @if (!isQuote()) {
+                        @if (!isQuote() && !isPO()) {
                         <div class="mb-2">
                             <label for="date-field" class="text-muted text-uppercase fw-semibold">{{ 'Delivery date'
                                 | translate }}</label>
@@ -494,8 +530,18 @@
                     <label for="note" class="form-label text-muted text-uppercase fw-semibold">
                         {{ 'NOTES' | translate }}
                     </label>
+                    @if (isQuote()) {
+                    <textarea class="form-control" formControlName="note" id="note"
+                        placeholder="{{ 'Notes - visible on quote.' | translate }}" rows="4" required></textarea>
+                    } @else if (isPO()) {
+                    <textarea class="form-control" formControlName="note" id="note"
+                        placeholder="{{ 'Notes - visible on purchase order.' | translate }}" rows="4"
+                        required></textarea>
+                    } @else {
                     <textarea class="form-control" formControlName="note" id="note"
                         placeholder="{{ 'Notes - visible on invoice.' | translate }}" rows="4" required></textarea>
+                    }
+
                 </div>
                 <div class="mt-2">
                     <label for="internalNote" class="form-label text-muted text-uppercase fw-semibold">
@@ -505,8 +551,11 @@
                     <textarea class="form-control" formControlName="internalNote" id="internalNote"
                         placeholder="{{ 'Internal notes - not visible on quote.' | translate }}" rows="4"
                         required></textarea>
-                    }
-                    @else {
+                    } @else if (isPO()) {
+                    <textarea class="form-control" formControlName="internalNote" id="internalNote"
+                        placeholder="{{ 'Internal notes - not visible on purchase order.' | translate }}" rows="4"
+                        required></textarea>
+                    } @else {
                     <textarea class="form-control" formControlName="internalNote" id="internalNote"
                         placeholder="{{ 'Internal notes - not visible on invoice.' | translate }}" rows="4"
                         required></textarea>

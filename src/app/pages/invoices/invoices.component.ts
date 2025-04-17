@@ -34,6 +34,7 @@ export class InvoicesComponent {
     public unpaidInvoices: any = []
     public fullScreen: boolean = false;
     public isQuote = false;
+    public isPO = false;
     public title: any = "Invoices";
 
     public filter = {
@@ -54,7 +55,8 @@ export class InvoicesComponent {
         private invoiceService: InvoiceGeneratorService, private activatedRoute: ActivatedRoute) {
 
         activatedRoute.title.subscribe(title => {
-            this.isQuote = title == "Quotes";
+            this.isQuote = title == 'Quotes';
+            this.isPO = title == 'Purchase Orders';
             this.title = title;
         })
 
@@ -141,6 +143,9 @@ export class InvoicesComponent {
             currency: fullInvoice.currency,
             user: fullInvoice.user,
             isQuote: this.isQuote,
+            isPO: this.isPO,
+            hideValues: fullInvoice.hideValues,
+            poShipping: fullInvoice.poShipping,
             items: []
         };
 
@@ -200,7 +205,7 @@ export class InvoicesComponent {
 
         this.allData = await this.pocketbase.invoices.getFullList({
             expand: 'customer,user',
-            filter: `date > "${thisYear}" && date <= "${currentYearEnd}" && isQuote = ${this.isQuote}`,
+            filter: `date > "${thisYear}" && date <= "${currentYearEnd}" && isPO = ${this.isPO} && isQuote = ${this.isQuote}`,
             sort: '-date'
         });
 

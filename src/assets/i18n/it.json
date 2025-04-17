@@ -307,5 +307,18 @@
     "Convert to invoice": "Converti in fattura",
     "Quote is valid for": "Il preventivo è valido per",
     "days": "giorni",
-    "Quote": "Preventivo"
+    "Quote": "Preventivo",
+    "Purchase order number": "Numero ordine d'acquisto",
+    "Purchase order date": "Data ordine d'acquisto",
+    "Internal notes - not visible on purchase order.": "Note interne – non visibili sull'ordine d'acquisto.",
+    "Show values": "Mostra valori",
+    "Shipping": "Spedizione",
+    "Price - Cannot be blank.": "Prezzo – non può essere vuoto.",
+    "Failed to create record. Price - Cannot be blank. Total - Cannot be blank. ": "Creazione del record non riuscita. Prezzo – non può essere vuoto. Totale – non può essere vuoto.",
+    "Number - Cannot be blank.": "Numero – non può essere vuoto.",
+    "Failed to create record. Number - Cannot be blank. ": "Creazione del record non riuscita. Numero – non può essere vuoto.",
+    "Notes - visible on purchase order.": "Note – visibili sull'ordine d'acquisto.",
+    "Notes - visible on quote.": "Note – visibili sul preventivo.",
+    "VENDOR": "FORNITORE",
+    "Hide values": "Nascondi valori"
 }

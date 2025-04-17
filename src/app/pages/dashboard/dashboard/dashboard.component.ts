@@ -67,7 +67,7 @@ export class DashboardComponent {
         const invoices: any = await this.pb.invoices.getFullList({
             batch: 9999,
             expand: 'customer,user',
-            filter: `date >= "${start.toISOString()}" && date <= "${end.toISOString()}"`,
+            filter: `date >= "${start.toISOString()}" && date <= "${end.toISOString()}" && isPO != true && isQuote != true`,
             sort: '-date'
         });
         const expenses: any = await this.pb.expenses.getFullList({

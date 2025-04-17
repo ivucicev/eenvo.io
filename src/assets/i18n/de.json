@@ -307,5 +307,18 @@
     "Convert to invoice": "In Rechnung umwandeln",
     "Quote is valid for": "Angebot ist gültig für",
     "days": "Tage",
-    "Quote": "Angebot"
+    "Quote": "Angebot",
+    "Purchase order number": "Bestellnummer",
+    "Purchase order date": "Bestelldatum",
+    "Internal notes - not visible on purchase order.": "Interne Notizen – nicht auf der Bestellung sichtbar.",
+    "Show values": "Werte anzeigen",
+    "Shipping": "Versand",
+    "Price - Cannot be blank.": "Preis – darf nicht leer sein.",
+    "Failed to create record. Price - Cannot be blank. Total - Cannot be blank. ": "Datensatz konnte nicht erstellt werden. Preis – darf nicht leer sein. Gesamt – darf nicht leer sein.",
+    "Number - Cannot be blank.": "Nummer – darf nicht leer sein.",
+    "Failed to create record. Number - Cannot be blank. ": "Datensatz konnte nicht erstellt werden. Nummer – darf nicht leer sein.",
+    "Notes - visible on purchase order.": "Notizen – auf der Bestellung sichtbar.",
+    "Notes - visible on quote.": "Notizen – auf dem Angebot sichtbar.",
+    "VENDOR": "LIEFERANT",
+    "Hide values": "Werte ausblenden"
 }

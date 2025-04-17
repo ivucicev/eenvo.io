@@ -307,5 +307,18 @@
     "Convert to invoice": "Przekształć w fakturę",
     "Quote is valid for": "Oferta jest ważna przez",
     "days": "dni",
-    "Quote": "Oferta"
+    "Quote": "Oferta",
+    "Purchase order number": "Numer zamówienia",
+    "Purchase order date": "Data zamówienia",
+    "Internal notes - not visible on purchase order.": "Notatki wewnętrzne – niewidoczne na zamówieniu.",
+    "Show values": "Pokaż wartości",
+    "Shipping": "Wysyłka",
+    "Price - Cannot be blank.": "Cena – nie może być pusta.",
+    "Failed to create record. Price - Cannot be blank. Total - Cannot be blank. ": "Nie udało się utworzyć rekordu. Cena – nie może być pusta. Suma – nie może być pusta.",
+    "Number - Cannot be blank.": "Numer – nie może być pusty.",
+    "Failed to create record. Number - Cannot be blank. ": "Nie udało się utworzyć rekordu. Numer – nie może być pusty.",
+    "Notes - visible on purchase order.": "Notatki – widoczne na zamówieniu.",
+    "Notes - visible on quote.": "Notatki – widoczne na ofercie.",
+    "VENDOR": "DOSTAWCA",
+    "Hide values": "Ukryj wartości"
 }

@@ -307,5 +307,18 @@
     "Convert to invoice": "Convertir a factura",
     "Quote is valid for": "La cotización es válida por",
     "days": "días",
-    "Quote": "Cotización"
+    "Quote": "Cotización",
+    "Purchase order number": "Número de orden de compra",
+    "Purchase order date": "Fecha de orden de compra",
+    "Internal notes - not visible on purchase order.": "Notas internas – no visibles en la orden de compra.",
+    "Show values": "Mostrar valores",
+    "Shipping": "Envío",
+    "Price - Cannot be blank.": "Precio – no puede estar en blanco.",
+    "Failed to create record. Price - Cannot be blank. Total - Cannot be blank. ": "No se pudo crear el registro. Precio – no puede estar en blanco. Total – no puede estar en blanco.",
+    "Number - Cannot be blank.": "Número – no puede estar en blanco.",
+    "Failed to create record. Number - Cannot be blank. ": "No se pudo crear el registro. Número – no puede estar en blanco.",
+    "Notes - visible on purchase order.": "Notas – visibles en la orden de compra.",
+    "Notes - visible on quote.": "Notas – visibles en la cotización.",
+    "VENDOR": "PROVEEDOR",
+    "Hide values": "Ocultar valores"
 }
