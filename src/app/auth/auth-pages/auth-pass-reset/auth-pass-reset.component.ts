@@ -4,6 +4,7 @@ import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angula
 import { Router, RouterModule } from '@angular/router';
 import { PocketBaseService } from '../../../core/services/pocket-base.service';
 import { TranslatePipe } from '@ngx-translate/core';
+import { ToastService } from '../../../core/services/toast.service';
 
 @Component({
     selector: 'eenvo-auth-pass-reset',
@@ -22,7 +23,8 @@ export class AuthPassResetComponent {
     constructor(
         private fb: FormBuilder,
         private pocketbase: PocketBaseService,
-        private router: Router
+        private router: Router,
+        private toast: ToastService
     ) {
         this.resetForm = this.fb.group({
             email: ['', [Validators.required, Validators.email]]
@@ -39,8 +41,8 @@ export class AuthPassResetComponent {
                     this.resetForm.value.email
                 );
                 this.resetSuccess = true;
-                this.router.createUrlTree(['/']);
-
+                this.toast.success();
+				this.router.navigate(['/auth']);
             } catch (error: any) {
                 this.errorMessage = error.message || 'An error occurred while resetting password';
             } finally {
