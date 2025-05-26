@@ -19,6 +19,7 @@ export class InvoiceDetailComponent {
     submitted = false;
     invoicesForm!: UntypedFormGroup;
     customers: any = [];
+    isNew = false;
     services: any = [];
     items: any = [];
     logo = environment.pocketbase + '/api/files/companies/';
@@ -134,6 +135,7 @@ export class InvoiceDetailComponent {
 
     async setCurrentInvoice(invoice: any) {
         if (!invoice?.id) {
+            this.isNew = true;
             this.readonly = false;
             this.initForm();
             this.addItem();
@@ -205,6 +207,11 @@ export class InvoiceDetailComponent {
         if (c.due) {
             this.invoicesForm.patchValue({ dueDate: new Date((new Date().setDate(new Date().getDate() + c.due))) })
         }
+
+        if (c.invoiceNote) {
+            this.invoicesForm.patchValue({ note: c.invoiceNote });
+        }
+        
     }
 
     async serviceSelected(e: any, index: number) {
