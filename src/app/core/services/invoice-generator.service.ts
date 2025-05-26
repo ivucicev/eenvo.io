@@ -158,6 +158,8 @@ export class InvoiceGeneratorService {
                 // company data
                 if (invoice.companyData.name)
                     doc.text(invoice.companyData.name, LEFT_MARGIN, Y += TEXT_SPACE);
+                if (invoice.companyData.addition)
+                    doc.text(invoice.companyData.addition, LEFT_MARGIN, Y += TEXT_SPACE);
                 if (invoice.companyData.address)
                     doc.text(invoice.companyData.address + ', ', LEFT_MARGIN, Y += TEXT_SPACE);
                 if (invoice.companyData.postal)
@@ -171,6 +173,8 @@ export class InvoiceGeneratorService {
                 // customer data
                 if (invoice.customerData.name)
                     doc.text(invoice.customerData.name, SECOND_COLUMN_MARGIN, Y += TEXT_SPACE);
+                if (invoice.customerData.addition)
+                    doc.text(invoice.customerData.addition, SECOND_COLUMN_MARGIN, Y += TEXT_SPACE);
                 if (invoice.customerData.address)
                     doc.text(invoice.customerData.address + ', ', SECOND_COLUMN_MARGIN, Y += TEXT_SPACE);
                 if (invoice.customerData.postal)

@@ -54,6 +54,13 @@
                             </div>
                         </div>
 
+                        @if (invoicesForm.get('customerData')?.get('addition')?.value) {
+                        <div class="mb-2" formGroupName="customerData">
+                            <input type="text" placeholder="{{ 'Addition' | translate }}" class="form-control "
+                                id="addition" formControlName="addition">
+                        </div>
+                        }
+
                         <div class="mb-2" formGroupName="customerData">
                             <input type="text" placeholder="{{ 'Address' | translate }}" class="form-control "
                                 id="address" formControlName="address">

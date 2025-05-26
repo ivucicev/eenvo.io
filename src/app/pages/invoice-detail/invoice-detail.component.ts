@@ -79,12 +79,13 @@ export class InvoiceDetailComponent {
             hideValues: [false],
             customerData: new FormGroup({
                 name: new FormControl('', [Validators.required]),
-                address: new FormControl('', [Validators.required]),
-                city: new FormControl('', [Validators.required]),
-                postal: new FormControl('', [Validators.required]),
-                country: new FormControl('', [Validators.required]),
-                vatID: new FormControl('', [Validators.required]),
-                contact: new FormControl('', [Validators.required]),
+                address: new FormControl('', []),
+                city: new FormControl('', []),
+                postal: new FormControl('', []),
+                country: new FormControl('', []),
+                vatID: new FormControl('', []),
+                contact: new FormControl('', []),
+                addition: new FormControl('', [])
             }),
 
             shippingData: new FormGroup({
@@ -191,7 +192,8 @@ export class InvoiceDetailComponent {
             city: `${c.city}`,
             country: `${c.country}`,
             vatID: c.vatID,
-            contact: c.email
+            contact: c.email,
+            addition: c.addition
         });
 
         this.invoicesForm.get('shippingData')?.patchValue({
@@ -201,7 +203,8 @@ export class InvoiceDetailComponent {
             city: `${c.city}`,
             country: `${c.country}`,
             vatID: c.vatID,
-            contact: c.email
+            contact: c.email,
+            addition: c.addition
         });
 
         if (c.due) {
@@ -268,6 +271,7 @@ export class InvoiceDetailComponent {
                 city: invoice.customerData.city,
                 country: invoice.customerData.country,
                 vatID: invoice.customerData.vatID,
+                addition: invoice.customerData.addition
             };
 
             const create = await this.pocketbase.customers.create(customer, {
