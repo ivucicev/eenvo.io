@@ -52,8 +52,14 @@
                                 <dxi-validation-rule type="stringLength" [ignoreEmptyValue]="true" min="15"
                                     max="33"></dxi-validation-rule>
                             </dxi-column>
-                            <dxi-column dataField="note" caption="{{ 'Note' | translate }}"></dxi-column>
-                            <dxi-column dataField="invoiceNote" caption="{{ 'Invoice Note' | translate }}"></dxi-column>
+                            <dxi-column dataField="note" caption="{{ 'Note' | translate }}">
+                                <dxo-form-item [colSpan]="2" editorType="dxTextArea" [editorOptions]="{ height: 100 }">
+                                </dxo-form-item>
+                            </dxi-column>
+                            <dxi-column dataField="invoiceNote" caption="{{ 'Terms & Notes' | translate }}">
+                                <dxo-form-item [colSpan]="2" editorType="dxTextArea" [editorOptions]="{ height: 100 }">
+                                </dxo-form-item>
+                            </dxi-column>
                             <dxi-column dataField="due" caption="{{ 'Due Amount' | translate }}"
                                 dataType="number"></dxi-column>
                             <dxi-column [visible]="false" dataField="created" caption="{{ 'Created' | translate }}"
