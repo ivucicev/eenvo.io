@@ -320,5 +320,10 @@
     "Notes - visible on purchase order.": "Notizen – auf der Bestellung sichtbar.",
     "Notes - visible on quote.": "Notizen – auf dem Angebot sichtbar.",
     "VENDOR": "LIEFERANT",
-    "Hide values": "Werte ausblenden"
+    "Hide values": "Werte ausblenden",
+    "Terms & Notes": "Bedingungen & Notizen",
+    "Addition": "Zusatz",
+    "Title - Cannot be blank.": "Titel - Darf nicht leer sein.",
+    "Failed to create record. Price - Cannot be blank. Title - Cannot be blank. Total - Cannot be blank.": "Datensatz konnte nicht erstellt werden. Preis - Darf nicht leer sein. Titel - Darf nicht leer sein. Gesamt - Darf nicht leer sein.",
+    "Contact support": "Support kontaktieren"
 }

@@ -320,5 +320,10 @@
     "Notes - visible on purchase order.": "Notas – visibles en la orden de compra.",
     "Notes - visible on quote.": "Notas – visibles en la cotización.",
     "VENDOR": "PROVEEDOR",
-    "Hide values": "Ocultar valores"
+    "Hide values": "Ocultar valores",
+    "Terms & Notes": "Términos y Notas",
+    "Addition": "Adición",
+    "Title - Cannot be blank.": "El título no puede estar en blanco.",
+    "Failed to create record. Price - Cannot be blank. Title - Cannot be blank. Total - Cannot be blank. ": "No se pudo crear el registro. El precio no puede estar en blanco. El título no puede estar en blanco. El total no puede estar en blanco.",
+    "Contact support": "Contactar soporte"
 }

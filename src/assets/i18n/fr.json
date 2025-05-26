@@ -320,5 +320,10 @@
     "Notes - visible on purchase order.": "Notes – visibles sur le bon de commande.",
     "Notes - visible on quote.": "Notes – visibles sur le devis.",
     "VENDOR": "FOURNISSEUR",
-    "Hide values": "Masquer les valeurs"
+    "Hide values": "Masquer les valeurs",
+    "Terms & Notes": "Conditions et Notes",
+    "Addition": "Ajout",
+    "Title - Cannot be blank.": "Le titre ne peut pas être vide.",
+    "Failed to create record. Price - Cannot be blank. Title - Cannot be blank. Total - Cannot be blank. ": "Échec de la création de l'enregistrement. Le prix ne peut pas être vide. Le titre ne peut pas être vide. Le total ne peut pas être vide.",
+    "Contact support": "Contacter le support"
 }

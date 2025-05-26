@@ -320,5 +320,10 @@
     "Notes - visible on purchase order.": "Notatki – widoczne na zamówieniu.",
     "Notes - visible on quote.": "Notatki – widoczne na ofercie.",
     "VENDOR": "DOSTAWCA",
-    "Hide values": "Ukryj wartości"
+    "Hide values": "Ukryj wartości",
+    "Terms & Notes": "Warunki i notatki",
+    "Addition": "Dodatek",
+    "Title - Cannot be blank.": "Tytuł - Nie może być pusty.",
+    "Failed to create record. Price - Cannot be blank. Title - Cannot be blank. Total - Cannot be blank. ": "Nie udało się utworzyć rekordu. Cena - Nie może być pusta. Tytuł - Nie może być pusty. Suma - Nie może być pusta.",
+    "Contact support": "Skontaktuj się z pomocą techniczną"
 }
