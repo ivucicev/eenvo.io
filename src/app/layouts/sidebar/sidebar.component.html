@@ -9,7 +9,8 @@
             </span>
             <span class="logo-lg">
                 <img src="assets/images/logo-dark.png" alt="" height="50">
-                <span class="badge badge-pill badge-soft-primary version-badge">@if (isDemo) { DEMO } v{{ version }}</span>
+                <span class="badge badge-pill badge-soft-primary version-badge">@if (isDemo) { DEMO } v{{ version
+                    }}</span>
             </span>
         </a>
         <!-- Light Logo-->
@@ -127,9 +128,8 @@
                             </ul>
                         </div>} @else{
                         <a [routerLink]="item.link" routerLinkActive="active"
-                            [routerLinkActiveOptions]="{ exact: true }" class="side-nav-link-ref nav-link menu-link" 
-                            [class.pe-none]="item.soon"
-                            (click)="toggleParentItem($event)">
+                            [routerLinkActiveOptions]="{ exact: true }" class="side-nav-link-ref nav-link menu-link"
+                            [class.pe-none]="item.soon" (click)="toggleParentItem($event)">
                             @if(item.icon){
                             <i class="{{ item.icon }}" class=""></i>
                             }
@@ -139,17 +139,36 @@
                                 | translate}}</span>
                             }
                             @if(item.soon){
-                                <span class="badge badge-pill badge-soft-primary">{{ 'Coming soon'
-                                    | translate}}</span>
+                            <span class="badge badge-pill badge-soft-primary">{{ 'Coming soon'
+                                | translate}}</span>
                             }
                         </a>}
 
                     </li>}
                 </ng-container>
                 }
+                <li class="nav-item">
+                    <a href="mailto:support@eenvo.io?subject=Support" class="side-nav-link-ref nav-link menu-link">
+                        <i class="ri-questionnaire-line"></i>
+                        <span class=""> {{ 'Contact support' | translate }}</span>
+                    </a>
+                </li>
             </ul>
         </div>
+        <div class="text-center mt-auto">
+            <a target="_blank" href="https://eenvo.io" class="btn btn-clear nav-item">
+                <i class="ri-globe-line"></i>
+            </a>
+            <a target="_blank" href="https://github.com/ivucicev/eenvo.io" class="btn btn-clear nav-item">
+                <i class="ri-product-hunt-line"></i>
+            </a>
+            <a target="_blank" href="button" class="btn btn-clear nav-item">
+                <i class="ri-github-fill"></i>
+            </a>
+            <a target="_blank" href="button" class="btn btn-clear nav-item">
+                <i class="ri-reddit-fill"></i>
+            </a>
+        </div>
     </ngx-simplebar>
-
 </div>
 <div class="vertical-overlay" (click)="sidebarHide()"></div>
