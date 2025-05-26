@@ -8,13 +8,15 @@
                             'eenvo' | translate }}</span>.</p>
                 </div>
                 @if (isDemo) {
-                    <div class="text-center my-5">
-                        <div class="alert alert-borderless alert-warning text-center mb-2 mx-2" role="alert">
-                            {{ 'This is demo environment. Data will reset every 3 hours, so keep that in mind. Sign in with email demo@eenvo.io and password demo@eenvo' | translate }}
-                        </div>
+                <div class="text-center my-5">
+                    <div class="alert alert-borderless alert-warning text-center mb-2 mx-2" role="alert">
+                        {{ 'This is demo environment. Data will reset every 3 hours, so keep that in mind. Sign in with
+                        email demo@eenvo.io and password demo@eenvo' | translate }}
                     </div>
+                </div>
                 }
                 <div class="mt-4">
+                    @if (!mfaEnabled) {
                     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
                         <div class="auth-input">
                             <div class="mb-3">
@@ -26,7 +28,8 @@
                             <div class="mb-2">
                                 <label for="userpassword" class="form-label">{{ 'Password' | translate }}</label>
                                 <div class="position-relative auth-pass-inputgroup mb-3">
-                                    <input formControlName="password" [attr.type]="passwordVisible ? 'text' : 'password'"
+                                    <input formControlName="password"
+                                        [attr.type]="passwordVisible ? 'text' : 'password'"
                                         class="form-control pe-5 password-input"
                                         placeholder="{{ 'Enter password' | translate }}" id="password-input">
                                     <button (click)="passwordVisible=!passwordVisible"
@@ -84,6 +87,15 @@
                             </div>
                         </div>
                     </form>
+                    } @else {
+                    <div class="auth-input">
+                        <div class="mb-3">
+                            <label for="OTPCode" class="form-label">{{ 'Code' | translate }}</label>
+                            <input type="number" class="form-control" id="OTPCode" [(ngModel)]="OTPCode"
+                                placeholder="{{ 'Enter code from email' | translate }}" (input)="otpInput($event?.target)">
+                        </div>
+                    </div>
+                    }
                 </div>
 
             </div>

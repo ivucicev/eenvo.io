@@ -44,6 +44,28 @@
                                         class="mt-1 btn btn-sm btn-clear btn-ghost-info"> <i
                                             class="ri ri-mail-send-fill"></i> {{ 'Send activation email' | translate }}
                                     </button>
+                                    @if(d.data.mfaActive) {
+                                    <br>
+                                    <button (click)="disableMFA(d.data)"
+                                        class="mt-1 btn btn-success btn-sm btn-clear btn-ghost-info"> <i
+                                            class="ri ri-shield-keyhole-line" disabled="true"></i> {{ 'Disable MFA' |
+                                        translate }}
+                                    </button>
+                                    }
+                                    @else {
+                                    <br>
+                                    <button (click)="activateMFA()" class="mt-1 btn btn-sm btn-clear btn-ghost-info"> <i
+                                            class="ri ri-shield-keyhole-line"></i> {{ 'Activate MFA' | translate }}
+                                    </button>
+                                    }
+                                    @if (activatingMFA) {
+                                    <br>
+                                    <input type="number" autocomplete="off" class="form-control mt-1" [maxlength]="8" [minlength]="8" [(ngModel)]="OTPCode" mask="0000-0000"
+                                        placeholder="{{ 'OTP Code' | translate }}" />
+                                    <br>
+                                    <button (click)="verifyMFA(OTPCode, d.data)" [disabled]="OTPCode.length != 8"
+                                        class="btn btn-primary btn-sm mt-1">Verify</button>
+                                    }
                                     }
                                 </div>
                             </dxi-column>

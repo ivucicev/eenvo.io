@@ -23,7 +23,8 @@ export class PocketBaseService {
             this.pb = new PocketBase(environment.demo);
         } else {
             this.pb = new PocketBase((window as any)['env'].pocketbase || environment.pocketbase);
-        } 
+        }
+
         // Load any existing auth data
         if (this.pb.authStore.isValid) {
             if (!this.pb.authStore.record?.expand) {
@@ -64,6 +65,14 @@ export class PocketBaseService {
             return { url, options }
         };
 
+    }
+
+    public async requestOTP() {
+        return await this.users.requestOTP(this.auth.email);
+    }
+
+    public async verifyOTP(otp: string, code: string) {
+        return await this.users.authWithOTP(otp, code);
     }
 
     private getSubdomain(): string | null {
@@ -121,16 +130,30 @@ export class PocketBaseService {
             const authData: any = await this.users.authWithPassword(email, password, { expand: 'company' });
             if (!authData.record.verified) {
                 this.toast.warning('Account not verified. Please confirm your account.');
-
                 return;
             }
             this.authStore.next(authData.record);
             this.auth = this.pb.authStore.record;
             return authData;
         } catch (error: any) {
+            if (error.response?.mfaId) {
+                const result = await this.users.requestOTP(email);
+                return { mfaId: error.response?.mfaId, otpId: result.otpId };
+            }
             this.toast.error(error?.message + ' Invalid email or password.');
             throw error;
         }
+    }
+
+    async authWithMFA(otpId: string, code: string, mfaId: string) {
+        const authData: any = await this.users.authWithOTP(otpId, code, { mfaId })
+        if (!authData.record.verified) {
+            this.toast.warning('Account not verified. Please confirm your account.');
+            return;
+        }
+        this.authStore.next(authData.record);
+        this.auth = this.pb.authStore.record;
+        return authData;
     }
 
     async registerCompany(name: string, email: string): Promise<any> {
@@ -140,7 +163,7 @@ export class PocketBaseService {
             isRegistrationComplete: true,
             email: email,
             iban: 'IBXXXXXXXXXXXXX'
-        }, { headers: { notoast: '1' }});
+        }, { headers: { notoast: '1' } });
     }
 
     async registerCompanyName(name: string): Promise<any> {
@@ -169,9 +192,11 @@ export class PocketBaseService {
                 passwordConfirm: password,
                 companyName,
                 company: company.id
-            }, { headers: {
-                notoast: '1'
-            } });
+            }, {
+                headers: {
+                    notoast: '1'
+                }
+            });
 
             await this.users.requestVerification(email);
 
