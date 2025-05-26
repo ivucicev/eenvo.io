@@ -98,7 +98,7 @@
                             </dxi-column>
                             <dxi-column type="buttons" [fixed]="true" fixedPosition="right" alignment="right"
                                 [showInColumnChooser]="false">
-                                <dxi-button [visible]="!isQuote" [onClick]="dxMarkAsPaid"
+                                <dxi-button [visible]="!isQuote && isMarkAsPayedVisible" [onClick]="dxMarkAsPaid"
                                     [hint]="'Mark as paid' | translate" icon="check"></dxi-button>
                                 <dxi-button [visible]="isQuote" [onClick]="convertToInvoice"
                                     [hint]="'Convert to invoice' | translate" icon="exportselected"></dxi-button>
@@ -134,6 +134,7 @@
                             </dxi-column>
                             <dxi-column dataField="isPaid" [caption]="'Is Paid' | translate" [visible]="!this.isQuote && !this.isPO"
                                 dataType="boolean" cellTemplate="isPaidTemplate">
+
                                 <div *dxTemplate="let d of 'isPaidTemplate'">
                                     @if (d.data.isPaid) {
                                     <span class="badge rounded-pill text-success bg-success-subtle">{{ 'Paid' |
