@@ -325,5 +325,6 @@
     "Addition": "Zusatz",
     "Title - Cannot be blank.": "Titel - Darf nicht leer sein.",
     "Failed to create record. Price - Cannot be blank. Title - Cannot be blank. Total - Cannot be blank.": "Datensatz konnte nicht erstellt werden. Preis - Darf nicht leer sein. Titel - Darf nicht leer sein. Gesamt - Darf nicht leer sein.",
-    "Contact support": "Support kontaktieren"
+    "Contact support": "Support kontaktieren",
+    "Category": "Kategorie"
 }

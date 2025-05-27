@@ -8,11 +8,12 @@ import { CurrencyFormatPipe } from '../../core/pipes/number-format.pipe';
 import { StatsWidgetComponent } from '../../core/componate/stats-widget/stats-widget.component';
 import { CountUpModule } from 'ngx-countup';
 import { SettingsService } from '../../core/services/settings.service';
+import { DxTagBoxModule, DxTagBoxTypes } from 'devextreme-angular/ui/tag-box';
 
 @Component({
     selector: 'app-transactions',
     standalone: true,
-    imports: [DxDataGridModule, StatsWidgetComponent, CountUpModule, TranslateModule, DxButtonModule, CurrencyFormatPipe, DxLookupModule, DxPopupModule, DxSelectBoxModule, FormsModule],
+    imports: [DxDataGridModule, StatsWidgetComponent, CountUpModule, DxTagBoxModule, TranslateModule, DxButtonModule, CurrencyFormatPipe, DxLookupModule, DxPopupModule, DxSelectBoxModule, FormsModule],
     templateUrl: './transactions.component.html',
     styleUrl: './transactions.component.scss'
 })
@@ -31,12 +32,14 @@ export class TransactionsComponent {
     public inflow: any = [];
     public dataNetIncome: any = [];
     public defaultCurrency;
+    public categories: any = [];
 
     @ViewChild('grid')
     public grid?: DxDataGridComponent;
 
     constructor(private pocketbase: PocketBaseService, private settings: SettingsService, private translation: TranslateService, private toast: ToastService) {
         this.getData();
+        this.getCategories();
         this.setTypes();
         this.defaultCurrency = settings.settings?.defaultCurrency || '€';
     }
@@ -62,12 +65,17 @@ export class TransactionsComponent {
     }
 
     async editTransaction(e: any) {
-        if (e.data.invoice || e.data.expense) {
+        /*if (e.data.invoice || e.data.expense) {
             this.toast.warning('Cannot edit transaction that came from invoice or expense.');
             e.cancel = true;
             return;
-        }
+        }*/
         this.currentTransaction = e.data;
+    }
+
+    editorPreparing(e: any) {
+        if (e.dataField === "type")
+            e.editorOptions.disabled = !!e.row.data.invoice || !!e.row.data.expense;
     }
 
     async newTransaction() {
@@ -77,7 +85,7 @@ export class TransactionsComponent {
 
     async getData() {
         this.allData = await this.pocketbase.transactions.getFullList({
-            expand: 'customer,invoice,expense',
+            expand: 'customer,invoice,expense,category',
             sort: '-date'
         });
 
@@ -115,6 +123,31 @@ export class TransactionsComponent {
     async reload() {
         this.grid?.instance.cancelEditData();
         this.getData();
+    }
+
+
+    async getCategories() {
+        this.categories = await this.pocketbase.categories.getFullList({ sort: 'name' });
+    }
+
+    async onCustomItemCreating(args: DxTagBoxTypes.CustomItemCreatingEvent) {
+        const newValue = args.text;
+
+        const res = await this.pocketbase.categories.create({
+            name: newValue?.toLowerCase()
+        });
+
+        this.categories.unshift(res);
+        args.customItem = newValue;
+    }
+
+    calculateFilterExpression(filterValue: any, selectedFilterOperation: any, target: any) {
+        if (target === 'search' && typeof (filterValue) === 'string') {
+            return [(this as any).dataField, 'contains', filterValue];
+        }
+        return function (rowData: any) {
+            return (rowData.category || []).indexOf(filterValue) !== -1;
+        };
     }
 
     rowDoubleClicked(e: any) {

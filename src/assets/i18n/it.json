@@ -325,5 +325,6 @@
     "Addition": "Aggiunta",
     "Title - Cannot be blank.": "Titolo - Non può essere vuoto.",
     "Failed to create record. Price - Cannot be blank. Title - Cannot be blank. Total - Cannot be blank. ": "Impossibile creare il record. Prezzo - Non può essere vuoto. Titolo - Non può essere vuoto. Totale - Non può essere vuoto.",
-    "Contact support": "Contatta il supporto"
+    "Contact support": "Contatta il supporto",
+    "Category": "Categoria"
 }

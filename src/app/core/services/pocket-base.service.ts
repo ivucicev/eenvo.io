@@ -257,6 +257,9 @@ export class PocketBaseService {
     public get expenses() {
         return this.pb.collection(COLLECTIONS.EXPENSES);
     }
+    public get categories() {
+        return this.pb.collection(COLLECTIONS.CATEGORIES);
+    }
     public get items() {
         return this.pb.collection(COLLECTIONS.ITEMS);
     }

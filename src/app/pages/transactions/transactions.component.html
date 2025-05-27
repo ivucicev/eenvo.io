@@ -24,7 +24,7 @@
                     <div class="contain h-grow">
                         <dx-data-grid class="contain-grid" #grid [dataSource]="data" (onInitNewRow)="initNewRow($event)"
                             (onSaved)="saved($event)" (onEditingStart)="editTransaction($event)"
-                            (onRowUpdated)="reload()" (onRowInserted)="reload()">
+                            (onRowUpdated)="reload()" (onRowInserted)="reload()" (onEditorPreparing)="editorPreparing($event)">
                             <dxo-toolbar>
                                 <dxi-item>
                                     <div *dxTemplate>
@@ -70,6 +70,24 @@
                             </dxi-column>
                             <dxi-column dataField="title" [caption]="'Title' | translate">
                                 <dxi-validation-rule type="required"></dxi-validation-rule>
+                            </dxi-column>
+                            <dxi-column dataField="category" [caption]="'Category' | translate"
+                                editCellTemplate="tagsEdit" cellTemplate="tagsTemplate" [calculateFilterExpression]="calculateFilterExpression">
+                                <dxo-lookup [dataSource]="categories" displayExpr="name" valueExpr="id">
+                                </dxo-lookup>
+                                <div *dxTemplate="let d of 'tagsEdit'">
+                                    <dx-tag-box [items]="categories" [acceptCustomValue]="true" [value]="d.value"
+                                        (onCustomItemCreating)="onCustomItemCreating($event)" displayExpr="name" valueExpr="id"
+                                        (onValueChanged)="d.setValue($event.value)"
+                                        (onSelectionChanged)="d.component.updateDimensions()"
+                                        [inputAttr]="{ 'aria-label': 'Category' }" >
+                                    </dx-tag-box>
+                                </div>
+                                <div *dxTemplate="let d of 'tagsTemplate'">
+                                    @for(category of d.data.expand.category; track $index) { <span
+                                        class="badge badge-soft-info me-1">
+                                        {{ category.name }} </span> }
+                                </div>
                             </dxi-column>
                             <dxi-column dataField="total" [caption]="'Total' | translate" dataType="number"
                                 format="#,##0.00" cellTemplate="totalTemplate">

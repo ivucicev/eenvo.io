@@ -8,5 +8,6 @@ export enum COLLECTIONS {
     SERVICES = 'services',
     SETTINGS = 'settings',
     TEMPLATES = 'templates',
-    TRANSACTIONS = 'transactions'
+    TRANSACTIONS = 'transactions',
+    CATEGORIES = 'categories'
 }

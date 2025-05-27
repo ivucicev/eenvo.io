@@ -325,5 +325,6 @@
     "Addition": "Dodatak",
     "Title - Cannot be blank.": "Naslov - Ne može biti prazno.",
     "Failed to create record. Price - Cannot be blank. Title - Cannot be blank. Total - Cannot be blank. ": "Neuspješno stvaranje zapisa. Cijena - Ne može biti prazno. Naslov - Ne može biti prazno. Ukupno - Ne može biti prazno.",
-    "Contact support": "Kontaktirajte podršku"
+    "Contact support": "Kontaktirajte podršku",
+    "Category": "Kategorija"
 }

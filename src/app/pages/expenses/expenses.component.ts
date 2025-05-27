@@ -1,16 +1,18 @@
 import { Component, ViewChild } from '@angular/core';
-import { DxButtonModule, DxDataGridComponent, DxDataGridModule, DxFileUploaderModule, DxLookupComponent, DxLookupModule, DxPieChartModule, DxPopupModule, DxSelectBoxModule } from 'devextreme-angular';
+import { DxButtonModule, DxDataGridComponent, DxDataGridModule, DxFileUploaderModule, DxLookupComponent, DxLookupModule, DxPieChartModule, DxPopupModule, DxSelectBoxModule, DxTagBoxModule } from 'devextreme-angular';
 import { PocketBaseService } from '../../core/services/pocket-base.service';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { CurrencyFormatPipe } from '../../core/pipes/number-format.pipe';
 import { StatsWidgetComponent } from '../../core/componate/stats-widget/stats-widget.component';
 import { DomSanitizer } from '@angular/platform-browser';
+import { DxTagBoxTypes } from 'devextreme-angular/ui/tag-box';
+import { DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
 
 @Component({
     selector: 'app-expenses',
     standalone: true,
-    imports: [DxDataGridModule, DxPieChartModule, DxPopupModule, DxFileUploaderModule, StatsWidgetComponent, TranslateModule, DxButtonModule, CurrencyFormatPipe, DxLookupModule, DxPopupModule, DxSelectBoxModule, FormsModule],
+    imports: [DxDataGridModule, DxPieChartModule, DxPopupModule, DxFileUploaderModule, StatsWidgetComponent, DxTagBoxModule, TranslateModule, DxButtonModule, CurrencyFormatPipe, DxLookupModule, DxPopupModule, DxSelectBoxModule, FormsModule],
     templateUrl: './expenses.component.html',
     styleUrl: './expenses.component.scss'
 })
@@ -27,36 +29,19 @@ export class ExpensesComponent {
     public showPreview = false;
     public previewTitle = '';
     public isPdf = false;
-    public contentUrl:any = '';
+    public contentUrl: any = '';
+    public categories: any = [];
+    public addedFiles: File[] = [];
+    public filesToRemove: string[] = [];
 
     @ViewChild('grid')
     public grid?: DxDataGridComponent;
 
     constructor(private pocketbase: PocketBaseService, private sanitizer: DomSanitizer) {
         this.getData();
-
+        this.getCategories();
         this.getCustomers();
     }
-
-    public chartDS = [{
-        region: 'Asia',
-        val: 4119626293,
-    }, {
-        region: 'Africa',
-        val: 1012956064,
-    }, {
-        region: 'Northern America',
-        val: 344124520,
-    }, {
-        region: 'Latin America and the Caribbean',
-        val: 590946440,
-    }, {
-        region: 'Europe',
-        val: 727082222,
-    }, {
-        region: 'Oceania',
-        val: 35104756,
-    }];
 
     public initNewRow(e: any) {
         e.data['user'] = this.pocketbase.auth.id;
@@ -87,11 +72,26 @@ export class ExpensesComponent {
 
     async getData() {
         this.allData = await this.pocketbase.expenses.getFullList({
-            expand: 'customer',
+            expand: 'customer,category',
             sort: '-date'
         });
 
         this.data = [...this.allData];
+    }
+
+    async getCategories() {
+        this.categories = await this.pocketbase.categories.getFullList({ sort: 'name' });
+    }
+
+    async onCustomItemCreating(args: DxTagBoxTypes.CustomItemCreatingEvent) {
+        const newValue = args.text;
+
+        const res = await this.pocketbase.categories.create({
+            name: newValue?.toLowerCase()
+        });
+
+        this.categories.unshift(res);
+        args.customItem = newValue;
     }
 
     async saved(e: any) {
@@ -135,7 +135,6 @@ export class ExpensesComponent {
         this.previewTitle = file;
     }
 
-
     async reload() {
         this.grid?.instance.cancelEditData();
         this.getData();
@@ -145,8 +144,14 @@ export class ExpensesComponent {
         this.grid?.instance.editRow(e.rowIndex);
     }
 
-    public addedFiles: File[] = [];
-    public filesToRemove: string[] = [];
+    calculateFilterExpression(filterValue: any, selectedFilterOperation: any, target: any) {
+        if (target === 'search' && typeof (filterValue) === 'string') {
+            return [(this as any).dataField, 'contains', filterValue];
+        }
+        return function (rowData: any) {
+            return (rowData.category || []).indexOf(filterValue) !== -1;
+        };
+    }
 
     async fileAdded(e: any) {
         const list: File[] = e.value;
