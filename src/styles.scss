@@ -230,3 +230,9 @@ dx-tag-box {
         align-self: center;
     }
 }
+
+[data-sidebar-size="sm"] {
+    .button-container {
+        flex-direction: column;
+    }
+}
