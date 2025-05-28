@@ -21,15 +21,17 @@
             [secondaryColor]="'bg-primary'"></eenvo-stats-widget>
     </div>
     <div class="col-3">
-        <eenvo-stats-widget [dateRange]="value" [name]="'Income'" [data]="inflow" [secondaryColor]="'bg-success'"></eenvo-stats-widget>
+        <eenvo-stats-widget [dateRange]="value" [name]="'Income'" [data]="inflow"
+            [secondaryColor]="'bg-success'"></eenvo-stats-widget>
     </div>
     <div class="col-3">
-        <eenvo-stats-widget [dateRange]="value" [name]="'Net income'" [data]="netIncome"
-            [secondaryColor]="'bg-danger'" [color]="'success'"></eenvo-stats-widget>
+        <eenvo-stats-widget [dateRange]="value" [name]="'Net income'" [data]="netIncome" [secondaryColor]="'bg-danger'"
+            [color]="'success'"></eenvo-stats-widget>
     </div>
 </div>
 
 <div class="row">
+    @defer (on viewport) {
     <div class="col-lg-6 col-sm-12">
         <div class="card">
             <div class="card-body">
@@ -57,6 +59,10 @@
             </div>
         </div>
     </div>
+    } @placeholder {
+    <div class="spinner-border text-secondary mx-auto my-4 d-block" role="status"></div>
+    }
+    @defer (on viewport) {
     <div class="col-lg-6 col-sm-12">
         <div class="card">
             <div class="card-body">
@@ -75,7 +81,11 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-6">
+    }@placeholder {
+    <div class="spinner-border text-secondary mx-auto my-4 d-block" role="status"></div>
+    }
+    @defer (on viewport) {
+    <div class="col-lg-6 col-sm-12">
         <div class="card">
             <div class="card-body">
                 <dx-pie-chart id="pie" type="doughnut" title="{{ 'Income per customer' | translate }}"
@@ -90,7 +100,11 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-6">
+    }@placeholder {
+    <div class="spinner-border text-secondary mx-auto my-4 d-block" role="status"></div>
+    }
+    @defer (on viewport) {
+    <div class="col-lg-6 col-sm-12">
         <div class="card">
             <div class="card-body">
                 <dx-pie-chart id="pie" type="doughnut" title="{{ 'Expenses per customer' | translate }}"
@@ -105,7 +119,11 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-6">
+    }@placeholder {
+    <div class="spinner-border text-secondary mx-auto my-4 d-block" role="status"></div>
+    }
+    @defer (on viewport) {
+    <div class="col-lg-6 col-sm-12">
         <div class="card">
             <div class="card-body">
                 <dx-pie-chart id="pie" type="doughnut" title="{{ 'Income per category' | translate }}"
@@ -120,7 +138,11 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-6">
+    }@placeholder {
+    <div class="spinner-border text-secondary mx-auto my-4 d-block" role="status"></div>
+    }
+    @defer (on viewport) {
+    <div class="col-lg-6 col-sm-12">
         <div class="card">
             <div class="card-body">
                 <dx-pie-chart id="pie" type="doughnut" title="{{ 'Expenses per category' | translate }}"
@@ -135,4 +157,7 @@
             </div>
         </div>
     </div>
+    }@placeholder {
+    <div class="spinner-border text-secondary mx-auto my-4 d-block" role="status"></div>
+    }
 </div>

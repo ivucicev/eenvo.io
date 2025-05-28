@@ -326,5 +326,7 @@
     "Title - Cannot be blank.": "El título no puede estar en blanco.",
     "Failed to create record. Price - Cannot be blank. Title - Cannot be blank. Total - Cannot be blank. ": "No se pudo crear el registro. El precio no puede estar en blanco. El título no puede estar en blanco. El total no puede estar en blanco.",
     "Contact support": "Contactar soporte",
-    "Category": "Categoría"
+    "Category": "Categoría",
+    "Income per category":"Ingresos por categoría",
+    "Expenses per category":"Gastos por categoría"
 }
