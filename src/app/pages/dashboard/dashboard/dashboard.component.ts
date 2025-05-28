@@ -21,7 +21,9 @@ export class DashboardComponent {
     public expenses: any = [];
 
     public invoicesPerCustomer: any = [];
+    public invoicesPerCategory: any = [];
     public expensesPerCustomer: any = [];
+    public expensesPerCategory: any = [];
     public incomeData: any = [];
     public revenueExpenseData: any = [];
     public unpaidInvoices: any = [];
@@ -72,13 +74,13 @@ export class DashboardComponent {
         });
         const expenses: any = await this.pb.expenses.getFullList({
             batch: 9999,
-            expand: 'customer',
+            expand: 'customer,category',
             ilter: `date >= "${start.toISOString()}" && date <= "${end.toISOString()}"`,
             sort: '-date'
         });
         const transactions: any = await this.pb.transactions.getFullList({
             batch: 9999,
-            expand: 'customer,invoice,expense',
+            expand: 'customer,invoice,expense,category',
             ilter: `date >= "${start.toISOString()}" && date <= "${end.toISOString()}"`,
             sort: '-date'
         });
@@ -185,6 +187,48 @@ export class DashboardComponent {
                 total: s.type == 'in' ? s.total : -1 * s.total
             }
         })];
+
+        // - per category invoice
+        let expensesPerCategory = this.expenses.reduce((acc: any, expense: any) => {
+            let categories = expense.expand?.category;
+            if (!categories || categories.length == 0) {
+                if (!acc['-']) {
+                    acc['-'] = { name: '-', val: 0 };
+                }
+                acc['-'].val += expense.total;
+            } else
+                categories.forEach((category: any) => {
+                    if (!acc[category.name]) {
+                        acc[category.name] = { name: category.name, val: 0 };
+                    }
+                    acc[category.name].val += expense.total;
+                })
+            return acc;
+        }, {});
+
+        // Convert the object to an array
+        this.expensesPerCategory = Object.values(expensesPerCategory);
+
+                // - per category invoice
+        let invoicesPerCategory = this.transactions.filter((t: any) => t.type == 'in').reduce((acc: any, transaction: any) => {
+            let categories = transaction.expand?.category;
+            if (!categories || categories.length == 0) {
+                if (!acc['-']) {
+                    acc['-'] = { name: '-', val: 0 };
+                }
+                acc['-'].val += transaction.total;
+            } else
+                categories.forEach((category: any) => {
+                    if (!acc[category.name]) {
+                        acc[category.name] = { name: category.name, val: 0 };
+                    }
+                    acc[category.name].val += transaction.total;
+                })
+            return acc;
+        }, {});
+
+        // Convert the object to an array
+        this.invoicesPerCategory = Object.values(invoicesPerCategory);
 
     }
 

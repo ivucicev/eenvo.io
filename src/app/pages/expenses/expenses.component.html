@@ -77,7 +77,7 @@
                                     </dx-tag-box>
                                 </div>
                                 <div *dxTemplate="let d of 'tagsTemplate'">
-                                    @for(category of d.data.expand.category; track $index) { <span
+                                    @for(category of d.data?.expand?.category; track $index) { <span
                                         class="badge badge-soft-info me-1">
                                         {{ category.name }} </span> }
                                 </div>

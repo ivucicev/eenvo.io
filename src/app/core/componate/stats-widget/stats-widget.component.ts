@@ -3,11 +3,11 @@ import { TranslateModule } from '@ngx-translate/core';
 import { CountUpModule } from 'ngx-countup';
 
 @Component({
-  selector: 'eenvo-stats-widget',
-  standalone: true,
-  imports: [CountUpModule, TranslateModule],
-  templateUrl: './stats-widget.component.html',
-  styleUrl: './stats-widget.component.scss'
+    selector: 'eenvo-stats-widget',
+    standalone: true,
+    imports: [CountUpModule, TranslateModule],
+    templateUrl: './stats-widget.component.html',
+    styleUrl: './stats-widget.component.scss'
 })
 export class StatsWidgetComponent {
 
@@ -16,23 +16,40 @@ export class StatsWidgetComponent {
 
     public readonly data = input<any>([]);
     public readonly color = input<any>();
-    public readonly secondaryColor = input<any>();    
-    public readonly title = input<any>();    
-    public readonly name = input<any>(); 
-    
+    public readonly secondaryColor = input<any>();
+    public readonly title = input<any>();
+    public readonly name = input<any>();
+
+    public dateRange = input<[Date, Date]>();
+
     constructor() {
         effect(() => {
             this.calculateInvoiceStats(this.data())
+        });
+        effect(() => {
+            if (this.dateRange())
+                this.calculateInvoiceStats(this.data())
         });
     }
 
     calculateInvoiceStats(data: any) {
 
-        const now = new Date();
-        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()); // Normalize to start of day
+        let from, to;
+        if (this.dateRange()?.[0])
+            from = new Date(this.dateRange()?.[0] ?? new Date());
+        if (this.dateRange()?.[1])
+            to = new Date(this.dateRange()?.[1] ?? new Date());
 
-        const last31DaysStart = new Date(today);
+
+        let now = new Date();
+        let today = new Date(now.getFullYear(), now.getMonth(), now.getDate()); // Normalize to start of day
+
+        if (to) today = to;
+
+        let last31DaysStart = new Date(today);
         last31DaysStart.setDate(today.getDate() - 31);
+
+        if (from) last31DaysStart = from;
 
         const prev32To63DaysStart = new Date(today);
         prev32To63DaysStart.setDate(today.getDate() - 63);

@@ -13,18 +13,18 @@
 
 <div class="row mt-3">
     <div class="col-3">
-        <eenvo-stats-widget [name]="'Unpaid invoices'" [data]="unpaidInvoices"
+        <eenvo-stats-widget [dateRange]="value" [name]="'Unpaid invoices'" [data]="unpaidInvoices"
             [secondaryColor]="'bg-danger'" [color]="'bg-danger'"></eenvo-stats-widget>
     </div>
     <div class="col-3">
-        <eenvo-stats-widget [name]="'Cashflow'" [data]="cashflowData"
+        <eenvo-stats-widget [dateRange]="value" [name]="'Cashflow'" [data]="cashflowData"
             [secondaryColor]="'bg-primary'"></eenvo-stats-widget>
     </div>
     <div class="col-3">
-        <eenvo-stats-widget [name]="'Income'" [data]="inflow" [secondaryColor]="'bg-success'"></eenvo-stats-widget>
+        <eenvo-stats-widget [dateRange]="value" [name]="'Income'" [data]="inflow" [secondaryColor]="'bg-success'"></eenvo-stats-widget>
     </div>
     <div class="col-3">
-        <eenvo-stats-widget [name]="'Net income'" [data]="netIncome"
+        <eenvo-stats-widget [dateRange]="value" [name]="'Net income'" [data]="netIncome"
             [secondaryColor]="'bg-danger'" [color]="'success'"></eenvo-stats-widget>
     </div>
 </div>
@@ -95,6 +95,36 @@
             <div class="card-body">
                 <dx-pie-chart id="pie" type="doughnut" title="{{ 'Expenses per customer' | translate }}"
                     palette="Soft Pastel" [dataSource]="expensesPerCustomer">
+                    <dxi-series argumentField="name">
+                        <dxo-label [visible]="true" format="#,##0.00">
+                            <dxo-connector [visible]="true"></dxo-connector>
+                        </dxo-label>
+                    </dxi-series>
+                    <dxo-legend [margin]="0" horizontalAlignment="right" verticalAlignment="top"></dxo-legend>
+                </dx-pie-chart>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <dx-pie-chart id="pie" type="doughnut" title="{{ 'Income per category' | translate }}"
+                    palette="Soft Pastel" [dataSource]="invoicesPerCategory">
+                    <dxi-series argumentField="name">
+                        <dxo-label [visible]="true" format="#,##0.00">
+                            <dxo-connector [visible]="true"></dxo-connector>
+                        </dxo-label>
+                    </dxi-series>
+                    <dxo-legend [margin]="0" horizontalAlignment="right" verticalAlignment="top"></dxo-legend>
+                </dx-pie-chart>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <dx-pie-chart id="pie" type="doughnut" title="{{ 'Expenses per category' | translate }}"
+                    palette="Soft Pastel" [dataSource]="expensesPerCategory">
                     <dxi-series argumentField="name">
                         <dxo-label [visible]="true" format="#,##0.00">
                             <dxo-connector [visible]="true"></dxo-connector>
