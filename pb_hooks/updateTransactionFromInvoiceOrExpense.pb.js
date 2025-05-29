@@ -22,6 +22,7 @@ onRecordAfterUpdateSuccess((e) => {
         title: e.record.get('title'),
         company: e.record.get('company'),
         total: e.record.get('total'),
+        category: e.record.get('category'),
         user: e.record.get('user'),
         created: e.record.get('created') ?? new Date(),
         updated: new Date(),
@@ -38,6 +39,8 @@ onRecordAfterUpdateSuccess((e) => {
 onRecordAfterUpdateSuccess((e) => {
 
     if (!e?.record?.getBool('isPaid')) e.next();
+    if (!e?.record?.getBool('isQuote')) e.next();
+    if (!e?.record?.getBool('isPO')) e.next();
 
     const existingTransaction = new DynamicModel({
         "id": "",

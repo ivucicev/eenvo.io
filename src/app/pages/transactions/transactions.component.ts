@@ -11,7 +11,7 @@ import { SettingsService } from '../../core/services/settings.service';
 import { DxTagBoxModule, DxTagBoxTypes } from 'devextreme-angular/ui/tag-box';
 
 @Component({
-    selector: 'app-transactions',
+    selector: 'eenvo-transactions',
     standalone: true,
     imports: [DxDataGridModule, StatsWidgetComponent, CountUpModule, DxTagBoxModule, TranslateModule, DxButtonModule, CurrencyFormatPipe, DxLookupModule, DxPopupModule, DxSelectBoxModule, FormsModule],
     templateUrl: './transactions.component.html',

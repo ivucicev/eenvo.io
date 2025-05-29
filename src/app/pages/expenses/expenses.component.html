@@ -1,3 +1,7 @@
+<pre>
+    {{ categories | json }}
+
+</pre>
 <div class="h-100 d-flex flex-column">
     <div class="row">
         <div class="col-4">
@@ -5,20 +9,24 @@
                 [secondaryColor]="'bg-primary'"></eenvo-stats-widget>
         </div>
         <div class="col-8">
-            <!-- <div class="card">
+            <div class="card m-0 mb-3">
                 <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <dx-pie-chart width="100%" id="pie" type="doughnut" palette="Soft Pastel"
-                            [dataSource]="chartDS">
-                            <dxi-series argumentField="region">
-                            </dxi-series>
-                            <dxo-export [enabled]="true"></dxo-export>
-                            <dxo-legend [margin]="0" horizontalAlignment="right" verticalAlignment="top"></dxo-legend>
-                        </dx-pie-chart>
-                    </div>
+                    <dx-chart id="chart" [size]="{ height: 100 }" [dataSource]="dataPerMonth"
+                        [customizeLabel]="customizeLabel">
+                        <dxi-series argumentField="name" valueField="value" [showInLegend]="false" type="bar">
+                        </dxi-series>
+                        <dxi-value-axis>
+                            @if (avg) {
+                            <dxi-constant-line [width]="1" [value]="avg" color="red" dashStyle="dash">
+                                <dxo-label text="{{ 'Avg.' | translate }}"></dxo-label>
+                            </dxi-constant-line>
+                            }
+                        </dxi-value-axis>
+                        <dxo-common-series-settings argumentField="name" valueField="value" type="bar">
+                        </dxo-common-series-settings>
+                    </dx-chart>
                 </div>
-            </div> -->
-            ​
+            </div>
         </div>
     </div>
 
@@ -64,18 +72,23 @@
                                 </dxo-lookup>
                             </dxi-column>
                             <dxi-column dataField="title" [caption]="'Title' | translate"></dxi-column>
-                            <dxi-column dataField="category" [caption]="'Category' | translate"
-                                editCellTemplate="tagsEdit" cellTemplate="tagsTemplate" [calculateFilterExpression]="calculateFilterExpression">
-                                <dxo-lookup [dataSource]="categories" displayExpr="name" valueExpr="id">
-                                </dxo-lookup>
+                            <dxi-column dataField="category" [caption]="'Category' | translate" [selectedFilterOperation]="'contains'"
+                                editCellTemplate="tagsEdit" cellTemplate="tagsTemplate" [allowFiltering]="false">
+                                <dxo-lookup [dataSource]="categories" displayExpr="name" valueExpr="id"></dxo-lookup>
                                 <div *dxTemplate="let d of 'tagsEdit'">
-                                    <dx-tag-box [items]="categories" [acceptCustomValue]="true" [value]="d.value"
-                                        (onCustomItemCreating)="onCustomItemCreating($event)" displayExpr="name" valueExpr="id"
-                                        (onValueChanged)="d.setValue($event.value)"
-                                        (onSelectionChanged)="d.component.updateDimensions()"
-                                        [inputAttr]="{ 'aria-label': 'Category' }" >
+                                    <dx-tag-box [items]="categories" [hideSelectedItems]="true" [acceptCustomValue]="true"
+                                        (onCustomItemCreating)="onCustomItemCreating($event, d)" 
+                                        displayExpr="name"
+                                        valueExpr="id" 
+                                        [value]="d.value"
+                                        (onValueChanged)="setValue(d,$event.value)"
+                                        [inputAttr]="{ 'aria-label': 'Category' }">
                                     </dx-tag-box>
+
+                                    {{ d.value | json}}
+
                                 </div>
+                                <!-- (onSelectionChanged)="d.component.updateDimensions()" -->
                                 <div *dxTemplate="let d of 'tagsTemplate'">
                                     @for(category of d.data?.expand?.category; track $index) { <span
                                         class="badge badge-soft-info me-1">

@@ -1,18 +1,18 @@
 import { Component, ViewChild } from '@angular/core';
-import { DxButtonModule, DxDataGridComponent, DxDataGridModule, DxFileUploaderModule, DxLookupComponent, DxLookupModule, DxPieChartModule, DxPopupModule, DxSelectBoxModule, DxTagBoxModule } from 'devextreme-angular';
+import { DxButtonModule, DxChartModule, DxDataGridComponent, DxDataGridModule, DxDropDownBoxModule, DxFileUploaderModule, DxLookupComponent, DxLookupModule, DxPieChartModule, DxPopupModule, DxSelectBoxModule, DxTagBoxModule } from 'devextreme-angular';
 import { PocketBaseService } from '../../core/services/pocket-base.service';
 import { FormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { CurrencyFormatPipe } from '../../core/pipes/number-format.pipe';
 import { StatsWidgetComponent } from '../../core/componate/stats-widget/stats-widget.component';
 import { DomSanitizer } from '@angular/platform-browser';
 import { DxTagBoxTypes } from 'devextreme-angular/ui/tag-box';
-import { DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
+import { JsonPipe } from '@angular/common';
 
 @Component({
-    selector: 'app-expenses',
+    selector: 'eenvo-expenses',
     standalone: true,
-    imports: [DxDataGridModule, DxPieChartModule, DxPopupModule, DxFileUploaderModule, StatsWidgetComponent, DxTagBoxModule, TranslateModule, DxButtonModule, CurrencyFormatPipe, DxLookupModule, DxPopupModule, DxSelectBoxModule, FormsModule],
+    imports: [DxDataGridModule, DxDropDownBoxModule, JsonPipe, DxPieChartModule, DxChartModule, DxPopupModule, DxFileUploaderModule, StatsWidgetComponent, DxTagBoxModule, TranslateModule, DxButtonModule, CurrencyFormatPipe, DxLookupModule, DxPopupModule, DxSelectBoxModule, FormsModule],
     templateUrl: './expenses.component.html',
     styleUrl: './expenses.component.scss'
 })
@@ -33,11 +33,13 @@ export class ExpensesComponent {
     public categories: any = [];
     public addedFiles: File[] = [];
     public filesToRemove: string[] = [];
+    public dataPerMonth: any = [];
+    public avg = 0;
 
     @ViewChild('grid')
     public grid?: DxDataGridComponent;
 
-    constructor(private pocketbase: PocketBaseService, private sanitizer: DomSanitizer) {
+    constructor(private pocketbase: PocketBaseService, private sanitizer: DomSanitizer, private translate: TranslateService) {
         this.getData();
         this.getCategories();
         this.getCustomers();
@@ -46,12 +48,9 @@ export class ExpensesComponent {
     public initNewRow(e: any) {
         e.data['user'] = this.pocketbase.auth.id;
         e.data['date'] = new Date();
+        e.data['category'] = [];
         e.data['total'] = 0.0;
     }
-
-    customizeTooltip = ({ valueText, percent }: { valueText: string, percent: number }) => ({
-        text: `${valueText} - %`,
-    });
 
     setFullScreen = async () => {
         this.fullScreen = !this.fullScreen;
@@ -71,27 +70,80 @@ export class ExpensesComponent {
     }
 
     async getData() {
+
+        const thisYear = new Date(this.selectedYear, 0, 1).toISOString();
+        const currentYearEnd = new Date(+this.selectedYear + 1, 0, 1).toISOString();
+
         this.allData = await this.pocketbase.expenses.getFullList({
             expand: 'customer,category',
+            filter: `date > "${thisYear}" && date <= "${currentYearEnd}"`,
             sort: '-date'
         });
 
         this.data = [...this.allData];
-    }
 
-    async getCategories() {
-        this.categories = await this.pocketbase.categories.getFullList({ sort: 'name' });
-    }
+        this.avg = Math.round(this.data.reduce((a: number, b: any) => a + (+b.total), 0) / this.data.length);
 
-    async onCustomItemCreating(args: DxTagBoxTypes.CustomItemCreatingEvent) {
-        const newValue = args.text;
+        const dataPerMonth: any = {
+            0: { name: await this.translate.instant('Jan'), value: 0 },
+            1: { name: await this.translate.instant('Feb'), value: 0 },
+            2: { name: await this.translate.instant('Mar'), value: 0 },
+            3: { name: await this.translate.instant('Apr'), value: 0 },
+            4: { name: await this.translate.instant('May'), value: 0 },
+            5: { name: await this.translate.instant('Jun'), value: 0 },
+            6: { name: await this.translate.instant('Jul'), value: 0 },
+            7: { name: await this.translate.instant('Aug'), value: 0 },
+            8: { name: await this.translate.instant('Sep'), value: 0 },
+            9: { name: await this.translate.instant('Oct'), value: 0 },
+            10: { name: await this.translate.instant('Nov'), value: 0 },
+            11: { name: await this.translate.instant('Dec'), value: 0 }
+        }
 
-        const res = await this.pocketbase.categories.create({
-            name: newValue?.toLowerCase()
+        this.data.forEach(async (e: any, index: number) => {
+            const month = new Date(e.date).getMonth();
+            dataPerMonth[month].value += e.total;
         });
 
-        this.categories.unshift(res);
-        args.customItem = newValue;
+        this.dataPerMonth = Object.values(dataPerMonth);
+    }
+
+    customizeLabel = (val: any) => {
+        return {
+            visible: true,
+            customizeText: (valueText: any) => `${val.argument}`
+        } as any;
+    };
+
+    async getCategories() {
+        this.categories = (await this.pocketbase.categories.getFullList({ sort: 'name' }))
+            .map((c: any) => { return { id: c.id, name: c.name } });
+    }
+
+    async onCustomItemCreating(args: DxTagBoxTypes.CustomItemCreatingEvent, row: any) {
+
+        const res: any = await this.pocketbase.categories.create({
+            name:  args.text?.toLowerCase()
+        });
+
+        const item = { id: res.id, name: res.name };
+        this.categories.unshift(item);
+
+        args.customItem = res.name;
+
+        args.component.reset();
+        
+        if (row.value && row.value.length)
+            row.value.push(res.id);
+        else {
+            row.value = [res.id];
+        }
+            
+        console.log(row.value)
+
+    }
+
+    setValue(d: any, val: any) {
+       if (val) d.setValue(val);
     }
 
     async saved(e: any) {
@@ -117,7 +169,6 @@ export class ExpensesComponent {
             await this.pocketbase.expenses.update(this.currentExpense?.id ?? id, { "files+": this.addedFiles }, { headers: { notoast: '1' } });
             this.addedFiles.length = 0;
         }
-
 
         // remove documents
         if (this.currentExpense?.id && this.filesToRemove && this.filesToRemove.length) {
