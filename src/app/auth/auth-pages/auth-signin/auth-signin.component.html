@@ -92,7 +92,7 @@
                         <div class="mb-3">
                             <label for="OTPCode" class="form-label">{{ 'Code' | translate }}</label>
                             <input type="number" class="form-control" id="OTPCode" [(ngModel)]="OTPCode"
-                                placeholder="{{ 'Enter code from email' | translate }}" (input)="otpInput($event?.target)">
+                                placeholder="{{ 'Enter code from email' | translate }}" (input)="otpInput($event.target)">
                         </div>
                     </div>
                     }
