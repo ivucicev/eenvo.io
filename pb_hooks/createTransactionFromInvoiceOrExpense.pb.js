@@ -1,6 +1,5 @@
 /// <reference path="../pb_data/types.d.ts" />
 
-
 onRecordAfterCreateSuccess((e) => {
     const transactionData = {
         expense: e.record.get('id'),
@@ -9,14 +8,12 @@ onRecordAfterCreateSuccess((e) => {
         company: e.record.get('company'),
         total: e.record.get('total'),
         user: e.record.get('user'),
-        //category: e.record.get('category'),
+        category: JSON.stringify(e.record.getRaw('category')),
         created: new Date(),
         updated: new Date(),
         type: 'out'
     };
-    console.log("***********************")
-    console.log( e.record.get('category'))
-    console.log("***********************")
+
     $app.db().insert('transactions', transactionData).execute();
     e.next()
 }, "expenses");

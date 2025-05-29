@@ -70,19 +70,19 @@ export class DashboardComponent {
             batch: 9999,
             expand: 'customer,user',
             filter: `date >= "${start.toISOString()}" && date <= "${end.toISOString()}" && isPO != true && isQuote != true`,
-            sort: '-date'
+            sort: 'date'
         });
         const expenses: any = await this.pb.expenses.getFullList({
             batch: 9999,
             expand: 'customer,category',
             ilter: `date >= "${start.toISOString()}" && date <= "${end.toISOString()}"`,
-            sort: '-date'
+            sort: 'date'
         });
         const transactions: any = await this.pb.transactions.getFullList({
             batch: 9999,
             expand: 'customer,invoice,expense,category',
             ilter: `date >= "${start.toISOString()}" && date <= "${end.toISOString()}"`,
-            sort: '-date'
+            sort: 'date'
         });
 
         this.invoices = [...invoices];

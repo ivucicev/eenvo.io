@@ -12,7 +12,7 @@ import { JsonPipe } from '@angular/common';
 @Component({
     selector: 'eenvo-expenses',
     standalone: true,
-    imports: [DxDataGridModule, DxDropDownBoxModule, JsonPipe, DxPieChartModule, DxChartModule, DxPopupModule, DxFileUploaderModule, StatsWidgetComponent, DxTagBoxModule, TranslateModule, DxButtonModule, CurrencyFormatPipe, DxLookupModule, DxPopupModule, DxSelectBoxModule, FormsModule],
+    imports: [DxDataGridModule, DxDropDownBoxModule, DxPieChartModule, DxChartModule, DxPopupModule, DxFileUploaderModule, StatsWidgetComponent, DxTagBoxModule, TranslateModule, DxButtonModule, CurrencyFormatPipe, DxLookupModule, DxPopupModule, DxSelectBoxModule, FormsModule],
     templateUrl: './expenses.component.html',
     styleUrl: './expenses.component.scss'
 })
@@ -115,35 +115,29 @@ export class ExpensesComponent {
     };
 
     async getCategories() {
-        this.categories = (await this.pocketbase.categories.getFullList({ sort: 'name' }))
-            .map((c: any) => { return { id: c.id, name: c.name } });
+        this.categories = [...(await this.pocketbase.categories.getFullList({ sort: 'name' }))
+            .map((c: any) => { return { id: c.id, name: c.name } })];
     }
 
-    async onCustomItemCreating(args: DxTagBoxTypes.CustomItemCreatingEvent, row: any) {
-
-        const res: any = await this.pocketbase.categories.create({
-            name:  args.text?.toLowerCase()
-        });
-
-        const item = { id: res.id, name: res.name };
-        this.categories.unshift(item);
-
-        args.customItem = res.name;
-
-        args.component.reset();
-        
-        if (row.value && row.value.length)
-            row.value.push(res.id);
-        else {
-            row.value = [res.id];
+    onCustomItemCreating(args: DxTagBoxTypes.CustomItemCreatingEvent, d:any) {
+        const item = { id: new Date().getTime().toString(), name: args.text };
+        const isItemInDataSource = this.categories.some((i: any) => i.id === item.id);
+        if (!isItemInDataSource) {
+            this.categories.unshift(item);
         }
-            
-        console.log(row.value)
-
-    }
-
-    setValue(d: any, val: any) {
-       if (val) d.setValue(val);
+        args.customItem = item;
+        this.pocketbase.categories.create({
+            name: args.text?.toLowerCase()
+        }).then((res: any) => {
+            const m = this.categories.find((i: any) => { return i.id == item.id});
+            const cc = d.value.findIndex((c: any) => c == item.id);
+            if (m)
+                m.id = res.id;
+            if (cc > -1) {
+                d.value[cc] = res.id;
+            }
+            args.component.instance().getDataSource().reload();
+        });
     }
 
     async saved(e: any) {

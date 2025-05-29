@@ -130,15 +130,25 @@ export class TransactionsComponent {
         this.categories = await this.pocketbase.categories.getFullList({ sort: 'name' });
     }
 
-    async onCustomItemCreating(args: DxTagBoxTypes.CustomItemCreatingEvent) {
-        const newValue = args.text;
-
-        const res = await this.pocketbase.categories.create({
-            name: newValue?.toLowerCase()
+    onCustomItemCreating(args: DxTagBoxTypes.CustomItemCreatingEvent, d:any) {
+        const item = { id: new Date().getTime().toString(), name: args.text };
+        const isItemInDataSource = this.categories.some((i: any) => i.id === item.id);
+        if (!isItemInDataSource) {
+            this.categories.unshift(item);
+        }
+        args.customItem = item;
+        this.pocketbase.categories.create({
+            name: args.text?.toLowerCase()
+        }).then((res: any) => {
+            const m = this.categories.find((i: any) => { return i.id == item.id});
+            const cc = d.value.findIndex((c: any) => c == item.id);
+            if (m)
+                m.id = res.id;
+            if (cc > -1) {
+                d.value[cc] = res.id;
+            }
+            args.component.instance().getDataSource().reload();
         });
-
-        this.categories.unshift(res);
-        args.customItem = newValue;
     }
 
     calculateFilterExpression(filterValue: any, selectedFilterOperation: any, target: any) {

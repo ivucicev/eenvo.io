@@ -1,7 +1,3 @@
-<pre>
-    {{ categories | json }}
-
-</pre>
 <div class="h-100 d-flex flex-column">
     <div class="row">
         <div class="col-4">
@@ -72,23 +68,23 @@
                                 </dxo-lookup>
                             </dxi-column>
                             <dxi-column dataField="title" [caption]="'Title' | translate"></dxi-column>
-                            <dxi-column dataField="category" [caption]="'Category' | translate" [selectedFilterOperation]="'contains'"
-                                editCellTemplate="tagsEdit" cellTemplate="tagsTemplate" [allowFiltering]="false">
+                            <dxi-column dataField="category" [caption]="'Category' | translate"
+                                editCellTemplate="tagsEdit" cellTemplate="tagsTemplate"
+                                [calculateFilterExpression]="calculateFilterExpression">
                                 <dxo-lookup [dataSource]="categories" displayExpr="name" valueExpr="id"></dxo-lookup>
                                 <div *dxTemplate="let d of 'tagsEdit'">
-                                    <dx-tag-box [items]="categories" [hideSelectedItems]="true" [acceptCustomValue]="true"
-                                        (onCustomItemCreating)="onCustomItemCreating($event, d)" 
-                                        displayExpr="name"
-                                        valueExpr="id" 
-                                        [value]="d.value"
-                                        (onValueChanged)="setValue(d,$event.value)"
+                                    <dx-tag-box [dataSource]="categories" [hideSelectedItems]="true"
+                                        [acceptCustomValue]="true"
+                                        [searchEnabled]="true" [maxDisplayedTags]="10"
+                                        [showDataBeforeSearch]="true"
+                                        [openOnFieldClick]="true"
+                                        (onCustomItemCreating)="onCustomItemCreating($event, d)" displayExpr="name"
+                                        valueExpr="id" [(ngModel)]="d.value"
+                                        (onSelectionChanged)="d.component.updateDimensions()"
+                                        (onValueChanged)="d.setValue($event.value)"
                                         [inputAttr]="{ 'aria-label': 'Category' }">
                                     </dx-tag-box>
-
-                                    {{ d.value | json}}
-
                                 </div>
-                                <!-- (onSelectionChanged)="d.component.updateDimensions()" -->
                                 <div *dxTemplate="let d of 'tagsTemplate'">
                                     @for(category of d.data?.expand?.category; track $index) { <span
                                         class="badge badge-soft-info me-1">

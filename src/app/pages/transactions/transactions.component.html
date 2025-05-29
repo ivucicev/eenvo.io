@@ -72,15 +72,20 @@
                                 <dxi-validation-rule type="required"></dxi-validation-rule>
                             </dxi-column>
                             <dxi-column dataField="category" [caption]="'Category' | translate"
-                                editCellTemplate="tagsEdit" cellTemplate="tagsTemplate" [calculateFilterExpression]="calculateFilterExpression">
-                                <dxo-lookup [dataSource]="categories" displayExpr="name" valueExpr="id">
-                                </dxo-lookup>
+                                editCellTemplate="tagsEdit" cellTemplate="tagsTemplate"
+                                [calculateFilterExpression]="calculateFilterExpression">
+                                <dxo-lookup [dataSource]="categories" displayExpr="name" valueExpr="id"></dxo-lookup>
                                 <div *dxTemplate="let d of 'tagsEdit'">
-                                    <dx-tag-box [items]="categories" [acceptCustomValue]="true" [value]="d.value"
-                                        (onCustomItemCreating)="onCustomItemCreating($event)" displayExpr="name" valueExpr="id"
-                                        (onValueChanged)="d.setValue($event.value)"
+                                    <dx-tag-box [dataSource]="categories" [hideSelectedItems]="true"
+                                        [acceptCustomValue]="true"
+                                        [searchEnabled]="true" [maxDisplayedTags]="10"
+                                        [showDataBeforeSearch]="true"
+                                        [openOnFieldClick]="true"
+                                        (onCustomItemCreating)="onCustomItemCreating($event, d)" displayExpr="name"
+                                        valueExpr="id" [(ngModel)]="d.value"
                                         (onSelectionChanged)="d.component.updateDimensions()"
-                                        [inputAttr]="{ 'aria-label': 'Category' }" >
+                                        (onValueChanged)="d.setValue($event.value)"
+                                        [inputAttr]="{ 'aria-label': 'Category' }">
                                     </dx-tag-box>
                                 </div>
                                 <div *dxTemplate="let d of 'tagsTemplate'">
