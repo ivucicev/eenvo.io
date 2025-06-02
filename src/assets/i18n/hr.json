@@ -328,5 +328,20 @@
     "Contact support": "Kontaktirajte podršku",
     "Category": "Kategorija",
     "Income per category":"Prihod po kategoriji",
-    "Expenses per category":"Trošak po kategoriji"
+    "Expenses per category":"Trošak po kategoriji",
+    "Jan": "Sij",
+    "Feb": "Velj",
+    "Mar": "Ožu",
+    "Apr": "Tra",
+    "May": "Svi",
+    "Jun": "Lip",
+    "Jul": "Srp",
+    "Aug": "Kol",
+    "Sep": "Ruj",
+    "Oct": "Lis",
+    "Nov": "Stu",
+    "Dec": "Pro",
+    "Avg.": "Pros.",
+    "Categories": "Kategorije",
+    "Failed to delete record. Make sure that the record is not part of a required relation reference. ": "Neuspješno brisanje zapisa. Provjerite je li zapis korišten."
 }

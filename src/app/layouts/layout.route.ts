@@ -9,6 +9,7 @@ import { CompanyComponent } from '../pages/company/company.component';
 import { GeneralSettingsComponent } from '../pages/general-settings/general-settings.component';
 import { ExpensesComponent } from '../pages/expenses/expenses.component';
 import { TransactionsComponent } from '../pages/transactions/transactions.component';
+import { CategoriesComponent } from '../pages/categories/categories.component';
 
 export const PAGE_ROUTES: Routes = [
 	{ path: '', component: DashboardComponent },
@@ -24,4 +25,5 @@ export const PAGE_ROUTES: Routes = [
 	{ path: 'transactions', component: TransactionsComponent },
 	{ path: 'company', component: CompanyComponent },
 	{ path: 'settings', component: GeneralSettingsComponent },
+	{ path: 'categories', component: CategoriesComponent }
 ]

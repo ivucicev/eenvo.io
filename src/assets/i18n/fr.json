@@ -328,5 +328,20 @@
     "Contact support": "Contacter le support",
     "Category": "Catégorie",
     "Income per category":"Revenu par catégorie",
-    "Expenses per category":"Dépenses par catégorie"
+    "Expenses per category":"Dépenses par catégorie",
+    "Jan": "Janv",
+    "Feb": "Févr",
+    "Mar": "Mars",
+    "Apr": "Avr",
+    "May": "Mai",
+    "Jun": "Juin",
+    "Jul": "Juil",
+    "Aug": "Août",
+    "Sep": "Sept",
+    "Oct": "Oct",
+    "Nov": "Nov",
+    "Dec": "Déc",
+    "Avg.": "Moy.",
+    "Categories": "Catégories",
+    "Failed to delete record. Make sure that the record is not part of a required relation reference. ": "Échec de la suppression de l'enregistrement. Assurez-vous que l'enregistrement ne fait pas partie d'une référence de relation requise."
 }

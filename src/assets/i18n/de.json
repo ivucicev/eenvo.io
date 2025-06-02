@@ -328,5 +328,20 @@
     "Contact support": "Support kontaktieren",
     "Category": "Kategorie",
     "Income per category":"Einnahmen pro Kategorie",
-    "Expenses per category":"Ausgaben pro Kategorie"
+    "Expenses per category":"Ausgaben pro Kategorie",
+    "Jan": "Jan",
+    "Feb": "Feb",
+    "Mar": "Mär",
+    "Apr": "Apr",
+    "May": "Mai",
+    "Jun": "Jun",
+    "Jul": "Jul",
+    "Aug": "Aug",
+    "Sep": "Sep",
+    "Oct": "Okt",
+    "Nov": "Nov",
+    "Dec": "Dez",
+    "Avg.": "Durchschn.",
+    "Categories": "Kategorien",
+    "Failed to delete record. Make sure that the record is not part of a required relation reference. ": "Löschen des Datensatzes fehlgeschlagen. Stellen Sie sicher, dass der Datensatz nicht Teil einer erforderlichen Beziehungsreferenz ist."
 }

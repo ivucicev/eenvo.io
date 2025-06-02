@@ -328,5 +328,20 @@
     "Contact support": "Contatta il supporto",
     "Category": "Categoria",
     "Income per category":"Entrate per categoria",
-    "Expenses per category":"Spese per categoria"
+    "Expenses per category":"Spese per categoria",
+    "Jan": "Gen",
+    "Feb": "Feb",
+    "Mar": "Mar",
+    "Apr": "Apr",
+    "May": "Mag",
+    "Jun": "Giu",
+    "Jul": "Lug",
+    "Aug": "Ago",
+    "Sep": "Set",
+    "Oct": "Ott",
+    "Nov": "Nov",
+    "Dec": "Dic",
+    "Avg.": "Media",
+    "Categories": "Categorie",
+    "Failed to delete record. Make sure that the record is not part of a required relation reference. ": "Impossibile eliminare il record. Assicurati che il record non faccia parte di un riferimento di relazione richiesto."
 }

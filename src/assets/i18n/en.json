@@ -327,6 +327,21 @@
     "Failed to create record. Price - Cannot be blank. Title - Cannot be blank. Total - Cannot be blank. ": "Failed to create record. Price - Cannot be blank. Title - Cannot be blank. Total - Cannot be blank. ",
     "Contact support": "Contact support",
     "Category": "Category",
-    "Income per category":"Income per category",
-    "Expenses per category":"Expenses per category"
+    "Income per category": "Income per category",
+    "Expenses per category": "Expenses per category",
+    "Jan": "Jan",
+    "Feb": "Feb",
+    "Mar": "Mar",
+    "Apr": "Apr",
+    "May": "May",
+    "Jun": "Jun",
+    "Jul": "Jul",
+    "Aug": "Aug",
+    "Sep": "Sep",
+    "Oct": "Oct",
+    "Nov": "Nov",
+    "Dec": "Dec",
+    "Avg.": "Avg.",
+    "Categories": "Categories",
+    "Failed to delete record. Make sure that the record is not part of a required relation reference. ": "Failed to delete record. Make sure that the record is not part of a required relation reference. "
 }
