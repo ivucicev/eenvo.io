@@ -7,7 +7,7 @@ COPY . .
 ARG DEVEXTREME_KEY
 ENV DEVEXTREME_KEY=$DEVEXTREME_KEY
 
-RUN npm install --silent
+RUN npm install --silent --force
 RUN npm install -g @angular/cli
 RUN ng build --configuration production
 
