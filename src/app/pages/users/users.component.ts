@@ -7,7 +7,6 @@ import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'eenvo-users',
-    standalone: true,
     imports: [DxDataGridModule, DxFileUploaderModule, TranslatePipe, FormsModule],
     templateUrl: './users.component.html',
     styleUrl: './users.component.scss'

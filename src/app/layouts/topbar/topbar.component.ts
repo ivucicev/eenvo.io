@@ -16,7 +16,6 @@ import { AppConstants } from '../../core/constants/AppConstants';
 
 @Component({
     selector: 'eenvo-topbar',
-    standalone: true,
     imports: [SimplebarAngularModule, NgbDropdownModule, CommonModule, TranslatePipe, RouterModule],
     templateUrl: './topbar.component.html',
     styleUrl: './topbar.component.scss'

@@ -8,7 +8,6 @@ import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'eenvo-auth-signin',
-    standalone: true,
     imports: [
         CommonModule,
         TranslatePipe,

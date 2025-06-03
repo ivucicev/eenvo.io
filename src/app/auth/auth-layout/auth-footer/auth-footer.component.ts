@@ -3,7 +3,6 @@ import * as pkg from '../../../../../package.json'
 
 @Component({
     selector: 'eenvo-auth-footer',
-    standalone: true,
     imports: [],
     templateUrl: './auth-footer.component.html',
     styleUrl: './auth-footer.component.scss'

@@ -9,7 +9,6 @@ import { StatsWidgetComponent } from '../../../core/componate/stats-widget/stats
 
 @Component({
     selector: 'eenvo-dashboard',
-    standalone: true,
     imports: [DxDateRangeBoxModule, StatsWidgetComponent, DxChartModule, DxPieChartModule, DxDropDownButtonModule, TranslateModule],
     templateUrl: './dashboard.component.html',
     styleUrl: './dashboard.component.scss'

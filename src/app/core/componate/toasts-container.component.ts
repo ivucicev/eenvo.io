@@ -6,10 +6,9 @@ import { ToastService } from '../services/toast.service';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
-	selector: 'eenvo-toasts',
-	standalone: true,
-	imports: [NgbToastModule, TranslateModule],
-	template: `
+    selector: 'eenvo-toasts',
+    imports: [NgbToastModule, TranslateModule],
+    template: `
 		@for (toast of toastService.toasts; track toast) {
 			<ngb-toast
 				[class]="'toast border-bottom overflow-hidden mt-3'"
@@ -38,7 +37,7 @@ import { TranslateModule } from '@ngx-translate/core';
 			</ngb-toast>
 		}
 	`,
-	host: { class: 'toast-container position-fixed top-0 p-3', style: 'z-index: 10000; left: calc(50% - 190px);' },
+    host: { class: 'toast-container position-fixed top-0 p-3', style: 'z-index: 10000; left: calc(50% - 190px);' }
 })
 export class ToastsContainer {
 	toastService = inject(ToastService);

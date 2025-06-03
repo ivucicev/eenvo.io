@@ -13,7 +13,6 @@ import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'eenvo-layout',
-    standalone: true,
     imports: [VerticalComponent, HorizontalComponent, CommonModule, ToastsContainer],
     templateUrl: './layout.component.html',
     styleUrls: ['./layout.component.scss']

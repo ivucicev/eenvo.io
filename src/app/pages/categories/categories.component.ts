@@ -5,11 +5,10 @@ import { PocketBaseService } from '../../core/services/pocket-base.service';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
-	selector: 'app-categories',
-	standalone: true,
-	imports: [DxDataGridModule, TranslatePipe],
-	templateUrl: './categories.component.html',
-	styleUrl: './categories.component.scss'
+    selector: 'app-categories',
+    imports: [DxDataGridModule, TranslatePipe],
+    templateUrl: './categories.component.html',
+    styleUrl: './categories.component.scss'
 })
 export class CategoriesComponent {
 	public data: any;

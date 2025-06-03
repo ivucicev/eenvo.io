@@ -8,7 +8,6 @@ import { ToastService } from '../../../core/services/toast.service';
 
 @Component({
     selector: 'eenvo-auth-pass-reset',
-    standalone: true,
     imports: [CommonModule, RouterModule, ReactiveFormsModule, TranslatePipe],
     templateUrl: './auth-pass-reset.component.html',
     styleUrl: './auth-pass-reset.component.scss'

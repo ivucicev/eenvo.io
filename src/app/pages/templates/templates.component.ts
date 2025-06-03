@@ -5,11 +5,10 @@ import { PocketBaseService } from '../../core/services/pocket-base.service';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
-	selector: 'eenvo-templates',
-	standalone: true,
-	imports: [DxDataGridModule, TranslatePipe],
-	templateUrl: './templates.component.html',
-	styleUrl: './templates.component.scss'
+    selector: 'eenvo-templates',
+    imports: [DxDataGridModule, TranslatePipe],
+    templateUrl: './templates.component.html',
+    styleUrl: './templates.component.scss'
 })
 export class TemplatesComponent {
 	public data: any;

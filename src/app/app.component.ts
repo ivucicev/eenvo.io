@@ -11,7 +11,6 @@ import { FooterActionBarComponent } from './shared/footer-action-bar/footer-acti
 
 @Component({
     selector: 'eenvo-root',
-    standalone: true,
     imports: [RouterOutlet, FooterActionBarComponent],
     templateUrl: './app.component.html',
     styleUrl: './app.component.scss'

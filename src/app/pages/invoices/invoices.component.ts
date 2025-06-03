@@ -14,7 +14,6 @@ import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'eenvo-invoices',
-    standalone: true,
     imports: [DxDataGridModule, CurrencyFormatPipe, TranslateModule, DxButtonModule, DxPopupModule, InvoiceDetailComponent, DxSelectBoxModule, FormsModule, StatsWidgetComponent, ActionBarComponent],
     templateUrl: './invoices.component.html',
     styleUrl: './invoices.component.scss'

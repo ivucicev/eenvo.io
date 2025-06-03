@@ -4,7 +4,6 @@ import jsPDF from 'jspdf';
 
 @Component({
     selector: 'eenvo-invoice-print',
-    standalone: true,
     imports: [],
     templateUrl: './invoice-print.component.html',
     styleUrl: './invoice-print.component.scss'

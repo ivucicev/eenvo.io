@@ -12,7 +12,6 @@ import { LanguageService } from '../../core/services/language.service';
 
 @Component({
     selector: 'eenvo-sidebar',
-    standalone: true,
     imports: [TranslateModule, SimplebarAngularModule, CommonModule, RouterModule],
     templateUrl: './sidebar.component.html',
     styleUrl: './sidebar.component.scss',

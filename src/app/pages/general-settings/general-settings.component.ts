@@ -10,7 +10,6 @@ import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-general-settings',
-    standalone: true,
     imports: [
         DxSelectBoxModule,
         ReactiveFormsModule,

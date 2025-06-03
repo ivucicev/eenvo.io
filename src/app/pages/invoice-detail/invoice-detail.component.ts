@@ -9,7 +9,6 @@ import { DateInputDirective } from '../../core/directives/date-input.directive';
 
 @Component({
     selector: 'eenvo-invoice-detail',
-    standalone: true,
     imports: [ReactiveFormsModule, DxNumberBoxModule, CommonModule, FormsModule, TranslateModule, DateInputDirective],
     templateUrl: './invoice-detail.component.html',
     styleUrl: './invoice-detail.component.scss'

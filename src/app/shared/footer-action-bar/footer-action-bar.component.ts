@@ -5,7 +5,6 @@ import { ButtonAction, ButtonActionService } from '../../core/services/button-ac
 
 @Component({
     selector: 'eenvo-footer-action-bar',
-    standalone: true,
     imports: [ActionBarComponent],
     templateUrl: './footer-action-bar.component.html',
     styleUrl: './footer-action-bar.component.scss'

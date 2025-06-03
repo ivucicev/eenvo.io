@@ -11,7 +11,6 @@ import { JsonPipe } from '@angular/common';
 
 @Component({
     selector: 'eenvo-expenses',
-    standalone: true,
     imports: [DxDataGridModule, DxDropDownBoxModule, DxPieChartModule, DxChartModule, DxPopupModule, DxFileUploaderModule, StatsWidgetComponent, DxTagBoxModule, TranslateModule, DxButtonModule, CurrencyFormatPipe, DxLookupModule, DxPopupModule, DxSelectBoxModule, FormsModule],
     templateUrl: './expenses.component.html',
     styleUrl: './expenses.component.scss'

@@ -8,7 +8,6 @@ import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'eenvo-customers',
-    standalone: true,
     imports: [DxDataGridModule, TranslatePipe, DxButtonModule],
     templateUrl: './customers.component.html',
     styleUrl: './customers.component.scss'

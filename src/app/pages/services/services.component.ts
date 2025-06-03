@@ -6,7 +6,6 @@ import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'eenvo-services',
-    standalone: true,
     imports: [DxDataGridModule, DxNumberBoxModule, TranslatePipe],
     templateUrl: './services.component.html',
     styleUrl: './services.component.scss'

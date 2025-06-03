@@ -9,7 +9,6 @@ import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'eenvo-company',
-    standalone: true,
     imports: [
         DxSelectBoxModule,
         DxTextAreaModule,

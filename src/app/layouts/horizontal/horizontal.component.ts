@@ -4,11 +4,10 @@ import { RouterModule } from '@angular/router';
 import { TopbarComponent } from '../topbar/topbar.component';
 
 @Component({
-  selector: 'eenvo-horizontal',
-  standalone: true,
-  imports: [TopbarComponent, RouterModule, HorizontalTopbarComponent],
-  templateUrl: './horizontal.component.html',
-  styleUrl: './horizontal.component.scss'
+    selector: 'eenvo-horizontal',
+    imports: [TopbarComponent, RouterModule, HorizontalTopbarComponent],
+    templateUrl: './horizontal.component.html',
+    styleUrl: './horizontal.component.scss'
 })
 export class HorizontalComponent {
 

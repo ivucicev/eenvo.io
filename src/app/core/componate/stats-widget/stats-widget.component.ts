@@ -4,7 +4,6 @@ import { CountUpModule } from 'ngx-countup';
 
 @Component({
     selector: 'eenvo-stats-widget',
-    standalone: true,
     imports: [CountUpModule, TranslateModule],
     templateUrl: './stats-widget.component.html',
     styleUrl: './stats-widget.component.scss'

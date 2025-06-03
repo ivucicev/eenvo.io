@@ -13,7 +13,6 @@ import { LanguageService } from '../../core/services/language.service';
     selector: 'eenvo-horizontal-topbar',
     templateUrl: './horizontal-topbar.component.html',
     styleUrls: ['./horizontal-topbar.component.scss'],
-    standalone: true,
     imports: [TranslateModule, SimplebarAngularModule, CommonModule, RouterModule],
     providers: [LanguageService]
 })

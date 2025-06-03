@@ -8,7 +8,6 @@ import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
     selector: 'eenvo-auth',
-    standalone: true,
     imports: [AuthHeaderComponent, RouterModule, AuthFooterComponent, ToastsContainer],
     templateUrl: './auth.component.html',
     styleUrls: ['./auth.component.scss']

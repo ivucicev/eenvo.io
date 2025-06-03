@@ -6,11 +6,10 @@ import { RootReducerState } from '../../store';
 import { Store } from '@ngrx/store';
 
 @Component({
-  selector: 'eenvo-vertical',
-  standalone: true,
-  imports: [TopbarComponent, SidebarComponent, RouterModule],
-  templateUrl: './vertical.component.html',
-  styleUrls: ['./vertical.component.scss']
+    selector: 'eenvo-vertical',
+    imports: [TopbarComponent, SidebarComponent, RouterModule],
+    templateUrl: './vertical.component.html',
+    styleUrls: ['./vertical.component.scss']
 })
 export class VerticalComponent {
 

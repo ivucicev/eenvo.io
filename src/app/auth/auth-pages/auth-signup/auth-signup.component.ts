@@ -6,16 +6,15 @@ import { PocketBaseService } from '../../../core/services/pocket-base.service';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
-	selector: 'eenvo-auth-signup',
-	standalone: true,
-	imports: [
-		CommonModule,
-		RouterModule,
+    selector: 'eenvo-auth-signup',
+    imports: [
+        CommonModule,
+        RouterModule,
         TranslatePipe,
-		ReactiveFormsModule
-	],
-	templateUrl: './auth-signup.component.html',
-	styleUrl: './auth-signup.component.scss'
+        ReactiveFormsModule
+    ],
+    templateUrl: './auth-signup.component.html',
+    styleUrl: './auth-signup.component.scss'
 })
 export class AuthSignupComponent {
 	registerForm: FormGroup;

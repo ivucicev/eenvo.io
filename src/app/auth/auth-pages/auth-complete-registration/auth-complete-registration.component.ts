@@ -7,7 +7,6 @@ import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'eenvo-auth-complete-registration',
-    standalone: true,
     imports: [CommonModule, RouterModule, ReactiveFormsModule, TranslatePipe],
     templateUrl: './auth-complete-registration.component.html',
     styleUrl: './auth-complete-registration.component.scss'

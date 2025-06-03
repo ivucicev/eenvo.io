@@ -6,7 +6,6 @@ import { ButtonAction } from '../../core/services/button-action.service';
 
 @Component({
     selector: 'eenvo-action-bar',
-    standalone: true,
     imports: [NgClass, SimplebarAngularModule, TranslatePipe, NgTemplateOutlet],
     templateUrl: './action-bar.component.html',
     styleUrl: './action-bar.component.scss'
