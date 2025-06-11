@@ -94,7 +94,7 @@ export class StatsWidgetComponent {
         this.stats = {
             totalLast31: totalLast31.toFixed(2),
             totalChange: totalChange.toFixed(2),
-            totalChangePrefix: totalPrevPeriod > totalLast31 ? '-' : '+',
+            totalChangePrefix: totalPrevPeriod > totalLast31 ? '' : '+',
             totalLast31Count
         };
 

@@ -7,10 +7,16 @@
                 <p class="text-uppercase fw-medium fs-14 text-muted mb-0" [class.text-white-75]="color() == 'primary'">
                     {{ name() | translate }}
                     @if (title()) {
-                    <span [class.text-success]="color() != 'primary'" class="fs-14 mb-0 ms-1"
-                        [class.text-white]="color() == 'primary'">
-                        <i class="ri-arrow-right-up-line fs-13 align-middle"></i> {{ stats.totalChangePrefix
-                        }}<span class="counter-value" [countUp]="stats.totalChange">0</span>%
+                    <span [class.text-success]="stats.totalChangePrefix == '+'"
+                        [class.text-danger]="stats.totalChangePrefix == ''" [class.text-white]="color() == 'primary'" class="fs-14 mb-0 ms-1">
+                        @if (stats.totalChangePrefix == '+') {
+                        <i class="ri-arrow-right-up-line fs-13 align-middle"></i>
+                        }
+                        @if (!stats.totalChangePrefix) {
+                        <i class="ri-arrow-right-down-line fs-13 align-middle"></i>
+                        }
+                        {{ stats.totalChangePrefix }}
+                        <span class="counter-value" [countUp]="stats.totalChange">0</span>%
                     </span>
                     }
                 </p>
