@@ -267,7 +267,7 @@ export class InvoiceGeneratorService {
                 if (!invoice.hideValues) {
                     doc.text(await this.getTranslation("Subtotal:"), RIGHT_END - 55, Y += TEXT_SPACE);
                     doc.text(this.currency.transform(invoice.subTotal), RIGHT_END, Y, { align: 'right' });
-    
+
                     doc.text(await this.getTranslation("Discount:"), RIGHT_END - 55, Y += TEXT_SPACE);
                     doc.text(this.currency.transform(invoice.discountValue), RIGHT_END, Y, { align: 'right' });
                 }
@@ -289,7 +289,7 @@ export class InvoiceGeneratorService {
                     }
 
                 }
-                
+
                 if (!invoice.hideValues) {
                     doc.setDrawColor(180, 180, 180);
                     doc.setLineWidth(0.1);
@@ -369,7 +369,7 @@ export class InvoiceGeneratorService {
                 doc.text(invoice.expand.user.name, LEFT_MARGIN, Y += TEXT_SPACE);
 
                 // signature part
-                if (this.isPO){
+                if (this.isPO) {
 
                     doc.setFont(this.FONT_NAME, "bold")
                     doc.text(await this.getTranslation("Approved by"), RIGHT_END - 55, Y);
@@ -380,7 +380,7 @@ export class InvoiceGeneratorService {
                     doc.setLineWidth(0.1);
                     doc.line(0 + LEFT_MARGIN, Y += 15, LEFT_MARGIN + 55, Y);
 
-                    
+
                     //right
                     doc.setDrawColor(180, 180, 180);
                     doc.setLineWidth(0.1);
@@ -397,8 +397,18 @@ export class InvoiceGeneratorService {
                     const blob = new Blob([out], { type: 'application/pdf' });
                     resolve(this.sanitizer.bypassSecurityTrustResourceUrl(`${URL.createObjectURL(blob)}#toolbar=1`))
                 }
-                else
-                    resolve(doc.save(`${invoice.number}_${new Date().getFullYear()}.pdf`));
+                else {
+
+                    const name = `${invoice.number}_${new Date().getFullYear()}.pdf`;
+                    const pdf = doc.save(name)
+                    const pdfBlob = doc.output('blob');
+                    const formData = new FormData();
+                    formData.append('pdfUrl', pdfBlob, name);
+
+                    await this.pocketbase.invoices.update(invoice.id, formData, { headers: { "notoast": "1" } });
+
+                    resolve(pdf);
+                }
 
                 reject(null)
 
