@@ -11,6 +11,7 @@ import { InvoiceGeneratorService } from '../../core/services/invoice-generator.s
 import { RowDblClickEvent } from 'devextreme/ui/data_grid';
 import { ActionBarComponent } from '../../shared/action-bar/action-bar.component';
 import { ActivatedRoute } from '@angular/router';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
     selector: 'eenvo-invoices',
@@ -51,7 +52,9 @@ export class InvoicesComponent {
 
     constructor(
         private pocketbase: PocketBaseService,
-        private invoiceService: InvoiceGeneratorService, private activatedRoute: ActivatedRoute) {
+        private invoiceService: InvoiceGeneratorService,
+        private activatedRoute: ActivatedRoute,
+        private sanitizer: DomSanitizer) {
 
         activatedRoute.title.subscribe(title => {
             this.isQuote = title == 'Quotes';
@@ -237,13 +240,33 @@ export class InvoicesComponent {
         this.grid?.instance.deleteRow(this.grid?.instance.getRowIndexByKey(invoice));
     }
 
-    async download(id: any) {
-        await this.invoiceService.generate(id);
+    async download(invoice: any) {
+        const response = await fetch(await this.getPDFFile(invoice), { mode: 'cors' });
+        const disposition = response.headers.get('Content-Disposition');
+        let filename = 'downloaded-file';
+
+        if (disposition && disposition.includes('filename=')) {
+            const match = disposition.match(/filename="?([^"]+)"?/);
+            if (match && match[1]) {
+                filename = match[1];
+                filename = filename.replace(/(_\d{4})_[^_]+\.pdf$/, '$1.pdf');
+            }
+        }
+
+        const blob = await response.blob();
+        const blobUrl = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = blobUrl;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(blobUrl);
     }
 
-    async preview(id: any) {
+    async preview(invoice: any) {
         try {
-            this.pdf = await this.invoiceService.generate(id, true);
+            this.pdf = this.sanitizer.bypassSecurityTrustResourceUrl(`${await this.getPDFFile(invoice)}#toolbar=1`)
         } catch (e) {
             console.error(e);
         }
@@ -277,16 +300,21 @@ export class InvoicesComponent {
 
     downloadPDF = async (e: any) => {
         e?.event?.preventDefault();
-        await this.invoiceService.generate(e.row?.data?.id)
+        await this.download(e.row?.data);
     }
 
     previewPDF = async (e: any) => {
         e?.event?.preventDefault();
-        this.pdf = await this.invoiceService.generate(e.row?.data?.id, true)
+        this.pdf = this.sanitizer.bypassSecurityTrustResourceUrl(`${await this.getPDFFile(e.row?.data)}#toolbar=1`)
     }
 
     setFullScreen = async () => {
         this.fullScreen = !this.fullScreen
+    }
+
+    private async getPDFFile(invoice: any) {
+        const token = await this.pocketbase.files.getToken({ headers: { notoast: '1' } });
+        return this.pocketbase.files.getURL(invoice, invoice['pdfUrl'], { token })
     }
 
 }

@@ -6,6 +6,7 @@ import { environment } from '../../../environments/environment';
 import { TranslateModule } from '@ngx-translate/core';
 import { DxNumberBoxModule } from 'devextreme-angular';
 import { DateInputDirective } from '../../core/directives/date-input.directive';
+import { InvoiceGeneratorService } from '../../core/services/invoice-generator.service';
 
 @Component({
     selector: 'eenvo-invoice-detail',
@@ -26,12 +27,13 @@ export class InvoiceDetailComponent {
     showAdditionalTaxes = true;
     readonly = false;
 
-    public invoice = model<any>();
+    public invoice: any = model<any>();
     public invoiceCreated = output<any>();
+    public invoiceUpdated = output<any>();
     public isQuote = input<boolean>(false);
     public isPO = input<boolean>(false);
 
-    constructor(private formBuilder: UntypedFormBuilder, private pocketbase: PocketBaseService) {
+    constructor(private formBuilder: UntypedFormBuilder, private pocketbase: PocketBaseService, private invoiceService: InvoiceGeneratorService) {
 
         this.initForm();
         this.getServices();
@@ -213,7 +215,7 @@ export class InvoiceDetailComponent {
         if (c.invoiceNote) {
             this.invoicesForm.patchValue({ note: c.invoiceNote });
         }
-        
+
     }
 
     async serviceSelected(e: any, index: number) {
@@ -285,10 +287,18 @@ export class InvoiceDetailComponent {
         invoice.isPO = this.isPO();
 
         if (invoice.id) {
-            const updated = await this.pocketbase.invoices.update(invoice.id, invoice);
+            const updated: any = await this.pocketbase.invoices.update(invoice.id, invoice);
+            this.invoiceService.generateAndSave(invoice.id);
+            invoice.pdfUrl = updated.pdfUrl;
+            this.invoice.pdfUrl = updated.pdfUrl;
+            this.invoiceUpdated.emit(updated);
         } else {
-            const created = await this.pocketbase.invoices.create(invoice);
+            const created: any = await this.pocketbase.invoices.create(invoice);
             this.invoicesForm.patchValue({ id: created.id });
+            invoice.id = created.id;
+            invoice.pdfUrl = created.pdfUrl;
+            this.invoice.pdfUrl = created.pdfUrl;
+            this.invoiceService.generateAndSave(invoice.id);
             this.invoiceCreated.emit(created);
         }
 

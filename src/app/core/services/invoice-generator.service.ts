@@ -44,7 +44,7 @@ export class InvoiceGeneratorService {
         return country.countryName[this.language] ?? country.country2LetterCode;
     }
 
-    generate = async (id: any, preview = false) => {
+    generateAndSave = async (id: any) => {
 
         const invoice: any = await this.pocketbase.invoices.getOne(id, { expand: 'customer,user,company,items' });
 
@@ -60,8 +60,6 @@ export class InvoiceGeneratorService {
         this.language = invoice.language || 'en';
         this.isQuote = invoice.isQuote;
         this.isPO = invoice.isPO;
-
-        //this.translate.use(invoice.language || 'en')
 
         const doc: jsPDF | any = new jsPDF('p', 'mm', 'a4', true);
 
@@ -391,26 +389,14 @@ export class InvoiceGeneratorService {
                 await this.addFooter(doc, invoice, LEFT_MARGIN, RIGHT_MARGIN);
 
                 // Generate PDF
+                const name = `${invoice.number}_${new Date().getFullYear()}.pdf`;
+                const pdfBlob = doc.output('blob');
+                const formData = new FormData();
+                formData.append('pdfUrl', pdfBlob, name);
 
-                if (preview) {
-                    var out = doc.output('blob');
-                    const blob = new Blob([out], { type: 'application/pdf' });
-                    resolve(this.sanitizer.bypassSecurityTrustResourceUrl(`${URL.createObjectURL(blob)}#toolbar=1`))
-                }
-                else {
+                const savedInvoice: any = await this.pocketbase.invoices.update(invoice.id, formData, { headers: { "notoast": "1" } });
 
-                    const name = `${invoice.number}_${new Date().getFullYear()}.pdf`;
-                    const pdf = doc.save(name)
-                    const pdfBlob = doc.output('blob');
-                    const formData = new FormData();
-                    formData.append('pdfUrl', pdfBlob, name);
-
-                    await this.pocketbase.invoices.update(invoice.id, formData, { headers: { "notoast": "1" } });
-
-                    resolve(pdf);
-                }
-
-                reject(null)
+                resolve(savedInvoice.pdfUrl);
 
             }
         })

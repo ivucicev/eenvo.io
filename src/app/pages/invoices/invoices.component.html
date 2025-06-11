@@ -218,11 +218,11 @@
                 </button>
                 }
                 }
-                <button (click)="preview(currentInvoice.id)" class="btn btn-info ms-1">
+                <button [disabled]="!currentInvoice?.pdfUrl" (click)="preview(currentInvoice)" class="btn btn-info ms-1">
                     <i class="ri-eye-fill align-bottom mx-1"></i>
                     {{ 'Preview' | translate }}
                 </button>
-                <button (click)="download(currentInvoice.id)" class="btn btn-success ms-1">
+                <button (click)="download(currentInvoice)" class="btn btn-success ms-1">
                     <i class="ri-download-2-line align-bottom mx-1"></i>
                     {{ 'Download' | translate }}
                 </button>
