@@ -294,6 +294,10 @@ export class InvoicesComponent {
         this.currentInvoice = e;
     }
 
+    public invoiceUpdatedEvent(e: any) {
+        this.currentInvoice = e;
+    }
+
     rowDoubleClicked(e: RowDblClickEvent) {
         this.editInvoice(e);
     }

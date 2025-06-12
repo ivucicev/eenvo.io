@@ -189,7 +189,7 @@
     [(visible)]="invoicePopupVisible" [fullScreen]="fullScreen" (onHiding)="reload()">
 
     <div *dxTemplate="let data of 'content'">
-        <eenvo-invoice-detail class="h-grow" [isQuote]="isQuote" [isPO]="isPO" (invoiceCreated)="invoiceCreatedEvent($event)"
+        <eenvo-invoice-detail class="h-grow" [isQuote]="isQuote" [isPO]="isPO" (invoiceUpdated)="invoiceUpdatedEvent($event)" (invoiceCreated)="invoiceCreatedEvent($event)"
             #invoiceDetail [invoice]="currentInvoice">
         </eenvo-invoice-detail>
 

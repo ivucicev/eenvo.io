@@ -288,17 +288,19 @@ export class InvoiceDetailComponent {
 
         if (invoice.id) {
             const updated: any = await this.pocketbase.invoices.update(invoice.id, invoice);
-            this.invoiceService.generateAndSave(invoice.id);
-            invoice.pdfUrl = updated.pdfUrl;
-            this.invoice.pdfUrl = updated.pdfUrl;
+            const url = await this.invoiceService.generateAndSave(invoice.id);
+            invoice.pdfUrl = url;
+            this.invoice.pdfUrl = url;
+            updated.pdfUrl = url;
             this.invoiceUpdated.emit(updated);
         } else {
             const created: any = await this.pocketbase.invoices.create(invoice);
             this.invoicesForm.patchValue({ id: created.id });
+            const url = await this.invoiceService.generateAndSave(invoice.id);
             invoice.id = created.id;
-            invoice.pdfUrl = created.pdfUrl;
-            this.invoice.pdfUrl = created.pdfUrl;
-            this.invoiceService.generateAndSave(invoice.id);
+            invoice.pdfUrl = url;
+            this.invoice.pdfUrl = url;
+            created.pdfUrl = url;
             this.invoiceCreated.emit(created);
         }
 
