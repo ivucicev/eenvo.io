@@ -154,9 +154,9 @@
     </div>
 </div>
 
-<dx-popup [wrapperAttr]="{class: 'detail-popup'}" [showTitle]="true" [dragEnabled]="false" [resizeEnabled]="true"
+<dx-popup [wrapperAttr]="{class: 'preview-modal'}" [showTitle]="true" [dragEnabled]="false" [resizeEnabled]="true"
     [restorePosition]="true" [title]="previewTitle" [fullScreen]="fullScreen" [hideOnOutsideClick]="true"
-    [showCloseButton]="true" [(visible)]="showPreview" class="preview-modal">
+    [showCloseButton]="true" [(visible)]="showPreview">
     <dxi-popup-toolbar-item widget="dxButton" toolbar="top" location="after" [options]="{
                 icon: 'fullscreen',
                 onClick: setFullScreen }">

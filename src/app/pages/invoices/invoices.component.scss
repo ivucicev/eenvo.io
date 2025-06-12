@@ -1,3 +1,7 @@
 .form-select-sm {
     height: 34px;
 }
+
+ ::ng-deep .preview-modal .dx-popup-content {
+    padding: 0 !important;
+}

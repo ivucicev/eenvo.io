@@ -170,15 +170,15 @@
     </div>
 </div>
 
-<dx-popup [wrapperAttr]="{class: 'detail-popup'}" [showTitle]="true" [dragEnabled]="false" [resizeEnabled]="true"
+<dx-popup [wrapperAttr]="{class: 'preview-modal'}" [showTitle]="true" [dragEnabled]="false" [resizeEnabled]="true"
     [restorePosition]="true" [fullScreen]="fullScreen" [hideOnOutsideClick]="true" [showCloseButton]="true"
-    [(visible)]="this.pdf" class="preview-modal">
+    [(visible)]="this.pdf">
     <dxi-popup-toolbar-item widget="dxButton" toolbar="top" location="after" [options]="{
             icon: 'fullscreen',
             onClick: setFullScreen
         }">
     </dxi-popup-toolbar-item>
-    <div *dxTemplate="let data of 'content'" class="padding-0">
+    <div *dxTemplate="let data of 'content'" class="p-0">
         <iframe controls [src]="this.pdf" type="application/pdf" width="100%" height="100%"></iframe>
     </div>
 </dx-popup>
