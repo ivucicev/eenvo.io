@@ -66,7 +66,33 @@ jobs:
             ivucicev/eenvo.io:latest
             ivucicev/eenvo.io:${{ github.run_id }}
           labels: ${{ steps.meta.outputs.labels }}
+      
+      - name: Build and push Web App Docker image
+        if: contains(github.event.head_commit.message, 'ci')
+        id: push-webapp
+        uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
+        with:
+          context: .
+          file: ./dockerfile.web
+          push: true
+          tags: |
+            ivucicev/eenvo-web:latest
+            ivucicev/eenvo-web:${{ github.run_id }}
+          labels: ${{ steps.meta.outputs.labels }}
 
+      - name: Build and push Web API Docker image
+        if: contains(github.event.head_commit.message, 'ci')
+        id: push-webapi
+        uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
+        with:
+          context: .
+          file: ./dockerfile.api
+          push: true
+          tags: |
+            ivucicev/eenvo-api:latest
+            ivucicev/eenvo-api:${{ github.run_id }}
+          labels: ${{ steps.meta.outputs.labels }}
+          
       - name: Run script on DigitalOcean server
         if: contains(github.event.head_commit.message, 'release')
         uses: appleboy/ssh-action@v0.1.0

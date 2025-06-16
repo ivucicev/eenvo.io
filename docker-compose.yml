@@ -1,25 +1,15 @@
 version: '3.8'
 
 services:
-  angular-app:
-    image: node:22.13
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: angular-builder
-    volumes:
-      - ./dist/eenvo:/usr/share/nginx/html
+  eenvo-web:
+    image: ivucicev/eenvo-web:latest
     environment:
       DEVEXTREME_KEY: ${DEVEXTREME_KEY}
     ports:
       - "80:80"
 
-  pocketbase:
-    image: alpine:latest
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: pocketbase-builder
+  eenvo-api:
+    image: ivucicev/eenvo-api:latest
     volumes:
       - ./pb_data:/pb/pb_data
     ports:
@@ -27,42 +17,3 @@ services:
     environment:
       POCKETBASE_ADMIN_EMAIL: ${POCKETBASE_ADMIN_EMAIL}
       POCKETBASE_ADMIN_PASS: ${POCKETBASE_ADMIN_PASS}
-
-  pocketbase-demo:
-    image: alpine:latest
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: pocketbase-builder
-    volumes:
-      - ./pb_demo_data:/pb-demo/pb_data
-    ports:
-      - "8090:8090"
-    environment:
-      POCKETBASE_ADMIN_EMAIL: ${POCKETBASE_ADMIN_EMAIL}
-      POCKETBASE_ADMIN_PASS: ${POCKETBASE_ADMIN_PASS}
-
-  nginx:
-    image: nginx:alpine
-    ports:
-      - "80:80"
-    volumes:
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf
-      - ./dist/eenvo:/usr/share/nginx/html
-    depends_on:
-      - angular-app
-      - pocketbase
-      - pocketbase-demo
-
-  supervisor: # this shiuld be removed
-    image: alpine:latest
-    build:
-      context: .
-      dockerfile: Dockerfile
-    volumes:
-      - ./supervisord.conf:/etc/supervisor/conf.d/supervisord.conf
-    command: /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
-    depends_on:
-      - nginx
-      - pocketbase
-      - pocketbase-demo
