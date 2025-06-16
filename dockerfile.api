@@ -1,6 +1,6 @@
 FROM alpine:latest AS pocketbase-builder
 
-ARG PB_VERSION=$POCKETBASE_VERSION
+ARG PB_VERSION=0.28.3
 
 RUN apk add --no-cache \
     unzip \
