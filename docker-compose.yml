@@ -5,6 +5,7 @@ services:
     image: ivucicev/eenvo-web:latest
     environment:
       DEVEXTREME_KEY: ${DEVEXTREME_KEY}
+      API_URL: http://leenvo-api:8090
     ports:
       - "80:80"
 
@@ -13,7 +14,7 @@ services:
     volumes:
       - ./pb_data:/pb/pb_data
     ports:
-      - "8080:8080"
+      - "8090:8090"
     environment:
       POCKETBASE_ADMIN_EMAIL: ${POCKETBASE_ADMIN_EMAIL}
       POCKETBASE_ADMIN_PASS: ${POCKETBASE_ADMIN_PASS}

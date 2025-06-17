@@ -23,4 +23,7 @@ WORKDIR /pb
 
 EXPOSE 8090
 
-CMD ["./pocketbase", "serve", "--http=0.0.0.0:8090"]
+COPY entrypoint-api.sh /pb/entrypoint.sh
+RUN chmod +x /pb/entrypoint.sh
+
+CMD ["/pb/entrypoint.sh"]

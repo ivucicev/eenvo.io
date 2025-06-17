@@ -12,3 +12,5 @@ window.env = {
 EOF
 
 echo "Environment variables injected successfully!"
+
+exec nginx -g "daemon off;"
