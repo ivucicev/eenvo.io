@@ -132,6 +132,7 @@ export class InvoicesComponent {
             isPaid: false,
             paymentDate: null,
             note: fullInvoice.note,
+            internalNote: fullInvoice.internalNote,
             customer: fullInvoice.customer,
             company: fullInvoice.company,
             companyData: fullInvoice.companyData,
@@ -148,6 +149,9 @@ export class InvoicesComponent {
             isPO: this.isPO,
             hideValues: fullInvoice.hideValues,
             poShipping: fullInvoice.poShipping,
+            language: fullInvoice.language,
+            taxValueGroups: fullInvoice.taxValueGroups,
+            tax: fullInvoice.tax,
             items: []
         };
 

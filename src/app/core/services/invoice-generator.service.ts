@@ -215,7 +215,7 @@ export class InvoiceGeneratorService {
                     if (this.isPO && invoice.hideValues) {
                         row.splice(3, row.length)
                     } else if (!invoice.tax) {
-                        tableHeader.splice(5, 1)
+                        row.splice(5, 1)
                     }
                     return row;
                 })
