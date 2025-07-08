@@ -245,7 +245,9 @@ export class InvoicesComponent {
     }
 
     async download(invoice: any) {
-        const response = await fetch(await this.getPDFFile(invoice), { mode: 'cors' });
+        const file = await this.getPDFFile(invoice);
+        if (!file) return;
+        const response = await fetch(file, { mode: 'cors' });
         const disposition = response.headers.get('Content-Disposition');
         let filename = 'downloaded-file';
 
@@ -321,8 +323,11 @@ export class InvoicesComponent {
     }
 
     private async getPDFFile(invoice: any) {
-        const token = await this.pocketbase.files.getToken({ headers: { notoast: '1' } });
-        return this.pocketbase.files.getURL(invoice, invoice['pdfUrl'], { token })
+        if (invoice.pdfUrl && invoice.pdfUrl.length > 0) {
+            const token = await this.pocketbase.files.getToken({ headers: { notoast: '1' } });
+            return this.pocketbase.files.getURL(invoice, invoice['pdfUrl'].pop(), { token })
+        }
+        return null;
     }
 
 }

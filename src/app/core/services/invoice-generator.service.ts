@@ -393,7 +393,10 @@ export class InvoiceGeneratorService {
                 const pdfBlob = doc.output('blob');
                 const formData = new FormData();
                 formData.append('pdfUrl', pdfBlob, name);
-                const savedInvoice: any = await this.pocketbase.invoices.update(invoice.id, formData, { '$autoCancel': false, headers: { "notoast": "1" } });
+
+                const savedInvoice: any = await this.pocketbase.invoices.update(invoice.id, {
+                    "pdfUrl+": new File([pdfBlob], name, { type: 'application/pdf' }), 
+                }, { '$autoCancel': false, headers: { "notoast": "1" } });
 
                 resolve(savedInvoice.pdfUrl);
 
