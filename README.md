@@ -4,7 +4,14 @@
 ![Last Commit](https://img.shields.io/github/last-commit/ivucicev/eenvo.io)
 ![Issues](hhttps://img.shields.io/github/issues/ivucicev/eenvo.io)
 
+
 # Eenvo
+
+**Live Demo:** [https://demo.eenvo.io](https://demo.eenvo.io)
+
+**Production:** [https://app.eenvo.io](https://app.eenvo.io)
+
+**Website:** [https://eenvo.io](https://eenvo.io)
 
 Eenvo is a modern, self-hosted invoicing solution designed for businesses of all sizes. Built with Angular for the frontend and PocketBase for the backend, Eenvo offers a seamless experience for managing invoices, quotes, purchase orders, expenses, transactions, customers, vendors, and more. The platform features advanced statistics, powerful filtering, and multi-language support.
 
@@ -25,11 +32,10 @@ Eenvo is a modern, self-hosted invoicing solution designed for businesses of all
 
 ## Screenshots
 
-<!-- Place your screenshots here -->
-
-- ![Dashboard](screenshots/dashboard.png)
+- ![Dashboard](screenshots/dash.png)
 - ![Invoices](screenshots/invoices.png)
-- ![Language Selection](screenshots/language-selection.png)
+- ![Invoice detail](screenshots/invoices-edit.png)
+- ![Invoice PDF](screenshots/invoices-pdf.png)
 
 ## Requirements
 
@@ -96,6 +102,14 @@ To use supervisord:
 
 - Frontend: Angular
 - Backend: PocketBase
+
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for details.
+
+**Important:**
+Eenvo uses third-party components such as DevExtreme by DevExpress, which are not open source and require a valid commercial license for production use. You are responsible for obtaining and complying with all third-party licenses.
 
 Feel free to contribute or open issues for feature requests and bug reports.
 
