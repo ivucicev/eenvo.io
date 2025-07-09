@@ -2,7 +2,7 @@
 ![Build Status](https://github.com/ivucicev/eenvo.io/actions/workflows/docker-image.yml/badge.svg)
 ![Docker Pulls](https://img.shields.io/docker/pulls/ivucicev/eenvo.io)
 ![Last Commit](https://img.shields.io/github/last-commit/ivucicev/eenvo.io)
-![Issues](hhttps://img.shields.io/github/issues/ivucicev/eenvo.io)
+![Issues](https://img.shields.io/github/issues/ivucicev/eenvo.io)
 
 
 # Eenvo
