@@ -364,7 +364,7 @@ export class InvoiceGeneratorService {
                 doc.text(await this.getTranslation("Issued by"), LEFT_MARGIN, Y += TITLE_SPACE);
 
                 doc.setFont(this.FONT_NAME, "normal")
-                doc.text(invoice.expand.user.name, LEFT_MARGIN, Y += TEXT_SPACE);
+                doc.text(invoice.expand.user.name != '' ?  invoice.expand.user.name : invoice.expand.user.email, LEFT_MARGIN, Y += TEXT_SPACE);
 
                 // signature part
                 if (this.isPO) {

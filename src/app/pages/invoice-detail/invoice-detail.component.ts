@@ -295,9 +295,9 @@ export class InvoiceDetailComponent {
             this.invoiceUpdated.emit(updated);
         } else {
             const created: any = await this.pocketbase.invoices.create(invoice);
+            invoice.id = created.id;
             this.invoicesForm.patchValue({ id: created.id });
             const url = await this.invoiceService.generateAndSave(invoice.id);
-            invoice.id = created.id;
             invoice.pdfUrl = url;
             this.invoice.pdfUrl = url;
             created.pdfUrl = url;

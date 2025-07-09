@@ -224,7 +224,6 @@ export class InvoicesComponent {
         if (e.changes[0]?.type == 'remove') {
             const invoice = e.changes[0].key;
             const toDelete: any = [];
-
             invoice.items?.forEach((itemId: string) => {
                 toDelete.push(this.pocketbase.items.delete(itemId, {
                     '$autoCancel': false,
@@ -234,7 +233,6 @@ export class InvoicesComponent {
             if (!res) {
                 return;
             }
-
         }
         this.reload();
     }

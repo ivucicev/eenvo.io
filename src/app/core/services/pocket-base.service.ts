@@ -54,7 +54,7 @@ export class PocketBaseService {
                         break;
                 }
             } else if (options?.method == "POST" || options?.method == "PATCH" || options?.method == "DELETE") {
-                if (!options.headers.notoast)
+                if (!options.headers.notoast && !response.url.includes('auth-with'))
                     toast.success();
             }
             return data;
