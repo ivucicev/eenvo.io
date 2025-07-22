@@ -25,7 +25,6 @@ Eenvo is a modern, self-hosted invoicing solution designed for businesses of all
 - **Transactions**: Monitor all financial transactions.
 - **Customers & Vendors**: Manage your contacts and business relationships.
 - **Settings**: Customize your experience.
-- **Contact Support**: Built-in support contact option.
 - **Powerful Statistics**: Visualize your business data with advanced analytics.
 - **Advanced Filtering**: Quickly find what you need with robust filters.
 - **Multi-language Support**: Available in English, Español, Deutsche, Italiana, Francias, Polish, and Hrvatski.
