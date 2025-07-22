@@ -47,8 +47,8 @@ Eenvo is a modern, self-hosted invoicing solution designed for businesses of all
 1. **Clone the repository:**
 
    ```sh
-   git clone https://github.com/your-org/eenvo.git
-   cd eenvo
+   git clone https://github.com/ivucicev/eenvo.io.git
+   cd eenvo.io
    ```
 
 2. **Set environment variables:**
