@@ -320,6 +320,8 @@ export class InvoicesComponent {
         this.fullScreen = !this.fullScreen
     }
 
+    hasInvoice = (e: any) => e?.row?.data?.pdfUrl != null && e?.row?.data?.pdfUrl?.length > 0
+
     private async getPDFFile(invoice: any) {
         if (invoice.pdfUrl && invoice.pdfUrl.length > 0) {
             const token = await this.pocketbase.files.getToken({ headers: { notoast: '1' } });

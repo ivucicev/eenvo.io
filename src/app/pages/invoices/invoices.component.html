@@ -103,8 +103,8 @@
                                 <dxi-button [visible]="isQuote" [onClick]="convertToInvoice"
                                     [hint]="'Convert to invoice' | translate" icon="exportselected"></dxi-button>
                                 <dxi-button [onClick]="editInvoice" hint="Edit" icon="edit"></dxi-button>
-                                <dxi-button icon="download" [onClick]="downloadPDF"></dxi-button>
-                                <dxi-button icon="eyeopen" [onClick]="previewPDF"></dxi-button>
+                                <dxi-button [visible]="hasInvoice" icon="download" [onClick]="downloadPDF"></dxi-button>
+                                <dxi-button [visible]="hasInvoice" icon="eyeopen" [onClick]="previewPDF"></dxi-button>
                                 <dxi-button icon="copy" [visible]="true" [onClick]="duplicateInvoice"></dxi-button>
                                 <dxi-button name="delete"></dxi-button>
                             </dxi-column>
