@@ -132,8 +132,9 @@
                                     {{ d.data.total | currencyFormat }}
                                 </div>
                             </dxi-column>
-                            <dxi-column dataField="isPaid" [caption]="'Is Paid' | translate" [visible]="!this.isQuote && !this.isPO"
-                                dataType="boolean" cellTemplate="isPaidTemplate">
+                            <dxi-column dataField="isPaid" [caption]="'Is Paid' | translate"
+                                [visible]="!this.isQuote && !this.isPO" dataType="boolean"
+                                cellTemplate="isPaidTemplate">
 
                                 <div *dxTemplate="let d of 'isPaidTemplate'">
                                     @if (d.data.isPaid) {
@@ -184,13 +185,14 @@
 </dx-popup>
 
 <dx-popup [wrapperAttr]="{class: 'detail-popup toolbar-bottom-full'}" [width]="'70%'" [height]="'auto'"
-    [resizeEnabled]="true" [restorePosition]="true" [maxHeight]="'90%'" [showTitle]="true"
-    [title]="title | translate" [dragEnabled]="true" [hideOnOutsideClick]="true" [showCloseButton]="true"
-    [(visible)]="invoicePopupVisible" [fullScreen]="fullScreen" (onHiding)="reload()">
+    [resizeEnabled]="true" [restorePosition]="true" [maxHeight]="'90%'" [showTitle]="true" [title]="title | translate"
+    [dragEnabled]="true" [hideOnOutsideClick]="true" [showCloseButton]="true" [(visible)]="invoicePopupVisible"
+    [fullScreen]="fullScreen" (onHiding)="reload()">
 
     <div *dxTemplate="let data of 'content'">
-        <eenvo-invoice-detail class="h-grow" [isQuote]="isQuote" [isPO]="isPO" (invoiceUpdated)="invoiceUpdatedEvent($event)" (invoiceCreated)="invoiceCreatedEvent($event)"
-            #invoiceDetail [invoice]="currentInvoice">
+        <eenvo-invoice-detail class="h-grow" [isQuote]="isQuote" [isPO]="isPO"
+            (invoiceUpdated)="invoiceUpdatedEvent($event)" (invoiceCreated)="invoiceCreatedEvent($event)" #invoiceDetail
+            [invoice]="currentInvoice">
         </eenvo-invoice-detail>
 
     </div>
@@ -218,15 +220,18 @@
                 </button>
                 }
                 }
-                <button [disabled]="!currentInvoice?.pdfUrl || currentInvoice?.pdfUrl?.length == 0" (click)="preview(currentInvoice)" class="btn btn-info ms-1">
+                <button [disabled]="!currentInvoice?.pdfUrl || currentInvoice?.pdfUrl?.length == 0"
+                    (click)="preview(currentInvoice)" class="btn btn-info ms-1">
                     <i class="ri-eye-fill align-bottom mx-1"></i>
                     {{ 'Preview' | translate }}
                 </button>
-                <button [disabled]="!currentInvoice?.pdfUrl || currentInvoice?.pdfUrl?.length == 0" (click)="download(currentInvoice)" class="btn btn-success ms-1">
+                <button [disabled]="!currentInvoice?.pdfUrl || currentInvoice?.pdfUrl?.length == 0"
+                    (click)="download(currentInvoice)" class="btn btn-success ms-1">
                     <i class="ri-download-2-line align-bottom mx-1"></i>
                     {{ 'Download' | translate }}
                 </button>
 
+                <!-- TODO: implement actions recurr, send, schedule - This will be implemented in the future
                 <button (click)="send()" class="btn btn-secondary ms-1">
                     <i class="ri-send-plane-fill align-bottom mx-1"></i>
                     {{ 'Send' | translate }}
@@ -241,7 +246,8 @@
                     <i class="ri-alarm-fill align-bottom mx-1"></i>
                     {{'Schedule' | translate }}
                 </button>
-                }
+            }
+            -->
 
                 <button type="button" (click)="delete(currentInvoice)" class="btn btn-danger ms-1">
                     <i class="ri-delete-bin-line align-bottom mx-1"></i>
