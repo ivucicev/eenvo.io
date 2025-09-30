@@ -9,9 +9,10 @@ import { HttpClient, provideHttpClient } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { LayoutEffects } from './store/layouts/layout-effect';
 import { provideEffects } from '@ngrx/effects';
-
+import Aura from '@primeuix/themes/aura';
 
 import { MissingTranslationHandler, MissingTranslationHandlerParams } from '@ngx-translate/core';
+import { providePrimeNG } from 'primeng/config';
 
 export class CustomMissingTranslationHandler implements MissingTranslationHandler {
     private readonly storageKey = 'missingTranslations';
@@ -48,6 +49,11 @@ export const appConfig: ApplicationConfig = {
         provideAnimations(),
         provideStore(rootReducer),
         provideEffects(LayoutEffects), // Register effects
+        providePrimeNG({
+            theme: {
+                preset: Aura
+            }
+        }),
         importProvidersFrom(
             TranslateModule.forRoot({
                 missingTranslationHandler: {

@@ -2,6 +2,15 @@
     display: none;
 }
 
+:root {
+    --p-surface-ground: #f8fafc;
+    --p-surface-section: #ffffff;
+    --p-surface-card: #ffffff;
+    --p-surface-overlay: #ffffff;
+    --p-surface-border: #e2e8f0;
+    --p-text-color: #1f2937;
+}
+
 /* .btn-primary {background-image: linear-gradient(to right, #02AAB0 0%, #00CDAC  51%, #02AAB0  100%)}
 .btn-primary {
    transition: 0.5s;

@@ -30,9 +30,10 @@
 							"src/favicon.ico",
 							"src/assets"
 						],
-						"styles": [
-							"node_modules/devextreme/dist/css/dx.fluent.saas.light.compact.css",
-							"src/assets/scss/bootstrap.scss",
+							"styles": [
+								"node_modules/devextreme/dist/css/dx.fluent.saas.light.compact.css",
+								"node_modules/primeicons/primeicons.css",
+								"src/assets/scss/bootstrap.scss",
 							"src/assets/scss/app.scss",
 							"src/assets/scss/icons.scss",
 							"src/assets/scss/dx-theme/dx.blue.css",
