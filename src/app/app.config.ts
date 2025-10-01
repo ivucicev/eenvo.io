@@ -10,6 +10,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { LayoutEffects } from './store/layouts/layout-effect';
 import { provideEffects } from '@ngrx/effects';
 import Aura from '@primeuix/themes/aura';
+import { definePreset } from '@primeuix/themes';
 
 import { MissingTranslationHandler, MissingTranslationHandlerParams } from '@ngx-translate/core';
 import { providePrimeNG } from 'primeng/config';
@@ -51,8 +52,15 @@ export const appConfig: ApplicationConfig = {
         provideEffects(LayoutEffects), // Register effects
         providePrimeNG({
             theme: {
-                preset: Aura
-            }
+                preset: Aura,
+                options: {
+                    // Use attribute on html element for dark mode (matches app's data-theme="dark")
+                    darkModeSelector: '[data-theme="dark"]',
+                    cssLayer: false
+                }
+            },
+            ripple: true,
+            inputStyle: 'outlined'
         }),
         importProvidersFrom(
             TranslateModule.forRoot({

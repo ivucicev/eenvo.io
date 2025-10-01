@@ -2,24 +2,72 @@
     <div class="row h-grow">
         <div class="col-lg-12 h-grow">
             <div class="card m-0 h-grow">
-                <div class="card-header">
-                    <h4 class="card-title mb-0 flex-grow-1">{{ 'Categories' | translate }}</h4>
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h4 class="card-title mb-0">{{ 'Categories' | translate }}</h4>
+                    <div class="d-flex gap-2 align-items-center">
+                        <p-button [label]="'New' | translate" icon="pi pi-plus" (onClick)="newCategory()" [loading]="loading" [text]="true" size="small"></p-button>
+                        <p-button icon="pi pi-refresh" [label]="'\u00a0'" (onClick)="reload()" [loading]="loading" [text]="true" size="small"></p-button>
+                        <p-button icon="pi pi-download" [label]="'\u00a0'" (onClick)="exportCsv()" [text]="true" size="small" pTooltip="{{ 'Export' | translate }}"></p-button>
+                        <p-button icon="pi pi-table" [label]="'\u00a0'" [text]="true" size="small" pTooltip="{{ 'Columns' | translate }}" (onClick)="colsPopover.toggle($event)"></p-button>
+                        <p-popover #colsPopover styleClass="p-2">
+                            <ng-template pTemplate="content">
+                                <div class="mb-2 fw-semibold">{{ 'Columns' | translate }}</div>
+                                <p-multiSelect [options]="allColumns" optionLabel="header" optionValue="field" [(ngModel)]="visibleColumns" [showHeader]="false" [filter]="true" display="chip" style="min-width: 220px"></p-multiSelect>
+                            </ng-template>
+                        </p-popover>
+                        <span class="ms-2">
+                            <input type="text" pInputText [(ngModel)]="globalFilterValue" placeholder="{{ 'Search' | translate }}" (input)="$event.stopPropagation(); dt.filterGlobal(globalFilterValue, 'contains')" style="min-width: 240px"/>
+                        </span>
+                    </div>
                 </div>
                 <div class="card-body h-grow">
-                    <div class="contain h-grow">
-                        <dx-data-grid class="contain-grid" #grid [dataSource]="data" (onSaved)="saved($event)"
-                            (onRowUpdated)="reload()" (onRowInserted)="reload()">
-                            <dxi-column dataField="name" caption="{{ 'Name' | translate }}">
-                                <dxi-validation-rule type="required"></dxi-validation-rule>
-                            </dxi-column>
-                            <dxi-column [visible]="false" dataField="created" caption="{{ 'Created' | translate }}"
-                                dataType="date"></dxi-column>
-                            <dxi-column [visible]="false" dataField="updated" caption="{{ 'Updated' | translate }}"
-                                dataType="date"></dxi-column>
-                        </dx-data-grid>
+                    <div class="table-container" style="height: 100%; overflow: auto;">
+                        <p-table #dt [value]="data" [loading]="loading" [scrollable]="true" scrollHeight="flex" [resizableColumns]="true" [reorderableColumns]="true" [paginator]="true" [rows]="25" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [globalFilterFields]="visibleColumns" exportFilename="categories" styleClass="p-datatable-sm">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th *ngIf="visibleColumns.includes('name')" pSortableColumn="name" style="min-width: 200px">
+                                        {{ 'Name' | translate }}
+                                        <p-sortIcon field="name"></p-sortIcon>
+                                        <p-columnFilter type="text" field="name" display="menu"></p-columnFilter>
+                                    </th>
+                                    <th style="min-width: 120px; width: 120px; position: sticky; right: 0; background: white; z-index: 10;"></th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-c>
+                                <tr>
+                                    <td *ngIf="visibleColumns.includes('name')">{{ c.name }}</td>
+                                    <td style="position: sticky; right: 0; background: white; z-index: 10;">
+                                        <div class="d-flex gap-1">
+                                            <p-button icon="pi pi-pencil" [text]="true" size="small" (onClick)="editCategory(c)" pTooltip="Edit"></p-button>
+                                            <p-button icon="pi pi-trash" [text]="true" size="small" severity="danger" (onClick)="confirmDelete(c)" pTooltip="Delete"></p-button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <p-dialog [(visible)]="visible" [modal]="true" [closable]="true" [draggable]="false" [resizable]="false" [style]="{ width: '90vw', maxWidth: '600px' }" [header]="(selectedCategory ? 'Edit' : 'New') + ' ' + ('Category' | translate)">
+        <form [formGroup]="categoryForm" (ngSubmit)="saveCategory()">
+            <div class="row">
+                <div class="col-md-12 mb-3">
+                    <label for="name" class="form-label">{{ 'Name' | translate }}</label>
+                    <input type="text" id="name" class="form-control" formControlName="name" pInputText>
+                </div>
+            </div>
+        </form>
+        <ng-template pTemplate="footer">
+            <div class="d-flex justify-content-end gap-2">
+                <p-button label="Cancel" icon="pi pi-times" [text]="true" (onClick)="visible = false"></p-button>
+                <p-button [label]="selectedCategory ? 'Update' : 'Create'" icon="pi pi-check" (onClick)="saveCategory()" [loading]="loading" [disabled]="!categoryForm.valid"></p-button>
+            </div>
+        </ng-template>
+    </p-dialog>
+
+    <p-toast></p-toast>
+    <p-confirmDialog></p-confirmDialog>
 </div>

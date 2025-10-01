@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
-import { DxSelectBoxModule } from 'devextreme-angular';
 import { PocketBaseService } from '../../core/services/pocket-base.service';
 import { ToastService } from '../../core/services/toast.service';
 import { SettingsService } from '../../core/services/settings.service';
@@ -11,7 +10,6 @@ import { TranslatePipe } from '@ngx-translate/core';
 @Component({
     selector: 'app-general-settings',
     imports: [
-        DxSelectBoxModule,
         ReactiveFormsModule,
         TranslatePipe
     ],
