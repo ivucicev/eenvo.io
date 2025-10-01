@@ -1,163 +1,206 @@
-<div class="input-group">
-    <dx-drop-down-button class="btn btn-sm btn-light ms-0 p-0" [icon]="'event'" [dropDownOptions]="dropdownOptions"
-        [text]="''" [items]="dateRangeOptions" (onItemClick)="onPredefinedOptionClick($event)" displayExpr="text"
-        keyExpr="value" [showArrowIcon]="false">
-    </dx-drop-down-button>
+<div class="dashboard-controls d-flex flex-wrap gap-2 align-items-center text-center justify-content-center">
+    <p-select
+        [options]="dateRangeOptions"
+        optionLabel="text"
+        optionValue="value"
+        [(ngModel)]="selectedPreset"
+        [ngModelOptions]="{ standalone: true }"
+        placeholder="{{ 'Select range' | translate }}"
+        styleClass="preset-select"
+        (onChange)="onPresetChange($event.value)">
+    </p-select>
 
-    <dx-date-range-box id='dateRange' [showClearButton]="true" [(value)]="value" [style]="{ maxWidth: '350px'}"
-        class="d-flex" [endDateLabel]="''" [startDateLabel]="''" [showDropDownButton]="false"
-        (onValueChanged)="onValueChanged($event)" [startDatePlaceholder]="'StartDate' | translate"
-        [endDatePlaceholder]="'EndDate' | translate">
-    </dx-date-range-box>
+    <div class="d-flex align-items-center gap-2">
+        <input type="date" class="form-control date-input" [value]="formatDate(value[0])" (change)="onStartDateChange($event.target)">
+        <span class="text-muted">→</span>
+        <input type="date" class="form-control date-input" [value]="formatDate(value[1])" (change)="onEndDateChange($event.target)">
+    </div>
+
+    <p-button icon="pi pi-refresh" [text]="true" (onClick)="getDataInPeriod()"></p-button>
 </div>
 
-<div class="row mt-3">
-    <div class="col-3">
+<div class="row mt-3 g-3">
+    <div class="col-12 col-md-6 col-xl-3">
         <eenvo-stats-widget [dateRange]="value" [name]="'Unpaid invoices'" [data]="unpaidInvoices"
             [secondaryColor]="'bg-danger'" [color]="'bg-danger'"></eenvo-stats-widget>
     </div>
-    <div class="col-3">
+    <div class="col-12 col-md-6 col-xl-3">
         <eenvo-stats-widget [dateRange]="value" [name]="'Cashflow'" [data]="cashflowData"
             [secondaryColor]="'bg-primary'"></eenvo-stats-widget>
     </div>
-    <div class="col-3">
+    <div class="col-12 col-md-6 col-xl-3">
         <eenvo-stats-widget [dateRange]="value" [name]="'Income'" [data]="inflow"
             [secondaryColor]="'bg-success'"></eenvo-stats-widget>
     </div>
-    <div class="col-3">
+    <div class="col-12 col-md-6 col-xl-3">
         <eenvo-stats-widget [dateRange]="value" [name]="'Net income'" [data]="netIncome" [secondaryColor]="'bg-danger'"
             [color]="'success'"></eenvo-stats-widget>
     </div>
 </div>
 
-<div class="row">
-    @defer (on viewport) {
+<div class="row g-3 mt-1">
     <div class="col-lg-6 col-sm-12">
-        <div class="card">
+        <div class="card h-100">
+            <div class="card-header fw-semibold">{{ 'Revenue & Expense' | translate }}</div>
             <div class="card-body">
-                <dx-chart palette="Soft Pastel" [dataSource]="revenueExpenseData"
-                    title="{{ 'Revenue & Expense' | translate }}">
-                    <dxi-series valueField="income" name="{{ 'Income' | translate }}"></dxi-series>
-                    <dxi-series valueField="expense" color="red" name="{{ 'Expenses' | translate }}"></dxi-series>
-                    <dxo-common-series-settings #seriesSettings argumentField="period" [type]="'spline'">
-                    </dxo-common-series-settings>
-                    <dxo-margin [bottom]="20"></dxo-margin>
-                    <dxo-common-axis-settings>
-                        <dxo-grid [visible]="true"></dxo-grid>
-                    </dxo-common-axis-settings>
-                    <dxo-legend verticalAlignment="bottom" horizontalAlignment="center">
-                    </dxo-legend>
-                    <dxo-argument-axis [allowDecimals]="false" [axisDivisionFactor]="60">
-                        <dxo-grid [visible]="true" [opacity]="0.3"></dxo-grid>
-                        <dxo-label>
-                            <dxo-format type="decimal"></dxo-format>
-                        </dxo-label>
-                    </dxo-argument-axis>
-                    <dxo-tooltip [enabled]="true" [customizeTooltip]="incomeTooltip">
-                    </dxo-tooltip>
-                </dx-chart>
+                <p-table [value]="revenueExpenseData" responsiveLayout="scroll" styleClass="p-datatable-sm">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>{{ 'Period' | translate }}</th>
+                            <th class="text-end">{{ 'Income' | translate }}</th>
+                            <th class="text-end">{{ 'Expenses' | translate }}</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-row>
+                        <tr>
+                            <td>{{ row.period }}</td>
+                            <td class="text-end">{{ row.income | currencyFormat }}</td>
+                            <td class="text-end">{{ row.expense | currencyFormat }}</td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="3" class="text-center text-muted">{{ 'No data available' | translate }}</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
             </div>
         </div>
     </div>
-    } @placeholder {
-    <div class="spinner-border text-secondary mx-auto my-4 d-block" role="status"></div>
-    }
-    @defer (on viewport) {
     <div class="col-lg-6 col-sm-12">
-        <div class="card">
+        <div class="card h-100">
+            <div class="card-header fw-semibold">{{ 'Income' | translate }}</div>
             <div class="card-body">
-                <dx-chart id="chart" title="{{ 'Income' | translate }}" [dataSource]="incomeData">
-                    <dxo-legend [visible]="false"></dxo-legend>
-                    <dxi-series type="bar"></dxi-series>
-                    <dxo-argument-axis type="discrete">
-                        <dxo-grid [visible]="true" [opacity]="0.3"></dxo-grid>
-                        <dxo-label>
-                            <dxo-format type="decimal"></dxo-format>
-                        </dxo-label>
-                    </dxo-argument-axis>
-                    <dxo-tooltip [enabled]="true" [customizeTooltip]="incomeTooltip">
-                    </dxo-tooltip>
-                </dx-chart>
+                <p-table [value]="incomeData" responsiveLayout="scroll" styleClass="p-datatable-sm">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>{{ 'Period' | translate }}</th>
+                            <th class="text-end">{{ 'Amount' | translate }}</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-row>
+                        <tr>
+                            <td>{{ row.period }}</td>
+                            <td class="text-end">{{ row.value | currencyFormat }}</td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="2" class="text-center text-muted">{{ 'No data available' | translate }}</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
             </div>
         </div>
     </div>
-    }@placeholder {
-    <div class="spinner-border text-secondary mx-auto my-4 d-block" role="status"></div>
-    }
-    @defer (on viewport) {
+</div>
+
+<div class="row g-3 mt-1">
     <div class="col-lg-6 col-sm-12">
-        <div class="card">
+        <div class="card h-100">
+            <div class="card-header fw-semibold">{{ 'Income per customer' | translate }}</div>
             <div class="card-body">
-                <dx-pie-chart id="pie" type="doughnut" title="{{ 'Income per customer' | translate }}"
-                    palette="Soft Pastel" [dataSource]="invoicesPerCustomer">
-                    <dxi-series argumentField="name">
-                        <dxo-label [visible]="true" format="#,##0.00">
-                            <dxo-connector [visible]="true"></dxo-connector>
-                        </dxo-label>
-                    </dxi-series>
-                    <dxo-legend [margin]="0" horizontalAlignment="right" verticalAlignment="top"></dxo-legend>
-                </dx-pie-chart>
+                <p-table [value]="invoicesPerCustomer" responsiveLayout="scroll" styleClass="p-datatable-sm">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>{{ 'Customer/Vendor' | translate }}</th>
+                            <th class="text-end">{{ 'Amount' | translate }}</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-row>
+                        <tr>
+                            <td>{{ row.name }}</td>
+                            <td class="text-end">{{ row.val | currencyFormat }}</td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="2" class="text-center text-muted">{{ 'No data available' | translate }}</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
             </div>
         </div>
     </div>
-    }@placeholder {
-    <div class="spinner-border text-secondary mx-auto my-4 d-block" role="status"></div>
-    }
-    @defer (on viewport) {
     <div class="col-lg-6 col-sm-12">
-        <div class="card">
+        <div class="card h-100">
+            <div class="card-header fw-semibold">{{ 'Expenses per customer' | translate }}</div>
             <div class="card-body">
-                <dx-pie-chart id="pie" type="doughnut" title="{{ 'Expenses per customer' | translate }}"
-                    palette="Soft Pastel" [dataSource]="expensesPerCustomer">
-                    <dxi-series argumentField="name">
-                        <dxo-label [visible]="true" format="#,##0.00">
-                            <dxo-connector [visible]="true"></dxo-connector>
-                        </dxo-label>
-                    </dxi-series>
-                    <dxo-legend [margin]="0" horizontalAlignment="right" verticalAlignment="top"></dxo-legend>
-                </dx-pie-chart>
+                <p-table [value]="expensesPerCustomer" responsiveLayout="scroll" styleClass="p-datatable-sm">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>{{ 'Customer/Vendor' | translate }}</th>
+                            <th class="text-end">{{ 'Amount' | translate }}</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-row>
+                        <tr>
+                            <td>{{ row.name }}</td>
+                            <td class="text-end">{{ row.val | currencyFormat }}</td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="2" class="text-center text-muted">{{ 'No data available' | translate }}</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
             </div>
         </div>
     </div>
-    }@placeholder {
-    <div class="spinner-border text-secondary mx-auto my-4 d-block" role="status"></div>
-    }
-    @defer (on viewport) {
+</div>
+
+<div class="row g-3 mt-1">
     <div class="col-lg-6 col-sm-12">
-        <div class="card">
+        <div class="card h-100">
+            <div class="card-header fw-semibold">{{ 'Income per category' | translate }}</div>
             <div class="card-body">
-                <dx-pie-chart id="pie" type="doughnut" title="{{ 'Income per category' | translate }}"
-                    palette="Harmony Light" [dataSource]="invoicesPerCategory">
-                    <dxi-series argumentField="name">
-                        <dxo-label [visible]="true" format="#,##0.00">
-                            <dxo-connector [visible]="true"></dxo-connector>
-                        </dxo-label>
-                    </dxi-series>
-                    <dxo-legend [margin]="0" horizontalAlignment="right" verticalAlignment="top"></dxo-legend>
-                </dx-pie-chart>
+                <p-table [value]="invoicesPerCategory" responsiveLayout="scroll" styleClass="p-datatable-sm">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>{{ 'Category' | translate }}</th>
+                            <th class="text-end">{{ 'Amount' | translate }}</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-row>
+                        <tr>
+                            <td>{{ row.name }}</td>
+                            <td class="text-end">{{ row.val | currencyFormat }}</td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="2" class="text-center text-muted">{{ 'No data available' | translate }}</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
             </div>
         </div>
     </div>
-    }@placeholder {
-    <div class="spinner-border text-secondary mx-auto my-4 d-block" role="status"></div>
-    }
-    @defer (on viewport) {
     <div class="col-lg-6 col-sm-12">
-        <div class="card">
+        <div class="card h-100">
+            <div class="card-header fw-semibold">{{ 'Expenses per category' | translate }}</div>
             <div class="card-body">
-                <dx-pie-chart id="pie" type="doughnut" title="{{ 'Expenses per category' | translate }}"
-                    palette="Harmony Light" [dataSource]="expensesPerCategory">
-                    <dxi-series argumentField="name">
-                        <dxo-label [visible]="true" format="#,##0.00">
-                            <dxo-connector [visible]="true"></dxo-connector>
-                        </dxo-label>
-                    </dxi-series>
-                    <dxo-legend [margin]="0" horizontalAlignment="right" verticalAlignment="top"></dxo-legend>
-                </dx-pie-chart>
+                <p-table [value]="expensesPerCategory" responsiveLayout="scroll" styleClass="p-datatable-sm">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>{{ 'Category' | translate }}</th>
+                            <th class="text-end">{{ 'Amount' | translate }}</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-row>
+                        <tr>
+                            <td>{{ row.name }}</td>
+                            <td class="text-end">{{ row.val | currencyFormat }}</td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="2" class="text-center text-muted">{{ 'No data available' | translate }}</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
             </div>
         </div>
     </div>
-    }@placeholder {
-    <div class="spinner-border text-secondary mx-auto my-4 d-block" role="status"></div>
-    }
 </div>

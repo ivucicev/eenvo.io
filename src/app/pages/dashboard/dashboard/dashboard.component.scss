@@ -1,17 +1,22 @@
-:host ::ng-deep .dx-daterangebox {
-
-    .dx-dropdowneditor.dx-dropdowneditor-field-clickable,
-    .dx-dropdowneditor.dx-dropdowneditor-field-clickable .dx-texteditor-input {
-        cursor: pointer;
-        border: none;
-    }
+.dashboard-controls {
+  margin-bottom: 1rem;
 }
 
-.input-group {
-    position: relative;
-    display: flex;
-    flex-wrap: nowrap;
-    width: 100%;
-    flex-direction: row-reverse;
-    align-items: center;
+.date-input {
+  min-width: 160px;
+}
+
+.preset-select {
+  min-width: 200px;
+}
+
+.card-header {
+  background: transparent;
+  border-bottom: none;
+}
+
+:host ::ng-deep .p-datatable {
+  .p-datatable-tbody > tr > td {
+    vertical-align: middle;
+  }
 }
