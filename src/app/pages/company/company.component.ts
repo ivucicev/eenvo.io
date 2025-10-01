@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { CommonModule } from '@angular/common';
+
 import { Component, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { environment } from '../../../environments/environment';
@@ -14,14 +14,13 @@ import { TextareaModule } from 'primeng/textarea';
 @Component({
     selector: 'eenvo-company',
     imports: [
-        CommonModule,
-        ButtonModule,
-        FileUploadModule,
-        InputTextModule,
-        TextareaModule,
-        ReactiveFormsModule,
-        TranslatePipe
-    ],
+    ButtonModule,
+    FileUploadModule,
+    InputTextModule,
+    TextareaModule,
+    ReactiveFormsModule,
+    TranslatePipe
+],
     templateUrl: './company.component.html',
     styleUrl: './company.component.scss'
 })

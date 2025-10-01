@@ -1,19 +1,15 @@
 <div class="dashboard-controls d-flex flex-wrap gap-2 align-items-center justify-content-center">
-    <p-select
-        [options]="dateRangeOptions"
-        optionLabel="text"
-        optionValue="value"
-        [(ngModel)]="selectedPreset"
-        [ngModelOptions]="{ standalone: true }"
-        placeholder="{{ 'Select range' | translate }}"
-        styleClass="preset-select"
-        (onChange)="onPresetChange($event.value)">
+    <p-select [options]="dateRangeOptions" optionLabel="text" optionValue="value" [(ngModel)]="selectedPreset"
+        [ngModelOptions]="{ standalone: true }" placeholder="{{ 'Select range' | translate }}"
+        styleClass="preset-select" (onChange)="onPresetChange($event.value)">
     </p-select>
 
     <div class="d-flex align-items-center gap-2">
-        <input type="date" class="form-control date-input" [value]="formatDate(value[0])" (change)="onStartDateChange($event.target)">
+        <input type="date" class="form-control date-input" [value]="formatDate(value[0])"
+            (change)="onStartDateChange($event.target)">
         <span class="text-muted">→</span>
-        <input type="date" class="form-control date-input" [value]="formatDate(value[1])" (change)="onEndDateChange($event.target)">
+        <input type="date" class="form-control date-input" [value]="formatDate(value[1])"
+            (change)="onEndDateChange($event.target)">
     </div>
 
     <p-button icon="pi pi-refresh" [text]="true" (onClick)="getDataInPeriod()"></p-button>
@@ -43,14 +39,14 @@
         <div class="card flex-fill dashboard-chart-card">
             <div class="card-header fw-semibold">{{ 'Revenue & Expense' | translate }}</div>
             <div class="card-body">
-                <ng-container *ngIf="revenueExpenseChartData?.labels?.length; else revenueExpenseEmpty">
-                    <div class="chart-wrapper">
-                        <p-chart type="line" [data]="revenueExpenseChartData" [options]="revenueExpenseChartOptions"></p-chart>
-                    </div>
-                </ng-container>
-                <ng-template #revenueExpenseEmpty>
-                    <div class="text-center text-muted py-5">{{ 'No data available' | translate }}</div>
-                </ng-template>
+                @if (revenueExpenseChartData?.labels?.length) {
+                <div class="chart-wrapper">
+                    <p-chart type="line" [data]="revenueExpenseChartData"
+                        [options]="revenueExpenseChartOptions"></p-chart>
+                </div>
+                } @else {
+                <div class="text-center text-muted py-5">{{ 'No data available' | translate }}</div>
+                }
             </div>
         </div>
     </div>
@@ -58,14 +54,13 @@
         <div class="card flex-fill dashboard-chart-card">
             <div class="card-header fw-semibold">{{ 'Income' | translate }}</div>
             <div class="card-body">
-                <ng-container *ngIf="incomeChartData?.labels?.length; else incomeEmpty">
-                    <div class="chart-wrapper">
-                        <p-chart type="bar" [data]="incomeChartData" [options]="incomeChartOptions"></p-chart>
-                    </div>
-                </ng-container>
-                <ng-template #incomeEmpty>
-                    <div class="text-center text-muted py-5">{{ 'No data available' | translate }}</div>
-                </ng-template>
+                @if (incomeChartData?.labels?.length) {
+                <div class="chart-wrapper">
+                    <p-chart type="bar" [data]="incomeChartData" [options]="incomeChartOptions"></p-chart>
+                </div>
+                } @else {
+                <div class="text-center text-muted py-5">{{ 'No data available' | translate }}</div>
+                }
             </div>
         </div>
     </div>
@@ -76,14 +71,14 @@
         <div class="card flex-fill dashboard-chart-card">
             <div class="card-header fw-semibold">{{ 'Income per customer' | translate }}</div>
             <div class="card-body">
-                <ng-container *ngIf="incomePerCustomerChartData?.labels?.length; else incomeCustomerEmpty">
-                    <div class="chart-wrapper">
-                        <p-chart type="doughnut" [data]="incomePerCustomerChartData" [options]="doughnutChartOptions"></p-chart>
-                    </div>
-                </ng-container>
-                <ng-template #incomeCustomerEmpty>
-                    <div class="text-center text-muted py-5">{{ 'No data available' | translate }}</div>
-                </ng-template>
+                @if (incomePerCustomerChartData?.labels?.length) {
+                <div class="chart-wrapper">
+                    <p-chart type="doughnut" [data]="incomePerCustomerChartData"
+                        [options]="doughnutChartOptions"></p-chart>
+                </div>
+                } @else {
+                <div class="text-center text-muted py-5">{{ 'No data available' | translate }}</div>
+                }
             </div>
         </div>
     </div>
@@ -91,14 +86,14 @@
         <div class="card flex-fill dashboard-chart-card">
             <div class="card-header fw-semibold">{{ 'Expenses per customer' | translate }}</div>
             <div class="card-body">
-                <ng-container *ngIf="expensesPerCustomerChartData?.labels?.length; else expensesCustomerEmpty">
-                    <div class="chart-wrapper">
-                        <p-chart type="doughnut" [data]="expensesPerCustomerChartData" [options]="doughnutChartOptions"></p-chart>
-                    </div>
-                </ng-container>
-                <ng-template #expensesCustomerEmpty>
-                    <div class="text-center text-muted py-5">{{ 'No data available' | translate }}</div>
-                </ng-template>
+                @if (expensesPerCustomerChartData?.labels?.length) {
+                <div class="chart-wrapper">
+                    <p-chart type="doughnut" [data]="expensesPerCustomerChartData"
+                        [options]="doughnutChartOptions"></p-chart>
+                </div>
+                } @else {
+                <div class="text-center text-muted py-5">{{ 'No data available' | translate }}</div>
+                }
             </div>
         </div>
     </div>
@@ -109,14 +104,14 @@
         <div class="card flex-fill dashboard-chart-card">
             <div class="card-header fw-semibold">{{ 'Income per category' | translate }}</div>
             <div class="card-body">
-                <ng-container *ngIf="incomePerCategoryChartData?.labels?.length; else incomeCategoryEmpty">
-                    <div class="chart-wrapper">
-                        <p-chart type="doughnut" [data]="incomePerCategoryChartData" [options]="doughnutChartOptions"></p-chart>
-                    </div>
-                </ng-container>
-                <ng-template #incomeCategoryEmpty>
-                    <div class="text-center text-muted py-5">{{ 'No data available' | translate }}</div>
-                </ng-template>
+                @if (incomePerCategoryChartData?.labels?.length) {
+                <div class="chart-wrapper">
+                    <p-chart type="doughnut" [data]="incomePerCategoryChartData"
+                        [options]="doughnutChartOptions"></p-chart>
+                </div>
+                } @else {
+                <div class="text-center text-muted py-5">{{ 'No data available' | translate }}</div>
+                }
             </div>
         </div>
     </div>
@@ -124,14 +119,14 @@
         <div class="card flex-fill dashboard-chart-card">
             <div class="card-header fw-semibold">{{ 'Expenses per category' | translate }}</div>
             <div class="card-body">
-                <ng-container *ngIf="expensesPerCategoryChartData?.labels?.length; else expensesCategoryEmpty">
-                    <div class="chart-wrapper">
-                        <p-chart type="doughnut" [data]="expensesPerCategoryChartData" [options]="doughnutChartOptions"></p-chart>
-                    </div>
-                </ng-container>
-                <ng-template #expensesCategoryEmpty>
-                    <div class="text-center text-muted py-5">{{ 'No data available' | translate }}</div>
-                </ng-template>
+                @if (expensesPerCategoryChartData?.labels?.length) {
+                <div class="chart-wrapper">
+                    <p-chart type="doughnut" [data]="expensesPerCategoryChartData"
+                        [options]="doughnutChartOptions"></p-chart>
+                </div>
+                } @else {
+                <div class="text-center text-muted py-5">{{ 'No data available' | translate }}</div>
+                }
             </div>
         </div>
     </div>

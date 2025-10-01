@@ -6,14 +6,14 @@ import { changelayout, changeLayoutPosition, changeLayoutWidth, changeMode, chan
 import { Subject, takeUntil } from 'rxjs';
 import { LayoutState } from '../store/layouts/layout-reducers';
 import { HorizontalComponent } from './horizontal/horizontal.component';
-import { CommonModule } from '@angular/common';
+
 import { LAYOUT_TYPES } from '../store/layouts/layout';
 import { ToastsContainer } from '../core/componate/toasts-container.component';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'eenvo-layout',
-    imports: [VerticalComponent, HorizontalComponent, CommonModule, ToastsContainer],
+    imports: [VerticalComponent, HorizontalComponent, ToastsContainer],
     templateUrl: './layout.component.html',
     styleUrls: ['./layout.component.scss']
 })

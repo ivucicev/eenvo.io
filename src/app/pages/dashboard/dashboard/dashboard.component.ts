@@ -3,7 +3,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { take } from 'rxjs';
 import { PocketBaseService } from '../../../core/services/pocket-base.service';
 import { StatsWidgetComponent } from '../../../core/componate/stats-widget/stats-widget.component';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { SelectModule } from 'primeng/select';
 import { ButtonModule } from 'primeng/button';
@@ -14,15 +14,14 @@ import { ChartModule } from 'primeng/chart';
 @Component({
     selector: 'eenvo-dashboard',
     imports: [
-        CommonModule,
-        StatsWidgetComponent,
-        FormsModule,
-        SelectModule,
-        ButtonModule,
-        InputTextModule,
-        ChartModule,
-        TranslateModule
-    ],
+    StatsWidgetComponent,
+    FormsModule,
+    SelectModule,
+    ButtonModule,
+    InputTextModule,
+    ChartModule,
+    TranslateModule
+],
     templateUrl: './dashboard.component.html',
     styleUrl: './dashboard.component.scss'
 })

@@ -1,49 +1,49 @@
 .dashboard-controls {
-  margin-bottom: 1rem;
+    margin-bottom: 1rem;
 }
 
 .date-input {
-  min-width: 160px;
+    min-width: 160px;
 }
 
 .preset-select {
-  min-width: 200px;
+    min-width: 200px;
 }
 
 .card-header {
-  background: transparent;
-  border-bottom: none;
+    background: transparent;
+    border-bottom: none;
 }
 
 .dashboard-chart-card {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-
-  .card-body {
-    flex: 1 1 auto;
     display: flex;
     flex-direction: column;
-    padding: 1.5rem;
-    min-height: 0;
-  }
+    height: 100%;
+
+    .card-body {
+        flex: 1 1 auto;
+        display: flex;
+        flex-direction: column;
+        padding: 1.5rem;
+        min-height: 0;
+    }
 }
 
 .chart-wrapper {
-  flex: 1 1 auto;
-  display: flex;
-  align-items: stretch;
-  min-height: 360px;
-  max-height: 360px;
+    flex: 1 1 auto;
+    display: flex;
+    align-items: stretch;
+    min-height: 360px;
+    max-height: 360px;
 }
 
 .chart-wrapper .p-chart {
-  flex: 1 1 auto;
-  display: flex;
+    flex: 1 1 auto;
+    display: flex;
 }
 
 .chart-wrapper canvas {
-  flex: 1 1 auto;
-  width: 100% !important;
-  height: 100% !important;
+    flex: 1 1 auto;
+    width: 100% !important;
+    height: 100% !important;
 }

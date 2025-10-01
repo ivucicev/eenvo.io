@@ -1,294 +1,333 @@
 <div class="h-100 d-flex flex-column">
-    <div class="row h-grow">
-        <div class="col-lg-12 h-grow">
-            <div class="card h-grow m-0">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h4 class="card-title mb-0">{{ 'Users' | translate }}</h4>
-                    <div class="d-flex gap-2 align-items-center">
-                        <p-button
-                            [label]="'New' | translate"
-                            icon="pi pi-plus"
-                            (onClick)="newUser()"
-                            [loading]="loading"
-                            [text]="true"
-                            size="small">
-                        </p-button>
-                        <p-button
-                            icon="pi pi-refresh"
-                            [label]="'\u00a0'"
-                            (onClick)="reload()"
-                            [loading]="loading"
-                            [text]="true"
-                            size="small">
-                        </p-button>
-                        <p-button
-                            icon="pi pi-download"
-                            [label]="'\u00a0'"
-                            (onClick)="exportCsv()"
-                            [text]="true"
-                            size="small"
-                            pTooltip="{{ 'Export' | translate }}">
-                        </p-button>
-                        <p-button
-                            icon="pi pi-table"
-                            [label]="'\u00a0'"
-                            [text]="true"
-                            size="small"
-                            pTooltip="{{ 'Columns' | translate }}"
-                            (onClick)="colsPopover.toggle($event)">
-                        </p-button>
-                        <p-popover #colsPopover styleClass="p-2">
-                            <ng-template pTemplate="content">
-                                <div class="mb-2 fw-semibold">{{ 'Columns' | translate }}</div>
-                                <p-multiSelect
-                                    [options]="allColumns"
-                                    optionLabel="header"
-                                    optionValue="field"
-                                    [(ngModel)]="visibleColumns"
-                                    [showHeader]="false"
-                                    [filter]="true"
-                                    display="chip"
-                                    style="min-width: 220px">
-                                </p-multiSelect>
-                            </ng-template>
-                        </p-popover>
-                        <span class="ms-2">
-                            <input type="text" pInputText [(ngModel)]="globalFilterValue" placeholder="{{ 'Search' | translate }}" (input)="$event.stopPropagation(); dt.filterGlobal(globalFilterValue, 'contains')" style="min-width: 240px"/>
-                        </span>
-                    </div>
-                </div>
-                <div class="card-body h-grow">
-                    <div class="table-container" style="height: 100%; overflow: auto;">
-                        <p-table
-                            #dt
-                            [value]="data"
-                            [loading]="loading"
-                            [scrollable]="true"
-                            scrollHeight="flex"
-                            [resizableColumns]="true"
-                            [reorderableColumns]="true"
-                            [paginator]="true"
-                            [rows]="25"
-                            [showCurrentPageReport]="true"
-                            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                            [globalFilterFields]="['name', 'email', 'verified']"
-                            exportFilename="users"
-                            styleClass="p-datatable-sm">
-                            <ng-template pTemplate="header">
-                                <tr>
-                                    <th *ngIf="visibleColumns.includes('avatar')" style="min-width: 100px; width: 100px;">
-                                        {{ 'Avatar' | translate }}
-                                    </th>
-                                    <th *ngIf="visibleColumns.includes('name')" pSortableColumn="name" style="min-width: 150px">
-                                        {{ 'Name' | translate }}
-                                        <p-sortIcon field="name"></p-sortIcon>
-                                        <p-columnFilter type="text" field="name" display="menu"></p-columnFilter>
-                                    </th>
-                                    <th *ngIf="visibleColumns.includes('email')" pSortableColumn="email" style="min-width: 200px">
-                                        {{ 'Email' | translate }}
-                                        <p-sortIcon field="email"></p-sortIcon>
-                                        <p-columnFilter type="text" field="email" display="menu"></p-columnFilter>
-                                    </th>
-                                    <th *ngIf="visibleColumns.includes('verified')" pSortableColumn="verified" style="min-width: 120px">
-                                        {{ 'Verified' | translate }}
-                                        <p-sortIcon field="verified"></p-sortIcon>
-                                        <p-columnFilter type="boolean" field="verified" display="menu"></p-columnFilter>
-                                    </th>
-                                    <th *ngIf="visibleColumns.includes('created')" pSortableColumn="created" style="min-width: 170px">
-                                        {{ 'Created' | translate }}
-                                        <p-sortIcon field="created"></p-sortIcon>
-                                        <p-columnFilter type="date" field="created" display="menu"></p-columnFilter>
-                                    </th>
-                                    <th *ngIf="visibleColumns.includes('updated')" pSortableColumn="updated" style="min-width: 170px">
-                                        {{ 'Updated' | translate }}
-                                        <p-sortIcon field="updated"></p-sortIcon>
-                                        <p-columnFilter type="date" field="updated" display="menu"></p-columnFilter>
-                                    </th>
-                                    <th style="min-width: 150px; width: 150px; position: sticky; right: 0; background: white; z-index: 10;"></th>
-                                </tr>
-                            </ng-template>
-                            <ng-template pTemplate="body" let-user>
-                                <tr>
-                                    <td *ngIf="visibleColumns.includes('avatar')">
-                                        <img [src]="getAvatarUrl(user)" alt="{{ 'Avatar' | translate }}" class="user-avatar">
-                                    </td>
-                                    <td *ngIf="visibleColumns.includes('name')">{{ user.name }}</td>
-                                    <td *ngIf="visibleColumns.includes('email')">{{ user.email }}</td>
-                                    <td *ngIf="visibleColumns.includes('verified')">
-                                        <span class="badge" [ngClass]="user.verified ? 'bg-success' : 'bg-secondary'">
-                                            {{ user.verified ? ('Yes' | translate) : ('No' | translate) }}
-                                        </span>
-                                    </td>
-                                    <td *ngIf="visibleColumns.includes('created')">{{ user.created | date: 'medium' }}</td>
-                                    <td *ngIf="visibleColumns.includes('updated')">{{ user.updated | date: 'medium' }}</td>
-                                    <td style="position: sticky; right: 0; background: white; z-index: 10;">
-                                        <div class="d-flex gap-1">
-                                            <p-button
-                                                icon="pi pi-pencil"
-                                                [text]="true"
-                                                size="small"
-                                                [label]="'\u00a0'"
-                                                (onClick)="editUser(user)"
-                                                pTooltip="{{ 'Edit' | translate }}">
-                                            </p-button>
-                                            <p-button
-                                                icon="pi pi-trash"
-                                                [text]="true"
-                                                size="small"
-                                                severity="danger"
-                                                [label]="'\u00a0'"
-                                                (onClick)="confirmDelete(user)"
-                                                pTooltip="{{ 'Delete' | translate }}">
-                                            </p-button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </ng-template>
-                        </p-table>
-                    </div>
-                </div>
-            </div>
+  <div class="row h-grow">
+    <div class="col-lg-12 h-grow">
+      <div class="card h-grow m-0">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h4 class="card-title mb-0">{{ 'Users' | translate }}</h4>
+          <div class="d-flex gap-2 align-items-center">
+            <p-button
+              [label]="'New' | translate"
+              icon="pi pi-plus"
+              (onClick)="newUser()"
+              [loading]="loading"
+              [text]="true"
+              size="small">
+            </p-button>
+            <p-button
+              icon="pi pi-refresh"
+              [label]="'\u00a0'"
+              (onClick)="reload()"
+              [loading]="loading"
+              [text]="true"
+              size="small">
+            </p-button>
+            <p-button
+              icon="pi pi-download"
+              [label]="'\u00a0'"
+              (onClick)="exportCsv()"
+              [text]="true"
+              size="small"
+              pTooltip="{{ 'Export' | translate }}">
+            </p-button>
+            <p-button
+              icon="pi pi-table"
+              [label]="'\u00a0'"
+              [text]="true"
+              size="small"
+              pTooltip="{{ 'Columns' | translate }}"
+              (onClick)="colsPopover.toggle($event)">
+            </p-button>
+            <p-popover #colsPopover styleClass="p-2">
+              <ng-template pTemplate="content">
+                <div class="mb-2 fw-semibold">{{ 'Columns' | translate }}</div>
+                <p-multiSelect
+                  [options]="allColumns"
+                  optionLabel="header"
+                  optionValue="field"
+                  [(ngModel)]="visibleColumns"
+                  [showHeader]="false"
+                  [filter]="true"
+                  display="chip"
+                  style="min-width: 220px">
+                </p-multiSelect>
+              </ng-template>
+            </p-popover>
+            <span class="ms-2">
+              <input type="text" pInputText [(ngModel)]="globalFilterValue" placeholder="{{ 'Search' | translate }}" (input)="$event.stopPropagation(); dt.filterGlobal(globalFilterValue, 'contains')" style="min-width: 240px"/>
+            </span>
+          </div>
         </div>
+        <div class="card-body h-grow">
+          <div class="table-container" style="height: 100%; overflow: auto;">
+            <p-table
+              #dt
+              [value]="data"
+              [loading]="loading"
+              [scrollable]="true"
+              scrollHeight="flex"
+              [resizableColumns]="true"
+              [reorderableColumns]="true"
+              [paginator]="true"
+              [rows]="25"
+              [showCurrentPageReport]="true"
+              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+              [globalFilterFields]="['name', 'email', 'verified']"
+              exportFilename="users"
+              styleClass="p-datatable-sm">
+              <ng-template pTemplate="header">
+                <tr>
+                  @if (visibleColumns.includes('avatar')) {
+                    <th style="min-width: 100px; width: 100px;">
+                      {{ 'Avatar' | translate }}
+                    </th>
+                  }
+                  @if (visibleColumns.includes('name')) {
+                    <th pSortableColumn="name" style="min-width: 150px">
+                      {{ 'Name' | translate }}
+                      <p-sortIcon field="name"></p-sortIcon>
+                      <p-columnFilter type="text" field="name" display="menu"></p-columnFilter>
+                    </th>
+                  }
+                  @if (visibleColumns.includes('email')) {
+                    <th pSortableColumn="email" style="min-width: 200px">
+                      {{ 'Email' | translate }}
+                      <p-sortIcon field="email"></p-sortIcon>
+                      <p-columnFilter type="text" field="email" display="menu"></p-columnFilter>
+                    </th>
+                  }
+                  @if (visibleColumns.includes('verified')) {
+                    <th pSortableColumn="verified" style="min-width: 120px">
+                      {{ 'Verified' | translate }}
+                      <p-sortIcon field="verified"></p-sortIcon>
+                      <p-columnFilter type="boolean" field="verified" display="menu"></p-columnFilter>
+                    </th>
+                  }
+                  @if (visibleColumns.includes('created')) {
+                    <th pSortableColumn="created" style="min-width: 170px">
+                      {{ 'Created' | translate }}
+                      <p-sortIcon field="created"></p-sortIcon>
+                      <p-columnFilter type="date" field="created" display="menu"></p-columnFilter>
+                    </th>
+                  }
+                  @if (visibleColumns.includes('updated')) {
+                    <th pSortableColumn="updated" style="min-width: 170px">
+                      {{ 'Updated' | translate }}
+                      <p-sortIcon field="updated"></p-sortIcon>
+                      <p-columnFilter type="date" field="updated" display="menu"></p-columnFilter>
+                    </th>
+                  }
+                  <th style="min-width: 150px; width: 150px; position: sticky; right: 0; background: white; z-index: 10;"></th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-user>
+                <tr>
+                  @if (visibleColumns.includes('avatar')) {
+                    <td>
+                      <img [src]="getAvatarUrl(user)" alt="{{ 'Avatar' | translate }}" class="user-avatar">
+                    </td>
+                  }
+                  @if (visibleColumns.includes('name')) {
+                    <td>{{ user.name }}</td>
+                  }
+                  @if (visibleColumns.includes('email')) {
+                    <td>{{ user.email }}</td>
+                  }
+                  @if (visibleColumns.includes('verified')) {
+                    <td>
+                      <span class="badge" [ngClass]="user.verified ? 'bg-success' : 'bg-secondary'">
+                        {{ user.verified ? ('Yes' | translate) : ('No' | translate) }}
+                      </span>
+                    </td>
+                  }
+                  @if (visibleColumns.includes('created')) {
+                    <td>{{ user.created | date: 'medium' }}</td>
+                  }
+                  @if (visibleColumns.includes('updated')) {
+                    <td>{{ user.updated | date: 'medium' }}</td>
+                  }
+                  <td style="position: sticky; right: 0; background: white; z-index: 10;">
+                    <div class="d-flex gap-1">
+                      <p-button
+                        icon="pi pi-pencil"
+                        [text]="true"
+                        size="small"
+                        [label]="'\u00a0'"
+                        (onClick)="editUser(user)"
+                        pTooltip="{{ 'Edit' | translate }}">
+                      </p-button>
+                      <p-button
+                        icon="pi pi-trash"
+                        [text]="true"
+                        size="small"
+                        severity="danger"
+                        [label]="'\u00a0'"
+                        (onClick)="confirmDelete(user)"
+                        pTooltip="{{ 'Delete' | translate }}">
+                      </p-button>
+                    </div>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <p-dialog
-        [(visible)]="visible"
-        [modal]="true"
-        [closable]="true"
-        [draggable]="false"
-        [resizable]="false"
-        [style]="{ width: '90vw', maxWidth: '800px' }"
-        [header]="(selectedUser ? 'Edit' : 'New') + ' ' + ('User' | translate)">
-        <form [formGroup]="userForm" (ngSubmit)="saveUser()">
-            <div class="row">
-                <div class="col-md-4 mb-3 text-center">
-                    <img
-                        [src]="addedFileTemp || (selectedUser ? getAvatarUrl(selectedUser) : fallbackAvatar)"
-                        alt="{{ 'Avatar' | translate }}"
-                        class="avatar-preview mb-2">
-                    <div class="d-flex justify-content-center gap-2">
-                        <input
-                            type="file"
-                            accept="image/*"
-                            class="d-none"
-                            #avatarInput
-                            (change)="onFileSelected($event)">
-                        <p-button
-                            icon="pi pi-upload"
-                            label="Change"
-                            (onClick)="avatarInput.click()"
-                            [text]="true"
-                            size="small">
-                        </p-button>
-                        <p-button
-                            *ngIf="addedFileTemp"
-                            icon="pi pi-times"
-                            label="Remove"
-                            (onClick)="clearAvatar()"
-                            [text]="true"
-                            size="small">
-                        </p-button>
-                    </div>
-                </div>
-                <div class="col-md-8 mb-3">
-                    <div class="mb-3">
-                        <label for="name" class="form-label">{{ 'Name' | translate }}</label>
-                        <input id="name" type="text" class="form-control" formControlName="name" pInputText>
-                        <div *ngIf="userForm.get('name')?.invalid && userForm.get('name')?.touched" class="text-danger small">
-                            Name is required
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="email" class="form-label">{{ 'Email' | translate }}</label>
-                        <input id="email" type="email" class="form-control" formControlName="email" pInputText>
-                        <div *ngIf="userForm.get('email')?.invalid && userForm.get('email')?.touched" class="text-danger small">
-                            Valid email is required
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="password" class="form-label">{{ 'Password' | translate }}</label>
-                        <input id="password" type="password" class="form-control" formControlName="password" pInputText autocomplete="new-password">
-                        <div *ngIf="userForm.get('password')?.invalid && userForm.get('password')?.touched" class="text-danger small">
-                            Password is required
-                        </div>
-                        <small *ngIf="selectedUser" class="text-muted">Leave blank to keep the current password</small>
-                    </div>
-                    <div class="mb-3" *ngIf="selectedUser">
-                        <div class="d-flex flex-wrap gap-2">
-                            <p-button
-                                icon="pi pi-lock"
-                                [label]="'Send password reset' | translate"
-                                (onClick)="pwdReset(selectedUser.email)"
-                                [text]="true"
-                                size="small">
-                            </p-button>
-                            <p-button
-                                icon="pi pi-envelope"
-                                [label]="'Send activation email' | translate"
-                                (onClick)="activation(selectedUser.email)"
-                                [text]="true"
-                                size="small">
-                            </p-button>
-                            <p-button
-                                *ngIf="selectedUser.mfaActive"
-                                icon="pi pi-shield"
-                                [label]="'Disable MFA' | translate"
-                                (onClick)="disableMFA(selectedUser)"
-                                [text]="true"
-                                size="small">
-                            </p-button>
-                            <p-button
-                                *ngIf="!selectedUser.mfaActive"
-                                icon="pi pi-shield"
-                                [label]="'Activate MFA' | translate"
-                                (onClick)="activateMFA()"
-                                [text]="true"
-                                size="small">
-                            </p-button>
-                        </div>
-                    </div>
-                    <div *ngIf="activatingMFA" class="mt-3">
-                        <label for="otp" class="form-label">{{ 'OTP Code' | translate }}</label>
-                        <input id="otp" type="text" maxlength="8" minlength="8" class="form-control" [(ngModel)]="OTPCode" name="otpCode" pInputText autocomplete="one-time-code">
-                        <div class="d-flex gap-2 mt-2">
-                            <p-button
-                                icon="pi pi-check"
-                                label="Verify"
-                                (onClick)="verifyMFA()"
-                                [disabled]="OTPCode.length !== 8"
-                                size="small">
-                            </p-button>
-                            <p-button
-                                icon="pi pi-times"
-                                label="Cancel"
-                                (onClick)="activatingMFA = false; OTPCode = ''"
-                                [text]="true"
-                                size="small">
-                            </p-button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </form>
-        <ng-template pTemplate="footer">
-            <div class="d-flex justify-content-end gap-2">
+  <p-dialog
+    [(visible)]="visible"
+    [modal]="true"
+    [closable]="true"
+    [draggable]="false"
+    [resizable]="false"
+    [style]="{ width: '90vw', maxWidth: '800px' }"
+    [header]="(selectedUser ? 'Edit' : 'New') + ' ' + ('User' | translate)">
+    <form [formGroup]="userForm" (ngSubmit)="saveUser()">
+      <div class="row">
+        <div class="col-md-4 mb-3 text-center">
+          <img
+            [src]="addedFileTemp || (selectedUser ? getAvatarUrl(selectedUser) : fallbackAvatar)"
+            alt="{{ 'Avatar' | translate }}"
+            class="avatar-preview mb-2">
+          <div class="d-flex justify-content-center gap-2">
+            <input
+              type="file"
+              accept="image/*"
+              class="d-none"
+              #avatarInput
+              (change)="onFileSelected($event)">
+            <p-button
+              icon="pi pi-upload"
+              label="Change"
+              (onClick)="avatarInput.click()"
+              [text]="true"
+              size="small">
+            </p-button>
+            @if (addedFileTemp) {
+              <p-button
+                icon="pi pi-times"
+                label="Remove"
+                (onClick)="clearAvatar()"
+                [text]="true"
+                size="small">
+              </p-button>
+            }
+          </div>
+        </div>
+        <div class="col-md-8 mb-3">
+          <div class="mb-3">
+            <label for="name" class="form-label">{{ 'Name' | translate }}</label>
+            <input id="name" type="text" class="form-control" formControlName="name" pInputText>
+            @if (userForm.get('name')?.invalid && userForm.get('name')?.touched) {
+              <div class="text-danger small">
+                Name is required
+              </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="email" class="form-label">{{ 'Email' | translate }}</label>
+            <input id="email" type="email" class="form-control" formControlName="email" pInputText>
+            @if (userForm.get('email')?.invalid && userForm.get('email')?.touched) {
+              <div class="text-danger small">
+                Valid email is required
+              </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">{{ 'Password' | translate }}</label>
+            <input id="password" type="password" class="form-control" formControlName="password" pInputText autocomplete="new-password">
+            @if (userForm.get('password')?.invalid && userForm.get('password')?.touched) {
+              <div class="text-danger small">
+                Password is required
+              </div>
+            }
+            @if (selectedUser) {
+              <small class="text-muted">Leave blank to keep the current password</small>
+            }
+          </div>
+          @if (selectedUser) {
+            <div class="mb-3">
+              <div class="d-flex flex-wrap gap-2">
                 <p-button
-                    label="Cancel"
-                    icon="pi pi-times"
+                  icon="pi pi-lock"
+                  [label]="'Send password reset' | translate"
+                  (onClick)="pwdReset(selectedUser.email)"
+                  [text]="true"
+                  size="small">
+                </p-button>
+                <p-button
+                  icon="pi pi-envelope"
+                  [label]="'Send activation email' | translate"
+                  (onClick)="activation(selectedUser.email)"
+                  [text]="true"
+                  size="small">
+                </p-button>
+                @if (selectedUser.mfaActive) {
+                  <p-button
+                    icon="pi pi-shield"
+                    [label]="'Disable MFA' | translate"
+                    (onClick)="disableMFA(selectedUser)"
                     [text]="true"
-                    (onClick)="visible = false">
+                    size="small">
+                  </p-button>
+                }
+                @if (!selectedUser.mfaActive) {
+                  <p-button
+                    icon="pi pi-shield"
+                    [label]="'Activate MFA' | translate"
+                    (onClick)="activateMFA()"
+                    [text]="true"
+                    size="small">
+                  </p-button>
+                }
+              </div>
+            </div>
+          }
+          @if (activatingMFA) {
+            <div class="mt-3">
+              <label for="otp" class="form-label">{{ 'OTP Code' | translate }}</label>
+              <input id="otp" type="text" maxlength="8" minlength="8" class="form-control" [(ngModel)]="OTPCode" name="otpCode" pInputText autocomplete="one-time-code">
+              <div class="d-flex gap-2 mt-2">
+                <p-button
+                  icon="pi pi-check"
+                  label="Verify"
+                  (onClick)="verifyMFA()"
+                  [disabled]="OTPCode.length !== 8"
+                  size="small">
                 </p-button>
                 <p-button
-                    [label]="selectedUser ? 'Update' : 'Create'"
-                    icon="pi pi-check"
-                    (onClick)="saveUser()"
-                    [loading]="loading"
-                    [disabled]="!userForm.valid">
+                  icon="pi pi-times"
+                  label="Cancel"
+                  (onClick)="activatingMFA = false; OTPCode = ''"
+                  [text]="true"
+                  size="small">
                 </p-button>
+              </div>
             </div>
-        </ng-template>
-    </p-dialog>
+          }
+        </div>
+      </div>
+    </form>
+    <ng-template pTemplate="footer">
+      <div class="d-flex justify-content-end gap-2">
+        <p-button
+          label="Cancel"
+          icon="pi pi-times"
+          [text]="true"
+          (onClick)="visible = false">
+        </p-button>
+        <p-button
+          [label]="selectedUser ? 'Update' : 'Create'"
+          icon="pi pi-check"
+          (onClick)="saveUser()"
+          [loading]="loading"
+          [disabled]="!userForm.valid">
+        </p-button>
+      </div>
+    </ng-template>
+  </p-dialog>
 
-    <p-toast></p-toast>
-    <p-confirmDialog></p-confirmDialog>
+  <p-toast></p-toast>
+  <p-confirmDialog></p-confirmDialog>
 </div>

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
@@ -7,7 +7,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'eenvo-auth-complete-registration',
-    imports: [CommonModule, RouterModule, ReactiveFormsModule, TranslatePipe],
+    imports: [RouterModule, ReactiveFormsModule, TranslatePipe],
     templateUrl: './auth-complete-registration.component.html',
     styleUrl: './auth-complete-registration.component.scss'
 })

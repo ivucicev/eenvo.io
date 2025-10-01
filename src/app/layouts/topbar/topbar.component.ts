@@ -1,10 +1,10 @@
-import { Component, EventEmitter, Inject, Output, Signal, signal } from '@angular/core';
+import { Component, EventEmitter, Inject, Output, Signal, signal, DOCUMENT } from '@angular/core';
 import { SimplebarAngularModule } from 'simplebar-angular';
 import { Store } from '@ngrx/store';
 import { getLayoutMode, getSidebarSize } from '../../store/layouts/layout-selector';
 import { LAYOUT_MODE, SIDEBAR_SIZE } from '../../store/layouts/layout';
 import { changeMode } from '../../store/layouts/layout-action';
-import { CommonModule, DOCUMENT } from '@angular/common';
+
 import { LanguageService } from '../../core/services/language.service';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { PocketBaseService } from '../../core/services/pocket-base.service';
@@ -16,7 +16,7 @@ import { AppConstants } from '../../core/constants/AppConstants';
 
 @Component({
     selector: 'eenvo-topbar',
-    imports: [SimplebarAngularModule, NgbDropdownModule, CommonModule, TranslatePipe, RouterModule],
+    imports: [SimplebarAngularModule, NgbDropdownModule, TranslatePipe, RouterModule],
     templateUrl: './topbar.component.html',
     styleUrl: './topbar.component.scss'
 })

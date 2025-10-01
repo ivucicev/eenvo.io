@@ -6,7 +6,7 @@ import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
@@ -17,20 +17,19 @@ import { PopoverModule } from 'primeng/popover';
 @Component({
     selector: 'app-categories',
     imports: [
-        TableModule,
-        ButtonModule,
-        DialogModule,
-        InputTextModule,
-        ReactiveFormsModule,
-        FormsModule,
-        CommonModule,
-        ConfirmDialogModule,
-        ToastModule,
-        TooltipModule,
-        MultiSelectModule,
-        PopoverModule,
-        TranslatePipe
-    ],
+    TableModule,
+    ButtonModule,
+    DialogModule,
+    InputTextModule,
+    ReactiveFormsModule,
+    FormsModule,
+    ConfirmDialogModule,
+    ToastModule,
+    TooltipModule,
+    MultiSelectModule,
+    PopoverModule,
+    TranslatePipe
+],
     templateUrl: './categories.component.html',
     styleUrl: './categories.component.scss',
     providers: [ConfirmationService, MessageService]

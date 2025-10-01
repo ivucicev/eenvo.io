@@ -1,414 +1,470 @@
 <div class="h-100 d-flex flex-column">
-    <div class="row h-grow">
-        <div class="col-lg-12 h-grow">
-            <div class="card h-grow m-0">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h4 class="card-title mb-0">{{ title | translate }}</h4>
-                    <div class="d-flex gap-2 align-items-center">
-                        <p-button 
-                            [label]="'New' | translate" 
-                            icon="pi pi-plus" 
-                            (onClick)="newCustomer()"
-                            [loading]="loading"
-                            [text]="true"
-                            size="small">
-                        </p-button>
-                        <p-button 
-                            icon="pi pi-refresh" 
-                            [label]="'&nbsp;'" 
-                            (onClick)="reload()"
-                            [loading]="loading"
-                            [text]="true"
-                            size="small">
-                        </p-button>
-                        <p-button 
-                            icon="pi pi-download" 
-                            [label]="'&nbsp;'" 
-                            (onClick)="exportCsv()"
-                            [text]="true"
-                            size="small"
-                            pTooltip="{{ 'Export' | translate }}">
-                        </p-button>
-                        <p-button 
-                            icon="pi pi-table" 
-                            [text]="true"
-                            [label]="'&nbsp;'" 
-                            size="small"
-                            pTooltip="{{ 'Columns' | translate }}"
-                            (onClick)="colsPopover.toggle($event)">
-                        </p-button>
-                        <p-popover #colsPopover styleClass="p-2">
-                            <ng-template pTemplate="content">
-                                <div class="mb-2 fw-semibold">{{ 'Columns' | translate }}</div>
-                                <p-multiSelect
-                                    [options]="allColumns"
-                                    optionLabel="header"
-                                    optionValue="field"
-                                    [(ngModel)]="visibleColumns"
-                                    [showHeader]="false"
-                                    [filter]="true"
-                                    display="chip"
-                                    style="min-width: 220px">
-                                </p-multiSelect>
-                            </ng-template>
-                        </p-popover>
-                        <span class="me-2">
-                            <input type="text" pInputText [(ngModel)]="globalFilterValue" placeholder="{{ 'Search' | translate }}" (input)="$event.stopPropagation(); dt.filterGlobal(globalFilterValue, 'contains')" style="min-width: 240px"/>
-                        </span>
-                    </div>
-                </div>
-                <div class="card-body h-grow">
-                    <div class="table-container" style="height: 100%; overflow: auto;">
-                        <p-table 
-                            #dt
-                            [value]="data" 
-                            [loading]="loading"
-                            [scrollable]="true"
-                            scrollHeight="flex"
-                            [resizableColumns]="true"
-                            [reorderableColumns]="true"
-                            [paginator]="true"
-                            [rows]="25"
-                            [showCurrentPageReport]="true"
-                            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                            [globalFilterFields]="visibleColumns"
-                            exportFilename="customers"
-                            styleClass="p-datatable-sm">
-                            
-                            <ng-template pTemplate="header">
-                                <tr>
-                                    <th *ngIf="visibleColumns.includes('code')" pSortableColumn="code" style="min-width: 100px">
-                                        {{ 'Code' | translate }}
-                                        <p-sortIcon field="code"></p-sortIcon>
-                                        <p-columnFilter type="text" field="code" display="menu"></p-columnFilter>
-                                    </th>
-                                    <th *ngIf="visibleColumns.includes('name')" pSortableColumn="name" style="min-width: 150px">
-                                        {{ 'Name' | translate }}
-                                        <p-sortIcon field="name"></p-sortIcon>
-                                        <p-columnFilter type="text" field="name" display="menu"></p-columnFilter>
-                                    </th>
-                                    <th *ngIf="visibleColumns.includes('addition')" pSortableColumn="addition" style="min-width: 120px">
-                                        {{ 'Addition' | translate }}
-                                        <p-sortIcon field="addition"></p-sortIcon>
-                                        <p-columnFilter type="text" field="addition" display="menu"></p-columnFilter>
-                                    </th>
-                                    <th *ngIf="visibleColumns.includes('vatID')" pSortableColumn="vatID" style="min-width: 120px">
-                                        {{ 'VAT ID' | translate }}
-                                        <p-sortIcon field="vatID"></p-sortIcon>
-                                        <p-columnFilter type="text" field="vatID" display="menu"></p-columnFilter>
-                                    </th>
-                                    <th *ngIf="visibleColumns.includes('address')" pSortableColumn="address" style="min-width: 150px">
-                                        {{ 'Address' | translate }}
-                                        <p-sortIcon field="address"></p-sortIcon>
-                                        <p-columnFilter type="text" field="address" display="menu"></p-columnFilter>
-                                    </th>
-                                    <th *ngIf="visibleColumns.includes('city')" pSortableColumn="city" style="min-width: 100px">
-                                        {{ 'City' | translate }}
-                                        <p-sortIcon field="city"></p-sortIcon>
-                                        <p-columnFilter type="text" field="city" display="menu"></p-columnFilter>
-                                    </th>
-                                    <th *ngIf="visibleColumns.includes('postal')" pSortableColumn="postal" style="min-width: 100px">
-                                        {{ 'Postal Code' | translate }}
-                                        <p-sortIcon field="postal"></p-sortIcon>
-                                        <p-columnFilter type="text" field="postal" display="menu"></p-columnFilter>
-                                    </th>
-                                    <th *ngIf="visibleColumns.includes('country')" pSortableColumn="country" style="min-width: 120px">
-                                        {{ 'Country' | translate }}
-                                        <p-sortIcon field="country"></p-sortIcon>
-                                        <p-columnFilter type="text" field="country" display="menu"></p-columnFilter>
-                                    </th>
-                                    <th *ngIf="visibleColumns.includes('phone')" pSortableColumn="phone" style="min-width: 120px">
-                                        {{ 'Phone' | translate }}
-                                        <p-sortIcon field="phone"></p-sortIcon>
-                                        <p-columnFilter type="text" field="phone" display="menu"></p-columnFilter>
-                                    </th>
-                                    <th *ngIf="visibleColumns.includes('email')" pSortableColumn="email" style="min-width: 150px">
-                                        {{ 'Email' | translate }}
-                                        <p-sortIcon field="email"></p-sortIcon>
-                                        <p-columnFilter type="text" field="email" display="menu"></p-columnFilter>
-                                    </th>
-                                    <th *ngIf="visibleColumns.includes('due')" pSortableColumn="due" style="min-width: 100px">
-                                        {{ 'Due Amount' | translate }}
-                                        <p-sortIcon field="due"></p-sortIcon>
-                                        <p-columnFilter type="numeric" field="due" display="menu"></p-columnFilter>
-                                    </th>
-                                    <th *ngIf="visibleColumns.includes('note')" pSortableColumn="note" style="min-width: 100px">
-                                        {{ 'Note' | translate }}
-                                        <p-sortIcon field="note"></p-sortIcon>
-                                        <p-columnFilter type="text" field="note" display="menu"></p-columnFilter>
-                                    </th>
-                                    <th *ngIf="visibleColumns.includes('invoiceNote')" pSortableColumn="invoiceNote" style="min-width: 100px">
-                                        {{ 'Terms & Notes'| translate }}
-                                        <p-sortIcon field="invoiceNote"></p-sortIcon>
-                                        <p-columnFilter type="text" field="invoiceNote" display="menu"></p-columnFilter>
-                                    </th>
-                                    <th style="min-width: 120px; width: 120px; position: sticky; right: 0; background: white; z-index: 10;">
-                                    </th>
-                                </tr>
-                            </ng-template>
-                            
-                            <ng-template pTemplate="body" let-customer>
-                                <tr>
-                                    <td *ngIf="visibleColumns.includes('code')">{{ customer.code }}</td>
-                                    <td *ngIf="visibleColumns.includes('name')">{{ customer.name }}</td>
-                                    <td *ngIf="visibleColumns.includes('addition')">{{ customer.addition }}</td>
-                                    <td *ngIf="visibleColumns.includes('vatID')">{{ customer.vatID }}</td>
-                                    <td *ngIf="visibleColumns.includes('address')">{{ customer.address }}</td>
-                                    <td *ngIf="visibleColumns.includes('city')">{{ customer.city }}</td>
-                                    <td *ngIf="visibleColumns.includes('postal')">{{ customer.postal }}</td>
-                                    <td *ngIf="visibleColumns.includes('country')">{{ customer.country }}</td>
-                                    <td *ngIf="visibleColumns.includes('phone')">{{ customer.phone }}</td>
-                                    <td *ngIf="visibleColumns.includes('email')">{{ customer.email }}</td>
-                                    <td *ngIf="visibleColumns.includes('due')">{{ customer.due }}</td>
-                                    <td *ngIf="visibleColumns.includes('note')">{{ customer.note }}</td>
-                                    <td *ngIf="visibleColumns.includes('invoiceNote')">{{ customer.invoiceNote }}</td>
-                                    <td style="position: sticky; right: 0; background: white; z-index: 10;">
-                                        <div class="d-flex gap-1">
-                                            <p-button 
-                                                icon="pi pi-pencil" 
-                                                [text]="true"
-                                                size="small"
-                                                [label]="'&nbsp;'" 
-                                                (onClick)="editCustomer(customer)"
-                                                pTooltip="Edit">
-                                            </p-button>
-                                            <p-button 
-                                                icon="pi pi-trash" 
-                                                [text]="true"
-                                                size="small"
-                                                severity="danger"
-                                                [label]="'&nbsp;'" 
-                                                (onClick)="confirmDelete(customer)"
-                                                pTooltip="Delete">
-                                            </p-button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </ng-template>
-                        </p-table>
-                    </div>
-                </div>
-            </div>
+  <div class="row h-grow">
+    <div class="col-lg-12 h-grow">
+      <div class="card h-grow m-0">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h4 class="card-title mb-0">{{ title | translate }}</h4>
+          <div class="d-flex gap-2 align-items-center">
+            <p-button
+              [label]="'New' | translate"
+              icon="pi pi-plus"
+              (onClick)="newCustomer()"
+              [loading]="loading"
+              [text]="true"
+              size="small">
+            </p-button>
+            <p-button
+              icon="pi pi-refresh"
+              [label]="'&nbsp;'"
+              (onClick)="reload()"
+              [loading]="loading"
+              [text]="true"
+              size="small">
+            </p-button>
+            <p-button
+              icon="pi pi-download"
+              [label]="'&nbsp;'"
+              (onClick)="exportCsv()"
+              [text]="true"
+              size="small"
+              pTooltip="{{ 'Export' | translate }}">
+            </p-button>
+            <p-button
+              icon="pi pi-table"
+              [text]="true"
+              [label]="'&nbsp;'"
+              size="small"
+              pTooltip="{{ 'Columns' | translate }}"
+              (onClick)="colsPopover.toggle($event)">
+            </p-button>
+            <p-popover #colsPopover styleClass="p-2">
+              <ng-template pTemplate="content">
+                <div class="mb-2 fw-semibold">{{ 'Columns' | translate }}</div>
+                <p-multiSelect
+                  [options]="allColumns"
+                  optionLabel="header"
+                  optionValue="field"
+                  [(ngModel)]="visibleColumns"
+                  [showHeader]="false"
+                  [filter]="true"
+                  display="chip"
+                  style="min-width: 220px">
+                </p-multiSelect>
+              </ng-template>
+            </p-popover>
+            <span class="me-2">
+              <input type="text" pInputText [(ngModel)]="globalFilterValue" placeholder="{{ 'Search' | translate }}" (input)="$event.stopPropagation(); dt.filterGlobal(globalFilterValue, 'contains')" style="min-width: 240px"/>
+            </span>
+          </div>
         </div>
+        <div class="card-body h-grow">
+          <div class="table-container" style="height: 100%; overflow: auto;">
+            <p-table
+              #dt
+              [value]="data"
+              [loading]="loading"
+              [scrollable]="true"
+              scrollHeight="flex"
+              [resizableColumns]="true"
+              [reorderableColumns]="true"
+              [paginator]="true"
+              [rows]="25"
+              [showCurrentPageReport]="true"
+              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+              [globalFilterFields]="visibleColumns"
+              exportFilename="customers"
+              styleClass="p-datatable-sm">
+
+              <ng-template pTemplate="header">
+                <tr>
+                  @if (visibleColumns.includes('code')) {
+                    <th pSortableColumn="code" style="min-width: 100px">
+                      {{ 'Code' | translate }}
+                      <p-sortIcon field="code"></p-sortIcon>
+                      <p-columnFilter type="text" field="code" display="menu"></p-columnFilter>
+                    </th>
+                  }
+                  @if (visibleColumns.includes('name')) {
+                    <th pSortableColumn="name" style="min-width: 150px">
+                      {{ 'Name' | translate }}
+                      <p-sortIcon field="name"></p-sortIcon>
+                      <p-columnFilter type="text" field="name" display="menu"></p-columnFilter>
+                    </th>
+                  }
+                  @if (visibleColumns.includes('addition')) {
+                    <th pSortableColumn="addition" style="min-width: 120px">
+                      {{ 'Addition' | translate }}
+                      <p-sortIcon field="addition"></p-sortIcon>
+                      <p-columnFilter type="text" field="addition" display="menu"></p-columnFilter>
+                    </th>
+                  }
+                  @if (visibleColumns.includes('vatID')) {
+                    <th pSortableColumn="vatID" style="min-width: 120px">
+                      {{ 'VAT ID' | translate }}
+                      <p-sortIcon field="vatID"></p-sortIcon>
+                      <p-columnFilter type="text" field="vatID" display="menu"></p-columnFilter>
+                    </th>
+                  }
+                  @if (visibleColumns.includes('address')) {
+                    <th pSortableColumn="address" style="min-width: 150px">
+                      {{ 'Address' | translate }}
+                      <p-sortIcon field="address"></p-sortIcon>
+                      <p-columnFilter type="text" field="address" display="menu"></p-columnFilter>
+                    </th>
+                  }
+                  @if (visibleColumns.includes('city')) {
+                    <th pSortableColumn="city" style="min-width: 100px">
+                      {{ 'City' | translate }}
+                      <p-sortIcon field="city"></p-sortIcon>
+                      <p-columnFilter type="text" field="city" display="menu"></p-columnFilter>
+                    </th>
+                  }
+                  @if (visibleColumns.includes('postal')) {
+                    <th pSortableColumn="postal" style="min-width: 100px">
+                      {{ 'Postal Code' | translate }}
+                      <p-sortIcon field="postal"></p-sortIcon>
+                      <p-columnFilter type="text" field="postal" display="menu"></p-columnFilter>
+                    </th>
+                  }
+                  @if (visibleColumns.includes('country')) {
+                    <th pSortableColumn="country" style="min-width: 120px">
+                      {{ 'Country' | translate }}
+                      <p-sortIcon field="country"></p-sortIcon>
+                      <p-columnFilter type="text" field="country" display="menu"></p-columnFilter>
+                    </th>
+                  }
+                  @if (visibleColumns.includes('phone')) {
+                    <th pSortableColumn="phone" style="min-width: 120px">
+                      {{ 'Phone' | translate }}
+                      <p-sortIcon field="phone"></p-sortIcon>
+                      <p-columnFilter type="text" field="phone" display="menu"></p-columnFilter>
+                    </th>
+                  }
+                  @if (visibleColumns.includes('email')) {
+                    <th pSortableColumn="email" style="min-width: 150px">
+                      {{ 'Email' | translate }}
+                      <p-sortIcon field="email"></p-sortIcon>
+                      <p-columnFilter type="text" field="email" display="menu"></p-columnFilter>
+                    </th>
+                  }
+                  @if (visibleColumns.includes('due')) {
+                    <th pSortableColumn="due" style="min-width: 100px">
+                      {{ 'Due Amount' | translate }}
+                      <p-sortIcon field="due"></p-sortIcon>
+                      <p-columnFilter type="numeric" field="due" display="menu"></p-columnFilter>
+                    </th>
+                  }
+                  @if (visibleColumns.includes('note')) {
+                    <th pSortableColumn="note" style="min-width: 100px">
+                      {{ 'Note' | translate }}
+                      <p-sortIcon field="note"></p-sortIcon>
+                      <p-columnFilter type="text" field="note" display="menu"></p-columnFilter>
+                    </th>
+                  }
+                  @if (visibleColumns.includes('invoiceNote')) {
+                    <th pSortableColumn="invoiceNote" style="min-width: 100px">
+                      {{ 'Terms & Notes'| translate }}
+                      <p-sortIcon field="invoiceNote"></p-sortIcon>
+                      <p-columnFilter type="text" field="invoiceNote" display="menu"></p-columnFilter>
+                    </th>
+                  }
+                  <th style="min-width: 120px; width: 120px; position: sticky; right: 0; background: white; z-index: 10;">
+                  </th>
+                </tr>
+              </ng-template>
+
+              <ng-template pTemplate="body" let-customer>
+                <tr>
+                  @if (visibleColumns.includes('code')) {
+                    <td>{{ customer.code }}</td>
+                  }
+                  @if (visibleColumns.includes('name')) {
+                    <td>{{ customer.name }}</td>
+                  }
+                  @if (visibleColumns.includes('addition')) {
+                    <td>{{ customer.addition }}</td>
+                  }
+                  @if (visibleColumns.includes('vatID')) {
+                    <td>{{ customer.vatID }}</td>
+                  }
+                  @if (visibleColumns.includes('address')) {
+                    <td>{{ customer.address }}</td>
+                  }
+                  @if (visibleColumns.includes('city')) {
+                    <td>{{ customer.city }}</td>
+                  }
+                  @if (visibleColumns.includes('postal')) {
+                    <td>{{ customer.postal }}</td>
+                  }
+                  @if (visibleColumns.includes('country')) {
+                    <td>{{ customer.country }}</td>
+                  }
+                  @if (visibleColumns.includes('phone')) {
+                    <td>{{ customer.phone }}</td>
+                  }
+                  @if (visibleColumns.includes('email')) {
+                    <td>{{ customer.email }}</td>
+                  }
+                  @if (visibleColumns.includes('due')) {
+                    <td>{{ customer.due }}</td>
+                  }
+                  @if (visibleColumns.includes('note')) {
+                    <td>{{ customer.note }}</td>
+                  }
+                  @if (visibleColumns.includes('invoiceNote')) {
+                    <td>{{ customer.invoiceNote }}</td>
+                  }
+                  <td style="position: sticky; right: 0; background: white; z-index: 10;">
+                    <div class="d-flex gap-1">
+                      <p-button
+                        icon="pi pi-pencil"
+                        [text]="true"
+                        size="small"
+                        [label]="'&nbsp;'"
+                        (onClick)="editCustomer(customer)"
+                        pTooltip="Edit">
+                      </p-button>
+                      <p-button
+                        icon="pi pi-trash"
+                        [text]="true"
+                        size="small"
+                        severity="danger"
+                        [label]="'&nbsp;'"
+                        (onClick)="confirmDelete(customer)"
+                        pTooltip="Delete">
+                      </p-button>
+                    </div>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <!-- Customer Modal -->
-    <p-dialog 
-        [(visible)]="visible" 
-        [modal]="true" 
-        [closable]="true"
-        [draggable]="false"
-        [resizable]="false"
-        [style]="{ width: '90vw', maxWidth: '800px' }"
-        [header]="(selectedCustomer ? 'Edit' : 'New') + ' ' + (title | translate)">
-        
-        <form [formGroup]="customerForm" (ngSubmit)="saveCustomer()">
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label for="code" class="form-label">{{ 'Code' | translate }}</label>
-                    <input 
-                        type="text" 
-                        id="code" 
-                        class="form-control" 
-                        formControlName="code"
-                        pInputText>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="name" class="form-label">{{ 'Name' | translate }} *</label>
-                    <input 
-                        type="text" 
-                        id="name" 
-                        class="form-control" 
-                        formControlName="name"
-                        pInputText>
-                    <div *ngIf="customerForm.get('name')?.invalid && customerForm.get('name')?.touched" 
-                         class="text-danger small">
-                        Name is required
-                    </div>
-                </div>
+  <!-- Customer Modal -->
+  <p-dialog
+    [(visible)]="visible"
+    [modal]="true"
+    [closable]="true"
+    [draggable]="false"
+    [resizable]="false"
+    [style]="{ width: '90vw', maxWidth: '800px' }"
+    [header]="(selectedCustomer ? 'Edit' : 'New') + ' ' + (title | translate)">
+
+    <form [formGroup]="customerForm" (ngSubmit)="saveCustomer()">
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="code" class="form-label">{{ 'Code' | translate }}</label>
+          <input
+            type="text"
+            id="code"
+            class="form-control"
+            formControlName="code"
+            pInputText>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="name" class="form-label">{{ 'Name' | translate }} *</label>
+          <input
+            type="text"
+            id="name"
+            class="form-control"
+            formControlName="name"
+            pInputText>
+          @if (customerForm.get('name')?.invalid && customerForm.get('name')?.touched) {
+            <div
+              class="text-danger small">
+              Name is required
             </div>
+          }
+        </div>
+      </div>
 
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label for="addition" class="form-label">{{ 'Addition' | translate }}</label>
-                    <input 
-                        type="text" 
-                        id="addition" 
-                        class="form-control" 
-                        formControlName="addition"
-                        pInputText>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="vatID" class="form-label">{{ 'VAT ID' | translate }}</label>
-                    <input 
-                        type="text" 
-                        id="vatID" 
-                        class="form-control" 
-                        formControlName="vatID"
-                        pInputText>
-                </div>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="addition" class="form-label">{{ 'Addition' | translate }}</label>
+          <input
+            type="text"
+            id="addition"
+            class="form-control"
+            formControlName="addition"
+            pInputText>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="vatID" class="form-label">{{ 'VAT ID' | translate }}</label>
+          <input
+            type="text"
+            id="vatID"
+            class="form-control"
+            formControlName="vatID"
+            pInputText>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-8 mb-3">
+          <label for="address" class="form-label">{{ 'Address' | translate }}</label>
+          <input
+            type="text"
+            id="address"
+            class="form-control"
+            formControlName="address"
+            pInputText>
+        </div>
+        <div class="col-md-4 mb-3">
+          <label for="city" class="form-label">{{ 'City' | translate }}</label>
+          <input
+            type="text"
+            id="city"
+            class="form-control"
+            formControlName="city"
+            pInputText>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          <label for="postal" class="form-label">{{ 'Postal Code' | translate }}</label>
+          <input
+            type="text"
+            id="postal"
+            class="form-control"
+            formControlName="postal"
+            pInputText>
+        </div>
+        <div class="col-md-8 mb-3">
+          <label for="country" class="form-label">{{ 'Country' | translate }}</label>
+          <p-select
+            id="country"
+            formControlName="country"
+            [options]="countries"
+            optionLabel="countryName"
+            optionValue="countryName"
+            [filter]="true"
+            placeholder="Select Country"
+            styleClass="w-100">
+          </p-select>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          <label for="phone" class="form-label">{{ 'Phone' | translate }}</label>
+          <input
+            type="text"
+            id="phone"
+            class="form-control"
+            formControlName="phone"
+            pInputText>
+        </div>
+        <div class="col-md-4 mb-3">
+          <label for="mobile" class="form-label">{{ 'Mobile' | translate }}</label>
+          <input
+            type="text"
+            id="mobile"
+            class="form-control"
+            formControlName="mobile"
+            pInputText>
+        </div>
+        <div class="col-md-4 mb-3">
+          <label for="email" class="form-label">{{ 'Email' | translate }}</label>
+          <input
+            type="email"
+            id="email"
+            class="form-control"
+            formControlName="email"
+            pInputText>
+          @if (customerForm.get('email')?.invalid && customerForm.get('email')?.touched) {
+            <div
+              class="text-danger small">
+              Please enter a valid email
             </div>
+          }
+        </div>
+      </div>
 
-            <div class="row">
-                <div class="col-md-8 mb-3">
-                    <label for="address" class="form-label">{{ 'Address' | translate }}</label>
-                    <input 
-                        type="text" 
-                        id="address" 
-                        class="form-control" 
-                        formControlName="address"
-                        pInputText>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <label for="city" class="form-label">{{ 'City' | translate }}</label>
-                    <input 
-                        type="text" 
-                        id="city" 
-                        class="form-control" 
-                        formControlName="city"
-                        pInputText>
-                </div>
-            </div>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="web" class="form-label">{{ 'Website' | translate }}</label>
+          <input
+            type="url"
+            id="web"
+            class="form-control"
+            formControlName="web"
+            pInputText>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="iban" class="form-label">{{ 'IBAN' | translate }}</label>
+          <input
+            type="text"
+            id="iban"
+            class="form-control"
+            formControlName="iban"
+            pInputText>
+        </div>
+      </div>
 
-            <div class="row">
-                <div class="col-md-4 mb-3">
-                    <label for="postal" class="form-label">{{ 'Postal Code' | translate }}</label>
-                    <input 
-                        type="text" 
-                        id="postal" 
-                        class="form-control" 
-                        formControlName="postal"
-                        pInputText>
-                </div>
-                <div class="col-md-8 mb-3">
-                    <label for="country" class="form-label">{{ 'Country' | translate }}</label>
-                    <p-select 
-                        id="country"
-                        formControlName="country"
-                        [options]="countries"
-                        optionLabel="countryName"
-                        optionValue="countryName"
-                        [filter]="true"
-                        placeholder="Select Country"
-                        styleClass="w-100">
-                    </p-select>
-                </div>
-            </div>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="note" class="form-label">{{ 'Note' | translate }}</label>
+          <textarea
+            id="note"
+            class="form-control"
+            formControlName="note"
+            rows="3"
+            pInputTextarea>
+          </textarea>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="invoiceNote" class="form-label">{{ 'Terms & Notes' | translate }}</label>
+          <textarea
+            id="invoiceNote"
+            class="form-control"
+            formControlName="invoiceNote"
+            rows="3"
+            pInputTextarea>
+          </textarea>
+        </div>
+      </div>
 
-            <div class="row">
-                <div class="col-md-4 mb-3">
-                    <label for="phone" class="form-label">{{ 'Phone' | translate }}</label>
-                    <input 
-                        type="text" 
-                        id="phone" 
-                        class="form-control" 
-                        formControlName="phone"
-                        pInputText>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <label for="mobile" class="form-label">{{ 'Mobile' | translate }}</label>
-                    <input 
-                        type="text" 
-                        id="mobile" 
-                        class="form-control" 
-                        formControlName="mobile"
-                        pInputText>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <label for="email" class="form-label">{{ 'Email' | translate }}</label>
-                    <input 
-                        type="email" 
-                        id="email" 
-                        class="form-control" 
-                        formControlName="email"
-                        pInputText>
-                    <div *ngIf="customerForm.get('email')?.invalid && customerForm.get('email')?.touched" 
-                         class="text-danger small">
-                        Please enter a valid email
-                    </div>
-                </div>
-            </div>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="due" class="form-label">{{ 'Due Amount' | translate }}</label>
+          <input
+            type="number"
+            id="due"
+            class="form-control"
+            formControlName="due"
+            pInputText
+            step="0.01">
+        </div>
+      </div>
+    </form>
 
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label for="web" class="form-label">{{ 'Website' | translate }}</label>
-                    <input 
-                        type="url" 
-                        id="web" 
-                        class="form-control" 
-                        formControlName="web"
-                        pInputText>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="iban" class="form-label">{{ 'IBAN' | translate }}</label>
-                    <input 
-                        type="text" 
-                        id="iban" 
-                        class="form-control" 
-                        formControlName="iban"
-                        pInputText>
-                </div>
-            </div>
+    <ng-template pTemplate="footer">
+      <div class="d-flex justify-content-end gap-2">
+        <p-button
+          label="Cancel"
+          icon="pi pi-times"
+          [text]="true"
+          (onClick)="visible = false">
+        </p-button>
+        <p-button
+          [label]="selectedCustomer ? 'Update' : 'Create'"
+          icon="pi pi-check"
+          (onClick)="saveCustomer()"
+          [loading]="loading"
+          [disabled]="!customerForm.valid">
+        </p-button>
+      </div>
+    </ng-template>
+  </p-dialog>
 
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label for="note" class="form-label">{{ 'Note' | translate }}</label>
-                    <textarea 
-                        id="note" 
-                        class="form-control" 
-                        formControlName="note"
-                        rows="3"
-                        pInputTextarea>
-                    </textarea>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="invoiceNote" class="form-label">{{ 'Terms & Notes' | translate }}</label>
-                    <textarea 
-                        id="invoiceNote" 
-                        class="form-control" 
-                        formControlName="invoiceNote"
-                        rows="3"
-                        pInputTextarea>
-                    </textarea>
-                </div>
-            </div>
+  <!-- Toast Messages -->
+  <p-toast></p-toast>
 
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label for="due" class="form-label">{{ 'Due Amount' | translate }}</label>
-                    <input 
-                        type="number" 
-                        id="due" 
-                        class="form-control" 
-                        formControlName="due"
-                        pInputText
-                        step="0.01">
-                </div>
-            </div>
-        </form>
-
-        <ng-template pTemplate="footer">
-            <div class="d-flex justify-content-end gap-2">
-                <p-button 
-                    label="Cancel" 
-                    icon="pi pi-times" 
-                    [text]="true" 
-                    (onClick)="visible = false">
-                </p-button>
-                <p-button 
-                    [label]="selectedCustomer ? 'Update' : 'Create'" 
-                    icon="pi pi-check" 
-                    (onClick)="saveCustomer()"
-                    [loading]="loading"
-                    [disabled]="!customerForm.valid">
-                </p-button>
-            </div>
-        </ng-template>
-    </p-dialog>
-
-    <!-- Toast Messages -->
-    <p-toast></p-toast>
-    
-    <!-- Confirmation Dialog -->
-    <p-confirmDialog></p-confirmDialog>
+  <!-- Confirmation Dialog -->
+  <p-confirmDialog></p-confirmDialog>
 </div>

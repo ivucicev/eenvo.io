@@ -6,7 +6,7 @@ import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
@@ -19,21 +19,20 @@ import { SelectModule } from 'primeng/select';
 @Component({
     selector: 'eenvo-services',
     imports: [
-        TableModule,
-        ButtonModule,
-        DialogModule,
-        InputTextModule,
-        SelectModule,
-        ReactiveFormsModule,
-        FormsModule,
-        CommonModule,
-        ConfirmDialogModule,
-        ToastModule,
-        TooltipModule,
-        MultiSelectModule,
-        PopoverModule,
-        TranslatePipe
-    ],
+    TableModule,
+    ButtonModule,
+    DialogModule,
+    InputTextModule,
+    SelectModule,
+    ReactiveFormsModule,
+    FormsModule,
+    ConfirmDialogModule,
+    ToastModule,
+    TooltipModule,
+    MultiSelectModule,
+    PopoverModule,
+    TranslatePipe
+],
     templateUrl: './services.component.html',
     styleUrl: './services.component.scss',
     providers: [ConfirmationService, MessageService]

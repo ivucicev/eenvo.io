@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -9,12 +9,11 @@ import { TranslatePipe } from '@ngx-translate/core';
 @Component({
     selector: 'eenvo-auth-signin',
     imports: [
-        CommonModule,
-        TranslatePipe,
-        RouterModule,
-        ReactiveFormsModule,
-        FormsModule
-    ],
+    TranslatePipe,
+    RouterModule,
+    ReactiveFormsModule,
+    FormsModule
+],
     templateUrl: './auth-signin.component.html',
     styleUrl: './auth-signin.component.scss'
 })
