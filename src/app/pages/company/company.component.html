@@ -4,68 +4,85 @@
             <div class="card-header">
                 <h4 class="card-title mb-0 flex-grow-1">{{ 'Company' | translate }}</h4>
             </div>
-            <dx-file-uploader #uploader dialogTrigger="#dropzone-external" dropZone="#dropzone-external"
-                [multiple]="false" selectButtonText="{{ '+' | translate }}" accept="image/*" [visible]="false"
-                (onValueChanged)="fileAdded($event)" uploadMode="instantly">
-            </dx-file-uploader>
+            <p-fileUpload
+                #fileUpload
+                class="d-none"
+                [customUpload]="true"
+                [showUploadButton]="false"
+                [showCancelButton]="false"
+                [multiple]="false"
+                accept="image/*"
+                (onSelect)="onSelect()"
+                (uploadHandler)="onUpload($event)">
+            </p-fileUpload>
             <div class="card-body">
                 <form [formGroup]="companyForm" (ngSubmit)="submit()" class="container mt-4">
                     <div class="profile-user mx-auto mb-3 justify-content-center d-flex">
                         <div class="position-relative show-onhover">
-                            <label for="profile-img-file-input" class="d-block" style="cursor: pointer;" tabindex="0"
-                                id="dropzone-external">
+                            <button
+                                type="button"
+                                class="logo-trigger"
+                                (click)="fileUpload?.choose()"
+                                [disabled]="uploading">
                                 <span
                                     class="overflow-hidden border border-dashed d-flex align-items-center justify-content-center rounded"
                                     style="padding: 10px">
-                                    <img [src]="this.logo" onerror="this.src='assets/images/addphoto.png'"
-                                        class="card-logo user-profile-image img-fluid" style="height: 350px"
-                                        alt="logo dark">
+                                    <img [src]="logo || 'assets/images/addphoto.png'"
+                                        class="card-logo user-profile-image img-fluid"
+                                        style="height: 350px"
+                                        alt="logo">
                                 </span>
-                            </label>
-                            @if (this.logo) {
-                            <button type="button" class="btn btn-icon btn-danger btn-sm position-absolute onhover"
-                                style="right: 0px; top: 0px;" (click)="fileAdded(null)"> <i class="las la-times"></i>
                             </button>
+                            @if (logo) {
+                            <p-button
+                                icon="pi pi-times"
+                                severity="danger"
+                                [text]="true"
+                                size="small"
+                                styleClass="position-absolute onhover logo-remove"
+                                (onClick)="removeLogo()"
+                                [disabled]="uploading">
+                            </p-button>
                             }
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-12">
                             <label for="name" class="form-label">{{ 'Company Name' | translate }}</label>
-                            <input type="text" class="form-control" id="name" formControlName="name">
+                            <input type="text" class="form-control" id="name" formControlName="name" pInputText>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="vatID" class="form-label">{{ 'VAT ID' | translate }}</label>
-                            <input type="text" class="form-control" id="vatID" formControlName="vatID">
+                            <input type="text" class="form-control" id="vatID" formControlName="vatID" pInputText>
                         </div>
                         <div class="col-md-6">
                             <label for="email" class="form-label">{{ 'Email' | translate }}</label>
-                            <input type="email" class="form-control" id="email" formControlName="email">
+                            <input type="email" class="form-control" id="email" formControlName="email" pInputText>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-12">
                             <label for="address" class="form-label">{{ 'Address' | translate }}</label>
-                            <input type="text" class="form-control" id="address" formControlName="address">
+                            <input type="text" class="form-control" id="address" formControlName="address" pInputText>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="postal" class="form-label">{{ 'Postal Code' | translate }}</label>
-                            <input type="text" class="form-control" id="postal" formControlName="postal">
+                            <input type="text" class="form-control" id="postal" formControlName="postal" pInputText>
                         </div>
                         <div class="col-md-6">
                             <label for="city" class="form-label">{{ 'City' | translate }}</label>
-                            <input type="text" class="form-control" id="city" formControlName="city">
+                            <input type="text" class="form-control" id="city" formControlName="city" pInputText>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-12">
                             <label for="country">{{ 'Country' | translate }}</label>
                             <input list="countries" id="country" formControlName="country" name="country"
-                                class="form-control">
+                                class="form-control" pInputText>
                             <datalist id="countries">
                                 @for(c of countries; track $index) {
                                 <option value="{{c.countryName}}">
@@ -76,40 +93,40 @@
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="phone" class="form-label">{{ 'Phone' | translate }}</label>
-                            <input type="text" class="form-control" id="phone" formControlName="phone">
+                            <input type="text" class="form-control" id="phone" formControlName="phone" pInputText>
                         </div>
                         <div class="col-md-6">
                             <label for="web" class="form-label">{{ 'Website' | translate }}</label>
-                            <input type="text" class="form-control" id="web" formControlName="web">
+                            <input type="text" class="form-control" id="web" formControlName="web" pInputText>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="iban" class="form-label">{{ 'IBAN' | translate }}</label>
-                            <input type="text" class="form-control" id="iban" formControlName="iban">
+                            <input type="text" class="form-control" id="iban" formControlName="iban" pInputText>
                         </div>
                         <div class="col-md-6">
                             <label for="swift" class="form-label">{{ 'SWIFT' | translate }}</label>
-                            <input type="text" class="form-control" id="swift" formControlName="swift">
+                            <input type="text" class="form-control" id="swift" formControlName="swift" pInputText>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-12">
                             <label for="nkd" class="form-label">{{ 'NKD' | translate }}</label>
-                            <input type="text" class="form-control" id="nkd" formControlName="nkd">
+                            <input type="text" class="form-control" id="nkd" formControlName="nkd" pInputText>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-12">
                             <label for="responsible" class="form-label">{{ 'Responsible Person' | translate }}</label>
-                            <input type="text" class="form-control" id="responsible" formControlName="responsible">
+                            <input type="text" class="form-control" id="responsible" formControlName="responsible" pInputText>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-12">
                             <label for="additional" class="form-label">{{ 'Additional Info' | translate }}</label>
                             <textarea class="form-control" id="additional" rows="3"
-                                formControlName="additional"></textarea>
+                                formControlName="additional" pInputTextarea></textarea>
                         </div>
                     </div>
                     <div class="text-center mt-4">

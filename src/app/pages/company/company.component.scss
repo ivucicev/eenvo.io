@@ -1,0 +1,16 @@
+.logo-trigger {
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+}
+
+.logo-trigger:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+:host ::ng-deep .logo-remove {
+  right: 0;
+  top: 0;
+}

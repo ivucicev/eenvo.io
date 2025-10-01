@@ -1,20 +1,24 @@
 import { HttpClient } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
-import { DxSelectBoxModule, DxTextAreaModule, DxDateBoxModule, DxFormModule, DxFileUploaderComponent, DxFileUploaderModule } from 'devextreme-angular';
 import { environment } from '../../../environments/environment';
 import { PocketBaseService } from '../../core/services/pocket-base.service';
 import { ToastService } from '../../core/services/toast.service';
 import { TranslatePipe } from '@ngx-translate/core';
+import { ButtonModule } from 'primeng/button';
+import { FileUpload, FileUploadModule } from 'primeng/fileupload';
+import { InputTextModule } from 'primeng/inputtext';
+import { TextareaModule } from 'primeng/textarea';
 
 @Component({
     selector: 'eenvo-company',
     imports: [
-        DxSelectBoxModule,
-        DxTextAreaModule,
-        DxDateBoxModule,
-        DxFormModule,
-        DxFileUploaderModule,
+        CommonModule,
+        ButtonModule,
+        FileUploadModule,
+        InputTextModule,
+        TextareaModule,
         ReactiveFormsModule,
         TranslatePipe
     ],
@@ -27,11 +31,12 @@ export class CompanyComponent {
     companyForm!: FormGroup;
     public countries: any = []
     public logo: string | null = null;
+    public uploading = false;
 
     environment: string;
 
-    @ViewChild('uploader')
-    public file?: DxFileUploaderComponent;
+    @ViewChild('fileUpload')
+    public fileUpload?: FileUpload;
 
     constructor(private http: HttpClient, private toast: ToastService, private pocketbase: PocketBaseService) {
         this.environment = this.pocketbase.isDemoSubdomain() ? environment.demo : environment.pocketbase;
@@ -73,17 +78,49 @@ export class CompanyComponent {
         this.setLogo();
     }
 
-    async fileAdded(e: any | null) {
-        const file = e?.value[0] ?? [null];
+    async onUpload(event: any) {
+        const file = event?.files?.[0];
+        if (!file) {
+            event?.options?.clear?.();
+            return;
+        }
 
-        const formData = new FormData();
-        formData.append('logo', file);
+        this.uploading = true;
+        try {
+            const formData = new FormData();
+            formData.append('logo', file);
+            this.data = await this.pocketbase.companies.update(this.data.id, formData);
+            this.companyForm.patchValue({ logo: this.data.logo });
+            this.setLogo();
+            this.toast.success();
+        } catch (error) {
+            this.toast.error();
+        } finally {
+            this.uploading = false;
+            event?.options?.clear?.();
+        }
+    }
 
-        this.data = await this.pocketbase.companies.update(this.data.id, formData);
+    onSelect() {
+        this.fileUpload?.upload?.();
+    }
 
-        this.companyForm.patchValue({ logo: this.data.logo });
+    async removeLogo() {
+        if (!this.data?.id || this.uploading) {
+            return;
+        }
 
-        this.setLogo();
+        this.uploading = true;
+        try {
+            this.data = await this.pocketbase.companies.update(this.data.id, { logo: '' });
+            this.companyForm.patchValue({ logo: this.data.logo });
+            this.setLogo();
+            this.toast.success();
+        } catch (error) {
+            this.toast.error();
+        } finally {
+            this.uploading = false;
+        }
     }
 
     private setLogo() {
