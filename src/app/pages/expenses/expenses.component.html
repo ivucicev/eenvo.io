@@ -62,31 +62,46 @@
                     <div class="table-container">
                         <p-table #dt [value]="data" [loading]="loading" [paginator]="true" [rows]="25"
                             [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                            [globalFilterFields]="['title', 'total']" styleClass="p-datatable-sm" [scrollable]="true"
-                            scrollHeight="flex">
+                            [globalFilterFields]="['customerName', 'title', 'categoryNames', 'total', 'date', 'fileNames']"
+                            styleClass="p-datatable-sm" [scrollable]="true" scrollHeight="flex">
                             <ng-template pTemplate="header">
                                 <tr>
-                                    <th *ngIf="visibleColumns.includes('customer')" style="min-width: 160px">{{ 'Customer/Vendor' | translate }}</th>
+                                    <th *ngIf="visibleColumns.includes('customer')" pSortableColumn="customerName" style="min-width: 160px">
+                                        {{ 'Customer/Vendor' | translate }}
+                                        <p-sortIcon field="customerName"></p-sortIcon>
+                                        <p-columnFilter field="customerName" display="menu" type="text"></p-columnFilter>
+                                    </th>
                                     <th *ngIf="visibleColumns.includes('title')" pSortableColumn="title" style="min-width: 200px">
                                         {{ 'Title' | translate }}
                                         <p-sortIcon field="title"></p-sortIcon>
+                                        <p-columnFilter field="title" display="menu" type="text"></p-columnFilter>
                                     </th>
-                                    <th *ngIf="visibleColumns.includes('category')" style="min-width: 200px">{{ 'Category' | translate }}</th>
+                                    <th *ngIf="visibleColumns.includes('category')" pSortableColumn="categoryNames" style="min-width: 200px">
+                                        {{ 'Category' | translate }}
+                                        <p-sortIcon field="categoryNames"></p-sortIcon>
+                                        <p-columnFilter field="categoryNames" display="menu" type="text"></p-columnFilter>
+                                    </th>
                                     <th *ngIf="visibleColumns.includes('total')" pSortableColumn="total" style="min-width: 140px">
                                         {{ 'Total' | translate }}
                                         <p-sortIcon field="total"></p-sortIcon>
+                                        <p-columnFilter field="total" display="menu" type="numeric"></p-columnFilter>
                                     </th>
                                     <th *ngIf="visibleColumns.includes('date')" pSortableColumn="date" style="min-width: 150px">
                                         {{ 'Date' | translate }}
                                         <p-sortIcon field="date"></p-sortIcon>
+                                        <p-columnFilter field="date" display="menu" type="date"></p-columnFilter>
                                     </th>
-                                    <th *ngIf="visibleColumns.includes('files')" style="min-width: 200px">{{ 'Documents' | translate }}</th>
+                                    <th *ngIf="visibleColumns.includes('files')" pSortableColumn="fileNames" style="min-width: 200px">
+                                        {{ 'Documents' | translate }}
+                                        <p-sortIcon field="fileNames"></p-sortIcon>
+                                        <p-columnFilter field="fileNames" display="menu" type="text"></p-columnFilter>
+                                    </th>
                                     <th style="min-width: 140px" class="text-end"></th>
                                 </tr>
                             </ng-template>
                             <ng-template pTemplate="body" let-expense>
                                 <tr>
-                                    <td *ngIf="visibleColumns.includes('customer')">{{ expense.expand?.customer?.name }}</td>
+                                    <td *ngIf="visibleColumns.includes('customer')">{{ expense.customerName }}</td>
                                     <td *ngIf="visibleColumns.includes('title')">{{ expense.title }}</td>
                                     <td *ngIf="visibleColumns.includes('category')">
                                         <span class="badge bg-info-subtle me-1" *ngFor="let cat of expense.expand?.category">{{ cat.name }}</span>

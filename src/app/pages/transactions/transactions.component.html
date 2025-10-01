@@ -55,33 +55,49 @@
                         <p-table #dt [value]="data" [loading]="loading" [paginator]="true" [rows]="25"
                             [showCurrentPageReport]="true"
                             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                            [globalFilterFields]="['title', 'type', 'total']" styleClass="p-datatable-sm"
-                            [scrollable]="true" scrollHeight="flex">
+                            [globalFilterFields]="['title', 'type', 'categoryNames', 'invoiceNumber', 'expenseTitle', 'total']"
+                            styleClass="p-datatable-sm" [scrollable]="true" scrollHeight="flex">
                             <ng-template pTemplate="header">
                                 <tr>
-                                    <th *ngIf="visibleColumns.includes('type')" style="min-width: 100px">{{ 'Type' |
-                                        translate }}</th>
-                                    <th *ngIf="visibleColumns.includes('title')" pSortableColumn="title"
-                                        style="min-width: 200px">
+                                    <th *ngIf="visibleColumns.includes('type')" pSortableColumn="type" style="min-width: 100px">
+                                        {{ 'Type' | translate }}
+                                        <p-sortIcon field="type"></p-sortIcon>
+                                        <p-columnFilter field="type" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
+                                            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                                <p-select [options]="types" optionLabel="name" optionValue="value" [ngModel]="value" (ngModelChange)="filter($event)" [ngModelOptions]="{ standalone: true }" showClear="true" styleClass="w-100"></p-select>
+                                            </ng-template>
+                                        </p-columnFilter>
+                                    </th>
+                                    <th *ngIf="visibleColumns.includes('title')" pSortableColumn="title" style="min-width: 200px">
                                         {{ 'Title' | translate }}
                                         <p-sortIcon field="title"></p-sortIcon>
+                                        <p-columnFilter field="title" display="menu" type="text"></p-columnFilter>
                                     </th>
-                                    <th *ngIf="visibleColumns.includes('category')" style="min-width: 200px">{{
-                                        'Category' | translate }}</th>
-                                    <th *ngIf="visibleColumns.includes('total')" pSortableColumn="total"
-                                        style="min-width: 140px">
+                                    <th *ngIf="visibleColumns.includes('category')" pSortableColumn="categoryNames" style="min-width: 200px">
+                                        {{ 'Category' | translate }}
+                                        <p-sortIcon field="categoryNames"></p-sortIcon>
+                                        <p-columnFilter field="categoryNames" display="menu" type="text"></p-columnFilter>
+                                    </th>
+                                    <th *ngIf="visibleColumns.includes('total')" pSortableColumn="total" style="min-width: 140px">
                                         {{ 'Total' | translate }}
                                         <p-sortIcon field="total"></p-sortIcon>
+                                        <p-columnFilter field="total" display="menu" type="numeric"></p-columnFilter>
                                     </th>
-                                    <th *ngIf="visibleColumns.includes('date')" pSortableColumn="date"
-                                        style="min-width: 150px">
+                                    <th *ngIf="visibleColumns.includes('date')" pSortableColumn="date" style="min-width: 150px">
                                         {{ 'Date' | translate }}
                                         <p-sortIcon field="date"></p-sortIcon>
+                                        <p-columnFilter field="date" display="menu" type="date"></p-columnFilter>
                                     </th>
-                                    <th *ngIf="visibleColumns.includes('invoice')" style="min-width: 160px">{{ 'Invoice'
-                                        | translate }}</th>
-                                    <th *ngIf="visibleColumns.includes('expense')" style="min-width: 200px">{{ 'Expense'
-                                        | translate }}</th>
+                                    <th *ngIf="visibleColumns.includes('invoice')" pSortableColumn="invoiceNumber" style="min-width: 160px">
+                                        {{ 'Invoice' | translate }}
+                                        <p-sortIcon field="invoiceNumber"></p-sortIcon>
+                                        <p-columnFilter field="invoiceNumber" display="menu" type="text"></p-columnFilter>
+                                    </th>
+                                    <th *ngIf="visibleColumns.includes('expense')" pSortableColumn="expenseTitle" style="min-width: 200px">
+                                        {{ 'Expense' | translate }}
+                                        <p-sortIcon field="expenseTitle"></p-sortIcon>
+                                        <p-columnFilter field="expenseTitle" display="menu" type="text"></p-columnFilter>
+                                    </th>
                                     <th style="min-width: 140px; width: 140px" class="text-end"></th>
                                 </tr>
                             </ng-template>
@@ -104,10 +120,8 @@
                                     </td>
                                     <td *ngIf="visibleColumns.includes('date')">{{ transaction.date | date: 'mediumDate'
                                         }}</td>
-                                    <td *ngIf="visibleColumns.includes('invoice')">{{
-                                        transaction.expand?.invoice?.number }}</td>
-                                    <td *ngIf="visibleColumns.includes('expense')">{{ transaction.expand?.expense?.title
-                                        }}</td>
+                                    <td *ngIf="visibleColumns.includes('invoice')">{{ transaction.invoiceNumber }}</td>
+                                    <td *ngIf="visibleColumns.includes('expense')">{{ transaction.expenseTitle }}</td>
                                     <td class="text-end">
                                         <div class="d-flex justify-content-end gap-1">
                                             <p-button icon="pi pi-pencil" [text]="true" size="small"

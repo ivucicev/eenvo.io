@@ -142,8 +142,8 @@ export class ExpensesComponent {
                 filter: `date >= "${start}" && date < "${end}"`,
                 sort: '-date'
             });
-            this.allData = list;
-            this.data = [...list];
+            this.allData = list.map(item => this.decorateExpense(item));
+            this.data = [...this.allData];
             this.calculateStats();
         } finally {
             this.loading = false;
@@ -310,13 +310,13 @@ export class ExpensesComponent {
         };
         const lines = this.data.map(row => columns.map(c => {
             if (c.field === 'customer') {
-                return escape(row.expand?.customer?.name || '');
+                return escape(row.customerName || row.expand?.customer?.name || '');
             }
             if (c.field === 'category') {
-                return escape((row.expand?.category || []).map((cat: any) => cat.name).join('; '));
+                return escape(row.categoryNames || (row.expand?.category || []).map((cat: any) => cat.name).join('; '));
             }
             if (c.field === 'files') {
-                return escape((row.files || []).join('; '));
+                return escape(row.fileNames || (row.files || []).join('; '));
             }
             return escape((row as any)[c.field]);
         }).join(','));
@@ -349,5 +349,17 @@ export class ExpensesComponent {
         const month = String(date.getMonth() + 1).padStart(2, '0');
         const day = String(date.getDate()).padStart(2, '0');
         return `${year}-${month}-${day}`;
+    }
+
+    private decorateExpense(expense: any) {
+        const categoryNames = (expense.expand?.category ?? []).map((cat: any) => cat.name).join(', ');
+        const customerName = expense.expand?.customer?.name ?? '';
+        const fileNames = (expense.files ?? []).join(', ');
+        return {
+            ...expense,
+            categoryNames,
+            customerName,
+            fileNames
+        };
     }
 }

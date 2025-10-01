@@ -121,10 +121,10 @@ export class TransactionsComponent {
         this.loading = true;
         try {
             const list = await this.pocketbase.transactions.getFullList({
-            expand: 'customer,invoice,expense,category',
-            sort: '-date'
-        });
-            this.allData = list;
+                expand: 'customer,invoice,expense,category',
+                sort: '-date'
+            });
+            this.allData = list.map(item => this.decorateTransaction(item));
             this.filterByYear();
         } finally {
             this.loading = false;
@@ -137,7 +137,9 @@ export class TransactionsComponent {
     }
 
     filterByYear() {
-        this.data = this.allData.filter(d => this.recordForYear(d));
+        this.data = this.allData
+            .filter(d => this.recordForYear(d))
+            .map(item => this.decorateTransaction(item));
         this.expenses = this.data.filter((s: any) => s.type === 'out');
         this.inflow = this.data.filter((s: any) => s.type === 'in');
         this.dataNetIncome = this.data.map((s: any) => ({
@@ -301,5 +303,15 @@ export class TransactionsComponent {
         const month = String(date.getMonth() + 1).padStart(2, '0');
         const day = String(date.getDate()).padStart(2, '0');
         return `${year}-${month}-${day}`;
+    }
+
+    private decorateTransaction(transaction: any) {
+        const categoryNames = (transaction.expand?.category ?? []).map((cat: any) => cat.name).join(', ');
+        return {
+            ...transaction,
+            categoryNames,
+            invoiceNumber: transaction.expand?.invoice?.number ?? '',
+            expenseTitle: transaction.expand?.expense?.title ?? ''
+        };
     }
 }
