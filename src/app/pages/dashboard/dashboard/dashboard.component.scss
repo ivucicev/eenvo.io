@@ -15,8 +15,35 @@
   border-bottom: none;
 }
 
-:host ::ng-deep .p-datatable {
-  .p-datatable-tbody > tr > td {
-    vertical-align: middle;
+.dashboard-chart-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  .card-body {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+    min-height: 0;
   }
+}
+
+.chart-wrapper {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: stretch;
+  min-height: 360px;
+  max-height: 360px;
+}
+
+.chart-wrapper .p-chart {
+  flex: 1 1 auto;
+  display: flex;
+}
+
+.chart-wrapper canvas {
+  flex: 1 1 auto;
+  width: 100% !important;
+  height: 100% !important;
 }

@@ -2,14 +2,13 @@ import { Component } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { take } from 'rxjs';
 import { PocketBaseService } from '../../../core/services/pocket-base.service';
-import { CurrencyFormatPipe } from '../../../core/pipes/number-format.pipe';
 import { StatsWidgetComponent } from '../../../core/componate/stats-widget/stats-widget.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SelectModule } from 'primeng/select';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
-import { TableModule } from 'primeng/table';
+import { ChartModule } from 'primeng/chart';
 
 
 @Component({
@@ -21,9 +20,8 @@ import { TableModule } from 'primeng/table';
         SelectModule,
         ButtonModule,
         InputTextModule,
-        TableModule,
-        TranslateModule,
-        CurrencyFormatPipe
+        ChartModule,
+        TranslateModule
     ],
     templateUrl: './dashboard.component.html',
     styleUrl: './dashboard.component.scss'
@@ -45,8 +43,19 @@ export class DashboardComponent {
     public netIncome: any = [];
     public inflow: any = [];
 
+    public revenueExpenseChartData: any = {};
+    public revenueExpenseChartOptions: any = {};
+    public incomeChartData: any = {};
+    public incomeChartOptions: any = {};
+    public incomePerCustomerChartData: any = {};
+    public expensesPerCustomerChartData: any = {};
+    public incomePerCategoryChartData: any = {};
+    public expensesPerCategoryChartData: any = {};
+    public doughnutChartOptions: any = {};
+
     private defaultRangeValue: [Date, Date] = [new Date(), new Date()];
     private dateRangeOptionValues = Object.values(DateRangeOptionEnum).filter((v) => !isNaN(Number(v)));
+    private chartPalette = ['#0EA5E9', '#22C55E', '#F97316', '#6366F1', '#F43F5E', '#14B8A6', '#8B5CF6', '#F59E0B', '#10B981', '#3B82F6'];
 
     public dateRangeOptions: { value: DateRangeOptionEnum; text: string }[] = [];
 
@@ -254,6 +263,7 @@ export class DashboardComponent {
         // Convert the object to an array
         this.invoicesPerCategory = Object.values(invoicesPerCategory);
 
+        this.buildCharts();
     }
 
     private setDateRange(range: [Date, Date]) {
@@ -284,6 +294,154 @@ export class DashboardComponent {
         const month = String(value.getMonth() + 1).padStart(2, '0');
         const day = String(value.getDate()).padStart(2, '0');
         return `${year}-${month}-${day}`;
+    }
+
+    private buildCharts() {
+        const incomeLabel = this.translateService.instant('Income');
+        const expensesLabel = this.translateService.instant('Expenses');
+        const amountLabel = this.translateService.instant('Amount');
+
+        const revenueLabels = this.revenueExpenseData.map((item: any) => item.period);
+        this.revenueExpenseChartData = {
+            labels: revenueLabels,
+            datasets: [
+                {
+                    label: incomeLabel,
+                    data: this.revenueExpenseData.map((item: any) => item.income),
+                    borderColor: '#22C55E',
+                    backgroundColor: 'rgba(34,197,94,0.15)',
+                    tension: 0.4,
+                    fill: false
+                },
+                {
+                    label: expensesLabel,
+                    data: this.revenueExpenseData.map((item: any) => item.expense),
+                    borderColor: '#EF4444',
+                    backgroundColor: 'rgba(239,68,68,0.15)',
+                    tension: 0.4,
+                    fill: false
+                }
+            ]
+        };
+
+        this.revenueExpenseChartOptions = {
+            maintainAspectRatio: false,
+            responsive: true,
+            plugins: {
+                legend: {
+                    labels: {
+                        color: '#334155'
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    ticks: { color: '#64748B' },
+                    grid: { color: '#E2E8F0' }
+                },
+                y: {
+                    ticks: { color: '#64748B' },
+                    grid: { color: '#E2E8F0' }
+                }
+            }
+        };
+
+        const incomeLabels = this.incomeData.map((item: any) => item.period);
+        this.incomeChartData = {
+            labels: incomeLabels,
+            datasets: [
+                {
+                    label: amountLabel,
+                    data: this.incomeData.map((item: any) => item.value),
+                    backgroundColor: '#6366F1',
+                    borderColor: '#4F46E5',
+                    borderRadius: 6
+                }
+            ]
+        };
+
+        this.incomeChartOptions = {
+            maintainAspectRatio: false,
+            responsive: true,
+            plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                x: {
+                    ticks: { color: '#64748B' },
+                    grid: { display: false }
+                },
+                y: {
+                    ticks: { color: '#64748B' },
+                    grid: { color: '#E2E8F0' }
+                }
+            }
+        };
+
+        this.incomePerCustomerChartData = {
+            labels: this.invoicesPerCustomer.map((item: any) => item.name),
+            datasets: [
+                {
+                    data: this.invoicesPerCustomer.map((item: any) => item.val),
+                    backgroundColor: this.buildColors(this.invoicesPerCustomer.length),
+                    hoverBackgroundColor: this.buildColors(this.invoicesPerCustomer.length)
+                }
+            ]
+        };
+
+        this.expensesPerCustomerChartData = {
+            labels: this.expensesPerCustomer.map((item: any) => item.name),
+            datasets: [
+                {
+                    data: this.expensesPerCustomer.map((item: any) => item.val),
+                    backgroundColor: this.buildColors(this.expensesPerCustomer.length),
+                    hoverBackgroundColor: this.buildColors(this.expensesPerCustomer.length)
+                }
+            ]
+        };
+
+        this.incomePerCategoryChartData = {
+            labels: this.invoicesPerCategory.map((item: any) => item.name),
+            datasets: [
+                {
+                    data: this.invoicesPerCategory.map((item: any) => item.val),
+                    backgroundColor: this.buildColors(this.invoicesPerCategory.length),
+                    hoverBackgroundColor: this.buildColors(this.invoicesPerCategory.length)
+                }
+            ]
+        };
+
+        this.expensesPerCategoryChartData = {
+            labels: this.expensesPerCategory.map((item: any) => item.name),
+            datasets: [
+                {
+                    data: this.expensesPerCategory.map((item: any) => item.val),
+                    backgroundColor: this.buildColors(this.expensesPerCategory.length),
+                    hoverBackgroundColor: this.buildColors(this.expensesPerCategory.length)
+                }
+            ]
+        };
+
+        this.doughnutChartOptions = {
+            maintainAspectRatio: false,
+            responsive: true,
+            cutout: '60%',
+            plugins: {
+                legend: {
+                    position: 'right',
+                    labels: {
+                        color: '#334155'
+                    }
+                }
+            }
+        };
+    }
+
+    private buildColors(count: number): string[] {
+        if (count <= 0) {
+            return [];
+        }
+        return Array.from({ length: count }, (_, idx) => this.chartPalette[idx % this.chartPalette.length]);
     }
 
     groupByDay(data: any[]) {

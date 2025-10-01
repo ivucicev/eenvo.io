@@ -1,4 +1,4 @@
-<div class="dashboard-controls d-flex flex-wrap gap-2 align-items-center text-center justify-content-center">
+<div class="dashboard-controls d-flex flex-wrap gap-2 align-items-center justify-content-center">
     <p-select
         [options]="dateRangeOptions"
         optionLabel="text"
@@ -39,167 +39,99 @@
 </div>
 
 <div class="row g-3 mt-1">
-    <div class="col-lg-6 col-sm-12">
-        <div class="card h-100">
+    <div class="col-lg-6 col-sm-12 d-flex">
+        <div class="card flex-fill dashboard-chart-card">
             <div class="card-header fw-semibold">{{ 'Revenue & Expense' | translate }}</div>
             <div class="card-body">
-                <p-table [value]="revenueExpenseData" responsiveLayout="scroll" styleClass="p-datatable-sm">
-                    <ng-template pTemplate="header">
-                        <tr>
-                            <th>{{ 'Period' | translate }}</th>
-                            <th class="text-end">{{ 'Income' | translate }}</th>
-                            <th class="text-end">{{ 'Expenses' | translate }}</th>
-                        </tr>
-                    </ng-template>
-                    <ng-template pTemplate="body" let-row>
-                        <tr>
-                            <td>{{ row.period }}</td>
-                            <td class="text-end">{{ row.income | currencyFormat }}</td>
-                            <td class="text-end">{{ row.expense | currencyFormat }}</td>
-                        </tr>
-                    </ng-template>
-                    <ng-template pTemplate="emptymessage">
-                        <tr>
-                            <td colspan="3" class="text-center text-muted">{{ 'No data available' | translate }}</td>
-                        </tr>
-                    </ng-template>
-                </p-table>
+                <ng-container *ngIf="revenueExpenseChartData?.labels?.length; else revenueExpenseEmpty">
+                    <div class="chart-wrapper">
+                        <p-chart type="line" [data]="revenueExpenseChartData" [options]="revenueExpenseChartOptions"></p-chart>
+                    </div>
+                </ng-container>
+                <ng-template #revenueExpenseEmpty>
+                    <div class="text-center text-muted py-5">{{ 'No data available' | translate }}</div>
+                </ng-template>
             </div>
         </div>
     </div>
-    <div class="col-lg-6 col-sm-12">
-        <div class="card h-100">
+    <div class="col-lg-6 col-sm-12 d-flex">
+        <div class="card flex-fill dashboard-chart-card">
             <div class="card-header fw-semibold">{{ 'Income' | translate }}</div>
             <div class="card-body">
-                <p-table [value]="incomeData" responsiveLayout="scroll" styleClass="p-datatable-sm">
-                    <ng-template pTemplate="header">
-                        <tr>
-                            <th>{{ 'Period' | translate }}</th>
-                            <th class="text-end">{{ 'Amount' | translate }}</th>
-                        </tr>
-                    </ng-template>
-                    <ng-template pTemplate="body" let-row>
-                        <tr>
-                            <td>{{ row.period }}</td>
-                            <td class="text-end">{{ row.value | currencyFormat }}</td>
-                        </tr>
-                    </ng-template>
-                    <ng-template pTemplate="emptymessage">
-                        <tr>
-                            <td colspan="2" class="text-center text-muted">{{ 'No data available' | translate }}</td>
-                        </tr>
-                    </ng-template>
-                </p-table>
+                <ng-container *ngIf="incomeChartData?.labels?.length; else incomeEmpty">
+                    <div class="chart-wrapper">
+                        <p-chart type="bar" [data]="incomeChartData" [options]="incomeChartOptions"></p-chart>
+                    </div>
+                </ng-container>
+                <ng-template #incomeEmpty>
+                    <div class="text-center text-muted py-5">{{ 'No data available' | translate }}</div>
+                </ng-template>
             </div>
         </div>
     </div>
 </div>
 
 <div class="row g-3 mt-1">
-    <div class="col-lg-6 col-sm-12">
-        <div class="card h-100">
+    <div class="col-lg-6 col-sm-12 d-flex">
+        <div class="card flex-fill dashboard-chart-card">
             <div class="card-header fw-semibold">{{ 'Income per customer' | translate }}</div>
             <div class="card-body">
-                <p-table [value]="invoicesPerCustomer" responsiveLayout="scroll" styleClass="p-datatable-sm">
-                    <ng-template pTemplate="header">
-                        <tr>
-                            <th>{{ 'Customer/Vendor' | translate }}</th>
-                            <th class="text-end">{{ 'Amount' | translate }}</th>
-                        </tr>
-                    </ng-template>
-                    <ng-template pTemplate="body" let-row>
-                        <tr>
-                            <td>{{ row.name }}</td>
-                            <td class="text-end">{{ row.val | currencyFormat }}</td>
-                        </tr>
-                    </ng-template>
-                    <ng-template pTemplate="emptymessage">
-                        <tr>
-                            <td colspan="2" class="text-center text-muted">{{ 'No data available' | translate }}</td>
-                        </tr>
-                    </ng-template>
-                </p-table>
+                <ng-container *ngIf="incomePerCustomerChartData?.labels?.length; else incomeCustomerEmpty">
+                    <div class="chart-wrapper">
+                        <p-chart type="doughnut" [data]="incomePerCustomerChartData" [options]="doughnutChartOptions"></p-chart>
+                    </div>
+                </ng-container>
+                <ng-template #incomeCustomerEmpty>
+                    <div class="text-center text-muted py-5">{{ 'No data available' | translate }}</div>
+                </ng-template>
             </div>
         </div>
     </div>
-    <div class="col-lg-6 col-sm-12">
-        <div class="card h-100">
+    <div class="col-lg-6 col-sm-12 d-flex">
+        <div class="card flex-fill dashboard-chart-card">
             <div class="card-header fw-semibold">{{ 'Expenses per customer' | translate }}</div>
             <div class="card-body">
-                <p-table [value]="expensesPerCustomer" responsiveLayout="scroll" styleClass="p-datatable-sm">
-                    <ng-template pTemplate="header">
-                        <tr>
-                            <th>{{ 'Customer/Vendor' | translate }}</th>
-                            <th class="text-end">{{ 'Amount' | translate }}</th>
-                        </tr>
-                    </ng-template>
-                    <ng-template pTemplate="body" let-row>
-                        <tr>
-                            <td>{{ row.name }}</td>
-                            <td class="text-end">{{ row.val | currencyFormat }}</td>
-                        </tr>
-                    </ng-template>
-                    <ng-template pTemplate="emptymessage">
-                        <tr>
-                            <td colspan="2" class="text-center text-muted">{{ 'No data available' | translate }}</td>
-                        </tr>
-                    </ng-template>
-                </p-table>
+                <ng-container *ngIf="expensesPerCustomerChartData?.labels?.length; else expensesCustomerEmpty">
+                    <div class="chart-wrapper">
+                        <p-chart type="doughnut" [data]="expensesPerCustomerChartData" [options]="doughnutChartOptions"></p-chart>
+                    </div>
+                </ng-container>
+                <ng-template #expensesCustomerEmpty>
+                    <div class="text-center text-muted py-5">{{ 'No data available' | translate }}</div>
+                </ng-template>
             </div>
         </div>
     </div>
 </div>
 
 <div class="row g-3 mt-1">
-    <div class="col-lg-6 col-sm-12">
-        <div class="card h-100">
+    <div class="col-lg-6 col-sm-12 d-flex">
+        <div class="card flex-fill dashboard-chart-card">
             <div class="card-header fw-semibold">{{ 'Income per category' | translate }}</div>
             <div class="card-body">
-                <p-table [value]="invoicesPerCategory" responsiveLayout="scroll" styleClass="p-datatable-sm">
-                    <ng-template pTemplate="header">
-                        <tr>
-                            <th>{{ 'Category' | translate }}</th>
-                            <th class="text-end">{{ 'Amount' | translate }}</th>
-                        </tr>
-                    </ng-template>
-                    <ng-template pTemplate="body" let-row>
-                        <tr>
-                            <td>{{ row.name }}</td>
-                            <td class="text-end">{{ row.val | currencyFormat }}</td>
-                        </tr>
-                    </ng-template>
-                    <ng-template pTemplate="emptymessage">
-                        <tr>
-                            <td colspan="2" class="text-center text-muted">{{ 'No data available' | translate }}</td>
-                        </tr>
-                    </ng-template>
-                </p-table>
+                <ng-container *ngIf="incomePerCategoryChartData?.labels?.length; else incomeCategoryEmpty">
+                    <div class="chart-wrapper">
+                        <p-chart type="doughnut" [data]="incomePerCategoryChartData" [options]="doughnutChartOptions"></p-chart>
+                    </div>
+                </ng-container>
+                <ng-template #incomeCategoryEmpty>
+                    <div class="text-center text-muted py-5">{{ 'No data available' | translate }}</div>
+                </ng-template>
             </div>
         </div>
     </div>
-    <div class="col-lg-6 col-sm-12">
-        <div class="card h-100">
+    <div class="col-lg-6 col-sm-12 d-flex">
+        <div class="card flex-fill dashboard-chart-card">
             <div class="card-header fw-semibold">{{ 'Expenses per category' | translate }}</div>
             <div class="card-body">
-                <p-table [value]="expensesPerCategory" responsiveLayout="scroll" styleClass="p-datatable-sm">
-                    <ng-template pTemplate="header">
-                        <tr>
-                            <th>{{ 'Category' | translate }}</th>
-                            <th class="text-end">{{ 'Amount' | translate }}</th>
-                        </tr>
-                    </ng-template>
-                    <ng-template pTemplate="body" let-row>
-                        <tr>
-                            <td>{{ row.name }}</td>
-                            <td class="text-end">{{ row.val | currencyFormat }}</td>
-                        </tr>
-                    </ng-template>
-                    <ng-template pTemplate="emptymessage">
-                        <tr>
-                            <td colspan="2" class="text-center text-muted">{{ 'No data available' | translate }}</td>
-                        </tr>
-                    </ng-template>
-                </p-table>
+                <ng-container *ngIf="expensesPerCategoryChartData?.labels?.length; else expensesCategoryEmpty">
+                    <div class="chart-wrapper">
+                        <p-chart type="doughnut" [data]="expensesPerCategoryChartData" [options]="doughnutChartOptions"></p-chart>
+                    </div>
+                </ng-container>
+                <ng-template #expensesCategoryEmpty>
+                    <div class="text-center text-muted py-5">{{ 'No data available' | translate }}</div>
+                </ng-template>
             </div>
         </div>
     </div>
