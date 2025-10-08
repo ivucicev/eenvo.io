@@ -176,6 +176,11 @@ export class DashboardComponent {
 
         this.revenueExpenseData = [...combinedData];
 
+        this.unpaidInvoices.length = 0;
+        this.cashflowData.length = 0;
+        this.inflow.length = 0;
+        this.netIncome.length = 0;
+
         this.unpaidInvoices = [...this.invoices.filter((d: any) => !d.isPaid)];
         this.cashflowData = [...this.transactions];
         // this.expenses = [...this.allData.filter((s: any) => s.type == 'out')];

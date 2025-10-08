@@ -191,7 +191,7 @@
 
     <div *dxTemplate="let data of 'content'">
         <eenvo-invoice-detail class="h-grow" [isQuote]="isQuote" [isPO]="isPO"
-            (invoiceUpdated)="invoiceUpdatedEvent($event)" (invoiceCreated)="invoiceCreatedEvent($event)" #invoiceDetail
+            (invoiceUpdated)="invoiceUpdatedEvent($event)" (invoiceCreated)="invoiceCreatedEvent($event)" (markAsUnpaidEvent)="markAsUnpaid()" #invoiceDetail
             [invoice]="currentInvoice">
         </eenvo-invoice-detail>
 

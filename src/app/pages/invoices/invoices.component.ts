@@ -103,6 +103,14 @@ export class InvoicesComponent {
         return res;
     };
 
+    markAsUnpaid = async () => {
+        const res = await this.pocketbase.invoices.update(this.currentInvoice.id, {
+            'isPaid': false,
+            'paymentDate': null
+        });
+        return res;
+    };
+
     convertToInvoice = async (e: DxDataGridTypes.ColumnButtonClickEvent) => {
         const res = await this.pocketbase.invoices.update(e.row?.data.id, {
             'isQuote': false,
