@@ -343,5 +343,6 @@
     "Dec": "Dez",
     "Avg.": "Durchschn.",
     "Categories": "Kategorien",
-    "Failed to delete record. Make sure that the record is not part of a required relation reference. ": "Löschen des Datensatzes fehlgeschlagen. Stellen Sie sicher, dass der Datensatz nicht Teil einer erforderlichen Beziehungsreferenz ist."
+    "Failed to delete record. Make sure that the record is not part of a required relation reference. ": "Löschen des Datensatzes fehlgeschlagen. Stellen Sie sicher, dass der Datensatz nicht Teil einer erforderlichen Beziehungsreferenz ist.",
+    "Mark as unpaid": "Als unbezahlt markieren"
 }

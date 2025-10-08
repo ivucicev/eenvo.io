@@ -81,12 +81,27 @@ export class InvoicesComponent {
         return !row.data.isPaid;
     }
 
+    isMarkAsUnpayedVisible({ row }: any) {
+        return row.data.isPaid;
+    }
+
     dxMarkAsPaid = async (e: DxDataGridTypes.ColumnButtonClickEvent) => {
         await this.markAsPaid(e.row?.data.id);
 
         if (e.row?.data) {
             e.row.data.isPaid = true;
             e.row.data.paymentDate = new Date()
+        }
+
+        e?.event?.preventDefault();
+    };
+
+    dxMarkAsUnpaid = async (e: DxDataGridTypes.ColumnButtonClickEvent) => {
+        await this.markAsUnpaid(e.row?.data.id);
+
+        if (e.row?.data) {
+            e.row.data.isPaid = false;
+            e.row.data.paymentDate = null;
         }
 
         e?.event?.preventDefault();
@@ -103,8 +118,8 @@ export class InvoicesComponent {
         return res;
     };
 
-    markAsUnpaid = async () => {
-        const res = await this.pocketbase.invoices.update(this.currentInvoice.id, {
+    markAsUnpaid = async (id?: string) => {
+        const res = await this.pocketbase.invoices.update(id ?? this.currentInvoice.id, {
             'isPaid': false,
             'paymentDate': null
         });

@@ -343,5 +343,6 @@
     "Dec": "Pro",
     "Avg.": "Pros.",
     "Categories": "Kategorije",
-    "Failed to delete record. Make sure that the record is not part of a required relation reference. ": "Neuspješno brisanje zapisa. Provjerite je li zapis korišten."
+    "Failed to delete record. Make sure that the record is not part of a required relation reference. ": "Neuspješno brisanje zapisa. Provjerite je li zapis korišten.",
+    "Mark as unpaid":  "Označi kao neplaćeno"
 }

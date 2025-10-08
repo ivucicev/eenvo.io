@@ -343,5 +343,6 @@
     "Dec": "Déc",
     "Avg.": "Moy.",
     "Categories": "Catégories",
-    "Failed to delete record. Make sure that the record is not part of a required relation reference. ": "Échec de la suppression de l'enregistrement. Assurez-vous que l'enregistrement ne fait pas partie d'une référence de relation requise."
+    "Failed to delete record. Make sure that the record is not part of a required relation reference. ": "Échec de la suppression de l'enregistrement. Assurez-vous que l'enregistrement ne fait pas partie d'une référence de relation requise.",
+    "Mark as unpaid": "Marquer comme impayé"
 }
