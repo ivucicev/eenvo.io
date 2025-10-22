@@ -46,7 +46,7 @@ export class AppComponent {
 
     ngOnDestroy(): void { }
 
-    // Mode Change
+    // Mode Change (auto update)
     changeMode(mode: string) {
         this.store.dispatch(changeMode({ mode }));
     }
