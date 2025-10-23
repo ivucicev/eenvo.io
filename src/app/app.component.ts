@@ -13,7 +13,7 @@ import { FooterActionBarComponent } from './shared/footer-action-bar/footer-acti
     selector: 'eenvo-root',
     imports: [RouterOutlet, FooterActionBarComponent],
     templateUrl: './app.component.html',
-    styleUrl: './app.component.scss'
+    styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
     layOutTypes = LAYOUT_TYPES
