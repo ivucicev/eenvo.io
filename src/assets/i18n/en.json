@@ -343,5 +343,6 @@
     "Dec": "Dec",
     "Avg.": "Avg.",
     "Categories": "Categories",
-    "Failed to delete record. Make sure that the record is not part of a required relation reference. ": "Failed to delete record. Make sure that the record is not part of a required relation reference. "
+    "Failed to delete record. Make sure that the record is not part of a required relation reference. ": "Failed to delete record. Make sure that the record is not part of a required relation reference. ",
+    "Mark as unpaid": "Mark as unpaid"
 }

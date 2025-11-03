@@ -100,6 +100,8 @@
                                 [showInColumnChooser]="false">
                                 <dxi-button [visible]="!isQuote && isMarkAsPayedVisible" [onClick]="dxMarkAsPaid"
                                     [hint]="'Mark as paid' | translate" icon="check"></dxi-button>
+                                <dxi-button [visible]="!isQuote && isMarkAsUnpayedVisible" [onClick]="dxMarkAsUnpaid"
+                                    [hint]="'Mark as unpaid' | translate" icon="arrowback"></dxi-button>
                                 <dxi-button [visible]="isQuote" [onClick]="convertToInvoice"
                                     [hint]="'Convert to invoice' | translate" icon="exportselected"></dxi-button>
                                 <dxi-button [onClick]="editInvoice" hint="Edit" icon="edit"></dxi-button>
@@ -191,7 +193,7 @@
 
     <div *dxTemplate="let data of 'content'">
         <eenvo-invoice-detail class="h-grow" [isQuote]="isQuote" [isPO]="isPO"
-            (invoiceUpdated)="invoiceUpdatedEvent($event)" (invoiceCreated)="invoiceCreatedEvent($event)" #invoiceDetail
+            (invoiceUpdated)="invoiceUpdatedEvent($event)" (invoiceCreated)="invoiceCreatedEvent($event)" (markAsUnpaidEvent)="markAsUnpaid()" #invoiceDetail
             [invoice]="currentInvoice">
         </eenvo-invoice-detail>
 

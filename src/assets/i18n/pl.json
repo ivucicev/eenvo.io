@@ -343,5 +343,6 @@
     "Dec": "Gru",
     "Avg.": "Śred.",
     "Categories": "Kategorie",
-    "Failed to delete record. Make sure that the record is not part of a required relation reference. ": "Nie udało się usunąć rekordu. Upewnij się, że rekord nie jest częścią wymaganej relacji referencyjnej."
+    "Failed to delete record. Make sure that the record is not part of a required relation reference. ": "Nie udało się usunąć rekordu. Upewnij się, że rekord nie jest częścią wymaganej relacji referencyjnej.",
+    "Mark as unpaid": "Oznacz jako nieopłacone"
 }

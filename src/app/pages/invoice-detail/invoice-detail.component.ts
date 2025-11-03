@@ -30,6 +30,7 @@ export class InvoiceDetailComponent {
     public invoice: any = model<any>();
     public invoiceCreated = output<any>();
     public invoiceUpdated = output<any>();
+    public markAsUnpaidEvent = output<any>();
     public isQuote = input<boolean>(false);
     public isPO = input<boolean>(false);
 
@@ -354,6 +355,13 @@ export class InvoiceDetailComponent {
     removeItem(index: any) {
         this.items.splice(index, 1);
         this.recalculate();
+    }
+
+    markAsUnpaid() {
+        this.invoicesForm.patchValue({ isPaid: false });
+        this.invoicesForm.patchValue({ paymentDate: null });
+        this.invoicesForm.enable();
+        this.markAsUnpaidEvent.emit(true);
     }
 
     ngOnInit() {

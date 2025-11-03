@@ -343,5 +343,6 @@
     "Dec": "Dic",
     "Avg.": "Prom.",
     "Categories": "Categorías",
-    "Failed to delete record. Make sure that the record is not part of a required relation reference. ": "No se pudo eliminar el registro. Asegúrese de que el registro no sea parte de una referencia de relación requerida."
+    "Failed to delete record. Make sure that the record is not part of a required relation reference. ": "No se pudo eliminar el registro. Asegúrese de que el registro no sea parte de una referencia de relación requerida.",
+    "Mark as unpaid": "Marcar como no pagado"
 }

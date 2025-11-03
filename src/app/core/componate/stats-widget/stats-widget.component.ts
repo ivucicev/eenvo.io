@@ -65,6 +65,8 @@ export class StatsWidgetComponent {
             const isPaid = invoice.isPaid;
             const total = invoice.total;
 
+            if (this.dateRange()?.[0] && this.dateRange()?.[1] && (date.getTime() > today.getTime() || date.getTime() < last31DaysStart.getTime())) return; // Skip future dates
+
             // Last 31 days
             if (isPaid && date >= last31DaysStart) {
                 totalLast31 += total;

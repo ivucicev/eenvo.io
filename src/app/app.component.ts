@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component } from '@angular/core'; // Core decorator added by automation
+// Auto: minor tweak for commit automation
 import { RouterOutlet } from '@angular/router';
 import { changelayout, changeMode } from './store/layouts/layout-action';
 import { RootReducerState } from './store';
@@ -13,7 +14,7 @@ import { FooterActionBarComponent } from './shared/footer-action-bar/footer-acti
     selector: 'eenvo-root',
     imports: [RouterOutlet, FooterActionBarComponent],
     templateUrl: './app.component.html',
-    styleUrl: './app.component.scss'
+    styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
     layOutTypes = LAYOUT_TYPES
@@ -46,7 +47,7 @@ export class AppComponent {
 
     ngOnDestroy(): void { }
 
-    // Mode Change
+    // Mode Change (auto update)
     changeMode(mode: string) {
         this.store.dispatch(changeMode({ mode }));
     }
