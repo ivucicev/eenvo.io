@@ -233,7 +233,6 @@ export class ExpensesComponent {
                 expenseId = created.id;
             }
 
-            console.log(this.addedFiles)
             if (expenseId && this.addedFiles.length) {
                 await this.pocketbase.expenses.update(expenseId, { 'files+': this.addedFiles }, { headers: { notoast: '1' } });
                 this.addedFiles = [];
@@ -267,7 +266,6 @@ export class ExpensesComponent {
 
     async fileAdded(event: any) {
         const list: File[] = event?.files ?? [];
-        console.log(event)
         this.addedFiles.push(...list);
         event?.options?.clear?.();
     }

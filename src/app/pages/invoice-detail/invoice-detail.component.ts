@@ -323,8 +323,6 @@ export class InvoiceDetailComponent {
 
             if (!isTaxed) item.tax = 0.0;
 
-            console.log(item.tax, item.discount)
-
             const itemTotalValue = +(item.price * item.quantity);
             const itemDiscountValue = itemTotalValue * (item.discount);
             const discountedItemTotalValue = itemTotalValue - itemDiscountValue;
