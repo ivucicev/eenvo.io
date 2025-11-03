@@ -98,14 +98,6 @@
                                 {{ 'Please enter a tax number' | translate }}
                             </div>
                         </div>
-                        <!-- <div class="mb-2" formGroupName="customerData">
-                                <input type="text" class="form-control " data-plugin="cleave-phone"
-                                    id="contact" placeholder="{{ 'Contact' | translate }}" required
-                                    formControlName="contact" />
-                                <div class="invalid-feedback">
-                                    {{ 'Please enter a phone number or email' | translate }}
-                                </div>
-                            </div> -->
 
                         @if (invoicesForm.get('useBillingAndShippingAddress')?.value) {
                         <div class="form-check">
@@ -118,60 +110,7 @@
                         }
 
                     </div>
-                    <!--
-                        <div class="col-lg-4">
-                            @if (invoicesForm.get('useBillingAndShippingAddress')?.value &&
-                            !invoicesForm.get('billingAddressSameAsShippingAddress')?.value) {
-                            <div>
-                                <label for="customer" class="text-muted text-uppercase fw-semibold">{{ 'Shipping
-                                    address' |
-                                    translate }}</label>
-                            </div>
-                            <div class="mb-2" formGroupName="shippingData">
-                                <input placeholder="{{ 'Name' | translate }}" formControlName="name"
-                                    class="form-control ">
-                                <div class="invalid-feedback">
-                                    {{ 'Please enter a full name' | translate }}
-                                </div>
-                            </div>
-
-                            <div class="mb-2" formGroupName="shippingData">
-                                <input type="text" placeholder="{{ 'Address' | translate }}"
-                                    class="form-control " id="address" formControlName="address">
-                            </div>
-
-                            <div class="row mb-2" formGroupName="shippingData">
-                                <div class="col-md-6">
-                                    <input type="text" placeholder="{{ 'Postal Code' | translate }}"
-                                        class="form-control " id="postal" formControlName="postal">
-                                </div>
-                                <div class="col-md-6">
-                                    <input type="text" placeholder="{{ 'City' | translate }}"
-                                        class="form-control " id="city" formControlName="city">
-                                </div>
-                            </div>
-
-                            <div class="mb-2" formGroupName="shippingData">
-                                <input list="countries" placeholder="{{ 'Country' | translate }}" id="country"
-                                    formControlName="country" name="country" class="form-control ">
-                            </div>
-
-                            <div class="mb-2" formGroupName="shippingData">
-                                <input type="text" class="form-control " data-plugin="cleave-phone"
-                                    id="contact" placeholder="{{ 'Contact' | translate }}" required
-                                    formControlName="contact" />
-                                <div class="invalid-feedback">
-                                    {{ 'Please enter a phone number or email' | translate }}
-                                </div>
-                            </div>
-
-                            }
-                        </div>
-                        -->
                     <div class="col-lg-4 ms-auto">
-                        <!-- <div>
-                                <label>{{ 'INVOICE DETAILS' | translate }}</label>
-                            </div> -->
                         <div class="mb-2">
                             @if(isQuote()) {
                             <label for="date-field" class="text-muted text-uppercase fw-semibold">
@@ -251,9 +190,6 @@
                         }
                     </div>
                     <div class="col-lg-4 ms-auto">
-                        <!-- <div>
-                                <label>&nbsp;</label>
-                            </div> -->
                         <div class="mb-2">
                             @if (isQuote()) {
                             <label for="date-field" class="text-muted text-uppercase fw-semibold">{{ 'Quote date'
@@ -308,66 +244,7 @@
                                 <option value="hr">{{ 'Croatian' | translate }}</option>
                             </select>
                         </div>
-                        <!--
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="shipping"
-                                    formControlName="showShippingHandlingFees" checked>
-                                <label class="form-check-label" for="shipping">
-                                    {{ 'Show Shipping/Handling fees' | translate }}
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="billAndShip"
-                                    formControlName="useBillingAndShippingAddress" checked>
-                                <label class="form-check-label" for="billAndShip">
-                                    {{ 'Use billing and shipping address' | translate }}
-                                </label>
-                            </div>
-                            -->
                     </div>
-                    <!--end col <div class="col-sm-6 ms-auto">
-                            <div class="row">
-                                <div class="col-lg-8">
-                                    <div>
-                                        <label for="shippingName" class="text-muted text-uppercase fw-semibold">Shipping
-                                            Address</label>
-                                    </div>
-                                    <div class="mb-2">
-                                        <input type="text" class="form-control " id="shippingName"
-                                            placeholder="Name" required formControlName="shippingName"
-                                            [ngClass]="{ 'is-invalid': submitted && invoicesForm.controls['shippingName'].errors }" />
-                                        <div class="invalid-feedback">
-                                            Please enter a full name
-                                        </div>
-                                    </div>
-                                    <div class="mb-2">
-                                        <textarea class="form-control " id="shippingAddress" rows="3"
-                                            placeholder="Address" required formControlName="shippingAddress"
-                                            [ngClass]="{ 'is-invalid': submitted && invoicesForm.controls['shippingAddress'].errors }"></textarea>
-                                        <div class="invalid-feedback">
-                                            Please enter a address
-                                        </div>
-                                    </div>
-                                    <div class="mb-2">
-                                        <input type="text" class="form-control "
-                                            data-plugin="cleave-phone" id="shippingPhoneno" placeholder="(123)456-7890"
-                                            required formControlName="shippingPhoneno"
-                                            [ngClass]="{ 'is-invalid': submitted && invoicesForm.controls['shippingPhoneno'].errors }" />
-                                        <div class="invalid-feedback">
-                                            Please enter a phone number
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <input type="text" class="form-control " id="shippingTaxno"
-                                            placeholder="Tax Number" required formControlName="shippingTaxno"
-                                            [ngClass]="{ 'is-invalid': submitted && invoicesForm.controls['shippingTaxno'].errors }" />
-                                        <div class="invalid-feedback">
-                                            Please enter a tax number
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>-->
                 </div>
             </div>
             <div class="card-body p-4 border-top border-top-dashed">
@@ -401,10 +278,9 @@
                                 </td>
                                 <td class="text-start">
                                     <div>
-                                        <input [ngModelOptions]="{standalone: true}"
+                                        <input size="small" pInputText pSize="small" [ngModelOptions]="{standalone: true}"
                                             (input)="serviceSelected($event, $index)" [(ngModel)]="item.title"
-                                            list="services" id="name" type="text" [readOnly]="readonly"
-                                            class="form-control  form-control-sm" id="name"
+                                            list="services" id="name" type="text" [readOnly]="readonly" id="name"
                                             placeholder="Product/Service" required>
                                         <datalist id="services">
                                             @for(s of services; track s.id) {
@@ -415,36 +291,36 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <dx-number-box [attr.data-unit]="item.unit" class="form-control "
-                                        [readOnly]="readonly" (onValueChanged)="recalculate()" [step]="1"
-                                        [(ngModel)]="item.quantity" [ngModelOptions]="{standalone: true}"
-                                        [inputAttr]="{ 'aria-label': 'Percent Format' }"></dx-number-box>
+                                    <p-inputnumber size="small" (onBlur)="recalculate()" [attr.data-unit]="item.unit" class="w-100"
+                                        [disabled]="readonly" (onInput)="recalculate()" [min]="0"
+                                        [(ngModel)]="item.quantity" [ngModelOptions]="{standalone: true}"></p-inputnumber>
                                 </td>
                                 <td>
-                                    <dx-number-box data-currency="true" (onValueChanged)="recalculate()"
-                                        [readOnly]="readonly" [ngModelOptions]="{standalone: true}"
-                                        [(ngModel)]="item.price" type="number" class="form-control product-price ">
-                                    </dx-number-box>
+                                    <p-inputnumber  size="small" mode="currency" (onBlur)="recalculate()" currency="EUR" locale="de-DE" class="w-100"
+                                        (onInput)="recalculate()" [disabled]="readonly" [min]="0"
+                                        [ngModelOptions]="{standalone: true}" [(ngModel)]="item.price"></p-inputnumber>
                                 </td>
                                 <td class="text-end">
-                                    <dx-number-box class="form-control " (onValueChanged)="recalculate()" format="#0%"
-                                        [step]="0.05" [readOnly]="readonly" [(ngModel)]="item.discount"
-                                        [ngModelOptions]="{standalone: true}"
-                                        [inputAttr]="{ 'aria-label': 'Percent Format' }"></dx-number-box>
+                                    <input type="hidden" [ngModel]="item.discount" [ngModelOptions]="{standalone: true}">
+                                    <p-inputnumber size="small" class="w-100" suffix="%" [step]="5" [min]="0" [max]="100" [minFractionDigits]="0" [maxFractionDigits]="0"
+                                        [disabled]="readonly"
+                                        [ngModel]="item.discount != null ? (item.discount * 100) : null"
+                                        (ngModelChange)="item.discount = $event != null ? ($event / 100) : null; recalculate()"
+                                        [ngModelOptions]="{standalone: true}"></p-inputnumber>
                                 </td>
                                 @if (invoicesForm.get('tax')?.value) {
                                 <td class="text-end">
-                                    <dx-number-box class="form-control " [readOnly]="readonly"
-                                        (onValueChanged)="recalculate()" format="#0%" [step]="0.05"
-                                        [(ngModel)]="item.tax" [ngModelOptions]="{standalone: true}"
-                                        [inputAttr]="{ 'aria-label': 'Percent Format' }"></dx-number-box>
+                                    <input type="hidden" [ngModel]="item.tax" [ngModelOptions]="{standalone: true}">
+                                    <p-inputnumber mode="decimal" [useGrouping]="true" size="small" class="w-100" [disabled]="readonly" suffix="%" [step]="5" [min]="0" [max]="100" [minFractionDigits]="0" [maxFractionDigits]="0"
+                                        [ngModel]="item.tax != null ? (item.tax * 100) : null"
+                                        (ngModelChange)="item.tax = $event != null ? ($event / 100) : null; recalculate()"
+                                        [ngModelOptions]="{standalone: true}"></p-inputnumber>
                                 </td>
                                 }
                                 <td class="text-end">
-                                    <dx-number-box (onValueChanged)="recalculate()" [readOnly]="readonly"
-                                        [ngModelOptions]="{standalone: true}" [(ngModel)]="item.total"
-                                        data-currency="true" [readOnly]="true" class="form-control product-price "
-                                        [inputAttr]="{ 'aria-label': 'Currency Format' }"></dx-number-box>
+                                    <p-inputnumber  size="small" mode="currency" currency="EUR" locale="de-DE" class="w-100"
+                                        (ngModelChange)="recalculate()" [disabled]="true" [min]="0"
+                                        [ngModelOptions]="{standalone: true}" [(ngModel)]="item.total"></p-inputnumber>
                                 </td>
                                 @if (!readonly) {
                                 <td class="action d-flex justify-content-end">
@@ -474,10 +350,8 @@
                                             <tr>
                                                 <th scope="row">{{ 'Sub Total' | translate }}</th>
                                                 <td style="width: 180px;">
-                                                    <dx-number-box formControlName="subTotal" [readOnly]="true"
-                                                        data-currency="true" type="number"
-                                                        class="form-control product-price "
-                                                        [inputAttr]="{ 'aria-label': 'Currency Format' }"></dx-number-box>
+                                                    <p-inputnumber  size="small" formControlName="subTotal" [disabled]="true"
+                                                        mode="currency" currency="EUR" locale="de-DE" class="w-100"></p-inputnumber>
                                                 </td>
                                             </tr>
                                             @if (invoicesForm.get('tax')?.value) {
@@ -487,10 +361,7 @@
                                                 <th scope="row">{{ 'Tax' | translate }} <sub> {{taxValue.tax *
                                                         100}}%</sub> </th>
                                                 <td>
-                                                    <dx-number-box [value]="taxValue.value" [readOnly]="true"
-                                                        data-currency="true" type="number"
-                                                        class="form-control product-price "
-                                                        [inputAttr]="{ 'aria-label': 'Currency Format' }"></dx-number-box>
+                                                    <p-inputnumber  size="small" [ngModel]="taxValue.value" [ngModelOptions]="{ standalone: true }" [disabled]="true" mode="currency" currency="EUR" locale="de-DE" class="w-100"></p-inputnumber>
                                                 </td>
                                             </tr>
                                             }
@@ -507,10 +378,7 @@
                                                     {{ 'Tax' | translate }}
                                                 </th>
                                                 <td>
-                                                    <dx-number-box formControlName="taxValue" [readOnly]="true"
-                                                        data-currency="true" type="number"
-                                                        class="form-control product-price "
-                                                        [inputAttr]="{ 'aria-label': 'Currency Format' }"></dx-number-box>
+                                                    <p-inputnumber  size="small" formControlName="taxValue" [disabled]="true" mode="currency" currency="EUR" locale="de-DE" class="w-100"></p-inputnumber>
                                                 </td>
                                             </tr>
                                             }
@@ -518,20 +386,14 @@
                                             <tr>
                                                 <th scope="row">{{ 'Discount' | translate }}</th>
                                                 <td>
-                                                    <dx-number-box formControlName="discountValue" [readOnly]="true"
-                                                        data-currency="true" type="number"
-                                                        class="form-control product-price "
-                                                        [inputAttr]="{ 'aria-label': 'Currency Format' }"></dx-number-box>
+                                                    <p-inputnumber  size="small" formControlName="discountValue" [disabled]="true" mode="currency" currency="EUR" locale="de-DE" class="w-100"></p-inputnumber>
                                                 </td>
                                             </tr>
 
                                             <tr class="border-top border-top-dashed">
                                                 <th scope="row">{{ 'Total' | translate }}</th>
                                                 <td>
-                                                    <dx-number-box formControlName="total" [readOnly]="true"
-                                                        data-currency="true" type="number"
-                                                        class="form-control product-price "
-                                                        [inputAttr]="{ 'aria-label': 'Currency Format' }"></dx-number-box>
+                                                    <p-inputnumber  size="small" formControlName="total" [disabled]="true" mode="currency" currency="EUR" locale="de-DE" class="w-100"></p-inputnumber>
                                                 </td>
                                             </tr>
                                         </tbody>

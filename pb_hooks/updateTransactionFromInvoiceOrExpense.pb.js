@@ -22,7 +22,7 @@ onRecordAfterUpdateSuccess((e) => {
         title: e.record.get('title'),
         company: e.record.get('company'),
         total: e.record.get('total'),
-        category: e.record.get('category'),
+        category: e.record.get('category').toString(),
         user: e.record.get('user'),
         created: e.record.get('created') ?? new Date(),
         updated: new Date(),

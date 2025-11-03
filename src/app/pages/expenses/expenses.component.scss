@@ -1,3 +1,26 @@
-::ng-deep .preview-modal .dx-popup-content {
-    padding: 0 !important;
+.table-container {
+  //height: calc(100vh - 220px);
+  overflow: auto;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+}
+
+.preview-container {
+  width: 100%;
+  height: 100%;
+}
+
+.preview-container iframe {
+  border: none;
+}
+
+:host ::ng-deep {
+  .p-multiselect,
+  .p-dropdown,
+  .p-calendar {
+    width: 100%;
+  }
 }

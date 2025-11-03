@@ -11,6 +11,167 @@
     --p-text-color: #1f2937;
 }
 
+/* PrimeNG Light Theme Overrides - only when NOT in dark mode */
+html:not([data-theme="dark"]) .p-component {
+    color: #1f2937 !important;
+    background-color: #ffffff !important;
+}
+
+html:not([data-theme="dark"]) .p-datatable {
+    background-color: #ffffff !important;
+    color: #1f2937 !important;
+}
+
+html:not([data-theme="dark"]) .p-datatable .p-datatable-header {
+    background-color: #f8fafc !important;
+    color: #1f2937 !important;
+    border-color: #e2e8f0 !important;
+}
+
+html:not([data-theme="dark"]) .p-datatable .p-datatable-tbody > tr {
+    background-color: #ffffff !important;
+    color: #1f2937 !important;
+}
+
+html:not([data-theme="dark"]) .p-datatable .p-datatable-tbody > tr:nth-child(even) {
+    background-color: #f8fafc !important;
+}
+
+html:not([data-theme="dark"]) .p-datatable .p-datatable-tbody > tr:hover {
+    background-color: #e2e8f0 !important;
+}
+
+html:not([data-theme="dark"]) .p-dialog {
+    background-color: #ffffff !important;
+    color: #1f2937 !important;
+}
+
+html:not([data-theme="dark"]) .p-dialog .p-dialog-header {
+    background-color: #f8fafc !important;
+    color: #1f2937 !important;
+    border-color: #e2e8f0 !important;
+}
+
+html:not([data-theme="dark"]) .p-button {
+    background-color: #3b82f6 !important;
+    color: #ffffff !important;
+    border-color: #3b82f6 !important;
+}
+
+html:not([data-theme="dark"]) .p-button:hover {
+    background-color: #2563eb !important;
+    border-color: #2563eb !important;
+}
+
+html:not([data-theme="dark"]) .p-button.p-button-text {
+    background-color: transparent !important;
+    color: #3b82f6 !important;
+    border-color: transparent !important;
+}
+
+html:not([data-theme="dark"]) .p-button.p-button-text:hover {
+    background-color: #e2e8f0 !important;
+    color: #2563eb !important;
+}
+
+html:not([data-theme="dark"]) .p-inputtext {
+    background-color: #ffffff !important;
+    color: #1f2937 !important;
+    border-color: #d1d5db !important;
+}
+
+html:not([data-theme="dark"]) .p-inputtext:focus {
+    border-color: #3b82f6 !important;
+    box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25) !important;
+}
+
+html:not([data-theme="dark"]) .p-select {
+    background-color: #ffffff !important;
+    color: #1f2937 !important;
+    border-color: #d1d5db !important;
+}
+
+html:not([data-theme="dark"]) .p-select:focus {
+    border-color: #3b82f6 !important;
+    box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25) !important;
+}
+
+html:not([data-theme="dark"]) .p-textarea {
+    background-color: #ffffff !important;
+    color: #1f2937 !important;
+    border-color: #d1d5db !important;
+}
+
+html:not([data-theme="dark"]) .p-textarea:focus {
+    border-color: #3b82f6 !important;
+    box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25) !important;
+}
+
+/* Additional PrimeNG Component Styles */
+html:not([data-theme="dark"]) .p-toast {
+    background-color: #ffffff !important;
+    color: #1f2937 !important;
+}
+
+html:not([data-theme="dark"]) .p-toast .p-toast-message {
+    background-color: #ffffff !important;
+    color: #1f2937 !important;
+    border-color: #e2e8f0 !important;
+}
+
+html:not([data-theme="dark"]) .p-confirm-dialog {
+    background-color: #ffffff !important;
+    color: #1f2937 !important;
+}
+
+html:not([data-theme="dark"]) .p-confirm-dialog .p-dialog-header {
+    background-color: #f8fafc !important;
+    color: #1f2937 !important;
+    border-color: #e2e8f0 !important;
+}
+
+html:not([data-theme="dark"]) .p-tooltip .p-tooltip-text {
+    background-color: #1f2937 !important;
+    color: #ffffff !important;
+}
+
+/* Override any dark theme styles */
+html:not([data-theme="dark"]) .p-datatable .p-datatable-thead > tr > th {
+    background-color: #f8fafc !important;
+    color: #1f2937 !important;
+    border-color: #e2e8f0 !important;
+}
+
+html:not([data-theme="dark"]) .p-datatable .p-datatable-tfoot > tr > td {
+    background-color: #f8fafc !important;
+    color: #1f2937 !important;
+    border-color: #e2e8f0 !important;
+}
+
+/* Paginator styles */
+html:not([data-theme="dark"]) .p-paginator {
+    background-color: #ffffff !important;
+    color: #1f2937 !important;
+    border-color: #e2e8f0 !important;
+}
+
+html:not([data-theme="dark"]) .p-paginator .p-paginator-page {
+    background-color: #ffffff !important;
+    color: #1f2937 !important;
+    border-color: #e2e8f0 !important;
+}
+
+html:not([data-theme="dark"]) .p-paginator .p-paginator-page:hover {
+    background-color: #e2e8f0 !important;
+    color: #1f2937 !important;
+}
+
+html:not([data-theme="dark"]) .p-paginator .p-paginator-page.p-highlight {
+    background-color: #3b82f6 !important;
+    color: #ffffff !important;
+    border-color: #3b82f6 !important;
+}
+
 /* .btn-primary {background-image: linear-gradient(to right, #02AAB0 0%, #00CDAC  51%, #02AAB0  100%)}
 .btn-primary {
    transition: 0.5s;
@@ -243,4 +404,12 @@ dx-tag-box {
     .button-container {
         flex-direction: column;
     }
+}
+
+.p-button-sm.p-button-icon-only {
+    height: 20px;
+}
+
+.table-container {
+    height: 100%;
 }

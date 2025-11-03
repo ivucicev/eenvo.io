@@ -7,8 +7,9 @@ import { Store } from '@ngrx/store';
 import { LAYOUT_TYPES } from './store/layouts/layout';
 import { LayoutState } from './store/layouts/layout-reducers';
 
-import { loadMessages } from "devextreme/localization";
 import { FooterActionBarComponent } from './shared/footer-action-bar/footer-action-bar.component';
+
+import { PrimeNG } from 'primeng/config';
 
 @Component({
     selector: 'eenvo-root',
@@ -21,18 +22,9 @@ export class AppComponent {
 
     layOutData!: LayoutState;
 
-    constructor(private store: Store<RootReducerState>) {
+    constructor(private store: Store<RootReducerState>, private primeng: PrimeNG) {
         const lang = localStorage.getItem('lang') || 'en';
-        if (lang == 'hr') {
-            import("../assets/i18n/messages/hr.json").then(res => {
-                loadMessages(res)
-            });
-        } else {
-            import(`../../node_modules/devextreme/localization/messages/${lang}.json`).then(res => {
-                loadMessages(res)
-            });
-        }
-
+        this.primeng.ripple.set(true)        
         this.store.select('layout').subscribe((data) => {
             this.layOutData = data;
         })

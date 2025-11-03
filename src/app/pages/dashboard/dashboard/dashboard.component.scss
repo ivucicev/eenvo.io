@@ -1,17 +1,49 @@
-:host ::ng-deep .dx-daterangebox {
+.dashboard-controls {
+    margin-bottom: 1rem;
+}
 
-    .dx-dropdowneditor.dx-dropdowneditor-field-clickable,
-    .dx-dropdowneditor.dx-dropdowneditor-field-clickable .dx-texteditor-input {
-        cursor: pointer;
-        border: none;
+.date-input {
+    min-width: 160px;
+}
+
+.preset-select {
+    min-width: 200px;
+}
+
+.card-header {
+    background: transparent;
+    border-bottom: none;
+}
+
+.dashboard-chart-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    .card-body {
+        flex: 1 1 auto;
+        display: flex;
+        flex-direction: column;
+        padding: 1.5rem;
+        min-height: 0;
     }
 }
 
-.input-group {
-    position: relative;
+.chart-wrapper {
+    flex: 1 1 auto;
     display: flex;
-    flex-wrap: nowrap;
-    width: 100%;
-    flex-direction: row-reverse;
-    align-items: center;
+    align-items: stretch;
+    min-height: 360px;
+    max-height: 360px;
+}
+
+.chart-wrapper .p-chart {
+    flex: 1 1 auto;
+    display: flex;
+}
+
+.chart-wrapper canvas {
+    flex: 1 1 auto;
+    width: 100% !important;
+    height: 100% !important;
 }

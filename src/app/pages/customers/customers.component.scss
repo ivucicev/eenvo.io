@@ -1,0 +1,129 @@
+.table-container {
+  height: calc(100vh - 200px);
+  overflow: hidden; /* let p-table manage scroll */
+  --actions-col-width: 120px;
+}
+
+:host ::ng-deep {
+  /* Align PrimeNG Select with Bootstrap inputs */
+  .p-select {
+    width: 100%;
+  }
+  .p-select .p-select-label {
+    padding: 0.375rem 0.75rem; /* match .form-control */
+  }
+  .p-select .p-select-trigger {
+    padding-right: 0.75rem;
+  }
+  .p-select .p-select-label, 
+  .p-inputtext {
+    min-height: 38px; /* default bs form-control height */
+    line-height: 1.5;
+  }
+
+  .p-datatable {
+    .p-datatable-wrapper {
+      position: relative;
+      padding-right: var(--actions-col-width); /* reserve space for sticky actions */
+    }
+    .p-datatable-tbody > tr > td {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 200px;
+    }
+    
+    .p-datatable-tbody > tr > td:last-child {
+      white-space: normal;
+      max-width: none;
+    }
+  }
+  
+  .p-dialog {
+    .p-dialog-content {
+      padding: 1.5rem;
+    }
+  }
+  
+  .p-button.p-button-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+  }
+}
+
+// Sticky actions column
+.p-datatable-tbody > tr > td:last-child {
+  position: sticky;
+  right: 0;
+  background: var(--p-surface-card, #ffffff);
+  z-index: 10;
+  border-left: 1px solid var(--p-surface-border, #dee2e6);
+  width: var(--actions-col-width);
+  min-width: var(--actions-col-width);
+}
+
+.p-datatable-thead > tr > th:last-child {
+  position: sticky;
+  right: 0;
+  background: var(--p-surface-section, #ffffff);
+  z-index: 10;
+  border-left: 1px solid var(--p-surface-border, #dee2e6);
+  width: var(--actions-col-width);
+  min-width: var(--actions-col-width);
+}
+
+// Responsive table
+@media (max-width: 768px) {
+  .table-container {
+    height: calc(100vh - 150px);
+  }
+  
+  :host ::ng-deep {
+    .p-datatable {
+      .p-datatable-tbody > tr > td {
+        max-width: 150px;
+        font-size: 0.875rem;
+      }
+    }
+  }
+}
+
+
+:host ::ng-deep {
+    .p-datatable.p-component {
+      .p-datatable-wrapper {
+        padding-right: var(--actions-col-width);
+        overflow: auto; /* ensure horizontal scroll is here */
+      }
+  
+      /* Enforce sticky on the scrollable body cells */
+      .p-datatable-tbody > tr > td:last-child {
+        position: sticky;
+        right: 0;
+        width: var(--actions-col-width);
+        min-width: var(--actions-col-width);
+        background: var(--p-surface-card, #ffffff);
+        border-left: 1px solid var(--p-surface-border, #dee2e6);
+        z-index: 2; /* above row cells */
+      }
+  
+      /* Enforce sticky on the header cell */
+      .p-datatable-thead > tr > th:last-child {
+        position: sticky;
+        right: 0;
+        width: var(--actions-col-width);
+        min-width: var(--actions-col-width);
+        background: var(--p-surface-section, #ffffff);
+        border-left: 1px solid var(--p-surface-border, #dee2e6);
+        z-index: 3; /* above body cells */
+      }
+  
+      /* Guard against PrimeNG scrollable variants */
+      .p-datatable-scrollable .p-datatable-wrapper {
+        padding-right: var(--actions-col-width);
+      }
+    }
+  }
+  
+  /* Remove horizontal scroll from outer container */
+  .table-container { overflow: hidden; }

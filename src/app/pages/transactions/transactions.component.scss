@@ -1,0 +1,14 @@
+.table-container {
+  //height: calc(100vh - 220px);
+  overflow: auto;
+}
+
+:host ::ng-deep {
+  .p-multiselect {
+    width: 100%;
+  }
+
+  .p-datepicker {
+    width: 100%;
+  }
+}

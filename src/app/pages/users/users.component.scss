@@ -1,0 +1,53 @@
+.table-container {
+  height: calc(100vh - 200px);
+  overflow: hidden;
+  --actions-col-width: 150px;
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.avatar-preview {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+:host ::ng-deep {
+  .p-datatable {
+    .p-datatable-wrapper {
+      position: relative;
+      padding-right: var(--actions-col-width);
+      overflow: auto;
+    }
+    .p-datatable-tbody > tr > td:last-child {
+      position: sticky;
+      right: 0;
+      background: var(--p-surface-card, #ffffff);
+      border-left: 1px solid var(--p-surface-border, #dee2e6);
+      width: var(--actions-col-width);
+      min-width: var(--actions-col-width);
+      z-index: 2;
+    }
+    .p-datatable-thead > tr > th:last-child {
+      position: sticky;
+      right: 0;
+      background: var(--p-surface-section, #ffffff);
+      border-left: 1px solid var(--p-surface-border, #dee2e6);
+      width: var(--actions-col-width);
+      min-width: var(--actions-col-width);
+      z-index: 3;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .table-container {
+    height: calc(100vh - 150px);
+  }
+}

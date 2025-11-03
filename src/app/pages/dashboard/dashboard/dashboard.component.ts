@@ -1,15 +1,27 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { DxChartModule, DxDateRangeBoxModule, DxDropDownBoxModule, DxDropDownButtonModule, DxPieChartModule } from 'devextreme-angular';
+import { Component } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { take } from 'rxjs';
 import { PocketBaseService } from '../../../core/services/pocket-base.service';
-import { CurrencyFormatPipe } from '../../../core/pipes/number-format.pipe';
 import { StatsWidgetComponent } from '../../../core/componate/stats-widget/stats-widget.component';
+
+import { FormsModule } from '@angular/forms';
+import { SelectModule } from 'primeng/select';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
+import { ChartModule } from 'primeng/chart';
 
 
 @Component({
     selector: 'eenvo-dashboard',
-    imports: [DxDateRangeBoxModule, StatsWidgetComponent, DxChartModule, DxPieChartModule, DxDropDownButtonModule, TranslateModule],
+    imports: [
+    StatsWidgetComponent,
+    FormsModule,
+    SelectModule,
+    ButtonModule,
+    InputTextModule,
+    ChartModule,
+    TranslateModule
+],
     templateUrl: './dashboard.component.html',
     styleUrl: './dashboard.component.scss'
 })
@@ -30,41 +42,65 @@ export class DashboardComponent {
     public netIncome: any = [];
     public inflow: any = [];
 
+    public revenueExpenseChartData: any = {};
+    public revenueExpenseChartOptions: any = {};
+    public incomeChartData: any = {};
+    public incomeChartOptions: any = {};
+    public incomePerCustomerChartData: any = {};
+    public expensesPerCustomerChartData: any = {};
+    public incomePerCategoryChartData: any = {};
+    public expensesPerCategoryChartData: any = {};
+    public doughnutChartOptions: any = {};
+
     private defaultRangeValue: [Date, Date] = [new Date(), new Date()];
     private dateRangeOptionValues = Object.values(DateRangeOptionEnum).filter((v) => !isNaN(Number(v)));
+    private chartPalette = ['#0EA5E9', '#22C55E', '#F97316', '#6366F1', '#F43F5E', '#14B8A6', '#8B5CF6', '#F59E0B', '#10B981', '#3B82F6'];
 
-    public dateRangeOptions: any;
+    public dateRangeOptions: { value: DateRangeOptionEnum; text: string }[] = [];
 
-    public dropdownOptions = {
-        width: 200,
-    };
-
+    public selectedPreset?: DateRangeOptionEnum;
     public value: [Date, Date] = this.defaultRangeValue;
 
     constructor(
         private translateService: TranslateService,
-        private pb: PocketBaseService,
-        private format: CurrencyFormatPipe
+        private pb: PocketBaseService
     ) {
-        this.onPredefinedOptionClick({ itemData: { value: DateRangeOptionEnum.ThisYear } });
-        this.getDataInPeriod();
+        const initialRange = DateRangeHelper.getYearDateRange(new Date().getFullYear());
+        this.selectedPreset = DateRangeOptionEnum.ThisYear;
+        this.setDateRange(initialRange);
     }
 
-    public onValueChanged(event: any) {
-        this.valueChanged(event.value);
-    }
-
-    private valueChanged(value: [Date, Date]) {
-        const start = this.value[0];
-        const end = this.value[1];
-        if (start && end) {
-            this.getDataInPeriod();
+    public onPresetChange(preset: DateRangeOptionEnum) {
+        if (preset === undefined || preset === null) {
+            return;
         }
+        this.selectedPreset = preset;
+        this.onPredefinedOptionClick({ itemData: { value: preset } });
     }
 
-    private async getDataInPeriod() {
-        const start = this.value[0];
-        const end = this.value[1];
+    public onStartDateChange(target: any) {
+        const value = target.value;
+        const start = this.parseDate(value);
+        if (!start) return;
+        const end = this.value[1] ?? start;
+        this.setDateRange(this.normalizeRange(start, end));
+        this.selectedPreset = undefined;
+    }
+
+    public onEndDateChange(target: any) {
+        const value = target.value;
+        const end = this.parseDate(value);
+        if (!end) return;
+        const start = this.value[0] ?? end;
+        this.setDateRange(this.normalizeRange(start, end));
+        this.selectedPreset = undefined;
+    }
+
+    public async getDataInPeriod() {
+        const [start, end] = this.value;
+        if (!start || !end) {
+            return;
+        }
         const invoices: any = await this.pb.invoices.getFullList({
             batch: 9999,
             expand: 'customer,user',
@@ -74,13 +110,13 @@ export class DashboardComponent {
         const expenses: any = await this.pb.expenses.getFullList({
             batch: 9999,
             expand: 'customer,category',
-            ilter: `date >= "${start.toISOString()}" && date <= "${end.toISOString()}"`,
+            filter: `date >= "${start.toISOString()}" && date <= "${end.toISOString()}"`,
             sort: 'date'
         });
         const transactions: any = await this.pb.transactions.getFullList({
             batch: 9999,
             expand: 'customer,invoice,expense,category',
-            ilter: `date >= "${start.toISOString()}" && date <= "${end.toISOString()}"`,
+            filter: `date >= "${start.toISOString()}" && date <= "${end.toISOString()}"`,
             sort: 'date'
         });
 
@@ -90,7 +126,7 @@ export class DashboardComponent {
 
         // - per customer invoice
         let customerTotals = this.invoices.reduce((acc: any, invoice: any) => {
-            let customerName = invoice.customerData.name;
+            let customerName = invoice.customerData?.name ?? invoice.expand?.customer?.name ?? '-';
             if (!acc[customerName]) {
                 acc[customerName] = { name: customerName, val: 0 };
             }
@@ -103,7 +139,7 @@ export class DashboardComponent {
 
         // - per customer invoice
         let customerExpensesTotals = this.expenses.reduce((acc: any, expense: any) => {
-            let customerName = expense.expand.customer.name;
+            let customerName = expense.expand?.customer?.name ?? '-';
             if (!acc[customerName]) {
                 acc[customerName] = { name: customerName, val: 0 };
             }
@@ -114,67 +150,64 @@ export class DashboardComponent {
         // Convert the object to an array
         this.expensesPerCustomer = Object.values(customerExpensesTotals);
 
-        // Calculate the period
-        let earliestInvoiceDate = new Date(Math.min(...this.invoices.map((invoice: any) => new Date(invoice.date))));
-        let latestInvoiceDate = new Date(Math.max(...this.invoices.map((invoice: any) => new Date(invoice.date))));
-        let period = (latestInvoiceDate.getTime() - earliestInvoiceDate.getTime()) / (1000 * 60 * 60 * 24); // in days
-
-        let groupedInvoices;
-
-        if (period <= 31) {
-            // Group by day
-            groupedInvoices = this.invoices.reduce((acc: any, invoice: any) => {
-                let date = new Date(invoice.date).toISOString().split('T')[0]; // get the date part
-                if (!acc[date]) {
-                    acc[date] = { arg: date, val: 0 };
-                }
-                acc[date].val += invoice.total;
-                return acc;
-            }, {});
+        if (this.invoices.length === 0) {
+            this.incomeData = [];
         } else {
-            // Group by month and year
-            groupedInvoices = this.invoices.reduce((acc: any, invoice: any) => {
-                let date = new Date(invoice.date);
-                let monthYear = `${date.getMonth() + 1}-${date.getFullYear()}`; // get the month and year
-                if (!acc[monthYear]) {
-                    acc[monthYear] = { arg: monthYear, val: 0 };
-                }
-                acc[monthYear].val += invoice.total;
-                return acc;
-            }, {});
+            let earliestInvoiceDate = new Date(Math.min(...this.invoices.map((invoice: any) => new Date(invoice.date).getTime())));
+            let latestInvoiceDate = new Date(Math.max(...this.invoices.map((invoice: any) => new Date(invoice.date).getTime())));
+            let period = (latestInvoiceDate.getTime() - earliestInvoiceDate.getTime()) / (1000 * 60 * 60 * 24); // in days
+
+            let groupedInvoices;
+
+            if (period <= 31) {
+                groupedInvoices = this.invoices.reduce((acc: any, invoice: any) => {
+                    let date = new Date(invoice.date).toISOString().split('T')[0];
+                    if (!acc[date]) {
+                        acc[date] = { arg: date, val: 0 };
+                    }
+                    acc[date].val += invoice.total;
+                    return acc;
+                }, {});
+            } else {
+                groupedInvoices = this.invoices.reduce((acc: any, invoice: any) => {
+                    let date = new Date(invoice.date);
+                    let monthYear = `${date.getMonth() + 1}-${date.getFullYear()}`;
+                    if (!acc[monthYear]) {
+                        acc[monthYear] = { arg: monthYear, val: 0 };
+                    }
+                    acc[monthYear].val += invoice.total;
+                    return acc;
+                }, {});
+            }
+
+            this.incomeData = Object.values(groupedInvoices).map((entry: any) => ({
+                period: entry.arg,
+                value: entry.val
+            }));
         }
 
-        // Convert the object to an array
-        this.incomeData = Object.values(groupedInvoices);
+        const invoiceTimes = this.invoices.map((invoice: any) => new Date(invoice.date).getTime()).filter((time: any) => !isNaN(time));
+        const expenseTimes = this.expenses.map((expense: any) => new Date(expense.date).getTime()).filter((time: any) => !isNaN(time));
+        const allTimes = [...invoiceTimes, ...expenseTimes];
 
-        // Calculate the period
-        let earliestDate = new Date(Math.min(...this.invoices.map((invoice: any) => new Date(invoice.date)), ...this.expenses.map((expense: any) => new Date(expense.date))));
-        let latestDate = new Date(Math.max(...this.invoices.map((invoice: any) => new Date(invoice.date)), ...this.expenses.map((expense: any) => new Date(expense.date))));
-        let periodInDays = (latestDate.getTime() - earliestDate.getTime()) / (1000 * 60 * 60 * 24); // in days
+        const periodInDays = allTimes.length > 1
+            ? (Math.max(...allTimes) - Math.min(...allTimes)) / (1000 * 60 * 60 * 24)
+            : 0;
 
-        let revenueData;
-        let expenseData;
+        const useDailyGrouping = periodInDays <= 31;
+        const revenueData = useDailyGrouping ? this.groupByDay(this.invoices) : this.groupByMonthYear(this.invoices);
+        const expenseData = useDailyGrouping ? this.groupByDay(this.expenses) : this.groupByMonthYear(this.expenses);
 
-        if (periodInDays <= 31) {
-            // Group by day
-            revenueData = this.groupByDay(this.invoices);
-            expenseData = this.groupByDay(this.expenses);
-        } else {
-            // Group by month and year
-            revenueData = this.groupByMonthYear(this.invoices);
-            expenseData = this.groupByMonthYear(this.expenses);
-        }
+        const periodKeys = new Set<string>([
+            ...Object.keys(revenueData),
+            ...Object.keys(expenseData)
+        ]);
 
-        let combinedData = [];
-        for (let period in revenueData) {
-            combinedData.push({
-                income: revenueData[period].value || 0,
-                expense: expenseData[period]?.value || 0,
-                period: period
-            });
-        }
-
-        this.revenueExpenseData = [...combinedData];
+        this.revenueExpenseData = Array.from(periodKeys).map(period => ({
+            period,
+            income: revenueData[period]?.value || 0,
+            expense: expenseData[period]?.value || 0
+        }));
 
         this.unpaidInvoices.length = 0;
         this.cashflowData.length = 0;
@@ -234,6 +267,185 @@ export class DashboardComponent {
         // Convert the object to an array
         this.invoicesPerCategory = Object.values(invoicesPerCategory);
 
+        this.buildCharts();
+    }
+
+    private setDateRange(range: [Date, Date]) {
+        const start = new Date(range[0]);
+        const end = new Date(range[1]);
+        this.value = this.normalizeRange(start, end);
+        this.getDataInPeriod();
+    }
+
+    private parseDate(value: string): Date | null {
+        if (!value) return null;
+        const date = new Date(value);
+        return isNaN(date.getTime()) ? null : date;
+    }
+
+    private normalizeRange(start: Date, end: Date): [Date, Date] {
+        if (start.getTime() > end.getTime()) {
+            return [end, start];
+        }
+        return [start, end];
+    }
+
+    public formatDate(value: Date | null | undefined): string {
+        if (!value) {
+            return '';
+        }
+        const year = value.getFullYear();
+        const month = String(value.getMonth() + 1).padStart(2, '0');
+        const day = String(value.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
+
+    private buildCharts() {
+        const incomeLabel = this.translateService.instant('Income');
+        const expensesLabel = this.translateService.instant('Expenses');
+        const amountLabel = this.translateService.instant('Amount');
+
+        const revenueLabels = this.revenueExpenseData.map((item: any) => item.period);
+        this.revenueExpenseChartData = {
+            labels: revenueLabels,
+            datasets: [
+                {
+                    label: incomeLabel,
+                    data: this.revenueExpenseData.map((item: any) => item.income),
+                    borderColor: '#22C55E',
+                    backgroundColor: 'rgba(34,197,94,0.15)',
+                    tension: 0.4,
+                    fill: false
+                },
+                {
+                    label: expensesLabel,
+                    data: this.revenueExpenseData.map((item: any) => item.expense),
+                    borderColor: '#EF4444',
+                    backgroundColor: 'rgba(239,68,68,0.15)',
+                    tension: 0.4,
+                    fill: false
+                }
+            ]
+        };
+
+        this.revenueExpenseChartOptions = {
+            maintainAspectRatio: false,
+            responsive: true,
+            plugins: {
+                legend: {
+                    labels: {
+                        color: '#334155'
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    ticks: { color: '#64748B' },
+                    grid: { color: '#E2E8F0' }
+                },
+                y: {
+                    ticks: { color: '#64748B' },
+                    grid: { color: '#E2E8F0' }
+                }
+            }
+        };
+
+        const incomeLabels = this.incomeData.map((item: any) => item.period);
+        this.incomeChartData = {
+            labels: incomeLabels,
+            datasets: [
+                {
+                    label: amountLabel,
+                    data: this.incomeData.map((item: any) => item.value),
+                    backgroundColor: '#6366F1',
+                    borderColor: '#4F46E5',
+                    borderRadius: 6
+                }
+            ]
+        };
+
+        this.incomeChartOptions = {
+            maintainAspectRatio: false,
+            responsive: true,
+            plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                x: {
+                    ticks: { color: '#64748B' },
+                    grid: { display: false }
+                },
+                y: {
+                    ticks: { color: '#64748B' },
+                    grid: { color: '#E2E8F0' }
+                }
+            }
+        };
+
+        this.incomePerCustomerChartData = {
+            labels: this.invoicesPerCustomer.map((item: any) => item.name),
+            datasets: [
+                {
+                    data: this.invoicesPerCustomer.map((item: any) => item.val),
+                    backgroundColor: this.buildColors(this.invoicesPerCustomer.length),
+                    hoverBackgroundColor: this.buildColors(this.invoicesPerCustomer.length)
+                }
+            ]
+        };
+
+        this.expensesPerCustomerChartData = {
+            labels: this.expensesPerCustomer.map((item: any) => item.name),
+            datasets: [
+                {
+                    data: this.expensesPerCustomer.map((item: any) => item.val),
+                    backgroundColor: this.buildColors(this.expensesPerCustomer.length),
+                    hoverBackgroundColor: this.buildColors(this.expensesPerCustomer.length)
+                }
+            ]
+        };
+
+        this.incomePerCategoryChartData = {
+            labels: this.invoicesPerCategory.map((item: any) => item.name),
+            datasets: [
+                {
+                    data: this.invoicesPerCategory.map((item: any) => item.val),
+                    backgroundColor: this.buildColors(this.invoicesPerCategory.length),
+                    hoverBackgroundColor: this.buildColors(this.invoicesPerCategory.length)
+                }
+            ]
+        };
+
+        this.expensesPerCategoryChartData = {
+            labels: this.expensesPerCategory.map((item: any) => item.name),
+            datasets: [
+                {
+                    data: this.expensesPerCategory.map((item: any) => item.val),
+                    backgroundColor: this.buildColors(this.expensesPerCategory.length),
+                    hoverBackgroundColor: this.buildColors(this.expensesPerCategory.length)
+                }
+            ]
+        };
+
+        this.doughnutChartOptions = {
+            maintainAspectRatio: false,
+            responsive: true,
+            cutout: '60%',
+            plugins: {
+                legend: {
+                    position: 'right',
+                    labels: {
+                        color: '#334155'
+                    }
+                }
+            }
+        };
+    }
+
+    private buildColors(count: number): string[] {
+        if (count <= 0) {
+            return [];
+        }
+        return Array.from({ length: count }, (_, idx) => this.chartPalette[idx % this.chartPalette.length]);
     }
 
     groupByDay(data: any[]) {
@@ -311,13 +523,8 @@ export class DashboardComponent {
                 value = [new Date(), new Date()];
                 break;
         }
-        this.value = value;
-    }
-
-    incomeTooltip = (e: any) => {
-        return {
-            text: this.format.transform(e.value),
-        }
+        this.selectedPreset = e.itemData.value;
+        this.setDateRange(value);
     }
 
     ngOnInit(): void {
@@ -439,4 +646,3 @@ export class DateRangeHelper {
         return [startOfWeek, endOfWeek];
     }
 }
-

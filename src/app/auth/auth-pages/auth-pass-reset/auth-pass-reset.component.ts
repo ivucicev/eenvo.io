@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
@@ -8,7 +8,7 @@ import { ToastService } from '../../../core/services/toast.service';
 
 @Component({
     selector: 'eenvo-auth-pass-reset',
-    imports: [CommonModule, RouterModule, ReactiveFormsModule, TranslatePipe],
+    imports: [RouterModule, ReactiveFormsModule, TranslatePipe],
     templateUrl: './auth-pass-reset.component.html',
     styleUrl: './auth-pass-reset.component.scss'
 })

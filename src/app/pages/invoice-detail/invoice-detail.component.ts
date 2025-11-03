@@ -4,13 +4,15 @@ import { UntypedFormGroup, UntypedFormBuilder, Validators, ReactiveFormsModule, 
 import { PocketBaseService } from '../../core/services/pocket-base.service';
 import { environment } from '../../../environments/environment';
 import { TranslateModule } from '@ngx-translate/core';
-import { DxNumberBoxModule } from 'devextreme-angular';
 import { DateInputDirective } from '../../core/directives/date-input.directive';
 import { InvoiceGeneratorService } from '../../core/services/invoice-generator.service';
+import { InputNumber } from 'primeng/inputnumber';
+import { InputNumberGlobalConfigDirective } from '../../core/directives/currency-input.directive';
+import { InputText } from 'primeng/inputtext';
 
 @Component({
     selector: 'eenvo-invoice-detail',
-    imports: [ReactiveFormsModule, DxNumberBoxModule, CommonModule, FormsModule, TranslateModule, DateInputDirective],
+    imports: [ReactiveFormsModule, InputText, CommonModule, FormsModule, TranslateModule, DateInputDirective, InputNumber, InputNumberGlobalConfigDirective],
     templateUrl: './invoice-detail.component.html',
     styleUrl: './invoice-detail.component.scss'
 })
@@ -320,6 +322,8 @@ export class InvoiceDetailComponent {
         this.items.forEach((item: any) => {
 
             if (!isTaxed) item.tax = 0.0;
+
+            console.log(item.tax, item.discount)
 
             const itemTotalValue = +(item.price * item.quantity);
             const itemDiscountValue = itemTotalValue * (item.discount);

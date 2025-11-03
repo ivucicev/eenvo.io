@@ -4,19 +4,19 @@ import { Store } from '@ngrx/store';
 import { getLayoutMode, getSidebarSize } from '../../store/layouts/layout-selector';
 import { LAYOUT_MODE, SIDEBAR_SIZE } from '../../store/layouts/layout';
 import { changeMode } from '../../store/layouts/layout-action';
-import { CommonModule, DOCUMENT } from '@angular/common';
+
 import { LanguageService } from '../../core/services/language.service';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { PocketBaseService } from '../../core/services/pocket-base.service';
 import { Router, RouterModule } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
-import { locale } from "devextreme/localization";
 import { AppConstants } from '../../core/constants/AppConstants';
+import { DOCUMENT } from '@angular/common';
 
 
 @Component({
     selector: 'eenvo-topbar',
-    imports: [SimplebarAngularModule, NgbDropdownModule, CommonModule, TranslatePipe, RouterModule],
+    imports: [SimplebarAngularModule, NgbDropdownModule, TranslatePipe, RouterModule],
     templateUrl: './topbar.component.html',
     styleUrl: './topbar.component.scss'
 })
@@ -205,7 +205,6 @@ export class TopbarComponent {
 
     async loadLang() {
         const lang = localStorage.getItem('lang') || 'en';
-        locale(lang);
     }
 
     /**

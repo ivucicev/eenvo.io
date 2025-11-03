@@ -1,205 +1,275 @@
-import { Component, ViewChild } from '@angular/core';
-import { DxButtonModule, DxChartModule, DxDataGridComponent, DxDataGridModule, DxDropDownBoxModule, DxFileUploaderModule, DxLookupComponent, DxLookupModule, DxPieChartModule, DxPopupModule, DxSelectBoxModule, DxTagBoxModule } from 'devextreme-angular';
+import { Component } from '@angular/core';
 import { PocketBaseService } from '../../core/services/pocket-base.service';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { CurrencyFormatPipe } from '../../core/pipes/number-format.pipe';
 import { StatsWidgetComponent } from '../../core/componate/stats-widget/stats-widget.component';
-import { DomSanitizer } from '@angular/platform-browser';
-import { DxTagBoxTypes } from 'devextreme-angular/ui/tag-box';
-import { JsonPipe } from '@angular/common';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { TableModule } from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
+import { InputTextModule } from 'primeng/inputtext';
+import { SelectModule } from 'primeng/select';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { PopoverModule } from 'primeng/popover';
+import { FileUploadModule } from 'primeng/fileupload';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ToastModule } from 'primeng/toast';
+import { CommonModule } from '@angular/common';
+import { firstValueFrom } from 'rxjs';
+import { InputNumber } from 'primeng/inputnumber';
+import { InputNumberGlobalConfigDirective } from '../../core/directives/currency-input.directive';
 
 @Component({
     selector: 'eenvo-expenses',
-    imports: [DxDataGridModule, DxDropDownBoxModule, DxPieChartModule, DxChartModule, DxPopupModule, DxFileUploaderModule, StatsWidgetComponent, DxTagBoxModule, TranslateModule, DxButtonModule, CurrencyFormatPipe, DxLookupModule, DxPopupModule, DxSelectBoxModule, FormsModule],
+    imports: [
+        CommonModule,
+        TableModule,
+        ButtonModule,
+        DialogModule,
+        InputTextModule,
+        SelectModule,
+        MultiSelectModule,
+        PopoverModule,
+        FileUploadModule,
+        ConfirmDialogModule,
+        ToastModule,
+        StatsWidgetComponent,
+        TranslateModule,
+        CurrencyFormatPipe,
+        FormsModule,
+        ReactiveFormsModule,
+        InputNumber,
+        InputNumberGlobalConfigDirective
+    ],
     templateUrl: './expenses.component.html',
-    styleUrl: './expenses.component.scss'
+    styleUrl: './expenses.component.scss',
+    providers: [ConfirmationService, MessageService]
 })
 export class ExpensesComponent {
 
-    public data: any;
-    public allData: any;
+    public data: any[] = [];
+    public allData: any[] = [];
     public currentExpense: any = null;
-    public currentDate = new Date().toISOString();
     public currentYear = new Date().getFullYear();
     public selectedYear = this.currentYear;
-    public customers: any = [];
-    public fullScreen: boolean = false;
+    public customers: any[] = [];
     public showPreview = false;
     public previewTitle = '';
     public isPdf = false;
-    public contentUrl: any = '';
-    public categories: any = [];
+    public contentUrl?: SafeResourceUrl;
+    public categories: any[] = [];
     public addedFiles: File[] = [];
     public filesToRemove: string[] = [];
-    public dataPerMonth: any = [];
     public avg = 0;
+    public monthlyTotals: { name: string; value: number }[] = [];
+    public expenseForm: FormGroup;
+    public displayDialog = false;
+    public loading = false;
+    public globalFilterValue = '';
+    public visibleColumns: string[] = ['customer', 'title', 'category', 'total', 'date', 'files'];
+    public allColumns = [
+        { field: 'customer', header: 'Customer/Vendor' },
+        { field: 'title', header: 'Title' },
+        { field: 'category', header: 'Category' },
+        { field: 'total', header: 'Total' },
+        { field: 'date', header: 'Date' },
+        { field: 'files', header: 'Documents' }
+    ];
+    public categoryInput = '';
 
-    @ViewChild('grid')
-    public grid?: DxDataGridComponent;
-
-    constructor(private pocketbase: PocketBaseService, private sanitizer: DomSanitizer, private translate: TranslateService) {
-        this.getData();
-        this.getCategories();
-        this.getCustomers();
+    constructor(
+        private pocketbase: PocketBaseService,
+        private sanitizer: DomSanitizer,
+        private translate: TranslateService,
+        private fb: FormBuilder,
+        private confirmationService: ConfirmationService,
+        private messageService: MessageService
+    ) {
+        this.expenseForm = this.fb.group({
+            id: [''],
+            customer: [''],
+            title: ['', Validators.required],
+            category: [[]],
+            total: [0, Validators.required],
+            date: [this.formatDate(new Date()), Validators.required]
+        });
+        this.loadData();
     }
 
-    public initNewRow(e: any) {
-        e.data['user'] = this.pocketbase.auth.id;
-        e.data['date'] = new Date();
-        e.data['category'] = [];
-        e.data['total'] = 0.0;
-    }
-
-    setFullScreen = async () => {
-        this.fullScreen = !this.fullScreen;
+    async loadData() {
+        await Promise.all([this.getData(), this.getCategories(), this.getCustomers()]);
     }
 
     async getCustomers() {
         this.customers = await this.pocketbase.customers.getFullList();
     }
 
-    async editExpense(e: any) {
-        this.currentExpense = e.data;
+    async editExpense(expense: any) {
+        this.currentExpense = expense;
+        this.expenseForm.reset({
+            id: expense.id,
+            customer: expense.customer || '',
+            title: expense.title,
+            category: expense.category || [],
+            total: expense.total,
+            date: this.formatDate(expense.date)
+        });
+        this.addedFiles = [];
+        this.filesToRemove = [];
+        this.displayDialog = true;
     }
 
     async newExpense() {
-        this.grid?.instance.addRow();
         this.currentExpense = null;
+        this.expenseForm.reset({
+            id: '',
+            customer: '',
+            title: '',
+            category: [],
+            total: 0,
+            date: this.formatDate(new Date())
+        });
+        this.addedFiles = [];
+        this.filesToRemove = [];
+        this.displayDialog = true;
     }
 
     async getData() {
-
-        const thisYear = new Date(this.selectedYear, 0, 1).toISOString();
-        const currentYearEnd = new Date(+this.selectedYear + 1, 0, 1).toISOString();
-
-        this.allData = await this.pocketbase.expenses.getFullList({
-            expand: 'customer,category',
-            filter: `date > "${thisYear}" && date <= "${currentYearEnd}"`,
-            sort: '-date'
-        });
-
-        this.data = [...this.allData];
-
-        this.avg = Math.round(this.data.reduce((a: number, b: any) => a + (+b.total), 0) / this.data.length);
-
-        const dataPerMonth: any = {
-            0: { name: await this.translate.instant('Jan'), value: 0 },
-            1: { name: await this.translate.instant('Feb'), value: 0 },
-            2: { name: await this.translate.instant('Mar'), value: 0 },
-            3: { name: await this.translate.instant('Apr'), value: 0 },
-            4: { name: await this.translate.instant('May'), value: 0 },
-            5: { name: await this.translate.instant('Jun'), value: 0 },
-            6: { name: await this.translate.instant('Jul'), value: 0 },
-            7: { name: await this.translate.instant('Aug'), value: 0 },
-            8: { name: await this.translate.instant('Sep'), value: 0 },
-            9: { name: await this.translate.instant('Oct'), value: 0 },
-            10: { name: await this.translate.instant('Nov'), value: 0 },
-            11: { name: await this.translate.instant('Dec'), value: 0 }
+        this.loading = true;
+        try {
+            const start = new Date(this.selectedYear, 0, 1).toISOString();
+            const end = new Date(this.selectedYear + 1, 0, 1).toISOString();
+            const list = await this.pocketbase.expenses.getFullList({
+                expand: 'customer,category',
+                filter: `date >= "${start}" && date < "${end}"`,
+                sort: '-date'
+            });
+            this.allData = list.map(item => this.decorateExpense(item));
+            this.data = [...this.allData];
+            this.calculateStats();
+        } finally {
+            this.loading = false;
         }
-
-        this.data.forEach(async (e: any, index: number) => {
-            const month = new Date(e.date).getMonth();
-            dataPerMonth[month].value += e.total;
-        });
-
-        this.dataPerMonth = Object.values(dataPerMonth);
     }
 
-    customizeLabel = (val: any) => {
-        return {
-            visible: true,
-            customizeText: (valueText: any) => `${val.argument}`
-        } as any;
-    };
+    private async calculateStats() {
+        const totals = this.data.map(item => Number(item.total) || 0);
+        this.avg = Math.round(totals.reduce((sum, value) => sum + value, 0) / (totals.length || 1));
+
+        const months = await Promise.all([
+            firstValueFrom(this.translate.get('Jan')),
+            firstValueFrom(this.translate.get('Feb')),
+            firstValueFrom(this.translate.get('Mar')),
+            firstValueFrom(this.translate.get('Apr')),
+            firstValueFrom(this.translate.get('May')),
+            firstValueFrom(this.translate.get('Jun')),
+            firstValueFrom(this.translate.get('Jul')),
+            firstValueFrom(this.translate.get('Aug')),
+            firstValueFrom(this.translate.get('Sep')),
+            firstValueFrom(this.translate.get('Oct')),
+            firstValueFrom(this.translate.get('Nov')),
+            firstValueFrom(this.translate.get('Dec'))
+        ]);
+
+        const monthlyTotals = new Array(12).fill(0);
+        this.data.forEach(item => {
+            const monthIndex = new Date(item.date).getMonth();
+            monthlyTotals[monthIndex] += Number(item.total) || 0;
+        });
+
+        this.monthlyTotals = months.map((label, idx) => ({ name: label, value: monthlyTotals[idx] }));
+    }
 
     async getCategories() {
         this.categories = [...(await this.pocketbase.categories.getFullList({ sort: 'name' }))
             .map((c: any) => { return { id: c.id, name: c.name } })];
     }
 
-    onCustomItemCreating(args: DxTagBoxTypes.CustomItemCreatingEvent, d:any) {
-        const item = { id: new Date().getTime().toString(), name: args.text };
-        const isItemInDataSource = this.categories.some((i: any) => i.id === item.id);
-        if (!isItemInDataSource) {
-            this.categories.unshift(item);
+    async addCategoryFromInput() {
+        const name = (this.categoryInput || '').trim();
+        if (!name) {
+            return;
         }
-        args.customItem = item;
-        this.pocketbase.categories.create({
-            name: args.text?.toLowerCase()
-        }).then((res: any) => {
-            const m = this.categories.find((i: any) => { return i.id == item.id});
-            const cc = d.value.findIndex((c: any) => c == item.id);
-            if (m)
-                m.id = res.id;
-            if (cc > -1) {
-                d.value[cc] = res.id;
-            }
-            args.component.instance().getDataSource().reload();
-        });
+        try {
+            const created = await this.pocketbase.categories.create({ name: name.toLowerCase() });
+            const category = { id: created.id, name: created['name'] };
+            this.categories = [category, ...this.categories];
+            const selected = new Set(this.expenseForm.get('category')?.value ?? []);
+            selected.add(category.id);
+            this.expenseForm.patchValue({ category: Array.from(selected) });
+            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Category added' });
+        } catch {
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to add category' });
+        } finally {
+            this.categoryInput = '';
+        }
     }
 
-    async saved(e: any) {
+    async saveExpense() {
+        if (this.expenseForm.invalid) {
+            this.expenseForm.markAllAsTouched();
+            return;
+        }
 
-        // updating or deleting or creating expense should automatically track transaction
-        const change = e.changes[0];
-        const data = change?.data;
-        let id = null
+        const value = this.expenseForm.value;
+        const payload: any = {
+            customer: value.customer || null,
+            title: value.title,
+            category: value.category,
+            total: Number(value.total),
+            date: value.date ? new Date(value.date).toISOString() : new Date().toISOString(),
+            user: this.pocketbase.auth.id
+        };
 
-        if (change?.type === 'remove') {
-            await this.pocketbase.expenses.delete(change.key.id);
-        } else if (change?.type === 'update' || change?.type === 'insert') {
-            if (data.id) {
-                await this.pocketbase.expenses.update(data.id, data);
+        this.loading = true;
+        let expenseId = value.id;
+        try {
+            if (expenseId) {
+                await this.pocketbase.expenses.update(expenseId, payload);
             } else {
-                const res = await this.pocketbase.expenses.create(data);
-                id = res.id;
+                const created = await this.pocketbase.expenses.create(payload);
+                expenseId = created.id;
             }
-        }
 
-        // add documents
-        if ((this.currentExpense?.id || id) && this.addedFiles && this.addedFiles.length) {
-            await this.pocketbase.expenses.update(this.currentExpense?.id ?? id, { "files+": this.addedFiles }, { headers: { notoast: '1' } });
-            this.addedFiles.length = 0;
-        }
+            console.log(this.addedFiles)
+            if (expenseId && this.addedFiles.length) {
+                await this.pocketbase.expenses.update(expenseId, { 'files+': this.addedFiles }, { headers: { notoast: '1' } });
+                this.addedFiles = [];
+            }
 
-        // remove documents
-        if (this.currentExpense?.id && this.filesToRemove && this.filesToRemove.length) {
-            await this.pocketbase.expenses.update(this.currentExpense.id, { 'files-': this.filesToRemove }, { headers: { notoast: '1' } });
-            this.filesToRemove.length = 0;
-        }
+            if (expenseId && this.filesToRemove.length) {
+                await this.pocketbase.expenses.update(expenseId, { 'files-': this.filesToRemove }, { headers: { notoast: '1' } });
+                this.filesToRemove = [];
+            }
 
-        this.reload();
+            this.displayDialog = false;
+            await this.getData();
+            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Expense saved' });
+        } catch {
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to save expense' });
+        } finally {
+            this.loading = false;
+        }
     }
 
     async getFile(data: any, file: string) {
-        this.isPdf = file.indexOf('.pdf') > -1
+        this.isPdf = file.indexOf('.pdf') > -1;
         this.contentUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.pocketbase.files.getURL({ ...data }, file));
         this.showPreview = true;
         this.previewTitle = file;
     }
 
     async reload() {
-        this.grid?.instance.cancelEditData();
-        this.getData();
+        await this.getData();
     }
 
-    rowDoubleClicked(e: any) {
-        this.grid?.instance.editRow(e.rowIndex);
-    }
-
-    calculateFilterExpression(filterValue: any, selectedFilterOperation: any, target: any) {
-        if (target === 'search' && typeof (filterValue) === 'string') {
-            return [(this as any).dataField, 'contains', filterValue];
-        }
-        return function (rowData: any) {
-            return (rowData.category || []).indexOf(filterValue) !== -1;
-        };
-    }
-
-    async fileAdded(e: any) {
-        const list: File[] = e.value;
+    async fileAdded(event: any) {
+        const list: File[] = event?.files ?? [];
+        console.log(event)
         this.addedFiles.push(...list);
+        event?.options?.clear?.();
     }
 
     async removeAddedFile(i: number) {
@@ -210,5 +280,92 @@ export class ExpensesComponent {
     async removeFile(data: any, name: string) {
         this.filesToRemove.push(name);
         data.files = [...data.files.filter((f: any) => f !== name)];
+    }
+
+    confirmDelete(expense: any) {
+        this.confirmationService.confirm({
+            message: 'Are you sure you want to delete this expense?',
+            header: 'Confirm Delete',
+            icon: 'pi pi-exclamation-triangle',
+            accept: async () => {
+                await this.deleteExpense(expense);
+            }
+        });
+    }
+
+    private async deleteExpense(expense: any) {
+        this.loading = true;
+        try {
+            await this.pocketbase.expenses.delete(expense.id);
+            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Expense deleted' });
+            await this.getData();
+        } catch {
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to delete expense' });
+        } finally {
+            this.loading = false;
+        }
+    }
+
+    exportCsv() {
+        const columns = this.allColumns.filter(c => this.visibleColumns.includes(c.field));
+        const header = columns.map(c => c.header).join(',');
+        const escape = (val: any) => {
+            if (val === null || val === undefined) return '';
+            const s = String(val).replace(/"/g, '""');
+            return `"${s}"`;
+        };
+        const lines = this.data.map(row => columns.map(c => {
+            if (c.field === 'customer') {
+                return escape(row.customerName || row.expand?.customer?.name || '');
+            }
+            if (c.field === 'category') {
+                return escape(row.categoryNames || (row.expand?.category || []).map((cat: any) => cat.name).join('; '));
+            }
+            if (c.field === 'files') {
+                return escape(row.fileNames || (row.files || []).join('; '));
+            }
+            return escape((row as any)[c.field]);
+        }).join(','));
+        const csv = [header, ...lines].join('\n');
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'expenses.csv';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    }
+
+    onYearChange() {
+        this.selectedYear = Number(this.selectedYear);
+        this.getData();
+    }
+
+    private formatDate(value: Date | string | null | undefined): string {
+        if (!value) {
+            return '';
+        }
+        const date = typeof value === 'string' ? new Date(value) : value;
+        if (isNaN(date.getTime())) {
+            return '';
+        }
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
+
+    private decorateExpense(expense: any) {
+        const categoryNames = (expense.expand?.category ?? []).map((cat: any) => cat.name).join(', ');
+        const customerName = expense.expand?.customer?.name ?? '';
+        const fileNames = (expense.files ?? []).join(', ');
+        return {
+            ...expense,
+            categoryNames,
+            customerName,
+            fileNames
+        };
     }
 }
