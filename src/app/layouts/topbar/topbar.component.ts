@@ -10,7 +10,6 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { PocketBaseService } from '../../core/services/pocket-base.service';
 import { Router, RouterModule } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
-import { locale } from "devextreme/localization";
 import { AppConstants } from '../../core/constants/AppConstants';
 import { DOCUMENT } from '@angular/common';
 
@@ -206,7 +205,6 @@ export class TopbarComponent {
 
     async loadLang() {
         const lang = localStorage.getItem('lang') || 'en';
-        locale(lang);
     }
 
     /**

@@ -25,11 +25,11 @@
                     <div class="d-flex gap-2 align-items-center">
                         <p-button [label]="'New' | translate" icon="pi pi-plus" [text]="true" size="small"
                             (onClick)="newTransaction()"></p-button>
-                        <p-button icon="pi pi-refresh" [label]="'&nbsp;'" [text]="true" size="small"
+                        <p-button icon="pi pi-refresh" [text]="true" size="small"
                             (onClick)="reload()"></p-button>
-                        <p-button icon="pi pi-download" [label]="'&nbsp;'" [text]="true" size="small"
+                        <p-button icon="pi pi-download" [text]="true" size="small"
                             (onClick)="exportCsv()"></p-button>
-                        <p-button icon="pi pi-table" [label]="'&nbsp;'" [text]="true" size="small"
+                        <p-button icon="pi pi-table" [text]="true" size="small"
                             (onClick)="colsPopover.toggle($event)"></p-button>
                         <p-popover #colsPopover styleClass="p-2">
                             <ng-template pTemplate="content">
@@ -164,10 +164,9 @@
                                     <td class="text-end"
                                         style="position: sticky; right: 0; background: white; z-index: 10;">
                                         <div class="d-flex justify-content-end gap-1">
-                                            <p-button icon="pi pi-pencil" [text]="true" size="small" [label]="'&nbsp;'"
+                                            <p-button icon="pi pi-pencil" [text]="true" size="small"
                                                 (onClick)="editTransaction(transaction)"></p-button>
-                                            <p-button icon="pi pi-trash" [text]="true" size="small" severity="danger"
-                                                [label]="'&nbsp;'" (onClick)="confirmDelete(transaction)"></p-button>
+                                            <p-button icon="pi pi-trash" [text]="true" size="small" severity="danger" (onClick)="confirmDelete(transaction)"></p-button>
                                         </div>
                                     </td>
                                 </tr>

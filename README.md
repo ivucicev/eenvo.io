@@ -39,7 +39,6 @@ Eenvo is a modern, self-hosted invoicing solution designed for businesses of all
 ## Requirements
 
 - [Docker](https://www.docker.com/) & [Docker Compose](https://docs.docker.com/compose/)
-- A valid [DevExtreme Key](https://js.devexpress.com/DevExtremeLicensing/)
 
 ## Quick Start (Docker Compose)
 
@@ -55,12 +54,10 @@ Eenvo is a modern, self-hosted invoicing solution designed for businesses of all
    Create a `.env` file in the project root with the following content:
 
    ```env
-   DEVEXTREME_KEY=your_devextreme_key_here
    POCKETBASE_ADMIN_EMAIL=admin@example.com
    POCKETBASE_ADMIN_PASS=your_secure_password
    ```
 
-   - `DEVEXTREME_KEY`: Required for the web UI to function. Obtain from DevExtreme.
    - `POCKETBASE_ADMIN_EMAIL`: Email for the PocketBase admin user.
    - `POCKETBASE_ADMIN_PASS`: Password for the PocketBase admin user.
 
@@ -78,7 +75,6 @@ Eenvo is a modern, self-hosted invoicing solution designed for businesses of all
 
 ## Docker Compose Variables
 
-- `DEVEXTREME_KEY`: License key for DevExtreme (required for UI components).
 - `API_URL`: URL for the backend API (default: `http://localhost:8090`).
 - `POCKETBASE_ADMIN_EMAIL`: Email for the PocketBase admin user.
 - `POCKETBASE_ADMIN_PASS`: Password for the PocketBase admin user.
@@ -106,12 +102,6 @@ To use supervisord:
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for details.
-
-**Important:**
-Eenvo uses third-party components such as DevExtreme by DevExpress, which are not open source and require a valid commercial license for production use. You are responsible for obtaining and complying with all third-party licenses.
-
 Feel free to contribute or open issues for feature requests and bug reports.
 
 ---
-
-*This project is not affiliated with DevExtreme or PocketBase. All trademarks are property of their respective owners.*

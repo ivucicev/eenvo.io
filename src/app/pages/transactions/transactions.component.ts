@@ -18,7 +18,6 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
 import { CommonModule } from '@angular/common';
 import { firstValueFrom } from 'rxjs';
-import { InputMask } from 'primeng/inputmask';
 import { InputNumber } from 'primeng/inputnumber';
 import { InputNumberGlobalConfigDirective } from '../../core/directives/currency-input.directive';
 

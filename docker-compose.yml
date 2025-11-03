@@ -4,7 +4,6 @@ services:
   eenvo-web:
     image: ivucicev/eenvo-web:latest
     environment:
-      DEVEXTREME_KEY: ${DEVEXTREME_KEY}
       API_URL: http://localhost:8090
     ports:
       - "80:80"

@@ -18,6 +18,8 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
 import { CommonModule } from '@angular/common';
 import { firstValueFrom } from 'rxjs';
+import { InputNumber } from 'primeng/inputnumber';
+import { InputNumberGlobalConfigDirective } from '../../core/directives/currency-input.directive';
 
 @Component({
     selector: 'eenvo-expenses',
@@ -37,7 +39,9 @@ import { firstValueFrom } from 'rxjs';
         TranslateModule,
         CurrencyFormatPipe,
         FormsModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        InputNumber,
+        InputNumberGlobalConfigDirective
     ],
     templateUrl: './expenses.component.html',
     styleUrl: './expenses.component.scss',
