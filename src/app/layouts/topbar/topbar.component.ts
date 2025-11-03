@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, Output, Signal, signal, DOCUMENT } from '@angular/core';
+import { Component, EventEmitter, Inject, Output, Signal, signal } from '@angular/core';
 import { SimplebarAngularModule } from 'simplebar-angular';
 import { Store } from '@ngrx/store';
 import { getLayoutMode, getSidebarSize } from '../../store/layouts/layout-selector';
@@ -12,6 +12,7 @@ import { Router, RouterModule } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { locale } from "devextreme/localization";
 import { AppConstants } from '../../core/constants/AppConstants';
+import { DOCUMENT } from '@angular/common';
 
 
 @Component({

@@ -1,246 +1,261 @@
 <div class="h-100 d-flex flex-column">
-  <div class="row">
-    <div class="col-4">
-      <eenvo-stats-widget [name]="'Expenses'" [title]="'Expenses last 31 days' | translate" [data]="data"
-      [secondaryColor]="'bg-primary'"></eenvo-stats-widget>
-    </div>
-    <div class="col-8">
-      <div class="card m-0 mb-3">
-        <div class="card-body">
-          <div class="d-flex flex-wrap gap-3 align-items-start">
-            <div>
-              <div class="text-muted small">{{ 'Average Expense' | translate }}</div>
-              <div class="fs-4">{{ avg | currencyFormat }}</div>
-            </div>
-            <div class="flex-grow-1">
-              <div class="text-muted small mb-1">{{ 'Expenses by month' | translate }}</div>
-              <div class="d-flex flex-wrap gap-2">
-                @for (month of monthlyTotals; track month) {
-                  <div class="badge bg-light text-body">
-                    <span class="fw-semibold me-1">{{ month.name }}:</span>
-                    <span>{{ month.value | currencyFormat }}</span>
-                  </div>
-                }
-              </div>
-            </div>
-          </div>
+    <div class="row">
+        <div class="col-4">
+            <eenvo-stats-widget [name]="'Expenses'" [title]="'Expenses last 31 days' | translate" [data]="data"
+                [secondaryColor]="'bg-primary'"></eenvo-stats-widget>
         </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="row h-grow">
-    <div class="col-lg-12 h-grow">
-      <div class="card h-grow m-0">
-        <div class="card-header d-flex justify-content-between align-items-center">
-          <h4 class="card-title mb-0">{{ 'Troškovi' | translate }}</h4>
-          <div class="d-flex align-items-center gap-2">
-            <p-button [label]="'New' | translate" icon="pi pi-plus" [text]="true" size="small"
-            (onClick)="newExpense()"></p-button>
-            <p-button icon="pi pi-refresh" [text]="true" [label]="'&nbsp;'" size="small" (onClick)="reload()"></p-button>
-            <p-button icon="pi pi-download" [text]="true" [label]="'&nbsp;'" size="small" (onClick)="exportCsv()"></p-button>
-            <p-button icon="pi pi-table" [text]="true" [label]="'&nbsp;'" size="small" (onClick)="colsPopover.toggle($event)"></p-button>
-            <p-popover #colsPopover styleClass="p-2">
-              <ng-template pTemplate="content">
-                <div class="mb-2 fw-semibold">{{ 'Columns' | translate }}</div>
-                <p-multiSelect [options]="allColumns" optionLabel="header" optionValue="field"
-                  [(ngModel)]="visibleColumns" [showHeader]="false" [filter]="true" display="chip"
-                style="min-width: 220px"></p-multiSelect>
-              </ng-template>
-            </p-popover>
-            <select class="form-select form-select-sm" [(ngModel)]="selectedYear" (change)="onYearChange()">
-              <option [value]="currentYear">{{ currentYear }}</option>
-              <option [value]="currentYear - 1">{{ currentYear - 1 }}</option>
-              <option [value]="currentYear - 2">{{ currentYear - 2 }}</option>
-              <option [value]="currentYear - 3">{{ currentYear - 3 }}</option>
-              <option [value]="currentYear - 4">{{ currentYear - 4 }}</option>
-            </select>
-            <input pSize="small" type="text" pInputText [(ngModel)]="globalFilterValue" placeholder="{{ 'Search' | translate }}"
-              (input)="$event.stopPropagation(); dt.filterGlobal(globalFilterValue, 'contains')"
-              style="min-width: 240px">
-          </div>
-        </div>
-        <div class="card-body h-grow">
-          <div class="table-container">
-            <p-table #dt [value]="data" [loading]="loading" [paginator]="true" [rows]="25"
-              [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-              [globalFilterFields]="['customerName', 'title', 'categoryNames', 'total', 'date', 'fileNames']"
-              styleClass="p-datatable-sm" [scrollable]="true" scrollHeight="flex">
-              <ng-template pTemplate="header">
-                <tr>
-                  @if (visibleColumns.includes('customer')) {
-                    <th pSortableColumn="customerName" style="min-width: 160px">
-                      {{ 'Customer/Vendor' | translate }}
-                      <p-sortIcon field="customerName"></p-sortIcon>
-                      <p-columnFilter field="customerName" display="menu" type="text"></p-columnFilter>
-                    </th>
-                  }
-                  @if (visibleColumns.includes('title')) {
-                    <th pSortableColumn="title" style="min-width: 200px">
-                      {{ 'Title' | translate }}
-                      <p-sortIcon field="title"></p-sortIcon>
-                      <p-columnFilter field="title" display="menu" type="text"></p-columnFilter>
-                    </th>
-                  }
-                  @if (visibleColumns.includes('category')) {
-                    <th pSortableColumn="categoryNames" style="min-width: 200px">
-                      {{ 'Category' | translate }}
-                      <p-sortIcon field="categoryNames"></p-sortIcon>
-                      <p-columnFilter field="categoryNames" display="menu" type="text"></p-columnFilter>
-                    </th>
-                  }
-                  @if (visibleColumns.includes('total')) {
-                    <th pSortableColumn="total" style="min-width: 140px">
-                      {{ 'Total' | translate }}
-                      <p-sortIcon field="total"></p-sortIcon>
-                      <p-columnFilter field="total" display="menu" type="numeric"></p-columnFilter>
-                    </th>
-                  }
-                  @if (visibleColumns.includes('date')) {
-                    <th pSortableColumn="date" style="min-width: 150px">
-                      {{ 'Date' | translate }}
-                      <p-sortIcon field="date"></p-sortIcon>
-                      <p-columnFilter field="date" display="menu" type="date"></p-columnFilter>
-                    </th>
-                  }
-                  @if (visibleColumns.includes('files')) {
-                    <th pSortableColumn="fileNames" style="min-width: 200px">
-                      {{ 'Documents' | translate }}
-                      <p-sortIcon field="fileNames"></p-sortIcon>
-                      <p-columnFilter field="fileNames" display="menu" type="text"></p-columnFilter>
-                    </th>
-                  }
-                  <th style="min-width: 140px" class="text-end"></th>
-                </tr>
-              </ng-template>
-              <ng-template pTemplate="body" let-expense>
-                <tr>
-                  @if (visibleColumns.includes('customer')) {
-                    <td>{{ expense.customerName }}</td>
-                  }
-                  @if (visibleColumns.includes('title')) {
-                    <td>{{ expense.title }}</td>
-                  }
-                  @if (visibleColumns.includes('category')) {
-                    <td>
-                      @for (cat of expense.expand?.category; track cat) {
-                        <span class="badge bg-info-subtle me-1">{{ cat.name }}</span>
-                      }
-                    </td>
-                  }
-                  @if (visibleColumns.includes('total')) {
-                    <td>{{ expense.total | currencyFormat }}</td>
-                  }
-                  @if (visibleColumns.includes('date')) {
-                    <td>{{ expense.date | date: 'mediumDate' }}</td>
-                  }
-                  @if (visibleColumns.includes('files')) {
-                    <td>
-                      @for (file of expense.files; track file) {
-                        <button class="btn btn-link btn-sm p-0 me-2"
-                        type="button" (click)="getFile(expense, file)">{{ file }}</button>
-                      }
-                    </td>
-                  }
-                  <td class="text-end">
-                    <div class="d-flex justify-content-end gap-1">
-                      <p-button icon="pi pi-pencil" [text]="true" size="small"
-                      (onClick)="editExpense(expense)"></p-button>
-                      <p-button icon="pi pi-trash" [text]="true" size="small" severity="danger"
-                      (onClick)="confirmDelete(expense)"></p-button>
+        <div class="col-8">
+            <div class="card m-0 mb-3">
+                <div class="card-body">
+                    <div class="d-flex flex-wrap gap-3 align-items-start">
+                        <div>
+                            <div class="text-muted small">{{ 'Average Expense' | translate }}</div>
+                            <div class="fs-4">{{ avg | currencyFormat }}</div>
+                        </div>
+                        <div class="flex-grow-1">
+                            <div class="text-muted small mb-1">{{ 'Expenses by month' | translate }}</div>
+                            <div class="d-flex flex-wrap gap-2">
+                                @for (month of monthlyTotals; track month) {
+                                <div class="badge bg-light text-body">
+                                    <span class="fw-semibold me-1">{{ month.name }}:</span>
+                                    <span>{{ month.value | currencyFormat }}</span>
+                                </div>
+                                }
+                            </div>
+                        </div>
                     </div>
-                  </td>
-                </tr>
-              </ng-template>
-            </p-table>
-          </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
+
+    <div class="row h-grow">
+        <div class="col-lg-12 h-grow">
+            <div class="card h-grow m-0">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h4 class="card-title mb-0">{{ 'Troškovi' | translate }}</h4>
+                    <div class="d-flex align-items-center gap-2">
+                        <p-button [label]="'New' | translate" icon="pi pi-plus" [text]="true" size="small"
+                            (onClick)="newExpense()"></p-button>
+                        <p-button icon="pi pi-refresh" [text]="true" [label]="'&nbsp;'" size="small"
+                            (onClick)="reload()"></p-button>
+                        <p-button icon="pi pi-download" [text]="true" [label]="'&nbsp;'" size="small"
+                            (onClick)="exportCsv()"></p-button>
+                        <p-button icon="pi pi-table" [text]="true" [label]="'&nbsp;'" size="small"
+                            (onClick)="colsPopover.toggle($event)"></p-button>
+                        <p-popover #colsPopover styleClass="p-2">
+                            <ng-template pTemplate="content">
+                                <div class="mb-2 fw-semibold">{{ 'Columns' | translate }}</div>
+                                <p-multiSelect [options]="allColumns" optionLabel="header" optionValue="field"
+                                    [(ngModel)]="visibleColumns" [showHeader]="false" [filter]="true" display="chip"
+                                    style="min-width: 220px"></p-multiSelect>
+                            </ng-template>
+                        </p-popover>
+                        <select class="form-select form-select-sm" [(ngModel)]="selectedYear" (change)="onYearChange()">
+                            <option [value]="currentYear">{{ currentYear }}</option>
+                            <option [value]="currentYear - 1">{{ currentYear - 1 }}</option>
+                            <option [value]="currentYear - 2">{{ currentYear - 2 }}</option>
+                            <option [value]="currentYear - 3">{{ currentYear - 3 }}</option>
+                            <option [value]="currentYear - 4">{{ currentYear - 4 }}</option>
+                        </select>
+                        <input pSize="small" type="text" pInputText [(ngModel)]="globalFilterValue"
+                            placeholder="{{ 'Search' | translate }}"
+                            (input)="$event.stopPropagation(); dt.filterGlobal(globalFilterValue, 'contains')"
+                            style="min-width: 240px">
+                    </div>
+                </div>
+                <div class="card-body h-grow">
+                    <div class="table-container">
+                        <p-table #dt [value]="data" [loading]="loading" [paginator]="true" [rows]="25"
+                            [showCurrentPageReport]="true"
+                            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                            [globalFilterFields]="['customerName', 'title', 'categoryNames', 'total', 'date', 'fileNames']"
+                            styleClass="p-datatable-sm" [scrollable]="true" scrollHeight="flex">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    @if (visibleColumns.includes('customer')) {
+                                    <th pSortableColumn="customerName" style="min-width: 160px">
+                                        {{ 'Customer/Vendor' | translate }}
+                                        <p-sortIcon field="customerName"></p-sortIcon>
+                                        <p-columnFilter field="customerName" display="menu"
+                                            type="text"></p-columnFilter>
+                                    </th>
+                                    }
+                                    @if (visibleColumns.includes('title')) {
+                                    <th pSortableColumn="title" style="min-width: 200px">
+                                        {{ 'Title' | translate }}
+                                        <p-sortIcon field="title"></p-sortIcon>
+                                        <p-columnFilter field="title" display="menu" type="text"></p-columnFilter>
+                                    </th>
+                                    }
+                                    @if (visibleColumns.includes('category')) {
+                                    <th pSortableColumn="categoryNames" style="min-width: 200px">
+                                        {{ 'Category' | translate }}
+                                        <p-sortIcon field="categoryNames"></p-sortIcon>
+                                        <p-columnFilter field="categoryNames" display="menu"
+                                            type="text"></p-columnFilter>
+                                    </th>
+                                    }
+                                    @if (visibleColumns.includes('total')) {
+                                    <th pSortableColumn="total" style="min-width: 140px">
+                                        {{ 'Total' | translate }}
+                                        <p-sortIcon field="total"></p-sortIcon>
+                                        <p-columnFilter field="total" display="menu" type="numeric"></p-columnFilter>
+                                    </th>
+                                    }
+                                    @if (visibleColumns.includes('date')) {
+                                    <th pSortableColumn="date" style="min-width: 150px">
+                                        {{ 'Date' | translate }}
+                                        <p-sortIcon field="date"></p-sortIcon>
+                                        <p-columnFilter field="date" display="menu" type="date"></p-columnFilter>
+                                    </th>
+                                    }
+                                    @if (visibleColumns.includes('files')) {
+                                    <th pSortableColumn="fileNames" style="min-width: 200px">
+                                        {{ 'Documents' | translate }}
+                                        <p-sortIcon field="fileNames"></p-sortIcon>
+                                        <p-columnFilter field="fileNames" display="menu" type="text"></p-columnFilter>
+                                    </th>
+                                    }
+                                    <th style="min-width: 140px" class="text-end"></th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-expense>
+                                <tr>
+                                    @if (visibleColumns.includes('customer')) {
+                                    <td>{{ expense.customerName }}</td>
+                                    }
+                                    @if (visibleColumns.includes('title')) {
+                                    <td>{{ expense.title }}</td>
+                                    }
+                                    @if (visibleColumns.includes('category')) {
+                                    <td>
+                                        @for (cat of expense.expand?.category; track cat) {
+                                        <span class="badge bg-info-subtle me-1">{{ cat.name }}</span>
+                                        }
+                                    </td>
+                                    }
+                                    @if (visibleColumns.includes('total')) {
+                                    <td>{{ expense.total | currencyFormat }}</td>
+                                    }
+                                    @if (visibleColumns.includes('date')) {
+                                    <td>{{ expense.date | date: 'mediumDate' }}</td>
+                                    }
+                                    @if (visibleColumns.includes('files')) {
+                                    <td>
+                                        @for (file of expense.files; track file) {
+                                        <button class="btn btn-link btn-sm p-0 me-2" type="button"
+                                            (click)="getFile(expense, file)">{{ file }}</button>
+                                        }
+                                    </td>
+                                    }
+                                    <td class="text-end"
+                                        style="position: sticky; right: 0; background: white; z-index: 10;">
+                                        <div class="d-flex justify-content-end gap-1">
+                                            <p-button icon="pi pi-pencil" [text]="true" size="small" [label]="'&nbsp;'"
+                                                (onClick)="editExpense(expense)"></p-button>
+                                            <p-button icon="pi pi-trash" [text]="true" size="small" severity="danger" [label]="'&nbsp;'"
+                                                (onClick)="confirmDelete(expense)"></p-button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<p-dialog [(visible)]="displayDialog" [modal]="true" [style]="{ width: '90vw', maxWidth: '820px' }" [draggable]="false" [resizable]="false"
-  [header]="(currentExpense ? 'Edit' : 'New') + ' ' + ('Expense' | translate)">
-  <form [formGroup]="expenseForm" (ngSubmit)="saveExpense()" class="p-fluid">
-    <div class="row">
-      <div class="col-md-6 mb-3">
-        <label class="form-label">{{ 'Customer/Vendor' | translate }}</label>
-        <p-select formControlName="customer" [options]="customers" optionLabel="name" optionValue="id" styleClass="w-100"></p-select>
-      </div>
-      <div class="col-md-6 mb-3">
-        <label for="title" class="form-label">{{ 'Title' | translate }}</label>
-        <input id="title" type="text" class="form-control" formControlName="title" pInputText>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-8 mb-3">
-        <label class="form-label">{{ 'Category' | translate }}</label>
-        <p-multiSelect formControlName="category" [options]="categories" optionLabel="name" optionValue="id" display="chip" [filter]="true"></p-multiSelect>
-      </div>
-      <div class="col-md-4 mb-3 d-flex align-items-end">
-        <div class="input-group">
-          <input type="text" class="form-control" [(ngModel)]="categoryInput" [ngModelOptions]="{ standalone: true }" placeholder="{{ 'New category' | translate }}" pInputText>
-          <button class="btn btn-outline-primary" type="button" (click)="addCategoryFromInput()">
-            <i class="pi pi-plus"></i>
-          </button>
+<p-dialog [(visible)]="displayDialog" [modal]="true" [style]="{ width: '90vw', maxWidth: '820px' }" [draggable]="false"
+    [resizable]="false" [header]="(currentExpense ? 'Edit' : 'New') + ' ' + ('Expense' | translate)">
+    <form [formGroup]="expenseForm" (ngSubmit)="saveExpense()" class="p-fluid">
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label class="form-label">{{ 'Customer/Vendor' | translate }}</label>
+                <p-select formControlName="customer" [options]="customers" optionLabel="name" optionValue="id"
+                    styleClass="w-100"></p-select>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="title" class="form-label">{{ 'Title' | translate }}</label>
+                <input id="title" type="text" class="form-control" formControlName="title" pInputText>
+            </div>
         </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-4 mb-3">
-        <label for="total" class="form-label">{{ 'Total' | translate }}</label>
-        <input id="total" type="number" class="form-control" formControlName="total" pInputText step="0.01">
-      </div>
-      <div class="col-md-4 mb-3">
-        <label for="date" class="form-label">{{ 'Date' | translate }}</label>
-        <input id="date" type="date" class="form-control" formControlName="date" pInputText>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-12">
-        <label class="form-label">{{ 'Documents' | translate }}</label>
-        <p-fileUpload [customUpload]="true" [showUploadButton]="false" [showCancelButton]="false" [multiple]="true"
-        (uploadHandler)="fileAdded($event)"></p-fileUpload>
-        @if (addedFiles.length) {
-          <div class="mt-2">
-            @for (file of addedFiles; track file; let i = $index) {
-              <div class="badge bg-primary-subtle text-primary-emphasis me-2">
-                {{ file.name }}
-                <button type="button" class="btn btn-link btn-sm p-0 ms-2" (click)="removeAddedFile(i)"><i class="pi pi-times"></i></button>
-              </div>
-            }
-          </div>
-        }
-        @if (currentExpense?.files?.length) {
-          <div class="mt-2">
-            @for (file of currentExpense.files; track file) {
-              <div class="badge bg-secondary-subtle text-secondary-emphasis me-2">
-                {{ file }}
-                <button type="button" class="btn btn-link btn-sm p-0 ms-2" (click)="removeFile(currentExpense, file)"><i class="pi pi-times"></i></button>
-              </div>
-            }
-          </div>
-        }
-      </div>
-    </div>
-  </form>
-  <ng-template pTemplate="footer">
-    <p-button label="Cancel" icon="pi pi-times" [text]="true" (onClick)="displayDialog = false"></p-button>
-    <p-button [label]="currentExpense ? 'Update' : 'Create'" icon="pi pi-check" (onClick)="saveExpense()" [loading]="loading"></p-button>
-  </ng-template>
+        <div class="row">
+            <div class="col-md-8 mb-3">
+                <label class="form-label">{{ 'Category' | translate }}</label>
+                <p-multiSelect formControlName="category" [options]="categories" optionLabel="name" optionValue="id"
+                    display="chip" [filter]="true"></p-multiSelect>
+            </div>
+            <div class="col-md-4 mb-3 d-flex align-items-end">
+                <div class="input-group">
+                    <input type="text" class="form-control" [(ngModel)]="categoryInput"
+                        [ngModelOptions]="{ standalone: true }" placeholder="{{ 'New category' | translate }}"
+                        pInputText>
+                    <button class="btn btn-outline-primary" type="button" (click)="addCategoryFromInput()">
+                        <i class="pi pi-plus"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label for="total" class="form-label">{{ 'Total' | translate }}</label>
+                <input id="total" type="number" class="form-control" formControlName="total" pInputText step="0.01">
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="date" class="form-label">{{ 'Date' | translate }}</label>
+                <input id="date" type="date" class="form-control" formControlName="date" pInputText>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <label class="form-label">{{ 'Documents' | translate }}</label>
+                <p-fileUpload [customUpload]="true" [showUploadButton]="false" [showCancelButton]="false"
+                    [multiple]="true" (onSelect)="fileAdded($event)"></p-fileUpload>
+                @if (addedFiles.length) {
+                <div class="mt-2">
+                    @for (file of addedFiles; track file; let i = $index) {
+                    <div class="badge bg-primary-subtle text-primary-emphasis me-2">
+                        {{ file.name }}
+                        <button type="button" class="btn btn-link btn-sm p-0 ms-2" (click)="removeAddedFile(i)"><i
+                                class="pi pi-times"></i></button>
+                    </div>
+                    }
+                </div>
+                }
+                @if (currentExpense?.files?.length) {
+                <div class="mt-2">
+                    @for (file of currentExpense.files; track file) {
+                    <div class="badge bg-secondary-subtle text-secondary-emphasis me-2">
+                        {{ file }}
+                        <button type="button" class="btn btn-link btn-sm p-0 ms-2"
+                            (click)="removeFile(currentExpense, file)"><i class="pi pi-times"></i></button>
+                    </div>
+                    }
+                </div>
+                }
+            </div>
+        </div>
+    </form>
+    <ng-template pTemplate="footer">
+        <p-button label="Cancel" icon="pi pi-times" [text]="true" (onClick)="displayDialog = false"></p-button>
+        <p-button [label]="currentExpense ? 'Update' : 'Create'" icon="pi pi-check" (onClick)="saveExpense()"
+            [loading]="loading"></p-button>
+    </ng-template>
 </p-dialog>
 
-<p-dialog [(visible)]="showPreview" [modal]="true" [style]="{ width: '90vw', height: '80vh' }" [maximizable]="true" [dismissableMask]="true" [draggable]="false"
-  [header]="previewTitle">
-  <div class="preview-container">
-    @if (isPdf) {
-      <iframe [src]="contentUrl" type="application/pdf" width="100%" height="100%"></iframe>
-    }
-    @if (!isPdf) {
-      <img [src]="contentUrl" class="img-fluid" />
-    }
-  </div>
+<p-dialog [(visible)]="showPreview" [modal]="true" [style]="{ width: '90vw', height: '80vh' }" [maximizable]="true"
+    [dismissableMask]="true" [draggable]="false" [header]="previewTitle">
+    <div class="preview-container">
+        @if (isPdf) {
+        <iframe [src]="contentUrl" type="application/pdf" width="100%" height="100%"></iframe>
+        }
+        @if (!isPdf) {
+        <img [src]="contentUrl" class="img-fluid" />
+        }
+    </div>
 </p-dialog>
 
 <p-toast></p-toast>

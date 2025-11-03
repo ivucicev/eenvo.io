@@ -13,6 +13,8 @@ import * as excel from 'devextreme-angular/common/export/excel';
 import * as pdf from 'devextreme-angular/common/export/pdf';
 import { Workbook } from 'exceljs';
 import saveAs from 'file-saver';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 
 @Injectable({
@@ -21,13 +23,29 @@ import saveAs from 'file-saver';
 export class SettingsService {
 
     public settings: any = null;
+    public currencies: any[] = [];
 
-    constructor(private pb: PocketBaseService, private activatedRoute: ActivatedRoute) {
+    constructor(private pb: PocketBaseService, private activatedRoute: ActivatedRoute, private http: HttpClient) {
         this.setDxOptions()
     }
 
     public reinit() {
         this.setDxOptions();
+    }
+
+    public getCurrencyISO = async (): Promise<string> => {
+        return new Promise((resolve) => {
+            if (this.currencies.length > 0) {
+                resolve(this.currencies.find(c => c.symbol == this.settings?.currency)?.code);
+                return;
+            }
+            this.http.get<any[]>('assets/json/currency-list.json').toPromise().then((data: any) => {
+                Object.keys(data).forEach((k: string) => {
+                    this.currencies.push({ code: k, ...data[k] })
+                })
+                resolve(this.currencies.find(c => c.symbol == this.settings?.currency)?.code);
+            });
+        });
     }
 
     setDxOptions() {

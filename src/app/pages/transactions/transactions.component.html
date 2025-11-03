@@ -1,226 +1,232 @@
 <div class="h-100 d-flex flex-column">
-  <div class="row">
-    <div class="col-3">
-      <eenvo-stats-widget [name]="'Cashflow'" [title]="'Cashflow last 31 days'" [data]="data"
-      [secondaryColor]="'bg-primary'"></eenvo-stats-widget>
-    </div>
-    <div class="col-3">
-      <eenvo-stats-widget [name]="'Income'" [title]="'Income last 31 days'" [data]="inflow"
-      [secondaryColor]="'bg-success'"></eenvo-stats-widget>
-    </div>
-    <div class="col-3">
-      <eenvo-stats-widget [name]="'Expenses'" [title]="'Expenses last 31 days'" [data]="expenses"
-      [secondaryColor]="'bg-success'"></eenvo-stats-widget>
-    </div>
-    <div class="col-3">
-      <eenvo-stats-widget [name]="'Net income'" [title]="'Net income last 31 days'" [data]="dataNetIncome"
-      [secondaryColor]="'bg-danger'" [color]="'primary'"></eenvo-stats-widget>
-    </div>
-  </div>
-  <div class="row h-grow">
-    <div class="col-lg-12 h-grow">
-      <div class="card h-grow m-0">
-        <div class="card-header d-flex justify-content-between align-items-center">
-          <h4 class="card-title mb-0">{{ 'Transakcije' | translate }}</h4>
-          <div class="d-flex gap-2 align-items-center">
-            <p-button [label]="'New' | translate" icon="pi pi-plus" [text]="true" size="small"
-            (onClick)="newTransaction()"></p-button>
-            <p-button icon="pi pi-refresh" [label]="'&nbsp;'" [text]="true" size="small" (onClick)="reload()"></p-button>
-            <p-button icon="pi pi-download" [label]="'&nbsp;'" [text]="true" size="small" (onClick)="exportCsv()"></p-button>
-            <p-button icon="pi pi-table" [label]="'&nbsp;'" [text]="true" size="small"
-            (onClick)="colsPopover.toggle($event)"></p-button>
-            <p-popover #colsPopover styleClass="p-2">
-              <ng-template pTemplate="content">
-                <div class="mb-2 fw-semibold">{{ 'Columns' | translate }}</div>
-                <p-multiSelect [options]="allColumns" optionLabel="header" optionValue="field"
-                  [(ngModel)]="visibleColumns" [showHeader]="false" [filter]="true" display="chip"
-                style="min-width: 220px"></p-multiSelect>
-              </ng-template>
-            </p-popover>
-            <select class="form-select form-select-sm" [(ngModel)]="selectedYear" (change)="onYearChange()">
-              <option [value]="currentYear">{{ currentYear }}</option>
-              <option [value]="currentYear - 1">{{ currentYear - 1 }}</option>
-              <option [value]="currentYear - 2">{{ currentYear - 2 }}</option>
-              <option [value]="currentYear - 3">{{ currentYear - 3 }}</option>
-              <option [value]="currentYear - 4">{{ currentYear - 4 }}</option>
-            </select>
-            <input pSize="small" type="text" pInputText [(ngModel)]="globalFilterValue"
-              placeholder="{{ 'Search' | translate }}"
-              (input)="$event.stopPropagation(); dt.filterGlobal(globalFilterValue, 'contains')"
-              style="min-width: 240px">
-          </div>
+    <div class="row">
+        <div class="col-3">
+            <eenvo-stats-widget [name]="'Cashflow'" [title]="'Cashflow last 31 days'" [data]="data"
+                [secondaryColor]="'bg-primary'"></eenvo-stats-widget>
         </div>
-        <div class="card-body h-grow">
-          <div class="table-container">
-            <p-table #dt [value]="data" [loading]="loading" [paginator]="true" [rows]="25"
-              [showCurrentPageReport]="true"
-              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-              [globalFilterFields]="['title', 'type', 'categoryNames', 'invoiceNumber', 'expenseTitle', 'total']"
-              styleClass="p-datatable-sm" [scrollable]="true" scrollHeight="flex">
-              <ng-template pTemplate="header">
-                <tr>
-                  @if (visibleColumns.includes('type')) {
-                    <th pSortableColumn="type" style="min-width: 100px">
-                      {{ 'Type' | translate }}
-                      <p-sortIcon field="type"></p-sortIcon>
-                      <p-columnFilter field="type" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
-                        <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                          <p-select [options]="types" optionLabel="name" optionValue="value" [ngModel]="value" (ngModelChange)="filter($event)" [ngModelOptions]="{ standalone: true }" showClear="true" styleClass="w-100"></p-select>
-                        </ng-template>
-                      </p-columnFilter>
-                    </th>
-                  }
-                  @if (visibleColumns.includes('title')) {
-                    <th pSortableColumn="title" style="min-width: 200px">
-                      {{ 'Title' | translate }}
-                      <p-sortIcon field="title"></p-sortIcon>
-                      <p-columnFilter field="title" display="menu" type="text"></p-columnFilter>
-                    </th>
-                  }
-                  @if (visibleColumns.includes('category')) {
-                    <th pSortableColumn="categoryNames" style="min-width: 200px">
-                      {{ 'Category' | translate }}
-                      <p-sortIcon field="categoryNames"></p-sortIcon>
-                      <p-columnFilter field="categoryNames" display="menu" type="text"></p-columnFilter>
-                    </th>
-                  }
-                  @if (visibleColumns.includes('total')) {
-                    <th pSortableColumn="total" style="min-width: 140px">
-                      {{ 'Total' | translate }}
-                      <p-sortIcon field="total"></p-sortIcon>
-                      <p-columnFilter field="total" display="menu" type="numeric"></p-columnFilter>
-                    </th>
-                  }
-                  @if (visibleColumns.includes('date')) {
-                    <th pSortableColumn="date" style="min-width: 150px">
-                      {{ 'Date' | translate }}
-                      <p-sortIcon field="date"></p-sortIcon>
-                      <p-columnFilter field="date" display="menu" type="date"></p-columnFilter>
-                    </th>
-                  }
-                  @if (visibleColumns.includes('invoice')) {
-                    <th pSortableColumn="invoiceNumber" style="min-width: 160px">
-                      {{ 'Invoice' | translate }}
-                      <p-sortIcon field="invoiceNumber"></p-sortIcon>
-                      <p-columnFilter field="invoiceNumber" display="menu" type="text"></p-columnFilter>
-                    </th>
-                  }
-                  @if (visibleColumns.includes('expense')) {
-                    <th pSortableColumn="expenseTitle" style="min-width: 200px">
-                      {{ 'Expense' | translate }}
-                      <p-sortIcon field="expenseTitle"></p-sortIcon>
-                      <p-columnFilter field="expenseTitle" display="menu" type="text"></p-columnFilter>
-                    </th>
-                  }
-                  <th style="min-width: 140px; width: 140px" class="text-end"></th>
-                </tr>
-              </ng-template>
-              <ng-template pTemplate="body" let-transaction>
-                <tr>
-                  @if (visibleColumns.includes('type')) {
-                    <td class="text-center">
-                      @if (transaction.type === 'in') {
-                        <i class="ri-arrow-right-down-fill text-success"
-                        ></i>
-                      }
-                      @if (transaction.type === 'out') {
-                        <i class="ri-arrow-right-up-fill text-danger"
-                        ></i>
-                      }
-                    </td>
-                  }
-                  @if (visibleColumns.includes('title')) {
-                    <td>{{ transaction.title }}</td>
-                  }
-                  @if (visibleColumns.includes('category')) {
-                    <td>
-                      @for (cat of transaction.expand?.category; track cat) {
-                        <span class="badge bg-info-subtle me-1"
-                        >{{ cat.name }}</span>
-                      }
-                    </td>
-                  }
-                  @if (visibleColumns.includes('total')) {
-                    <td
-                      [ngClass]="transaction.type === 'in' ? 'text-success' : 'text-danger'">
-                      {{ transaction.total | currencyFormat }}
-                    </td>
-                  }
-                  @if (visibleColumns.includes('date')) {
-                    <td>{{ transaction.date | date: 'mediumDate'
-                    }}</td>
-                  }
-                  @if (visibleColumns.includes('invoice')) {
-                    <td>{{ transaction.invoiceNumber }}</td>
-                  }
-                  @if (visibleColumns.includes('expense')) {
-                    <td>{{ transaction.expenseTitle }}</td>
-                  }
-                  <td class="text-end">
-                    <div class="d-flex justify-content-end gap-1">
-                      <p-button icon="pi pi-pencil" [text]="true" size="small"
-                      (onClick)="editTransaction(transaction)"></p-button>
-                      <p-button icon="pi pi-trash" [text]="true" size="small" severity="danger"
-                      (onClick)="confirmDelete(transaction)"></p-button>
+        <div class="col-3">
+            <eenvo-stats-widget [name]="'Income'" [title]="'Income last 31 days'" [data]="inflow"
+                [secondaryColor]="'bg-success'"></eenvo-stats-widget>
+        </div>
+        <div class="col-3">
+            <eenvo-stats-widget [name]="'Expenses'" [title]="'Expenses last 31 days'" [data]="expenses"
+                [secondaryColor]="'bg-success'"></eenvo-stats-widget>
+        </div>
+        <div class="col-3">
+            <eenvo-stats-widget [name]="'Net income'" [title]="'Net income last 31 days'" [data]="dataNetIncome"
+                [secondaryColor]="'bg-danger'" [color]="'primary'"></eenvo-stats-widget>
+        </div>
+    </div>
+    <div class="row h-grow">
+        <div class="col-lg-12 h-grow">
+            <div class="card h-grow m-0">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h4 class="card-title mb-0">{{ 'Transakcije' | translate }}</h4>
+                    <div class="d-flex gap-2 align-items-center">
+                        <p-button [label]="'New' | translate" icon="pi pi-plus" [text]="true" size="small"
+                            (onClick)="newTransaction()"></p-button>
+                        <p-button icon="pi pi-refresh" [label]="'&nbsp;'" [text]="true" size="small"
+                            (onClick)="reload()"></p-button>
+                        <p-button icon="pi pi-download" [label]="'&nbsp;'" [text]="true" size="small"
+                            (onClick)="exportCsv()"></p-button>
+                        <p-button icon="pi pi-table" [label]="'&nbsp;'" [text]="true" size="small"
+                            (onClick)="colsPopover.toggle($event)"></p-button>
+                        <p-popover #colsPopover styleClass="p-2">
+                            <ng-template pTemplate="content">
+                                <div class="mb-2 fw-semibold">{{ 'Columns' | translate }}</div>
+                                <p-multiSelect [options]="allColumns" optionLabel="header" optionValue="field"
+                                    [(ngModel)]="visibleColumns" [showHeader]="false" [filter]="true" display="chip"
+                                    style="min-width: 220px"></p-multiSelect>
+                            </ng-template>
+                        </p-popover>
+                        <select class="form-select form-select-sm" [(ngModel)]="selectedYear" (change)="onYearChange()">
+                            <option [value]="currentYear">{{ currentYear }}</option>
+                            <option [value]="currentYear - 1">{{ currentYear - 1 }}</option>
+                            <option [value]="currentYear - 2">{{ currentYear - 2 }}</option>
+                            <option [value]="currentYear - 3">{{ currentYear - 3 }}</option>
+                            <option [value]="currentYear - 4">{{ currentYear - 4 }}</option>
+                        </select>
+                        <input pSize="small" type="text" pInputText [(ngModel)]="globalFilterValue"
+                            placeholder="{{ 'Search' | translate }}"
+                            (input)="$event.stopPropagation(); dt.filterGlobal(globalFilterValue, 'contains')"
+                            style="min-width: 240px">
                     </div>
-                  </td>
-                </tr>
-              </ng-template>
-            </p-table>
-          </div>
+                </div>
+                <div class="card-body h-grow">
+                    <div class="table-container">
+                        <p-table #dt [value]="data" [loading]="loading" [paginator]="true" [rows]="25"
+                            [showCurrentPageReport]="true"
+                            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                            [globalFilterFields]="['title', 'type', 'categoryNames', 'invoiceNumber', 'expenseTitle', 'total']"
+                            styleClass="p-datatable-sm" [scrollable]="true" scrollHeight="flex">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    @if (visibleColumns.includes('type')) {
+                                    <th pSortableColumn="type" style="min-width: 100px">
+                                        {{ 'Type' | translate }}
+                                        <p-sortIcon field="type"></p-sortIcon>
+                                        <p-columnFilter field="type" display="menu" [showMatchModes]="false"
+                                            [showOperator]="false" [showAddButton]="false">
+                                            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                                <p-select [options]="types" optionLabel="name" optionValue="value"
+                                                    [ngModel]="value" (ngModelChange)="filter($event)"
+                                                    [ngModelOptions]="{ standalone: true }" showClear="true"
+                                                    styleClass="w-100"></p-select>
+                                            </ng-template>
+                                        </p-columnFilter>
+                                    </th>
+                                    }
+                                    @if (visibleColumns.includes('title')) {
+                                    <th pSortableColumn="title" style="min-width: 200px">
+                                        {{ 'Title' | translate }}
+                                        <p-sortIcon field="title"></p-sortIcon>
+                                        <p-columnFilter field="title" display="menu" type="text"></p-columnFilter>
+                                    </th>
+                                    }
+                                    @if (visibleColumns.includes('category')) {
+                                    <th pSortableColumn="categoryNames" style="min-width: 200px">
+                                        {{ 'Category' | translate }}
+                                        <p-sortIcon field="categoryNames"></p-sortIcon>
+                                        <p-columnFilter field="categoryNames" display="menu"
+                                            type="text"></p-columnFilter>
+                                    </th>
+                                    }
+                                    @if (visibleColumns.includes('total')) {
+                                    <th pSortableColumn="total" style="min-width: 140px">
+                                        {{ 'Total' | translate }}
+                                        <p-sortIcon field="total"></p-sortIcon>
+                                        <p-columnFilter field="total" display="menu" type="numeric"></p-columnFilter>
+                                    </th>
+                                    }
+                                    @if (visibleColumns.includes('date')) {
+                                    <th pSortableColumn="date" style="min-width: 150px">
+                                        {{ 'Date' | translate }}
+                                        <p-sortIcon field="date"></p-sortIcon>
+                                        <p-columnFilter field="date" display="menu" type="date"></p-columnFilter>
+                                    </th>
+                                    }
+                                    @if (visibleColumns.includes('invoice')) {
+                                    <th pSortableColumn="invoiceNumber" style="min-width: 160px">
+                                        {{ 'Invoice' | translate }}
+                                        <p-sortIcon field="invoiceNumber"></p-sortIcon>
+                                        <p-columnFilter field="invoiceNumber" display="menu"
+                                            type="text"></p-columnFilter>
+                                    </th>
+                                    }
+                                    @if (visibleColumns.includes('expense')) {
+                                    <th pSortableColumn="expenseTitle" style="min-width: 200px">
+                                        {{ 'Expense' | translate }}
+                                        <p-sortIcon field="expenseTitle"></p-sortIcon>
+                                        <p-columnFilter field="expenseTitle" display="menu"
+                                            type="text"></p-columnFilter>
+                                    </th>
+                                    }
+                                    <th style="min-width: 140px; width: 140px" class="text-end"></th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-transaction>
+                                <tr>
+                                    @if (visibleColumns.includes('type')) {
+                                    <td class="text-center">
+                                        @if (transaction.type === 'in') {
+                                        <i class="ri-arrow-right-down-fill text-success"></i>
+                                        }
+                                        @if (transaction.type === 'out') {
+                                        <i class="ri-arrow-right-up-fill text-danger"></i>
+                                        }
+                                    </td>
+                                    }
+                                    @if (visibleColumns.includes('title')) {
+                                    <td>{{ transaction.title }}</td>
+                                    }
+                                    @if (visibleColumns.includes('category')) {
+                                    <td>
+                                        @for (cat of transaction.expand?.category; track cat) {
+                                        <span class="badge bg-info-subtle me-1">{{ cat.name }}</span>
+                                        }
+                                    </td>
+                                    }
+                                    @if (visibleColumns.includes('total')) {
+                                    <td [ngClass]="transaction.type === 'in' ? 'text-success' : 'text-danger'">
+                                        {{ transaction.total | currencyFormat }}
+                                    </td>
+                                    }
+                                    @if (visibleColumns.includes('date')) {
+                                    <td>{{ transaction.date | date: 'mediumDate'
+                                        }}</td>
+                                    }
+                                    @if (visibleColumns.includes('invoice')) {
+                                    <td>{{ transaction.invoiceNumber }}</td>
+                                    }
+                                    @if (visibleColumns.includes('expense')) {
+                                    <td>{{ transaction.expenseTitle }}</td>
+                                    }
+                                    <td class="text-end"
+                                        style="position: sticky; right: 0; background: white; z-index: 10;">
+                                        <div class="d-flex justify-content-end gap-1">
+                                            <p-button icon="pi pi-pencil" [text]="true" size="small" [label]="'&nbsp;'"
+                                                (onClick)="editTransaction(transaction)"></p-button>
+                                            <p-button icon="pi pi-trash" [text]="true" size="small" severity="danger"
+                                                [label]="'&nbsp;'" (onClick)="confirmDelete(transaction)"></p-button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </div>
 
 <p-dialog [(visible)]="displayDialog" [modal]="true" [style]="{ width: '90vw', maxWidth: '720px' }" [draggable]="false"
-  [resizable]="false" [header]="(currentTransaction ? 'Edit' : 'New') + ' ' + ('Transaction' | translate)">
-  <form [formGroup]="transactionForm" (ngSubmit)="saveTransaction()" class="p-fluid">
-    <div class="row">
-      <div class="col-md-4 mb-3">
-        <label class="form-label">{{ 'Type' | translate }}</label>
-        <p-select [options]="types" optionLabel="name" optionValue="value" formControlName="type"
-        styleClass="w-100"></p-select>
-      </div>
-      <div class="col-md-8 mb-3">
-        <label for="title" class="form-label">{{ 'Title' | translate }}</label>
-        <input id="title" type="text" class="form-control" formControlName="title" pInputText>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-8 mb-3">
-        <label for="category" class="form-label">{{ 'Category' | translate }}</label>
-        <p-multiSelect formControlName="category" [options]="categories" optionLabel="name" optionValue="id"
-        display="chip" [filter]="true"></p-multiSelect>
-      </div>
-      <div class="col-md-4 mb-3 d-flex align-items-end">
-        <div class="input-group">
-          <input type="text" class="form-control" [(ngModel)]="categoryInput"
-            [ngModelOptions]="{ standalone: true }" placeholder="{{ 'New category' | translate }}"
-            pInputText>
-          <button class="btn btn-outline-primary" type="button" (click)="addCategoryFromInput()">
-            <i class="pi pi-plus"></i>
-          </button>
+    [resizable]="false" [header]="(currentTransaction ? 'Edit' : 'New') + ' ' + ('Transaction' | translate)">
+    <form [formGroup]="transactionForm" (ngSubmit)="saveTransaction()" class="p-fluid">
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label class="form-label">{{ 'Type' | translate }}</label>
+                <p-select [options]="types" optionLabel="name" optionValue="value" formControlName="type"
+                    styleClass="w-100"></p-select>
+            </div>
+            <div class="col-md-8 mb-3">
+                <label for="title" class="form-label">{{ 'Title' | translate }}</label>
+                <input id="title" type="text" class="form-control" formControlName="title" pInputText>
+            </div>
         </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-4 mb-3">
-        <label for="total" class="form-label">{{ 'Total' | translate }}</label>
-        <input id="total" type="number" class="form-control" formControlName="total" pInputText step="0.01">
-      </div>
-      <div class="col-md-4 mb-3">
-        <label for="date" class="form-label">{{ 'Date' | translate }}</label>
-        <input id="date" type="date" class="form-control" formControlName="date" pInputText>
-      </div>
-    </div>
-  </form>
-  <ng-template pTemplate="footer">
-    <p-button label="Cancel" icon="pi pi-times" [text]="true" (onClick)="displayDialog = false"></p-button>
-    <p-button [label]="currentTransaction ? 'Update' : 'Create'" icon="pi pi-check" (onClick)="saveTransaction()"
-    [loading]="loading"></p-button>
-  </ng-template>
+        <div class="row">
+            <div class="col-md-8 mb-3">
+                <label for="category" class="form-label">{{ 'Category' | translate }}</label>
+                <p-multiSelect formControlName="category" [options]="categories" optionLabel="name" optionValue="id"
+                    display="chip" [filter]="true"></p-multiSelect>
+            </div>
+            <div class="col-md-4 mb-3 d-flex align-items-end">
+                <div class="input-group">
+                    <input type="text" class="form-control" [(ngModel)]="categoryInput"
+                        [ngModelOptions]="{ standalone: true }" placeholder="{{ 'New category' | translate }}"
+                        pInputText>
+                    <button class="btn btn-outline-primary" type="button" (click)="addCategoryFromInput()">
+                        <i class="pi pi-plus"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label for="total" class="form-label">{{ 'Total' | translate }}</label>
+                <p-inputnumber id="total" formControlName="total" mode="currency" currency="EUR" locale="de-DE" />
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="date" class="form-label">{{ 'Date' | translate }}</label>
+                <input id="date" type="date" class="form-control" formControlName="date" pInputText>
+            </div>
+        </div>
+    </form>
+    <ng-template pTemplate="footer">
+        <p-button label="Cancel" icon="pi pi-times" [text]="true" (onClick)="displayDialog = false"></p-button>
+        <p-button [label]="currentTransaction ? 'Update' : 'Create'" icon="pi pi-check" (onClick)="saveTransaction()"
+            [loading]="loading"></p-button>
+    </ng-template>
 </p-dialog>
 
 <p-toast></p-toast>
