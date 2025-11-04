@@ -5,10 +5,10 @@
         <div class="card-header d-flex justify-content-between align-items-center">
           <h4 class="card-title mb-0">{{ 'Templates' | translate }}</h4>
           <div class="d-flex gap-2 align-items-center">
-            <p-button [label]="'New' | translate" icon="pi pi-plus" (onClick)="newTemplate()" [loading]="loading" [text]="true" size="small"></p-button>
-            <p-button icon="pi pi-refresh" [label]="'\u00a0'" (onClick)="reload()" [loading]="loading" [text]="true" size="small"></p-button>
-            <p-button icon="pi pi-download" [label]="'\u00a0'" (onClick)="exportCsv()" [text]="true" size="small" pTooltip="{{ 'Export' | translate }}"></p-button>
-            <p-button icon="pi pi-table" [label]="'\u00a0'" [text]="true" size="small" pTooltip="{{ 'Columns' | translate }}" (onClick)="colsPopover.toggle($event)"></p-button>
+            <p-button icon="pi pi-plus" (onClick)="newTemplate()" [loading]="loading" [text]="true" size="small"></p-button>
+            <p-button icon="pi pi-refresh" (onClick)="reload()" [loading]="loading" [text]="true" size="small"></p-button>
+            <p-button icon="pi pi-download" (onClick)="exportCsv()" [text]="true" size="small" pTooltip="{{ 'Export' | translate }}"></p-button>
+            <p-button icon="pi pi-table" [text]="true" size="small" pTooltip="{{ 'Columns' | translate }}" (onClick)="colsPopover.toggle($event)"></p-button>
             <p-popover #colsPopover styleClass="p-2">
               <ng-template pTemplate="content">
                 <div class="mb-2 fw-semibold">{{ 'Columns' | translate }}</div>
@@ -22,7 +22,7 @@
         </div>
         <div class="card-body h-grow">
           <div class="table-container" style="height: 100%; overflow: auto;">
-            <p-table #dt [value]="data" [loading]="loading" [scrollable]="true" scrollHeight="flex" [resizableColumns]="true" [reorderableColumns]="true" [paginator]="true" [rows]="25" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [globalFilterFields]="visibleColumns" exportFilename="templates" styleClass="p-datatable-sm">
+            <p-table #dt [value]="data" [scrollable]="true" scrollHeight="flex" [resizableColumns]="true" [reorderableColumns]="true" [paginator]="true" [rows]="25" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [globalFilterFields]="visibleColumns" exportFilename="templates" styleClass="p-datatable-sm">
               <ng-template pTemplate="header">
                 <tr>
                   @if (visibleColumns.includes('name')) {

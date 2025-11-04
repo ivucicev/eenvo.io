@@ -68,7 +68,6 @@ export class TopbarComponent {
 
         this.currentMode = localStorage.getItem('theme') || this.MODE.LIGHTMODE;
         this.store.dispatch(changeMode({ mode: this.currentMode }));
-        this.changeDxTheme();
 
         this.store.select(getLayoutMode).subscribe((mode) => {
             this.currentMode = mode
@@ -122,21 +121,16 @@ export class TopbarComponent {
 
     }
 
-    changeDxTheme() {
-        this.document.body.classList.remove('dx-swatch-swatch-blue');
-        this.document.body.classList.remove('dx-swatch-swatch-blue-dark');
-        if (this.currentMode === this.MODE.LIGHTMODE) {
-            this.document.body.classList.add('dx-swatch-swatch-blue');
-        } else if (this.currentMode === this.MODE.DARKMODE) {
-            this.document.body.classList.add('dx-swatch-swatch-blue-dark');
-        }
-    }
-
     modeChange() {
         const mode = this.currentMode === this.MODE.LIGHTMODE ? this.MODE.DARKMODE : this.MODE.LIGHTMODE
         this.store.dispatch(changeMode({ mode }));
-        this.changeDxTheme();
         localStorage.setItem('theme', this.currentMode)
+        if (mode === this.MODE.DARKMODE) {
+            document.documentElement.classList.add('app-dark');
+        } else {
+            document.documentElement.classList.remove('app-dark');
+        }
+
     }
 
     windowScroll() {

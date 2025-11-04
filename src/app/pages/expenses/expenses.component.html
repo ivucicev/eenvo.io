@@ -35,7 +35,7 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h4 class="card-title mb-0">{{ 'Troškovi' | translate }}</h4>
                     <div class="d-flex align-items-center gap-2">
-                        <p-button [label]="'New' | translate" icon="pi pi-plus" [text]="true" size="small"
+                        <p-button icon="pi pi-plus" [text]="true" size="small"
                             (onClick)="newExpense()"></p-button>
                         <p-button icon="pi pi-refresh" [text]="true" size="small"
                             (onClick)="reload()"></p-button>
@@ -66,7 +66,7 @@
                 </div>
                 <div class="card-body h-grow">
                     <div class="table-container">
-                        <p-table #dt [value]="data" [loading]="loading" [paginator]="true" [rows]="25"
+                        <p-table #dt [value]="data" [paginator]="true" [rows]="25"
                             [showCurrentPageReport]="true"
                             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                             [globalFilterFields]="['customerName', 'title', 'categoryNames', 'total', 'date', 'fileNames']"

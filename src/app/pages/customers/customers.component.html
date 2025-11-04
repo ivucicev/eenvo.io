@@ -5,7 +5,7 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h4 class="card-title mb-0">{{ title | translate }}</h4>
                     <div class="d-flex gap-2 align-items-center">
-                        <p-button [label]="'New' | translate" icon="pi pi-plus" (onClick)="newCustomer()"
+                        <p-button icon="pi pi-plus" (onClick)="newCustomer()"
                             [loading]="loading" [text]="true" size="small">
                         </p-button>
                         <p-button icon="pi pi-refresh" (onClick)="reload()" [loading]="loading"
@@ -36,7 +36,7 @@
                 </div>
                 <div class="card-body h-grow">
                     <div class="table-container" style="height: 100%; overflow: auto;">
-                        <p-table #dt [value]="data" [loading]="loading" [scrollable]="true" scrollHeight="flex"
+                        <p-table #dt [value]="data" [scrollable]="true" scrollHeight="flex"
                             [resizableColumns]="true" [reorderableColumns]="true" [paginator]="true" [rows]="25"
                             [showCurrentPageReport]="true"
                             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"

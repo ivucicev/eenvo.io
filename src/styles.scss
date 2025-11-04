@@ -337,12 +337,6 @@ dx-tag-box {
     height: 40px;
 }
 
-.dx-swatch-swatch-blue .dx-popup-bottom.dx-toolbar .dx-toolbar-after {
-    display: flex;
-    flex-direction: row-reverse;
-    column-gap: 5px;
-}
-
 .animation-fade-up {
     animation: fadeInUp 0.2s none linear;
 }
@@ -412,4 +406,10 @@ dx-tag-box {
 
 .table-container {
     height: 100%;
+}
+
+:root[class*='app-dark'] {
+    --surface-ground: var(--p-surface-950);
+    --code-background: var(--p-surface-800);
+    --code-color: var(--p-surface-100);
 }

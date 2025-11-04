@@ -58,13 +58,13 @@
                     <div class="d-flex justify-content-between align-items-center mb-2">
                         <div></div>
                         <div class="d-flex gap-2 align-items-center">
-                            <p-button [label]="'New' | translate" icon="pi pi-plus" [text]="true" size="small"
+                            <p-button icon="pi pi-plus" [text]="true" size="small"
                                 (onClick)="newInvoice()"></p-button>
-                            <p-button icon="pi pi-refresh" [label]="'\u00A0'" [text]="true" size="small"
+                            <p-button icon="pi pi-refresh" [text]="true" size="small"
                                 (onClick)="reload()"></p-button>
-                            <p-button icon="pi pi-download" [label]="'\u00A0'" [text]="true" size="small"
+                            <p-button icon="pi pi-download" [text]="true" size="small"
                                 (onClick)="exportCsv()"></p-button>
-                            <p-button icon="pi pi-table" [label]="'\u00A0'" [text]="true" size="small"
+                            <p-button icon="pi pi-table" [text]="true" size="small"
                                 (onClick)="colsPopover.toggle($event)"></p-button>
                             <p-popover #colsPopover styleClass="p-2">
                                 <ng-template pTemplate="content">
@@ -89,7 +89,7 @@
                     </div>
 
                     <div class="table-container">
-                        <p-table #dt [value]="data" [loading]="loading" [paginator]="true" [rows]="25"
+                        <p-table #dt [value]="data" [paginator]="true" [rows]="25"
                             [showCurrentPageReport]="true"
                             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                             [globalFilterFields]="['number','customerName','userName','total','isPaid','dueDate']"
