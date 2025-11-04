@@ -21,7 +21,7 @@
 }
 
 .pcr-app{
-  &[data-theme=classic]{
+  &[data-bs-theme=classic]{
     .pcr-selection {
       .pcr-color-preview{
         margin-right: .75em;
@@ -35,7 +35,7 @@
     }
   }
 
-  &[data-theme="monolith"]{
+  &[data-bs-theme="monolith"]{
     .pcr-result{
       min-width: 100%;
     }

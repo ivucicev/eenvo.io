@@ -178,7 +178,7 @@
                                     @if (visibleColumns.includes('dueDate')) {
                                     <td>{{ row.dueDate | date: 'mediumDate' }}</td>
                                     }
-                                    <td class="text-end" style="position: sticky; right: 0; background: white; z-index: 10;">
+                                    <td class="text-end" style="position: sticky; right: 0; z-index: 10;">
                                         <div class="d-flex justify-content-end gap-1">
                                             @if (!isQuote && isMarkAsUnpayedVisible(row)) {
                                                 <p-button icon="pi pi-undo" [text]="true" size="small" 

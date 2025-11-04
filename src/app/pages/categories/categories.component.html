@@ -46,7 +46,7 @@
                                     </th>
                                     }
                                     <th
-                                        style="min-width: 120px; width: 120px; position: sticky; right: 0; background: white; z-index: 10;">
+                                        style="min-width: 120px; width: 120px; position: sticky; right: 0; z-index: 10;">
                                     </th>
                                 </tr>
                             </ng-template>
@@ -55,7 +55,7 @@
                                     @if (visibleColumns.includes('name')) {
                                     <td>{{ c.name }}</td>
                                     }
-                                    <td style="position: sticky; right: 0; background: white; z-index: 10;">
+                                    <td style="position: sticky; right: 0; z-index: 10;">
                                         <div class="d-flex gap-1">
                                             <p-button icon="pi pi-pencil" [text]="true" size="small"
                                                 (onClick)="editCategory(c)" pTooltip="Edit"></p-button>

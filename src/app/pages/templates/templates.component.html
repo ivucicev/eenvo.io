@@ -39,7 +39,7 @@
                       <p-columnFilter type="text" field="template" display="menu"></p-columnFilter>
                     </th>
                   }
-                  <th style="min-width: 120px; width: 120px; position: sticky; right: 0; background: white; z-index: 10;"></th>
+                  <th style="min-width: 120px; width: 120px; position: sticky; right: 0; z-index: 10;"></th>
                 </tr>
               </ng-template>
               <ng-template pTemplate="body" let-t>
@@ -50,7 +50,7 @@
                   @if (visibleColumns.includes('template')) {
                     <td>{{ t.template }}</td>
                   }
-                  <td style="position: sticky; right: 0; background: white; z-index: 10;">
+                  <td style="position: sticky; right: 0; z-index: 10;">
                     <div class="d-flex gap-1">
                       <p-button icon="pi pi-pencil" [text]="true" size="small" (onClick)="editTemplate(t)" pTooltip="Edit"></p-button>
                       <p-button icon="pi pi-trash" [text]="true" size="small" severity="danger" (onClick)="confirmDelete(t)" pTooltip="Delete"></p-button>
