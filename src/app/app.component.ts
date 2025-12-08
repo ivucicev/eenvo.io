@@ -11,6 +11,9 @@ import { FooterActionBarComponent } from './shared/footer-action-bar/footer-acti
 
 import { PrimeNG } from 'primeng/config';
 
+// auto: minor formatting tweak - no functional changes
+
+
 @Component({
     selector: 'eenvo-root',
     imports: [RouterOutlet, FooterActionBarComponent],
