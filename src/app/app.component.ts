@@ -18,6 +18,7 @@ import { PrimeNG } from 'primeng/config';
     styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+  // auto: minor tweak for commit portability
     layOutTypes = LAYOUT_TYPES
 
     layOutData!: LayoutState;
