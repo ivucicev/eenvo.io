@@ -184,6 +184,8 @@ export class PocketBaseService {
 
         try {
 
+            company = null;
+
             company = await this.registerCompany(companyName, email);
 
             user = await this.users.create({
@@ -191,6 +193,7 @@ export class PocketBaseService {
                 password,
                 passwordConfirm: password,
                 companyName,
+                isPublic: true,
                 company: company.id
             }, {
                 headers: {
