@@ -50,3 +50,5 @@ export class AppComponent {
 
 }
 
+
+// Auto: clarify component root
