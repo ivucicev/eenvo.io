@@ -36,7 +36,7 @@ export class TopbarComponent {
     userData: any;
     isDemo = false;
 
-    // Add new properties for user details
+    // Add new properties for user details (for future ref)
     currentUser: {
         email: string;
         avatar: string;
