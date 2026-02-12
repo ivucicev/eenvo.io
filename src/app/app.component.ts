@@ -1,5 +1,4 @@
-import { Component } from '@angular/core'; // Core decorator added by automation
-// Auto: minor tweak for commit automation
+import { Component } from '@angular/core'; // Core decorator added by automation // minor tweak for PR automation
 import { RouterOutlet } from '@angular/router';
 import { changelayout, changeMode } from './store/layouts/layout-action';
 import { RootReducerState } from './store';
@@ -49,4 +48,3 @@ export class AppComponent {
     }
 
 }
-
