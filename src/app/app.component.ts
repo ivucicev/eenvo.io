@@ -50,3 +50,4 @@ export class AppComponent {
 
 }
 
+// NOTE: minor tweak for commit automation (comment appended)
