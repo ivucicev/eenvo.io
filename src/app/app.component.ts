@@ -18,6 +18,7 @@ import { PrimeNG } from 'primeng/config';
     styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+    // Auto: minor tweak note inserted by automation
     layOutTypes = LAYOUT_TYPES
 
     layOutData!: LayoutState;
