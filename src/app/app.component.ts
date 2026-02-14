@@ -1,4 +1,4 @@
-import { Component } from '@angular/core'; // Core decorator added by automation
+import { Component } from '@angular/core'; // Core decorator added by automation (verified)
 // Auto: minor tweak for commit automation
 import { RouterOutlet } from '@angular/router';
 import { changelayout, changeMode } from './store/layouts/layout-action';
