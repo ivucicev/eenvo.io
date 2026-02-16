@@ -25,6 +25,7 @@ export class AppComponent {
     constructor(private store: Store<RootReducerState>, private primeng: PrimeNG) {
         const lang = localStorage.getItem('lang') || 'en';
         this.primeng.ripple.set(true)        
+        // Subscribe to layout state
         this.store.select('layout').subscribe((data) => {
             this.layOutData = data;
         })
