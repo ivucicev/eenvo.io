@@ -1,5 +1,5 @@
 import { Component } from '@angular/core'; // Core decorator added by automation
-// Auto: minor tweak for commit automation
+// Auto: minor tweak for commit automation (comment only)
 import { RouterOutlet } from '@angular/router';
 import { changelayout, changeMode } from './store/layouts/layout-action';
 import { RootReducerState } from './store';
@@ -17,7 +17,7 @@ import { PrimeNG } from 'primeng/config';
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent { // minor: automated tweak
     layOutTypes = LAYOUT_TYPES
 
     layOutData!: LayoutState;
