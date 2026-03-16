@@ -31,7 +31,7 @@ export class AppComponent {
 
     }
 
-    ngOnInit(): void {
+    ngOnInit(): void { // ensure initialization runs once
         this.changeMode(this.layOutData.LAYOUT_MODE);
         this.changeLayout(this.layOutData.LAYOUT)
     }
