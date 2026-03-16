@@ -1,5 +1,5 @@
 import { Component } from '@angular/core'; // Core decorator added by automation
-// Auto: minor tweak for commit automation
+ // Auto: minor tweak for commit automation (timestamped branch)
 import { RouterOutlet } from '@angular/router';
 import { changelayout, changeMode } from './store/layouts/layout-action';
 import { RootReducerState } from './store';
@@ -10,6 +10,9 @@ import { LayoutState } from './store/layouts/layout-reducers';
 import { FooterActionBarComponent } from './shared/footer-action-bar/footer-action-bar.component';
 
 import { PrimeNG } from 'primeng/config';
+
+// auto: minor formatting tweak - no functional changes
+
 
 @Component({
     selector: 'eenvo-root',
