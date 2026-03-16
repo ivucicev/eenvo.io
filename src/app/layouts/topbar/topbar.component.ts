@@ -110,7 +110,7 @@ export class TopbarComponent {
     }
 
     async ngOnInit() {
-        // Cookies wise Language set
+        // Cookie-based language setting
         const val = this.listLang.filter(x => x.lang === this.lang);
         this.countryName = val.map(element => element.text);
         if (val.length === 0) {
