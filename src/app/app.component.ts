@@ -1,5 +1,7 @@
 import { Component } from '@angular/core'; // Core decorator added by automation
+// Minor: non-functional comment for automated PR flow
 // Auto: minor tweak for commit automation
+// NOTE: This comment is auto-inserted for PR flow
 import { RouterOutlet } from '@angular/router';
 import { changelayout, changeMode } from './store/layouts/layout-action';
 import { RootReducerState } from './store';
@@ -49,4 +51,3 @@ export class AppComponent {
     }
 
 }
-
