@@ -23,7 +23,7 @@ export class AppComponent {
     layOutData!: LayoutState;
 
     constructor(private store: Store<RootReducerState>, private primeng: PrimeNG) {
-        const lang = localStorage.getItem('lang') || 'en';
+        const lang = localStorage.getItem('lang') || 'en'; // default language to English if unset
         this.primeng.ripple.set(true)        
         this.store.select('layout').subscribe((data) => {
             this.layOutData = data;
