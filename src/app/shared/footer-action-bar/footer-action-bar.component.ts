@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core'; // Auto: minor tweak for automation
 import { Subject, takeUntil } from 'rxjs';
 import { ActionBarComponent } from '../action-bar/action-bar.component';
 import { ButtonAction, ButtonActionService } from '../../core/services/button-action.service';
