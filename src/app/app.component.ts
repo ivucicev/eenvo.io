@@ -17,6 +17,7 @@ import { PrimeNG } from 'primeng/config';
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss']
 })
+// Minor update: annotate root component
 export class AppComponent {
     layOutTypes = LAYOUT_TYPES
 
