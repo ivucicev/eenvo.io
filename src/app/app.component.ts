@@ -50,3 +50,4 @@ export class AppComponent {
 
 }
 
+// Auto: minor formatting tweak for consistency
