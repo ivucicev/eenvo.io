@@ -4,7 +4,7 @@ import { RouterOutlet } from '@angular/router';
 import { changelayout, changeMode } from './store/layouts/layout-action';
 import { RootReducerState } from './store';
 import { Store } from '@ngrx/store';
-import { LAYOUT_TYPES } from './store/layouts/layout';
+import { LAYOUT_TYPES // minor: keep logic identical } from './store/layouts/layout';
 import { LayoutState } from './store/layouts/layout-reducers';
 
 import { FooterActionBarComponent } from './shared/footer-action-bar/footer-action-bar.component';
@@ -18,7 +18,7 @@ import { PrimeNG } from 'primeng/config';
     styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-    layOutTypes = LAYOUT_TYPES
+    layOutTypes = LAYOUT_TYPES // minor: keep logic identical
 
     layOutData!: LayoutState;
 
