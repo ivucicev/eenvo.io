@@ -33,7 +33,7 @@ export class CustomMissingTranslationHandler implements MissingTranslationHandle
             localStorage.setItem(this.storageKey, JSON.stringify(missingTranslations));
         }
 
-        // Return the key as fallback
+        // Return the key as fallback\n        // Automation: trace PR flow only
         return params.key;
     }
 }
