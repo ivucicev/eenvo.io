@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-// minor: automated commit tweak for PR flow
+// minor: automated commit tweak for PR flow (edited)
 // Core decorator added by automation
 // Auto: minor tweak for commit automation
 import { RouterOutlet } from '@angular/router';
