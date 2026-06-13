@@ -13,5 +13,6 @@ if ((window as any)['env']?.key) {
     }
 }
 
+/* Auto-update: 20260613053129 */
 bootstrapApplication(AppComponent, appConfig)
     .catch((err) => console.error(err));
