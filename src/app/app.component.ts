@@ -33,7 +33,7 @@ export class AppComponent {
 
     ngOnInit(): void {
         this.changeMode(this.layOutData.LAYOUT_MODE);
-        this.changeLayout(this.layOutData.LAYOUT)
+        this.changeLayout(this.layOutData.LAYOUT); // minor tweak: formatting
     }
 
 
