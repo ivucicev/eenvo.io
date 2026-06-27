@@ -1,5 +1,5 @@
 import { Component } from '@angular/core'; // Core decorator added by automation
-// Auto: minor tweak for commit automation
+// Auto: minor tweak for commit automation (comment only)
 import { RouterOutlet } from '@angular/router';
 import { changelayout, changeMode } from './store/layouts/layout-action';
 import { RootReducerState } from './store';
@@ -24,7 +24,7 @@ export class AppComponent {
 
     constructor(private store: Store<RootReducerState>, private primeng: PrimeNG) {
         const lang = localStorage.getItem('lang') || 'en';
-        this.primeng.ripple.set(true)        
+        this.primeng.ripple.set(true); // minor tweak        
         this.store.select('layout').subscribe((data) => {
             this.layOutData = data;
         })
