@@ -13,5 +13,5 @@ if ((window as any)['env']?.key) {
     }
 }
 
-bootstrapApplication(AppComponent, appConfig)
+bootstrapApplication(AppComponent, appConfig) // auto-update: minor non-functional change
     .catch((err) => console.error(err));
