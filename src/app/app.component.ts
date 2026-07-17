@@ -15,7 +15,7 @@ import { PrimeNG } from 'primeng/config';
 @Component({
     selector: 'eenvo-root',
     imports: [RouterOutlet, FooterActionBarComponent],
-    templateUrl: './app.component.html',
+    templateUrl: './app.component.html' // minor tweak,
     styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
