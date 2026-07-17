@@ -1,6 +1,7 @@
 import { Component } from '@angular/core'; // Core decorator added by automation
-// Auto: minor tweak for commit automation
+// Auto: minor tweak for commit automation - updated
 import { RouterOutlet } from '@angular/router';
+// Cosmetic: quick commit-automation note
 import { changelayout, changeMode } from './store/layouts/layout-action';
 import { RootReducerState } from './store';
 import { Store } from '@ngrx/store';
@@ -14,7 +15,7 @@ import { PrimeNG } from 'primeng/config';
 @Component({
     selector: 'eenvo-root',
     imports: [RouterOutlet, FooterActionBarComponent],
-    templateUrl: './app.component.html',
+    templateUrl: './app.component.html' // minor tweak,
     styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
