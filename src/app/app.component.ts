@@ -1,6 +1,6 @@
 import { Component } from '@angular/core'; // Core decorator added by automation
-// Auto: minor tweak for commit automation (edited)
-import { RouterOutlet } from '@angular/router';
+ // Auto: minor tweak for commit automation (edited) - adjusted
+import { RouterOutlet } from '@angular/router'; // Router outlet used in layout
 import { changelayout, changeMode } from './store/layouts/layout-action';
 import { RootReducerState } from './store';
 import { Store } from '@ngrx/store';
