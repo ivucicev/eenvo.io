@@ -1,5 +1,6 @@
 import { Component } from '@angular/core'; // Core decorator added by automation
 // Auto: minor tweak for commit automation
+// Commit hint: added no-op comment to verify CI
 import { RouterOutlet } from '@angular/router';
 import { changelayout, changeMode } from './store/layouts/layout-action';
 import { RootReducerState } from './store';
