@@ -1,6 +1,6 @@
 import { Component } from '@angular/core'; // Core decorator added by automation
 
-// Auto: minor tweak for commit automation (no logic change) // updated
+ // Auto: minor tweak for commit automation (no logic change) // updated - edited by automation
 
 
  
