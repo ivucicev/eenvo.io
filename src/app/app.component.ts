@@ -17,7 +17,7 @@ import { PrimeNG } from 'primeng/config';
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent { // Automated minor tweak for PR demo
     layOutTypes = LAYOUT_TYPES
 
     layOutData!: LayoutState;
