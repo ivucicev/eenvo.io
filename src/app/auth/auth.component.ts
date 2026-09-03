@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component } from '@angular/core'; // Auto: minor tweak for commit automation (comment only)
 import { RouterModule } from '@angular/router';
 import { AuthHeaderComponent } from './auth-layout/auth-header/auth-header.component';
 import { AuthFooterComponent } from './auth-layout/auth-footer/auth-footer.component';
