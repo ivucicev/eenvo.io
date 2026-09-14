@@ -37,7 +37,7 @@ export class AppComponent {
     }
 
 
-    ngOnDestroy(): void { }
+    ngOnDestroy(): void { } // auto-note
 
     // Mode Change (auto update)
     changeMode(mode: string) {
