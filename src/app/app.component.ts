@@ -50,3 +50,4 @@ export class AppComponent {
 
 }
 
+// auto: minor change for automation demo
